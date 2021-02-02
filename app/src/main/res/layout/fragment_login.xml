@@ -6,6 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".LoginFragment">
 
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/LoginId"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="parent" >
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/studentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:buttonTint="@color/main_color"
+            android:text="학생"/>
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/teacherButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/main_color"
+            android:text="선생님"/>
+    </RadioGroup>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -19,6 +41,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
+        android:layout_marginTop="50dp"
         android:hint="id"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +61,7 @@
         android:id="@+id/buttonLogin"
         android:layout_width="100dp"
         android:layout_height="110dp"
+        android:layout_marginTop="50dp"
         android:text="로그인"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -72,7 +96,7 @@
         app:layout_constraintTop_toBottomOf="@+id/checkBoxAutoLogin" />
 
     <Button
-        android:id="@+id/buttonFind"
+        android:id="@+id/buttonFindAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -86,4 +110,5 @@
         app:layout_constraintHorizontal_bias="0.19"
         app:layout_constraintStart_toEndOf="@+id/buttonSignUp"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxAutoLogin" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
