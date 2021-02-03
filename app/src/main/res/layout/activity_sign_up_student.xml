@@ -234,26 +234,16 @@
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editLayoutSchoolGrade"
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/schoolGradeSpinner"
                 android:layout_width="@dimen/sign_up_edit_text_width"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#E3F2FD"
                 android:layout_marginTop="16dp"
-                android:hint="학년"
-                app:boxStrokeColor="@color/main_color"
-                app:hintAnimationEnabled="true"
-                app:hintEnabled="true"
+                android:padding="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/editLayoutSchoolName"
-                tools:layout_editor_absoluteY="120dp">
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/schoolGradeSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/school_grades"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                app:layout_constraintTop_toBottomOf="@+id/editLayoutSchoolName"/>
 
             <Button
                 android:id="@+id/buttonIsOverlap"
@@ -299,7 +289,7 @@
                 android:text="회원 가입"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/editLayoutSchoolGrade"
+                app:layout_constraintTop_toBottomOf="@+id/schoolGradeSpinner"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

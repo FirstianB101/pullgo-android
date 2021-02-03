@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.util.regex.Pattern;
 
@@ -44,7 +45,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
     ImageView passwordCheckImage;
 
     Button signupButton;
-    AppCompatSpinner gradeSpinner;
+    MaterialSpinner gradeSpinner;
 
     boolean isPasswordSame=false;   //입력된 비밀번호와 비밀번호 확인이 같은지
     boolean idFormatSuccess=false;  //입력된 id가 형식에 맞는지(5~16 영문 소문자, 숫자, -, _) 단 특수문자가 처음에 올 수 없다
@@ -74,17 +75,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
         password.addTextChangedListener(pwWatcher);
         passwordCheck.addTextChangedListener(pwSameWatcher);
 
-        gradeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        gradeSpinner.setItems("1학년","2학년","3학년");
     }
 
     public boolean isEmpty(TextInputEditText editText){
