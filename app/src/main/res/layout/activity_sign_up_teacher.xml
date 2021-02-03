@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".TeacherSignUpActivity">
 
     <TextView
@@ -25,258 +26,225 @@
         app:layout_constraintGuide_begin="30dp" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="120dp" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="300dp" />
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="@dimen/sign_up_text_view_width"
-        android:layout_height="@dimen/sign_up_box_height"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editLayoutName"
+        android:layout_width="@dimen/sign_up_edit_text_width"
+        android:layout_height="wrap_content"
+        android:hint="이름"
         android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:text="이름"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="@dimen/sign_up_edit_text_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:hint="이름을 입력하세요"
-        android:inputType="textPersonName"
+        app:hintEnabled="true"
+        app:hintAnimationEnabled="true"
+        app:boxStrokeColor="@color/main_color"
+        app:errorTextColor="@color/material_700_red"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewName"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textViewId"
-        android:layout_width="@dimen/sign_up_text_view_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:gravity="center"
-        android:text="아이디"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/editTextId"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editLayoutId"
         android:layout_width="@dimen/sign_up_edit_text_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:ems="10"
-        android:hint="아이디를 입력하세요"
-        android:inputType="textPersonName"
+        android:layout_height="wrap_content"
+        android:hint="아이디"
+        android:layout_marginTop="16dp"
+        app:boxStrokeColor="@color/main_color"
+        app:errorTextColor="@color/material_700_red"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:errorEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewId"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
-
-    <TextView
-        android:id="@+id/textViewPw"
-        android:layout_width="@dimen/sign_up_text_view_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="비밀번호"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewId" />
+        app:layout_constraintTop_toBottomOf="@+id/editLayoutName"
+        tools:layout_editor_absoluteY="120dp">
 
-    <EditText
-        android:id="@+id/editTextPw"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextId"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFEBEE"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editLayoutPw"
         android:layout_width="@dimen/sign_up_edit_text_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="8~15자리의 영문자, 숫자, 특수문자 조합"
-        android:inputType="textPassword"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호"
+        app:boxStrokeColor="@color/main_color"
+        app:errorTextColor="@color/material_700_red"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="16"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewId"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextId" />
-
-    <TextView
-        android:id="@+id/textViewPwCheck"
-        android:layout_width="@dimen/sign_up_text_view_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="비밀번호 확인"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPw" />
+        app:layout_constraintTop_toBottomOf="@+id/editLayoutId"
+        tools:layout_editor_absoluteY="120dp">
 
-    <EditText
-        android:id="@+id/editTextPwCheck"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPw"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#BBDEFB"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editLayoutPwCheck"
         android:layout_width="@dimen/sign_up_edit_text_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:ems="10"
+        android:layout_height="wrap_content"
         android:hint="비밀번호 확인"
-        android:inputType="textPassword"
+        app:boxStrokeColor="@color/main_color"
+        app:errorTextColor="@color/material_700_red"
+        app:errorEnabled="true"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewId"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPw" />
-
-    <TextView
-        android:id="@+id/textViewPhone"
-        android:layout_width="@dimen/sign_up_text_view_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="전화번호"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPwCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/editLayoutPw"
+        tools:layout_editor_absoluteY="120dp">
 
-    <EditText
-        android:id="@+id/editTextPhone"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPwCheck"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E8EAF6"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editLayoutPhone"
         android:layout_width="@dimen/sign_up_edit_text_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="010-0000-0000"
-        android:inputType="text"
+        android:layout_height="wrap_content"
+        android:hint="전화번호"
+        app:boxStrokeColor="@color/main_color"
+        app:errorTextColor="@color/material_700_red"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewId"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPwCheck" />
-
-    <TextView
-        android:id="@+id/textViewPhoneVerification"
-        android:layout_width="@dimen/sign_up_text_view_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:text="인증번호"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPhone" />
+        app:layout_constraintTop_toBottomOf="@+id/editLayoutPwCheck"
+        tools:layout_editor_absoluteY="120dp">
 
-    <EditText
-        android:id="@+id/editTextPhoneVerification"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E3F2FD"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editLayoutPhoneVerification"
         android:layout_width="@dimen/sign_up_edit_text_width"
-        android:layout_height="@dimen/sign_up_box_height"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:hint="인증번호"
+        android:layout_marginTop="16dp"
+        app:boxStrokeColor="@color/main_color"
+        app:errorTextColor="@color/material_700_red"
+        app:hintAnimationEnabled="true"
+        app:hintEnabled="true"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewId"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/editLayoutPhone"
+        tools:layout_editor_absoluteY="120dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextPhoneVerification"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFDE7"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonIsOverlap"
-        android:onClick="idOverlapButtonClicked"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/sign_up_box_height"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:onClick="idOverlapButtonClicked"
         android:text="중복 확인"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonVerification"
-        android:onClick="sendVerificationNumberClicked"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/sign_up_box_height"
+        android:layout_marginTop="40dp"
+        android:onClick="sendVerificationNumberClicked"
         android:text="본인 인증"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordSameCheck" />
 
     <Button
         android:id="@+id/buttonVerificationCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:onClick="verificationButtonClicked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
         android:text="인증 확인"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextPhoneVerification"
-        app:layout_constraintTop_toTopOf="@+id/guideline9" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="110dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="289dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="350dp" />
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/buttonVerification" />
 
     <Button
         android:id="@+id/buttonSuccess"
-        android:onClick="signupSuccessButtonClicked"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/sign_up_success_button_width"
         android:layout_height="@dimen/sign_up_box_height"
+        android:onClick="signupSuccessButtonClicked"
         android:text="회원 가입"
-        android:backgroundTint="@color/gray"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPhoneVerification"
-        app:layout_constraintVertical_bias="0.165" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editLayoutPhoneVerification" />
 
     <ImageView
         android:id="@+id/passwordCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
+        android:layout_marginTop="32dp"
         android:background="#FFFFFF"
         android:src="@drawable/baseline_check_white_18dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonVerification"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.16"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/buttonIsOverlap"
+        app:tint="@color/main_color" />
+
+    <ImageView
+        android:id="@+id/passwordSameCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:background="#FFFFFF"
+        android:src="@drawable/baseline_check_white_18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/passwordCheck"
         app:tint="@color/main_color" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

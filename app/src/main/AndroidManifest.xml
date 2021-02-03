@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".StudentSignUpActivity"></activity>
+        <activity android:name=".StudentSignUpActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".TeacherSignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SplashActivity">
