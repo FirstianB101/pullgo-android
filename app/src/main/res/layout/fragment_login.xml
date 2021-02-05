@@ -13,19 +13,18 @@
         app:layout_constraintBottom_toTopOf="@+id/LoginId"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" >
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/studentButton"
+        <lib.kingja.switchbutton.SwitchMultiButton
+            android:id="@+id/switchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:buttonTint="@color/main_color"
-            android:text="학생"/>
-        <com.google.android.material.radiobutton.MaterialRadioButton
-            android:id="@+id/teacherButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/main_color"
-            android:text="선생님"/>
+            android:layout_marginBottom="10dp"
+            android:padding="8dp"
+            app:textSize="18sp"
+            app:strokeRadius="5dp"
+            app:strokeWidth="1dp"
+            app:selectedTab="0"
+            app:selectedColor="@color/main_color"
+            app:switchTabs="@array/kind"/>
     </RadioGroup>
 
     <androidx.constraintlayout.widget.Guideline
