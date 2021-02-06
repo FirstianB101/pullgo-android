@@ -21,13 +21,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="wrap_content"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -238,12 +238,12 @@
                 android:id="@+id/schoolGradeSpinner"
                 android:layout_width="@dimen/sign_up_edit_text_width"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#E3F2FD"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="#E3F2FD"
                 android:padding="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline5"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/editLayoutSchoolName"/>
+                app:layout_constraintTop_toBottomOf="@+id/editLayoutSchoolName" />
 
             <Button
                 android:id="@+id/buttonIsOverlap"
@@ -289,10 +289,10 @@
                 android:text="회원 가입"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/schoolGradeSpinner"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/schoolGradeSpinner" />
 
             <ImageView
                 android:id="@+id/passwordCheck"
