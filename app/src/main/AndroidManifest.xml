@@ -9,8 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".StudentSignUpActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+        <activity
+            android:name=".StudentMainActivity"
+            android:label="@string/title_activity_student_main"
+            android:theme="@style/Theme.Pullgo.NoActionBar"></activity>
+        <activity
+            android:name=".StudentSignUpActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".TeacherSignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SplashActivity">
@@ -20,7 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
