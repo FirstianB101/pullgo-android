@@ -3,6 +3,7 @@ package com.harry.pullgo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.harry.pullgo.ui.ChangePersonInfo.ChangePersonInfoFragment;
@@ -55,6 +56,10 @@ public class StudentMainActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction().replace(R.id.studentMainFragment,studentHomeFragment).commit();
         getSupportActionBar().setTitle("Home");
+    }
+
+    public void logoutButtonClicked(View v){
+        finish();
     }
 
     @Override

@@ -43,5 +43,14 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer" >
+        <TextView
+            android:text="로그아웃"
+            android:onClick="logoutButtonClicked"
+            android:layout_width="@dimen/logout_button_width"
+            android:layout_height="@dimen/logout_button_height"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:layout_gravity="right|bottom"/>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
