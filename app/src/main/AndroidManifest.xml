@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
+<<<<<<< HEAD
         <activity
             android:name=".StudentMainActivity"
             android:label="@string/title_activity_student_main"
             android:theme="@style/Theme.Pullgo.NoActionBar"></activity>
+=======
+        <activity android:name=".FindAccountActivity"></activity>
+>>>>>>> 93f9f92da17c35dfe538d0d4a76ffca58d364132
         <activity
             android:name=".StudentSignUpActivity"
             android:windowSoftInputMode="adjustPan" />

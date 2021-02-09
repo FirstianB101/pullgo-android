@@ -51,11 +51,11 @@ public class LoginFragment extends Fragment {
         });
 
         Button findAccountButton=rootView.findViewById(R.id.buttonFindAccount);
-        findAccountButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                //찾기 버튼 눌렸을 때 동작
-            }
+        findAccountButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), FindAccountActivity.class);
+            intent.putExtra("isStudent", isStudent);
+
+            startActivity(intent);
         });
 
         Button loginButton=rootView.findViewById(R.id.buttonLogin);
