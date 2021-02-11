@@ -11,4 +11,5 @@
     <color name="light_gray">#8F8989</color>
     <color name="material_700_red">#D32F2F</color>
     <color name="material_700_green">#388E3C</color>
+    <color name="main_color_dark">#353C60</color>
 </resources>

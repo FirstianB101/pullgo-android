@@ -62,7 +62,9 @@ public class LoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(getContext(),"로그인 버튼 눌림",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(getContext(),StudentMainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
             }
         });
         return rootView;
