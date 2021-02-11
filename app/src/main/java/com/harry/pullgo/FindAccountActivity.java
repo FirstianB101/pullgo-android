@@ -19,6 +19,6 @@ public class FindAccountActivity extends AppCompatActivity {
 
         isStudent = (boolean) intent.getBooleanExtra("isStudent", true);
 
-        Toast.makeText(this, isStudent ? "student" : "teacher", Toast.LENGTH_SHORT).show();
+        if (isStudent)
     }
 }
