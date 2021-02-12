@@ -22,4 +22,12 @@
     <style name="Theme.Pullgo.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Pullgo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextInputLayoutBasic" >
+
+        <item name="boxStrokeColor">@color/main_color</item>
+        <item name="errorTextColor">@color/material_700_red</item>
+        <item name="hintAnimationEnabled">true</item>
+        <item name="hintEnabled">true</item>
+    </style>
 </resources>
