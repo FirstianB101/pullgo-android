@@ -47,13 +47,17 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         attachViewById();
         Intent intent = getIntent();
 
-        boolean isStudent = intent.getBooleanExtra("isStudent", true);
+        //boolean isStudent = intent.getBooleanExtra("isStudent", true);
 
         findWhich.setOnSwitchListener(this);
         usernameFullname.addTextChangedListener(usernameFullnameWatcher);
         usernamePhone.addTextChangedListener(usernamePhoneWatcher);
+        passwordUsername.addTextChangedListener(passwordUsernameWatcher);
+        passwordPhone.addTextChangedListener(passwordPhoneWatcher);
+        buttonUsername.setOnClickListener(findUsernameListener);
+        buttonPassword.setOnClickListener(findPasswordListener);
 
-        if (isStudent)
+        setButtonValidate();
     }
 
     @Override
@@ -70,6 +74,31 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
 
     private void setButtonValidate() {
         //형식이 올바르면 버튼 활성화
+        int position = findWhich.getSelectedTab();
+
+        if (position == 0) {
+            if (inputFullname.isEmpty()) {
+                setButtonStatus(buttonUsername, false, "이름을 입력해주세요");
+            } else if (inputPhone.isEmpty()) {
+                setButtonStatus(buttonUsername, false, "전화번호를 입력해주세요");
+            } else {
+                setButtonStatus(buttonUsername, true, "아이디 찾기");
+            }
+        } else if (position == 1) {
+            if (inputUsername.isEmpty()) {
+                setButtonStatus(buttonPassword, false, "아이디를 입력해주세요");
+            } else if (inputPhone.isEmpty()) {
+                setButtonStatus(buttonPassword, false, "전화번호를 입력해주세요");
+            } else {
+                setButtonStatus(buttonPassword, true, "비밀번호 찾기");
+            }
+        }
+    }
+
+    private void setButtonStatus(Button button, boolean enabled, String message) {
+        button.setBackgroundColor(getResources().getColor(enabled ? R.color.main_color : R.color.gray));
+        button.setText(message);
+        button.setClickable(enabled);
     }
 
     private final TextWatcher usernameFullnameWatcher = new TextWatcher() {
@@ -100,5 +129,45 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
 
         @Override
         public void afterTextChanged(Editable s) { }
+    };
+
+    private final TextWatcher passwordUsernameWatcher = new TextWatcher() {
+        //비밀번호 찾기 - 아이디 입력
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            inputUsername = s.toString();
+            setButtonValidate();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
+    private final TextWatcher passwordPhoneWatcher = new TextWatcher() {
+        //비밀번호 찾기 - 전화번호 입력
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            inputPhone = s.toString();
+            setButtonValidate();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) { }
+    };
+
+    private final View.OnClickListener findUsernameListener = v -> {
+        //아이디 찾기 버튼 클릭
+        Toast.makeText(this, "아이디 " + inputPhone, Toast.LENGTH_SHORT).show();
+    };
+
+    private final View.OnClickListener findPasswordListener = v -> {
+        //비밀번호 찾기 버튼 클릭
+        Toast.makeText(this, "비밀번호 " + inputPhone, Toast.LENGTH_SHORT).show();
     };
 }

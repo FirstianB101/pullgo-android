@@ -22,7 +22,7 @@
     <string name="user_name">아이디</string>
     <string name="phone">전화번호</string>
     <string name="input_name_hint">이름을 입력해주세요</string>
-    <string name="input_phone_hint">전화번호를 입력해주세요</string>
+    <string name="input_phone_hint">전화번호를 입력해주세요 (- 제외)</string>
     <string name="input_username_hint">아이디를 입력해주세요</string>
     <string name="find_username">아이디 찾기</string>
     <string name="find_password">비밀번호 찾기</string>
