@@ -31,6 +31,7 @@ public class StudentMainActivity extends AppCompatActivity
 
     HomeFragment studentHomeFragment;
     ChangePersonInfoFragment studentChangeInfoFragment;
+    CalendarFragment calendarFragment;
 
     Toolbar toolbar;
 
@@ -53,6 +54,7 @@ public class StudentMainActivity extends AppCompatActivity
 
         studentHomeFragment=new HomeFragment();
         studentChangeInfoFragment=new ChangePersonInfoFragment();
+        calendarFragment=new CalendarFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.studentMainFragment,studentHomeFragment).commit();
         getSupportActionBar().setTitle("Home");
@@ -87,6 +89,9 @@ public class StudentMainActivity extends AppCompatActivity
             case R.id.nav_student_change_info:
                 onFragmentSelected(1,null);
                 break;
+            case R.id.nav_calendar:
+                onFragmentSelected(2,null);
+                break;
         }
         drawerLayout.closeDrawer(studentNavigation);
 
@@ -103,6 +108,9 @@ public class StudentMainActivity extends AppCompatActivity
         }else if(position==1){
             curFragment=studentChangeInfoFragment;
             toolbar.setTitle("회원정보 변경");
+        }else if(position==2){
+            curFragment=calendarFragment;
+            toolbar.setTitle("일정");
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.studentMainFragment,curFragment).commit();
     }

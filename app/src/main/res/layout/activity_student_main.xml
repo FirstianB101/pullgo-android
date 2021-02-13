@@ -44,6 +44,7 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" >
+
         <TextView
             android:text="로그아웃"
             android:onClick="logoutButtonClicked"
