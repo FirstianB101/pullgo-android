@@ -17,6 +17,8 @@ import lib.kingja.switchbutton.SwitchMultiButton;
 
 public class FindAccountActivity extends AppCompatActivity implements SwitchMultiButton.OnSwitchListener {
 
+    private final int position_username = 0, position_password = 1;
+
     LinearLayout findUserName, findPassword;
     SwitchMultiButton findWhich;
     TextInputEditText usernameFullname, usernamePhone;
@@ -57,7 +59,8 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         buttonUsername.setOnClickListener(findUsernameListener);
         buttonPassword.setOnClickListener(findPasswordListener);
 
-        setButtonValidate();
+        setButtonValidate(position_username);
+        setButtonValidate(position_password);
     }
 
     @Override
@@ -72,9 +75,8 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         }
     }
 
-    private void setButtonValidate() {
+    private void setButtonValidate(int position) {
         //형식이 올바르면 버튼 활성화
-        int position = findWhich.getSelectedTab();
 
         if (position == 0) {
             if (inputFullname.isEmpty()) {
@@ -109,7 +111,7 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             inputFullname = s.toString();
-            setButtonValidate();
+            setButtonValidate(position_username);
         }
 
         @Override
@@ -124,7 +126,7 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             inputPhone = s.toString();
-            setButtonValidate();
+            setButtonValidate(position_username);
         }
 
         @Override
@@ -139,7 +141,7 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             inputUsername = s.toString();
-            setButtonValidate();
+            setButtonValidate(position_password);
         }
 
         @Override
@@ -154,7 +156,7 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             inputPhone = s.toString();
-            setButtonValidate();
+            setButtonValidate(position_password);
         }
 
         @Override
