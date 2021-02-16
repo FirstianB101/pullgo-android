@@ -1,75 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded">
+    android:background="@drawable/rounded"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
-        android:id="@+id/msgLo"
+        android:id="@+id/LayoutDayInfo"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:clickable="true"
+        android:layout_margin="10dp"
         android:background="?attr/selectableItemBackground">
 
         <TextView
-            android:text="Message"
+            android:id="@+id/textViewShowDate"
             android:textColor="#838383"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textViewTestNum"
+            android:text="[시험 개수]"
+            android:textColor="#838383"
+            android:textSize="20sp"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/emailLo"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:background="?attr/selectableItemBackground">
-
-        <TextView
-            android:text="Email"
-            android:textColor="#838383"
-            android:textSize="16sp"
+        android:layout_height="@dimen/bottom_sheet_dialog_height">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/cloudLo"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:background="?attr/selectableItemBackground">
+            <LinearLayout
+                android:id="@+id/emailLo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground">
 
-        <TextView
-            android:text="Cloud"
-            android:textColor="#838383"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/bluetoothLo"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:clickable="true"
-        android:background="?attr/selectableItemBackground">
-
-        <TextView
-            android:text="Bluetooth"
-            android:textColor="#838383"
-            android:textSize="16sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+                <TextView
+                    android:text="Email"
+                    android:textColor="#838383"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -43,8 +43,13 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
 
     @Override
     public void onDateSelected(@NonNull @NotNull MaterialCalendarView widget, @NonNull @NotNull CalendarDay date, boolean selected) {
+        String selectedDate=String.format("%d년 %d월 %d일",date.getYear(),date.getMonth()+1,date.getDay());
+
         CalendarBottomSheetFragment bottomSheet=CalendarBottomSheetFragment.getInstance();
-        bottomSheet.show(getChildFragmentManager(),"bottomsheet");
+        Bundle bundle=new Bundle();
+        bundle.putString("date",selectedDate);
+        bottomSheet.setArguments(bundle);
+        bottomSheet.show(getChildFragmentManager(),"bottomSheetTestList");
     }
 
     class TodayDecorator implements DayViewDecorator {
