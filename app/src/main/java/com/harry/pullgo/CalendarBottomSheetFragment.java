@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,6 +44,7 @@ public class CalendarBottomSheetFragment extends BottomSheetDialogFragment
             date= dateBundle.getString("date");
             dateTextView.setText(date);
         }
+        emailLo.setOnClickListener(this);
         return view;
     }
 
@@ -50,8 +52,10 @@ public class CalendarBottomSheetFragment extends BottomSheetDialogFragment
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.emailLo:
-                Toast.makeText(getContext(),"Menu2",Toast.LENGTH_SHORT).show();
-                break;
+                new LessonInfoDialogFragment().show(
+                        getChildFragmentManager(),LessonInfoDialogFragment.TAG_LESSON_INFO_DIALOG
+                );
+                return;
         }
         dismiss();
     }
