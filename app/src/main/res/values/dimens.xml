@@ -17,4 +17,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="logout_button_width">60dp</dimen>
     <dimen name="logout_button_height">20dp</dimen>
+    <dimen name="bottom_sheet_dialog_radius">20dp</dimen>
 </resources>
