@@ -6,20 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
-public class CalendarBottomSheetFragment extends BottomSheetDialogFragment
+public class FragmentCalendarBottomSheet extends BottomSheetDialogFragment
     implements View.OnClickListener {
-    public static CalendarBottomSheetFragment getInstance(){return new CalendarBottomSheetFragment();}
+    public static FragmentCalendarBottomSheet getInstance(){return new FragmentCalendarBottomSheet();}
 
     private LinearLayout emailLo;
     private LinearLayout dayInfo;
@@ -33,7 +30,7 @@ public class CalendarBottomSheetFragment extends BottomSheetDialogFragment
         View view=inflater.inflate(R.layout.fragment_calendar_bottom_sheet,container,false);
 
         emailLo=view.findViewById(R.id.emailLo);
-        dayInfo=view.findViewById(R.id.LayoutDayInfo);
+        dayInfo=view.findViewById(R.id.layoutDayInfo);
         dateTextView=view.findViewById(R.id.textViewShowDate);
         testNumTextView=view.findViewById(R.id.textViewTestNum);
 
@@ -52,8 +49,8 @@ public class CalendarBottomSheetFragment extends BottomSheetDialogFragment
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.emailLo:
-                new LessonInfoDialogFragment().show(
-                        getChildFragmentManager(),LessonInfoDialogFragment.TAG_LESSON_INFO_DIALOG
+                new FragmentLessonInfoDialog().show(
+                        getChildFragmentManager(), FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG
                 );
                 return;
         }

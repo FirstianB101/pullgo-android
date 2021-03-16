@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:gravity="center"
+        android:padding="60dp"
+        android:text="풀고에 오신 것을 환영합니다!"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSignUpAsStudent"
+        android:layout_width="@dimen/login_editText_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button_main_color"
+        android:text="학생으로 회원가입"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/buttonSignUpAsTeacher"
+        android:layout_width="@dimen/login_editText_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_button_main_color"
+        android:text="선생님으로 회원가입"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSignUpAsStudent" />
+
+    <Button
+        android:id="@+id/buttonKakaoLogin"
+        android:layout_width="@dimen/login_editText_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/rounded"
+        android:text="카카오 로그인"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:backgroundTint="#fef01b"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSignUpAsTeacher" />
+
+    <Button
+        android:id="@+id/buttonFacebookLogin"
+        android:layout_width="@dimen/login_editText_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded"
+        android:text="페이스북으로 로그인"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:backgroundTint="#3B5998"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonKakaoLogin" />
+</androidx.constraintlayout.widget.ConstraintLayout>

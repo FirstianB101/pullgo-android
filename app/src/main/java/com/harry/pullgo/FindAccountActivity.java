@@ -30,15 +30,15 @@ public class FindAccountActivity extends AppCompatActivity implements SwitchMult
     private String inputUsername = "";
 
     private void attachViewById() {
-        findUserName = findViewById(R.id.layout_findAccount_findUsername);
-        findPassword = findViewById(R.id.layout_findAccount_findPassword);
-        findWhich = findViewById(R.id.switch_find_id_password);
-        usernameFullname = findViewById(R.id.textInputEditText_findUsername_fullName);
-        usernamePhone = findViewById(R.id.textInputEditText_findUsername_phone);
-        passwordUsername = findViewById(R.id.textInputEditText_findPassword_userName);
-        passwordPhone = findViewById(R.id.textInputEditText_findPassword_phone);
-        buttonUsername = findViewById(R.id.button_find_username);
-        buttonPassword = findViewById(R.id.button_find_password);
+        findUserName = findViewById(R.id.layoutFindAccountFindUsername);
+        findPassword = findViewById(R.id.layoutFindAccountFindPassword);
+        findWhich = findViewById(R.id.switchFindIdPassword);
+        usernameFullname = findViewById(R.id.textInputEditTextFindUsernameFullName);
+        usernamePhone = findViewById(R.id.textInputEditTextFindUsernamePhone);
+        passwordUsername = findViewById(R.id.textInputEditTextFindPasswordUserName);
+        passwordPhone = findViewById(R.id.textInputEditTextFindPasswordPhone);
+        buttonUsername = findViewById(R.id.buttonFindUsername);
+        buttonPassword = findViewById(R.id.buttonFindPassword);
     }
 
     @Override

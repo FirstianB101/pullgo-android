@@ -1,30 +1,25 @@
 package com.harry.pullgo;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
-public class LessonInfoDialogFragment extends DialogFragment {
+public class FragmentLessonInfoDialog extends DialogFragment {
 
     public static final String TAG_LESSON_INFO_DIALOG="lesson_info_dialog";
-    public static LessonInfoDialogFragment getInstance(){
-        return new LessonInfoDialogFragment();
+    public static FragmentLessonInfoDialog getInstance(){
+        return new FragmentLessonInfoDialog();
     }
 
     private TextView academyName;
@@ -48,7 +43,6 @@ public class LessonInfoDialogFragment extends DialogFragment {
 
         setLessonInformation();
 
-        academyName.setText("텍스트 변경 테스트");
         builder .setView(view)
                 .setPositiveButton("확인", (dialog, which) -> {
                    dismiss();

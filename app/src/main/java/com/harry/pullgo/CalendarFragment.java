@@ -11,9 +11,7 @@ import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -45,7 +43,7 @@ public class CalendarFragment extends Fragment implements OnDateSelectedListener
     public void onDateSelected(@NonNull @NotNull MaterialCalendarView widget, @NonNull @NotNull CalendarDay date, boolean selected) {
         String selectedDate=String.format("%d년 %d월 %d일",date.getYear(),date.getMonth()+1,date.getDay());
 
-        CalendarBottomSheetFragment bottomSheet=CalendarBottomSheetFragment.getInstance();
+        FragmentCalendarBottomSheet bottomSheet= FragmentCalendarBottomSheet.getInstance();
         Bundle bundle=new Bundle();
         bundle.putString("date",selectedDate);
         bottomSheet.setArguments(bundle);

@@ -10,15 +10,9 @@ import com.harry.pullgo.ui.ChangePersonInfo.ChangePersonInfoFragment;
 import com.harry.pullgo.ui.home.HomeFragment;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,7 +37,7 @@ public class StudentMainActivity extends AppCompatActivity
         toolbar = findViewById(R.id.studentToolbar);
         setSupportActionBar(toolbar);
 
-        drawerLayout=findViewById(R.id.drawer_layout);
+        drawerLayout=findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(
                 this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);

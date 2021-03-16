@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewSignUpPersonInfo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:padding="60dp"
+        android:text="개인정보 입력"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:text="원활한 이용을 위해 정확한 정보를 입력해주세요."
+        android:textColor="@color/info_text_color"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewSignUpPersonInfo" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpNameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="340dp"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSignUpPersonInfo">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="이름을 입력해 주세요"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpPhoneLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="254dp"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        android:layout_marginTop="15dp"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/signUpNameLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="전화번호를 입력해 주세요 (-제외)"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonSignUpPhoneVerifyRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        android:layout_marginTop="15dp"
+        android:text="인증 요청"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/signUpPhoneLayout"
+        app:layout_constraintTop_toBottomOf="@+id/signUpNameLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpPhoneVerifyLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="200dp"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        android:layout_marginTop="15dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPhoneLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpPhoneVerifyNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="인증번호를 입력해주세요"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/buttonSignUpPhoneVerifyCheck"
+        android:layout_width="140dp"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        android:layout_marginTop="15dp"
+        android:text="인증번호 확인"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/signUpPhoneVerifyLayout"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPhoneLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpParentPhoneLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="340dp"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        android:layout_marginTop="15dp"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/signUpPhoneVerifyLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpParentPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="부모님 전화번호를 입력해 주세요 (-제외)"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/signUpSchoolNameLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="340dp"
+        android:layout_height="@dimen/edittext_sign_up_person_info_height"
+        android:layout_marginTop="15dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/signUpParentPhoneLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signUpSchoolName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="학교를 입력해주세요"
+            android:inputType="textPersonName"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <lib.kingja.switchbutton.SwitchMultiButton
+        android:id="@+id/signUpGradeSwitchButton"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/signUpSchoolNameLayout"
+        app:selectedColor="@color/main_color"
+        app:selectedTab="0"
+        app:strokeRadius="5dp"
+        app:strokeWidth="1dp"
+        app:switchTabs="@array/grade"
+        app:textSize="18sp" />
+
+    <Button
+        android:id="@+id/buttonSignUpSuccess"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button_main_color"
+        android:text="회원가입 완료"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintTop_toBottomOf="@+id/signUpGradeSwitchButton" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="35dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

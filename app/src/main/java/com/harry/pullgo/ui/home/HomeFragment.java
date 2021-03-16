@@ -17,7 +17,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_student_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_student_home);
+        final TextView textView = root.findViewById(R.id.textStudentHome);
         textView.setText("홈 프래그먼트");
         return root;
     }

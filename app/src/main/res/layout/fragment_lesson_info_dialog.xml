@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_margin="24dp"
     android:padding="24dp"
-    tools:context=".LessonInfoDialogFragment">
+    tools:context=".FragmentLessonInfoDialog">
 
     <TextView
         android:id="@+id/textViewAcademyName"

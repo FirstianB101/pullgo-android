@@ -17,7 +17,7 @@ public class ChangePersonInfoFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_student_change_info, container, false);
-        final TextView textView = root.findViewById(R.id.text_ChangeInfo);
+        final TextView textView = root.findViewById(R.id.textChangeInfo);
 
         textView.setText("회원정보 수정 페이지");
 

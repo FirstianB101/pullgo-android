@@ -6,35 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".FindAccountActivity">
 
-    <TextView
-        android:id="@+id/textViewFindAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="find account"
-        android:textColor="@color/main_color"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <lib.kingja.switchbutton.SwitchMultiButton
-        android:id="@+id/switch_find_id_password"
+        android:id="@+id/switchFindIdPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
-        android:layout_marginTop="170dp"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewFindAccount"
         app:selectedColor="@color/main_color"
         app:switchTabs="@array/id_password_array"
-        app:textSize="20sp" />
+        app:textSize="20sp"
+        tools:layout_editor_absoluteY="189dp" />
 
     <FrameLayout
-        android:id="@+id/frameLayout_findAccount"
+        android:id="@+id/frameLayoutFindAccount"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -46,10 +35,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch_find_id_password">
+        app:layout_constraintTop_toBottomOf="@+id/switchFindIdPassword">
 
         <LinearLayout
-            android:id="@+id/layout_findAccount_findUsername"
+            android:id="@+id/layoutFindAccountFindUsername"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -57,15 +46,15 @@
             android:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_findUsername_fullName"
-                style="@style/TextInputLayoutBasic"
+                android:id="@+id/textInputLayoutFindUsernameFullName"
+                style="@style/textInputLayoutBasic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="@string/input_name_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditText_findUsername_fullName"
+                    android:id="@+id/textInputEditTextFindUsernameFullName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal" />
@@ -73,15 +62,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_findUsername_phone"
-                style="@style/TextInputLayoutBasic"
+                android:id="@+id/textInputLayoutFindUsernamePhone"
+                style="@style/textInputLayoutBasic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="@string/input_phone_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditText_findUsername_phone"
+                    android:id="@+id/textInputEditTextFindUsernamePhone"
                     android:inputType="phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,7 +79,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button_find_username"
+                android:id="@+id/buttonFindUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
@@ -100,7 +89,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/layout_findAccount_findPassword"
+            android:id="@+id/layoutFindAccountFindPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -108,15 +97,15 @@
             android:visibility="invisible">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_findPassword_userName"
-                style="@style/TextInputLayoutBasic"
+                android:id="@+id/textInputLayoutFindPasswordUserName"
+                style="@style/textInputLayoutBasic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="@string/input_username_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditText_findPassword_userName"
+                    android:id="@+id/textInputEditTextFindPasswordUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal" />
@@ -124,15 +113,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout_findPassword_phone"
-                style="@style/TextInputLayoutBasic"
+                android:id="@+id/textInputLayoutFindPasswordPhone"
+                style="@style/textInputLayoutBasic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:hint="@string/input_phone_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/textInputEditText_findPassword_phone"
+                    android:id="@+id/textInputEditTextFindPasswordPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal" />
@@ -140,7 +129,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/button_find_password"
+                android:id="@+id/buttonFindPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
