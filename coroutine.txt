@@ -1,0 +1,32 @@
+suspend: 현재 코루틴 실행 일시중지 후 로컬 변수 모두 저장
+resume: 정지된 위치부터 정지되어 코루틴 실행
+
+suspend함수는 다른 suspend함수에서 호출하거나 빌더(launch 등)을 사용해 새 코루틴을
+시작하는 방법으로만 호출가능
+
+디스패처: 코루틴 재개를 담당.
+Dispatchers.Main: 메인스레드에서 코루틴 실행(UI작업 가능),
+		 빠른 작업(suspend함수 호출, Livedata update)
+Dispatchers.IO: 기본 스레드 외부에서 디스크/네트워크 작업
+Dispatchers.Default: CPU많이 사용하는 작업 기본 스레드 외부에서. ex)정렬, JSON파싱
+
+withContext()함수: 코드 줄 스레드 풀 제어. suspend 함수 내에서 사용
+
+코루틴 시작
+launch: 새 코루틴 시작하고 호출자에게 결과 반환 X, 실행 후 삭제되는 작업
+async: 새 코루틴 시작하고 await라는 정지 함수로 결과 반환
+	다른 코루틴 내부에서 사용
+-보통 일반 함수는 await호출 불가해 일반 함수에서 새 코루틴 launch
+
+CoroutineScope: launch 또는 async를 사용해 만든 코루틴을 추적
+		실행 중인 코루틴 scope.cancel()로 취소가능
+
+Job: 코루틴의 핸들. launch, async로 만드는 코루틴 식별하고 수명 주기 관리하는 Job반환
+
+CoroutineContext: 코루틴 동작 정의(다음 요소 사용)
+1.Job: 코루틴 수명 주기 제어
+2.CoroutineDispatcher: 적절한 스레드에 작업 전달
+3.CoroutineName: 디버깅 유용한 코루틴 이름
+4.CoroutineExceptionHandler: 포착되지 않은 예외 처리
+
+runBlocking: 메인 스레드 블록

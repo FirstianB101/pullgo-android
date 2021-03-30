@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log
 import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
@@ -24,6 +25,7 @@ class LoginActivity: AppCompatActivity(){
 
         binding.loginSwitchButton.setOnSwitchListener{ position, _ ->
             isStudent = (position==0)
+            Log.d("login","onSwitch, isStudent:$isStudent")
         }
 
         binding.buttonSignUp.setOnClickListener {

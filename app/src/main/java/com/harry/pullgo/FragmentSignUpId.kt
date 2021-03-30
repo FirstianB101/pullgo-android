@@ -7,18 +7,26 @@ import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
+import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.regex.Pattern
 import kotlin.concurrent.fixedRateTimer
+import kotlin.coroutines.CoroutineContext
 
 class FragmentSignUpId(): Fragment() {
     private val binding by lazy{FragmentSignupIdBinding.inflate(layoutInflater)}
@@ -28,6 +36,7 @@ class FragmentSignUpId(): Fragment() {
     private var idFormatSuccess=false
 
     var callbackListener: SignUpFragmentSwitch?=null
+    var teacherList: List<Teacher>? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,7 +53,7 @@ class FragmentSignUpId(): Fragment() {
         binding.buttonSignUpIdOverlap.setOnClickListener{
             if(!idFormatSuccess)
                 Toast.makeText(context,"사용할 수 없는 아이디입니다.",Toast.LENGTH_SHORT).show()
-            else if(checkIdUnique(binding.signUpId.toString())){
+            else if(checkIdUnique(binding.signUpId.text.toString())){
                 if(binding.buttonSignUpIdNext.visibility!=View.VISIBLE) {
                     binding.buttonSignUpIdNext.visibility = View.VISIBLE
                     val anim = AnimationUtils.loadAnimation(context, R.anim.alpha)
@@ -63,8 +72,22 @@ class FragmentSignUpId(): Fragment() {
     }
 
     fun checkIdUnique(id: String):Boolean{
-        //아이디 중복체크
-        return true
+        if(teacherOverlap(id)){
+            Toast.makeText(context,"중복된 아이디입니다",Toast.LENGTH_SHORT).show()
+            return false
+        }else{
+            return true
+        }
+    }
+
+    fun teacherOverlap(userId:String):Boolean{
+        var isOverlap=false
+        //val retrofit=RetrofitClient.getInstance()
+        //val service=retrofit.create(RetrofitService::class.java)
+
+        //val call:Call<List<Teacher>> = service.getTeachersList()
+
+        return isOverlap
     }
 
     fun checkId(inputId: String):Boolean{

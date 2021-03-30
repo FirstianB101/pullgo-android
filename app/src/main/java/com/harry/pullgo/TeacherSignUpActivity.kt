@@ -19,9 +19,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
+import com.lakue.lakuepopupactivity.PopupActivity
+import com.lakue.lakuepopupactivity.PopupGravity
+import com.lakue.lakuepopupactivity.PopupType
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 import java.util.regex.Pattern;
 
@@ -32,7 +42,7 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch{
     lateinit var signUpInfo:FragmentSignUpTeacherInfo
 
     var curPosition:Int=0
-    val signUpBundle = Bundle()
+    private val signUpBundle = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,14 +79,76 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch{
                 curPosition=2
             }
             3->{//정보 입력 프래그먼트에서 마무리
-                Log.d("signupTeacher","id:${signUpBundle.getString("signUpId")}")
-                Log.d("signupTeacher","pw:${signUpBundle.getString("signUpPw")}")
-                val intent = Intent(this,LoginActivity::class.java)
+                val id=signUpBundle.getString("signUpId")
+                val pw=signUpBundle.getString("signUpPw")
+                val fullName=bundle?.getString("signUpTeacherFullName")
+                val phone=bundle?.getString("signUpTeacherPhone")
+
+                val teacher=Teacher(Account(id,fullName,phone))
+                createTeacher(teacher)
+
+                makePopup()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode== RESULT_OK){
+            if(requestCode==1){
+                val intent=Intent(applicationContext,LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
         }
     }
 
+    private fun createTeacher(teacher:Teacher){
+        val retrofit= RetrofitClient.getInstance()
+        val service=retrofit.create(RetrofitService::class.java)
+
+        service.createTeacher(teacher).enqueue(object: Callback<Teacher> {
+            override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
+                if(response.isSuccessful){
+
+                }
+            }
+
+            override fun onFailure(call: Call<Teacher>, t: Throwable) {
+            }
+        })
+    }
+    fun getTeachers():List<Teacher>?{
+        val retrofit=RetrofitClient.getInstance()
+        val service=retrofit.create(RetrofitService::class.java)
+        var teacherList: List<Teacher>? = null
+        service.getTeachersList().enqueue(object: Callback<List<Teacher>>{
+            override fun onResponse(call: Call<List<Teacher>>, response: Response<List<Teacher>>) {
+                if(response.isSuccessful){
+                    teacherList=response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Teacher>>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+        if(teacherList!=null){
+            for(i in teacherList!!){
+                Log.d("teacher","teacher: $i")
+            }
+        }
+        return teacherList
+    }
+
+    private fun makePopup(){
+        val intent= Intent(baseContext, PopupActivity::class.java)
+        intent.putExtra("type", PopupType.NORMAL)
+        intent.putExtra("gravity", PopupGravity.CENTER)
+        intent.putExtra("title", "회원가입 완료!")
+        intent.putExtra("content", "가입하신 정보로 로그인해주세요")
+        intent.putExtra("buttonCenter", "로그인 화면으로")
+        startActivityForResult(intent,1)
+    }
 }
 

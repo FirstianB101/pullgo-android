@@ -1,25 +1,21 @@
 package com.harry.pullgo
-class Student {
-  var account:Account=Account("","","","")
-  var parentPhone:String=""
-  var schoolName:String=""
-  var schoolYear:Int = 0
-  //private Set<Academy> academies;
-  //private Set<Classroom> classrooms;
-  //private Set<Academy> appliedAcademies;
-  //private Set<Classroom> appliedClassrooms;
-  //private Set<AttenderState> attendingStates;
 
-  /*
- public void applyAcademy(Academy academy){
- }
- public void removeAppliedAcademy(Academy academy){
- }
- public void applyClassroom(Classroom classroom){
- }
- public void removeAppliedClassroom(Classroom classroom){
- }
- public void attend(AttenderState state){
- }
- */
+import java.io.Serializable
+
+class Student : Serializable{
+    var id:Long?=null
+    var account:Account?=null
+    var parentPhone:String?=null
+    var schoolName:String?=null
+    var schoolYear:Int?=null
+
+    constructor(account:Account?, parentPhone:String?,schoolName:String? ,schoolYear:Int?){
+        this.account=account
+        this.parentPhone=parentPhone
+        this.schoolName=schoolName
+        this.schoolYear=schoolYear
+    }
+    override fun toString(): String {
+        return "account:$account, parentPhone:$parentPhone, schoolName:$schoolName, schoolYear:$schoolYear"
+    }
 }

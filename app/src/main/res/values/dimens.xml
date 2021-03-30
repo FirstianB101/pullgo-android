@@ -23,4 +23,9 @@
     <dimen name="login_editText_width">330dp</dimen>
     <dimen name="edittext_sign_up_person_info_height">50dp</dimen>
     <dimen name="dialog_title_size">10sp</dimen>
+    <dimen name="switch_button_width">250dp</dimen>
+    <dimen name="success_button_width">340dp</dimen>
+    <dimen name="success_button_text">18sp</dimen>
+    <dimen name="drawer_padding">12dp</dimen>
+    <dimen name="find_academy_search_area">300dp</dimen>
 </resources>
