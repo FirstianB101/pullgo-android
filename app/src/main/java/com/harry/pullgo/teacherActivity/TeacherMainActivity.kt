@@ -117,8 +117,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        val retrofit= RetrofitClient.getInstance()
-        val service=retrofit.create(RetrofitService::class.java)
+        val service=RetrofitClient.getApiService()
         var academy: List<Academy>? = null
 
         CoroutineScope(Dispatchers.Main).launch {

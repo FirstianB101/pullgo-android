@@ -17,4 +17,8 @@ object RetrofitClient{
         return instance!!
     }
 
+    fun getApiService(): RetrofitService{
+        return getInstance().create(RetrofitService::class.java)
+    }
+
 }

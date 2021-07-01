@@ -81,15 +81,13 @@ class FindAcademyActivity : AppCompatActivity() {
     }
 
     private suspend fun getAcademies(input:String): List<Academy>?{
-        val retrofit = RetrofitClient.getInstance()
-        val service = retrofit.create(RetrofitService::class.java)
+        val service = RetrofitClient.getApiService()
 
         return service.getSuchAcademies(input).execute().body()
     }
 
     private fun sendAcceptRequest(academyId:Long?){
-        val retrofit = RetrofitClient.getInstance()
-        val service = retrofit.create(RetrofitService::class.java)
+        val service = RetrofitClient.getApiService()
 
         if (academyId != null) {
             // 회원가입 이후 학생 ID 넣어 요청보내기

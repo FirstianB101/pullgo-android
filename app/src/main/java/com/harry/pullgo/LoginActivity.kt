@@ -1,10 +1,8 @@
 package com.harry.pullgo;
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.interfaces.RetrofitClient
 import com.harry.pullgo.interfaces.RetrofitService
@@ -14,8 +12,8 @@ import com.harry.pullgo.studentActivity.StudentMainActivity
 import com.harry.pullgo.teacherActivity.TeacherMainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
@@ -58,14 +56,13 @@ class LoginActivity: AppCompatActivity(){
     }
 
     private fun teacherLogin(id:Long,intent:Intent){
-        val retrofit= RetrofitClient.getInstance()
-        val service=retrofit.create(RetrofitService::class.java)
+        val service=RetrofitClient.getApiService()
         var teacher: Teacher? = null
 
         CoroutineScope(Dispatchers.Main).launch {
-            CoroutineScope(Dispatchers.IO).async {
-                teacher=service.getTeacher(id).execute().body()
-            }.await()
+            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                teacher = service.getTeacher(id).execute().body()
+            }
             loginedTeacher=teacher
             intent.putExtra("fullName",loginedTeacher?.account?.fullName)
             intent.putExtra("userName",loginedTeacher?.account?.username)
@@ -76,14 +73,13 @@ class LoginActivity: AppCompatActivity(){
     }
 
     private fun studentLogin(id:Long,intent:Intent){
-        val retrofit= RetrofitClient.getInstance()
-        val service=retrofit.create(RetrofitService::class.java)
+        val service=RetrofitClient.getApiService()
         var student: Student? = null
 
         CoroutineScope(Dispatchers.Main).launch {
-            CoroutineScope(Dispatchers.IO).async {
-                student=service.getStudent(id).execute().body()
-            }.await()
+            withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                student = service.getStudent(id).execute().body()
+            }
             loginedStudent=student
             intent.putExtra("fullName",loginedStudent?.account?.fullName)
             intent.putExtra("id",loginedStudent?.account?.username)

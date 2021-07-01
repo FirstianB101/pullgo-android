@@ -91,8 +91,7 @@ class StudentSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
     }
 
     private fun createStudent(student: Student){
-        val retrofit= RetrofitClient.getInstance()
-        val service=retrofit.create(RetrofitService::class.java)
+        val service=RetrofitClient.getApiService()
 
         service.createStudent(student).enqueue(object: Callback<Student> {
             override fun onResponse(call: Call<Student>, response: Response<Student>) {

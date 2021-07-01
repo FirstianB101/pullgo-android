@@ -90,8 +90,7 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
     }
 
     private fun createTeacher(teacher: Teacher){
-        val retrofit= RetrofitClient.getInstance()
-        val service=retrofit.create(RetrofitService::class.java)
+        val service=RetrofitClient.getApiService()
 
         service.createTeacher(teacher).enqueue(object: Callback<Teacher> {
             override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
@@ -105,8 +104,7 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
         })
     }
     fun getTeachers():List<Teacher>?{
-        val retrofit= RetrofitClient.getInstance()
-        val service=retrofit.create(RetrofitService::class.java)
+        val service=RetrofitClient.getApiService()
         var teacherList: List<Teacher>? = null
         service.getTeachersList().enqueue(object: Callback<List<Teacher>>{
             override fun onResponse(call: Call<List<Teacher>>, response: Response<List<Teacher>>) {
