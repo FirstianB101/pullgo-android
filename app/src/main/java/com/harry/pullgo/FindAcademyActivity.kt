@@ -3,30 +3,35 @@ package com.harry.pullgo
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.harry.pullgo.R
+import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
+import com.harry.pullgo.interfaces.OnAcademyClick
+import com.harry.pullgo.interfaces.RetrofitClient
+import com.harry.pullgo.interfaces.RetrofitService
+import com.harry.pullgo.objects.Academy
 import com.lakue.lakuepopupactivity.PopupActivity
 import com.lakue.lakuepopupactivity.PopupGravity
+import com.lakue.lakuepopupactivity.PopupResult
 import com.lakue.lakuepopupactivity.PopupType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
-    private var selectedAcademy:Academy? = null
+    private var selectedAcademy: Academy? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        binding.toolbarFindAcademy.title="학원 찾기"
         binding.findAcademyRecyclerView.layoutManager=LinearLayoutManager(this)
 
         binding.buttonFindAcademySearch.setOnClickListener {
@@ -41,9 +46,10 @@ class FindAcademyActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).async{
                 data=getAcademies(input)
             }.await()
+
             val academyAdapter=AcademySearchAdapter(data)
-            academyAdapter.itemClickListener=object: OnAcademyClick{
-                override fun onAcademyClick(view: View,academy:Academy?) {
+            academyAdapter.itemClickListener=object: OnAcademyClick {
+                override fun onAcademyClick(view: View,academy: Academy?) {
                     selectedAcademy=academy
                     makeAcceptRequestActivity(view,academy)
                 }
@@ -53,13 +59,13 @@ class FindAcademyActivity : AppCompatActivity() {
     }
 
     private fun makeAcceptRequestActivity(view: View,academy: Academy?){
-        val intent= Intent(view.context, PopupActivity::class.java)
+        val intent= Intent(applicationContext, PopupActivity::class.java)
         intent.putExtra("type", PopupType.SELECT)
         intent.putExtra("gravity", PopupGravity.LEFT)
         intent.putExtra("title", "${academy?.name} 학원 가입")
         intent.putExtra("content", academy?.address)
-        intent.putExtra("buttonLeft", "가입 요청")
-        intent.putExtra("buttonRight", "취소")
+        intent.putExtra("buttonRight", "가입 요청")
+        intent.putExtra("buttonLeft", "취소")
         startActivityForResult(intent,2)
     }
 
@@ -67,7 +73,9 @@ class FindAcademyActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode== RESULT_OK){
             if(requestCode==2){
-                sendAcceptRequest(selectedAcademy?.id)
+                val result=data?.getSerializableExtra("result") as PopupResult
+                if(result==PopupResult.RIGHT)
+                    sendAcceptRequest(selectedAcademy?.id)
             }
         }
     }
@@ -84,7 +92,17 @@ class FindAcademyActivity : AppCompatActivity() {
         val service = retrofit.create(RetrofitService::class.java)
 
         if (academyId != null) {
-            service.sendStudentApplyAcademyRequest(1,academyId).execute()
+            // 회원가입 이후 학생 ID 넣어 요청보내기
+            service.sendStudentApplyAcademyRequest(4,academyId).enqueue(object: Callback<Unit>{
+                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                    if(response.isSuccessful){
+                        Snackbar.make(binding.root,"요청 성공",Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Unit>, t: Throwable) {
+                }
+            })
         }
     }
 }

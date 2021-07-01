@@ -2,11 +2,12 @@ package com.harry.pullgo
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.harry.pullgo.databinding.ActivitySignUpBinding
+import com.harry.pullgo.studentActivity.StudentSignUpActivity
+import com.harry.pullgo.teacherActivity.TeacherSignUpActivity
 
 class SignUpActivity: AppCompatActivity(), View.OnClickListener{
     private val binding by lazy{ActivitySignUpBinding.inflate(layoutInflater)}

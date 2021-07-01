@@ -2,31 +2,19 @@ package com.harry.pullgo
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
-import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.harry.pullgo.interfaces.SignUpFragmentSwitch
+import com.harry.pullgo.objects.Teacher
 import java.util.regex.Pattern
-import kotlin.concurrent.fixedRateTimer
-import kotlin.coroutines.CoroutineContext
 
 class FragmentSignUpId(): Fragment() {
     private val binding by lazy{FragmentSignupIdBinding.inflate(layoutInflater)}

@@ -15,4 +15,16 @@
         <item>2학년</item>
         <item>3학년</item>
     </string-array>
+
+    <string-array name="exam_list_filter">
+        <item>학원 순</item>
+        <item>시작날짜 순</item>
+        <item>종료날짜 순</item>
+    </string-array>
+
+    <string-array name="exam_history_filter">
+        <item>최근 순</item>
+        <item>오래된 순</item>
+        <item>학원 순</item>
+    </string-array>
 </resources>

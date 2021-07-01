@@ -13,16 +13,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
 
     <Button
-        android:id="@+id/buttonStudentSignUpAcademy"
+        android:id="@+id/buttonTeacherSignUpAcademy"
         android:layout_width="@dimen/success_button_width"
         android:layout_height="wrap_content"
         android:text="가입하기"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"
         android:background="@drawable/rounded_button_main_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonTeacherMakeAcademy"
+        android:layout_width="@dimen/success_button_width"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button_main_color"
+        android:text="학원 생성"
+        android:textColor="@color/white"
+        android:textSize="@dimen/success_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.6"

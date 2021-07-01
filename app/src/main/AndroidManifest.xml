@@ -13,15 +13,18 @@
         android:theme="@style/Theme.Pullgo">
         <activity android:name=".FindAcademyActivity"></activity>
         <activity
-            android:name=".StudentMainActivity"
+            android:name=".studentActivity.StudentMainActivity"
             android:label="@string/title_activity_student_main"
             android:theme="@style/Theme.Pullgo.NoActionBar" />
+        <activity
+            android:name=".teacherActivity.TeacherMainActivity"/>
+
         <activity android:name=".FindAccountActivity" />
         <activity
-            android:name=".StudentSignUpActivity"
+            android:name=".studentActivity.StudentSignUpActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".TeacherSignUpActivity"
+            android:name=".teacherActivity.TeacherSignUpActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".LoginActivity"

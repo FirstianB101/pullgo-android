@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_teacher_calendar"
+        android:title="수업 일정"/>
+
+    <item
+        android:id="@+id/nav_teacher_change_info"
+        android:title="회원정보 수정" />
+
+    <item
+        android:id="@+id/nav_teacher_manage_classroom"
+        android:title="반 관리"/>
+
+    <item
+        android:id="@+id/nav_teacher_manage_exam"
+        android:title="시험 관리"/>
+
+    <item
+        android:id="@+id/nav_teacher_apply_classroom"
+        android:title="반 가입 요청"/>
+
+    <item
+        android:id="@+id/nav_teacher_manage_accept_academy"
+        android:title="학원 가입 승인"/>
+
+    <item
+        android:id="@+id/nav_teacher_manage_academy"
+        android:title="학원 관리"/>
+</menu>

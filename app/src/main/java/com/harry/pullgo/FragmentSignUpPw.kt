@@ -1,6 +1,5 @@
 package com.harry.pullgo
 
-import android.R.attr.password
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -12,6 +11,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.harry.pullgo.databinding.FragmentSignupPwBinding
+import com.harry.pullgo.interfaces.SignUpFragmentSwitch
 import java.util.regex.Pattern
 
 

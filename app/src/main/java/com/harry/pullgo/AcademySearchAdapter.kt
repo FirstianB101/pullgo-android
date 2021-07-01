@@ -1,14 +1,12 @@
 package com.harry.pullgo
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.lakue.lakuepopupactivity.PopupActivity
-import com.lakue.lakuepopupactivity.PopupGravity
-import com.lakue.lakuepopupactivity.PopupType
+import com.harry.pullgo.interfaces.OnAcademyClick
+import com.harry.pullgo.objects.Academy
 
 class AcademySearchAdapter(private val dataSet: List<Academy>?):
     RecyclerView.Adapter<AcademySearchAdapter.ViewHolder>(){
