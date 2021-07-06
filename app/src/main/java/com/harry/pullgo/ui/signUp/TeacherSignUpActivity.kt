@@ -52,10 +52,8 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
             Log.d("SignUp","[TeacherSignUpActivity]detected PW changed: ${viewModel.signUpPw.value}")
         }
         viewModel.signUpTeacher.observe(this){
-            Log.d("SignUp","[TeacherSignUpActivity]Teacher Changed: " +
-                    "Teacher id: ${viewModel.signUpTeacher.value?.account?.username}\n" +
-                    "Teacher phone: ${viewModel.signUpTeacher.value?.account?.phone}\n" +
-                    "Teacher fullName: ${viewModel.signUpTeacher.value?.account?.fullName}\n")
+            createTeacher(viewModel.signUpTeacher.value)
+            makePopup()
         }
     }
 
@@ -81,11 +79,6 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpInfoFragment).commit()
                 curPosition=2
             }
-            3->{//정보 입력 프래그먼트에서 마무리
-                createTeacher(viewModel.signUpTeacher.value)
-
-                makePopup()
-            }
         }
     }
 
@@ -108,6 +101,7 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
                 override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
                     if(response.isSuccessful){
                         val tea: Teacher? = response.body()
+                        Log.d("SignUp","response: $tea")
                     }else{
                         Toast.makeText(applicationContext,"계정을 생성하지 못했습니다", Toast.LENGTH_SHORT).show()
                     }

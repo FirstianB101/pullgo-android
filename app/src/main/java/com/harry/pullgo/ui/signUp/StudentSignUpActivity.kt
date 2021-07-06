@@ -49,13 +49,9 @@ class StudentSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
             Log.d("SignUp","[SignUpActivity]detected PW changed: ${viewModel.signUpPw.value}")
         }
         viewModel.signUpStudent.observe(this){
-            Log.d("SignUp","[SignUpActivity]Student Changed: " +
-                    "Student id: ${viewModel.signUpStudent.value?.account?.username}\n" +
-                    "Student phone: ${viewModel.signUpStudent.value?.account?.phone}\n" +
-                    "Student fullName: ${viewModel.signUpStudent.value?.account?.fullName}\n" +
-                    "Student parentPhone: ${viewModel.signUpStudent.value?.parentPhone}\n" +
-                    "Student schoolName: ${viewModel.signUpStudent.value?.schoolName}\n" +
-                    "Student schoolYear: ${viewModel.signUpStudent.value?.schoolYear}\n")
+            createStudent(viewModel.signUpStudent.value)
+
+            makePopup()
         }
     }
 
@@ -80,11 +76,6 @@ class StudentSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
             2->{//패스워드 입력 프래그먼트에서 정보 입력으로 넘겨달라 요청
                 supportFragmentManager.beginTransaction().replace(R.id.studentSignUpContainer,signUpSignUpInfoFragment).commit()
                 curPosition=2
-            }
-            3->{//정보 입력 프래그먼트에서 마무리
-                createStudent(viewModel.signUpStudent.value)
-
-                makePopup()
             }
         }
     }

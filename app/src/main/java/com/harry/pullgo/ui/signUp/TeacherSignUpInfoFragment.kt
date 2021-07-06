@@ -57,7 +57,6 @@ class TeacherSignUpInfoFragment: Fragment() {
         binding.buttonTeacherSignUpSuccess.setOnClickListener {
             if(checkEmptyExist()){
                 enrollTeacher()
-                callbackListener?.onDataPass(3)
             }
             else Snackbar.make(binding.root,"정보를 모두 입력해주세요",Snackbar.LENGTH_SHORT).show()
         }

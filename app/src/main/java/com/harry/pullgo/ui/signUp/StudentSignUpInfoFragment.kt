@@ -34,7 +34,7 @@ class StudentSignUpInfoFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         viewModel= ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
 
@@ -58,7 +58,6 @@ class StudentSignUpInfoFragment: Fragment() {
         binding.buttonStudentSignUpSuccess.setOnClickListener {
             if(checkEmptyExist()){
                 enrollStudent()
-                callbackListener?.onDataPass(3)
             }
             else Snackbar.make(binding.root,"정보를 모두 입력해주세요", Snackbar.LENGTH_SHORT).show()
         }
