@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF"
-    tools:context=".studentActivity.StudentSignUpActivity">
+    tools:context=".ui.studentActivity.StudentSignUpActivity">
 
     <FrameLayout
         android:id="@+id/studentSignUpContainer"

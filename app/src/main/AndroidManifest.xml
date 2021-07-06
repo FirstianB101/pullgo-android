@@ -11,28 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".FindAcademyActivity" />
+        <activity android:name=".ui.FindAcademyActivity" />
         <activity
-            android:name=".studentActivity.StudentMainActivity"
+            android:name=".ui.studentActivity.StudentMainActivity"
             android:label="@string/title_activity_student_main"
             android:theme="@style/Theme.Pullgo.NoActionBar" />
         <activity
-            android:name=".teacherActivity.TeacherMainActivity"/>
+            android:name=".ui.teacherActivity.TeacherMainActivity"/>
 
-        <activity android:name=".FindAccountActivity" />
+        <activity android:name=".ui.FindAccountActivity" />
         <activity
-            android:name=".studentActivity.StudentSignUpActivity"
+            android:name=".ui.studentActivity.StudentSignUpActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".teacherActivity.TeacherSignUpActivity"
+            android:name=".ui.teacherActivity.TeacherSignUpActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.LoginActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".ui.SignUpActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
