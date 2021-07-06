@@ -1,11 +1,9 @@
 package com.harry.pullgo.ui.signUp
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
-import com.harry.pullgo.data.api.SignUpFragmentSwitch
-import com.harry.pullgo.data.objects.Teacher
 import java.util.regex.Pattern
 
 class FragmentSignUpId(): Fragment() {
@@ -28,14 +24,6 @@ class FragmentSignUpId(): Fragment() {
     private var idFormatSuccess=false
 
     private lateinit var viewModel: SignUpViewModel
-
-    var callbackListener: SignUpFragmentSwitch?=null
-    var teacherList: List<Teacher>? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbackListener=context as SignUpFragmentSwitch
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,13 +40,6 @@ class FragmentSignUpId(): Fragment() {
 
     private fun initViewModel(){
         viewModel=ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
-
-        viewModel.signUpId.observe(requireActivity()){
-            Log.d("SignUp","[Fragment ID]detected ID changed: ${viewModel.signUpId.value}")
-        }
-        viewModel.signUpPw.observe(requireActivity()){
-            Log.d("SignUp","[Fragment ID]detected PW changed: ${viewModel.signUpPw.value}")
-        }
     }
 
     private fun setListeners(){
@@ -77,8 +58,6 @@ class FragmentSignUpId(): Fragment() {
         }
 
         binding.buttonSignUpIdNext.setOnClickListener {
-            callbackListener?.onDataPass(1)
-
             viewModel.signUpId.postValue(binding.signUpId.text.toString())
         }
     }

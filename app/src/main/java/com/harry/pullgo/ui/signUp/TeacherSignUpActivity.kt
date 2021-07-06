@@ -11,8 +11,6 @@ import com.harry.pullgo.*
 
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.api.SignUpFragmentSwitch
-import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.ui.login.LoginActivity
 import com.lakue.lakuepopupactivity.PopupActivity
@@ -22,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
+class TeacherSignUpActivity:AppCompatActivity(){
     private val binding by lazy{ActivitySignUpTeacherBinding.inflate(layoutInflater)}
     lateinit var signUpId: FragmentSignUpId
     lateinit var signUpPw: FragmentSignUpPw
@@ -46,10 +44,10 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
         supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
 
         viewModel.signUpId.observe(this){
-            Log.d("SignUp","[TeacherSignUpActivity]detected ID changed: ${viewModel.signUpId.value}")
+            selectFragment(1)
         }
         viewModel.signUpPw.observe(this){
-            Log.d("SignUp","[TeacherSignUpActivity]detected PW changed: ${viewModel.signUpPw.value}")
+            selectFragment(2)
         }
         viewModel.signUpTeacher.observe(this){
             createTeacher(viewModel.signUpTeacher.value)
@@ -61,11 +59,11 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
         if(curPosition==0){
             super.onBackPressed()
         }else{
-            onDataPass(curPosition-1)
+            selectFragment(curPosition-1)
         }
     }
 
-    override fun onDataPass(position: Int) {
+    fun selectFragment(position: Int) {
         when(position){
             0->{//아이디 입력 프래그먼트
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()

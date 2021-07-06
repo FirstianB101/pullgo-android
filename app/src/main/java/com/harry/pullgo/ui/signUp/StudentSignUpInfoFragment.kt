@@ -1,6 +1,5 @@
 package com.harry.pullgo.ui.signUp
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.FragmentSignupStudentInfoBinding
-import com.harry.pullgo.data.api.SignUpFragmentSwitch
 import com.harry.pullgo.data.objects.Account
 import com.harry.pullgo.data.objects.Student
 import java.util.regex.Pattern
@@ -22,13 +20,6 @@ class StudentSignUpInfoFragment: Fragment() {
     private var isCertificated=false
 
     private lateinit var viewModel: SignUpViewModel
-
-    var callbackListener: SignUpFragmentSwitch?=null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callbackListener=context as SignUpFragmentSwitch
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
