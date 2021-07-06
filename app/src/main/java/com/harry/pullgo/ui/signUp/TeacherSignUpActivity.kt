@@ -1,21 +1,20 @@
-package com.harry.pullgo.ui.teacherActivity;
+package com.harry.pullgo.ui.signUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent
 import android.os.Bundle;
 import android.util.Log
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.*
 
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.api.SignUpFragmentSwitch
-import com.harry.pullgo.data.objects.Account
+import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
-import com.harry.pullgo.ui.teacherFragment.TeacherSignUpInfoFragment
-import com.harry.pullgo.ui.FragmentSignUpId
-import com.harry.pullgo.ui.FragmentSignUpPw
-import com.harry.pullgo.ui.LoginActivity
+import com.harry.pullgo.ui.login.LoginActivity
 import com.lakue.lakuepopupactivity.PopupActivity
 import com.lakue.lakuepopupactivity.PopupGravity
 import com.lakue.lakuepopupactivity.PopupType
@@ -28,52 +27,62 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
     lateinit var signUpId: FragmentSignUpId
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpInfoFragment: TeacherSignUpInfoFragment
+    lateinit var viewModel: SignUpViewModel
 
     var curPosition:Int=0
-    private val signUpBundle = Bundle()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initialize()
+    }
+
+    private fun initialize(){
+        viewModel= ViewModelProvider(this).get(SignUpViewModel::class.java)
         signUpInfoFragment = TeacherSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId()
         supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
+
+        viewModel.signUpId.observe(this){
+            Log.d("SignUp","[TeacherSignUpActivity]detected ID changed: ${viewModel.signUpId.value}")
+        }
+        viewModel.signUpPw.observe(this){
+            Log.d("SignUp","[TeacherSignUpActivity]detected PW changed: ${viewModel.signUpPw.value}")
+        }
+        viewModel.signUpTeacher.observe(this){
+            Log.d("SignUp","[TeacherSignUpActivity]Teacher Changed: " +
+                    "Teacher id: ${viewModel.signUpTeacher.value?.account?.username}\n" +
+                    "Teacher phone: ${viewModel.signUpTeacher.value?.account?.phone}\n" +
+                    "Teacher fullName: ${viewModel.signUpTeacher.value?.account?.fullName}\n")
+        }
     }
 
     override fun onBackPressed() {
         if(curPosition==0){
             super.onBackPressed()
         }else{
-            onDataPass(curPosition-1,null)
+            onDataPass(curPosition-1)
         }
     }
 
-    override fun onDataPass(position: Int, bundle: Bundle?) {
+    override fun onDataPass(position: Int) {
         when(position){
             0->{//아이디 입력 프래그먼트
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
                 curPosition=0
             }
             1->{//아이디 입력 프래그먼트에서 패스워드 입력으로 넘겨달라 요청
-                signUpBundle.putString("signUpId",bundle?.getString("signUpId"))
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpPw).commit()
                 curPosition=1
             }
             2->{//패스워드 입력 프래그먼트에서 정보 입력으로 넘겨달라 요청
-                signUpBundle.putString("signUpPw",bundle?.getString("signUpPw"))
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpInfoFragment).commit()
                 curPosition=2
             }
             3->{//정보 입력 프래그먼트에서 마무리
-                val id=signUpBundle.getString("signUpId")
-                val pw=signUpBundle.getString("signUpPw")
-                val fullName=bundle?.getString("signUpTeacherFullName")
-                val phone=bundle?.getString("signUpTeacherPhone")
-
-                val teacher= Teacher(Account(id,fullName,phone))
-                createTeacher(teacher)
+                createTeacher(viewModel.signUpTeacher.value)
 
                 makePopup()
             }
@@ -91,40 +100,24 @@ class TeacherSignUpActivity:AppCompatActivity(), SignUpFragmentSwitch {
         }
     }
 
-    private fun createTeacher(teacher: Teacher){
+    private fun createTeacher(teacher: Teacher?){
         val service= RetrofitClient.getApiService()
 
-        service.createTeacher(teacher).enqueue(object: Callback<Teacher> {
-            override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
-                if(response.isSuccessful){
-
+        if (teacher != null) {
+            service.createTeacher(teacher).enqueue(object: Callback<Teacher> {
+                override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
+                    if(response.isSuccessful){
+                        val tea: Teacher? = response.body()
+                    }else{
+                        Toast.makeText(applicationContext,"계정을 생성하지 못했습니다", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<Teacher>, t: Throwable) {
-            }
-        })
-    }
-    fun getTeachers():List<Teacher>?{
-        val service= RetrofitClient.getApiService()
-        var teacherList: List<Teacher>? = null
-        service.getTeachersList().enqueue(object: Callback<List<Teacher>>{
-            override fun onResponse(call: Call<List<Teacher>>, response: Response<List<Teacher>>) {
-                if(response.isSuccessful){
-                    teacherList=response.body()
+                override fun onFailure(call: Call<Teacher>, t: Throwable) {
+                    Toast.makeText(applicationContext,"서버와 연결에 실패했습니다", Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            override fun onFailure(call: Call<List<Teacher>>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
-        if(teacherList!=null){
-            for(i in teacherList!!){
-                Log.d("teacher","teacher: $i")
-            }
+            })
         }
-        return teacherList
     }
 
     private fun makePopup(){

@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.signUp
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.ActivitySignUpBinding
-import com.harry.pullgo.ui.studentActivity.StudentSignUpActivity
-import com.harry.pullgo.ui.teacherActivity.TeacherSignUpActivity
 
 class SignUpActivity: AppCompatActivity(), View.OnClickListener{
     private val binding by lazy{ActivitySignUpBinding.inflate(layoutInflater)}
@@ -17,6 +15,10 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setClickListeners()
+    }
+
+    private fun setClickListeners(){
         binding.buttonSignUpAsStudent.setOnClickListener(this)
         binding.buttonSignUpAsTeacher.setOnClickListener(this)
         binding.buttonKakaoLogin.setOnClickListener(this)

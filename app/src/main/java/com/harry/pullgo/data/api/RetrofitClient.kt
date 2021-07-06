@@ -8,7 +8,7 @@ object RetrofitClient{
     private val BASE_URL="https://api.pullgo.kr/v1/"
     private var instance: Retrofit?=null
 
-    fun getInstance():Retrofit{
+    private fun getInstance():Retrofit{
         if(instance ==null){
             instance =Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build()

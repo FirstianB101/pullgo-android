@@ -1,19 +1,16 @@
-package com.harry.pullgo.ui;
+package com.harry.pullgo.ui.login;
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.databinding.ActivityLoginBinding
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.LoginRepository
-import com.harry.pullgo.ui.studentActivity.StudentMainActivity
-import com.harry.pullgo.ui.teacherActivity.TeacherMainActivity
-import kotlinx.coroutines.*
+import com.harry.pullgo.ui.findAccount.FindAccountActivity
+import com.harry.pullgo.ui.signUp.SignUpActivity
+import com.harry.pullgo.ui.main.StudentMainActivity
+import com.harry.pullgo.ui.main.TeacherMainActivity
 
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
@@ -53,7 +50,6 @@ class LoginActivity: AppCompatActivity(){
     }
 
     private fun setClickListeners(){
-
         binding.loginSwitchButton.setOnSwitchListener{ position, _ ->
             isStudent = (position==0)
         }

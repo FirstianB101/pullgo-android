@@ -1,16 +1,19 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.signUp
 
 import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
 import com.harry.pullgo.data.api.SignUpFragmentSwitch
@@ -24,6 +27,8 @@ class FragmentSignUpId(): Fragment() {
     private val ID_MIN_LENGTH=8
     private var idFormatSuccess=false
 
+    private lateinit var viewModel: SignUpViewModel
+
     var callbackListener: SignUpFragmentSwitch?=null
     var teacherList: List<Teacher>? = null
 
@@ -36,7 +41,27 @@ class FragmentSignUpId(): Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        initViewModel()
+        setListeners()
+
+        return binding.root
+    }
+
+    private fun initViewModel(){
+        viewModel=ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+
+        viewModel.signUpId.observe(requireActivity()){
+            Log.d("SignUp","[Fragment ID]detected ID changed: ${viewModel.signUpId.value}")
+        }
+        viewModel.signUpPw.observe(requireActivity()){
+            Log.d("SignUp","[Fragment ID]detected PW changed: ${viewModel.signUpPw.value}")
+        }
+    }
+
+    private fun setListeners(){
         binding.signUpId.addTextChangedListener(idWatcher)
 
         binding.buttonSignUpIdOverlap.setOnClickListener{
@@ -52,24 +77,22 @@ class FragmentSignUpId(): Fragment() {
         }
 
         binding.buttonSignUpIdNext.setOnClickListener {
-            val bundle=Bundle()
-            bundle.putString("signUpId",binding.signUpId.text.toString())
-            callbackListener?.onDataPass(1,bundle)
-        }
+            callbackListener?.onDataPass(1)
 
-        return binding.root
+            viewModel.signUpId.postValue(binding.signUpId.text.toString())
+        }
     }
 
-    fun checkIdUnique(id: String):Boolean{
-        if(teacherOverlap(id)){
+    private fun checkIdUnique(id: String):Boolean{
+        return if(teacherOverlap(id)){
             Toast.makeText(context,"중복된 아이디입니다",Toast.LENGTH_SHORT).show()
-            return false
+            false
         }else{
-            return true
+            true
         }
     }
 
-    fun teacherOverlap(userId:String):Boolean{
+    private fun teacherOverlap(userId:String):Boolean{
         var isOverlap=false
         //val retrofit=RetrofitClient.getInstance()
         //val service=retrofit.create(RetrofitService::class.java)
@@ -105,6 +128,7 @@ class FragmentSignUpId(): Fragment() {
 
         return true;
     }
+
     private val idWatcher=object: TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         }
@@ -117,7 +141,7 @@ class FragmentSignUpId(): Fragment() {
             if(checkId(s.toString())){
                 idFormatSuccess=true
                 binding.signUpIdLayout.helperText="사용 가능한 아이디입니다!"
-                binding.signUpIdLayout.setHelperTextColor(ColorStateList.valueOf(resources.getColor(
+                binding.signUpIdLayout.setHelperTextColor(ColorStateList.valueOf(ContextCompat.getColor(requireContext(),
                     R.color.material_700_green
                 )))
             }

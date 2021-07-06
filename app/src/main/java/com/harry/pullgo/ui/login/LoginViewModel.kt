@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.login
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

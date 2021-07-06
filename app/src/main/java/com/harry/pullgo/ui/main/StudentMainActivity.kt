@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.studentActivity
+package com.harry.pullgo.ui.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

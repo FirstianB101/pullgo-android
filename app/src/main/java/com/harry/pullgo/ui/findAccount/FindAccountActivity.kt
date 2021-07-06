@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.findAccount
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.customview.customView
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.ActivityFindAccountBinding
+import com.harry.pullgo.ui.login.LoginActivity
 import lib.kingja.switchbutton.SwitchMultiButton.OnSwitchListener
 import java.util.regex.Pattern
 

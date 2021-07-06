@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.studentFragment
+package com.harry.pullgo.ui.signUp
 
 import android.content.Context
 import android.os.Bundle
@@ -8,15 +8,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.FragmentSignupStudentInfoBinding
 import com.harry.pullgo.data.api.SignUpFragmentSwitch
+import com.harry.pullgo.data.objects.Account
+import com.harry.pullgo.data.objects.Student
 import java.util.regex.Pattern
 
 class StudentSignUpInfoFragment: Fragment() {
     private val binding by lazy{ FragmentSignupStudentInfoBinding.inflate(layoutInflater) }
     private val PHONE_TYPE_EXPRESSION="^[0-9]*$"
     private var isCertificated=false
+
+    private lateinit var viewModel: SignUpViewModel
 
     var callbackListener: SignUpFragmentSwitch?=null
 
@@ -30,6 +35,15 @@ class StudentSignUpInfoFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+        viewModel= ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+
+        setListeners()
+
+        return binding.root
+    }
+
+    private fun setListeners(){
         binding.signUpStudentPhone.addTextChangedListener(phoneWatcher)
         binding.signUpParentPhone.addTextChangedListener(parentPhoneWatcher)
 
@@ -43,21 +57,28 @@ class StudentSignUpInfoFragment: Fragment() {
 
         binding.buttonStudentSignUpSuccess.setOnClickListener {
             if(checkEmptyExist()){
-                val bundle=Bundle()
-                bundle.putString("signUpStudentFullName",binding.signUpStudentName.text.toString())
-                bundle.putString("signUpStudentPhone",binding.signUpStudentPhone.text.toString())
-                bundle.putString("signUpParentPhone",binding.signUpParentPhone.text.toString())
-                bundle.putString("signUpStudentSchoolName",binding.signUpSchoolName.text.toString())
-                bundle.putInt("signUpSchoolYear",binding.signUpGradeSwitchButton.selectedTab+1)
-                callbackListener?.onDataPass(3,bundle)
+                enrollStudent()
+                callbackListener?.onDataPass(3)
             }
             else Snackbar.make(binding.root,"정보를 모두 입력해주세요", Snackbar.LENGTH_SHORT).show()
         }
-
-        return binding.root
     }
 
-    fun checkEmptyExist():Boolean{
+    private fun enrollStudent(){
+        val studentName = binding.signUpStudentName.text.toString()
+        val studentPhone = binding.signUpStudentPhone.text.toString()
+        val studentParentPhone = binding.signUpParentPhone.text.toString()
+        val studentSchoolName = binding.signUpSchoolName.text.toString()
+        val studentSchoolYear = binding.signUpGradeSwitchButton.selectedTab+1
+        val userName = viewModel.signUpId.value
+
+        val account = Account(userName,studentName,studentPhone)
+        val student = Student(account,studentParentPhone,studentSchoolName,studentSchoolYear)
+
+        viewModel.signUpStudent.postValue(student)
+    }
+
+    private fun checkEmptyExist():Boolean{
         return (binding.signUpStudentName.text.toString()!="")&&
                 (binding.signUpStudentPhone.text.toString()!="")&&
                 (binding.signUpParentPhone.text.toString()!="")&&

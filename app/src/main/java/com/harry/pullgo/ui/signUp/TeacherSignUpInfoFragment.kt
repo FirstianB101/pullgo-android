@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.teacherFragment
+package com.harry.pullgo.ui.signUp
 
 import android.content.Context
 import android.os.Bundle
@@ -8,15 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.FragmentSignupTeacherInfoBinding
 import com.harry.pullgo.data.api.SignUpFragmentSwitch
+import com.harry.pullgo.data.objects.Account
+import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.objects.Teacher
 import java.util.regex.Pattern
 
 class TeacherSignUpInfoFragment: Fragment() {
     private val binding by lazy{FragmentSignupTeacherInfoBinding.inflate(layoutInflater)}
     private val PHONE_TYPE_EXPRESSION="^[0-9]*$"
     private var isCertificated=false
+
+    private lateinit var viewModel: SignUpViewModel
 
     var callbackListener: SignUpFragmentSwitch?=null
 
@@ -29,7 +35,16 @@ class TeacherSignUpInfoFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+        viewModel= ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+
+        setListeners()
+
+        return binding.root
+    }
+
+    private fun setListeners(){
         binding.signUpTeacherPhone.addTextChangedListener(phoneWatcher)
 
         binding.buttonSignUpTeacherPhoneVerifyRequest.setOnClickListener {
@@ -41,18 +56,25 @@ class TeacherSignUpInfoFragment: Fragment() {
 
         binding.buttonTeacherSignUpSuccess.setOnClickListener {
             if(checkEmptyExist()){
-                val bundle=Bundle()
-                bundle.putString("signUpTeacherFullName",binding.signUpTeacherName.text.toString())
-                bundle.putString("signUpTeacherPhone",binding.signUpTeacherPhone.text.toString())
-                callbackListener?.onDataPass(3,bundle)
+                enrollTeacher()
+                callbackListener?.onDataPass(3)
             }
             else Snackbar.make(binding.root,"정보를 모두 입력해주세요",Snackbar.LENGTH_SHORT).show()
         }
-
-        return binding.root
     }
 
-    fun checkEmptyExist():Boolean{
+    private fun enrollTeacher(){
+        val teacherName = binding.signUpTeacherName.text.toString()
+        val teacherPhone = binding.signUpTeacherPhone.text.toString()
+        val userName = viewModel.signUpId.value
+
+        val account = Account(userName,teacherName,teacherPhone)
+        val teacher = Teacher(account)
+
+        viewModel.signUpTeacher.postValue(teacher)
+    }
+
+    private fun checkEmptyExist():Boolean{
         return (binding.signUpTeacherName.text.toString()!="")&&
                 (binding.signUpTeacherPhone.text.toString()!="")&&
                 (isCertificated)
