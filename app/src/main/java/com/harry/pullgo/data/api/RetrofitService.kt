@@ -22,7 +22,7 @@ interface RetrofitService {
     fun getAcademyList(): Call<List<Academy>>
 
     @GET("academies")
-    fun getSuchAcademies(@Query("nameLike")name:String): Call<List<Academy>>
+    suspend fun getSuchAcademies(@Query("nameLike")name:String): Response<List<Academy>>
 
     @GET("academies")
     fun getOwnedAcademy(@Query("ownerId")id:Long): Call<List<Academy>>

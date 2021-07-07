@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.harry.pullgo.ui.FindAcademyActivity
+import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.databinding.FragmentTeacherHomeNoAcademyBinding
 
 class TeacherHomeFragmentNoAcademy: Fragment() {

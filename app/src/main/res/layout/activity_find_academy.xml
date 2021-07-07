@@ -5,54 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.FindAcademyActivity">
+    tools:context=".ui.findAcademy.FindAcademyActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.Pullgo.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbarFindAcademy"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.Pullgo.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:theme="@style/Theme.Pullgo.AppBarOverlay">
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/findAcademySearchLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="@dimen/find_academy_search_area"
-            android:layout_height="wrap_content">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/findAcademySearchText"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarFindAcademy"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/Theme.Pullgo.PopupOverlay" />
 
-        <ImageButton
-            android:id="@+id/buttonFindAcademySearch"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/main_color"
-            android:tint="@color/white"
-            android:src="@drawable/baseline_search_black_18dp" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/findAcademyRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/findAcademySearchLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="@dimen/find_academy_search_area"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/findAcademySearchText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/buttonFindAcademySearch"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/main_color"
+                android:src="@drawable/baseline_search_black_18dp"
+                app:tint="@color/white" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/findAcademyRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 </LinearLayout>

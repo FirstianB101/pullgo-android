@@ -12,50 +12,48 @@ import com.afollestad.materialdialogs.customview.customView
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.ActivityFindAccountBinding
+import com.harry.pullgo.ui.dialog.OneButtonDialog
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
 import lib.kingja.switchbutton.SwitchMultiButton.OnSwitchListener
 import java.util.regex.Pattern
 
 
-class FindAccountActivity : AppCompatActivity(), OnSwitchListener ,View.OnClickListener{
+class FindAccountActivity : AppCompatActivity(), OnSwitchListener{
     private val binding by lazy{ActivityFindAccountBinding.inflate(layoutInflater)}
     private val FIND_ID=0
     private val FIND_PW=1
-    private val PHONE_MIN_LENGTH=9
-    private val PHONE_MAX_LENGTH=11
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setListeners()
+    }
+
+    private fun setListeners(){
         binding.switchFindIdPassword.setOnSwitchListener(this)
-        binding.buttonFindUsername.setOnClickListener(this)
-        binding.buttonFindPassword.setOnClickListener(this)
+
+        binding.buttonFindUsername.setOnClickListener {
+            if(checkFindUsernameInputs()) {
+                makeDialogSendId(this@FindAccountActivity)
+            } //서버 아이디 확인 작업 추가 요함
+            else Snackbar.make(binding.root,"정보를 올바르게 입력해주세요!",Snackbar.LENGTH_SHORT).show()
+        }
+
+        binding.buttonFindPassword.setOnClickListener {
+            if(checkFindPasswordInputs())makeDialogSendPw(this@FindAccountActivity)
+            else Snackbar.make(binding.root,"정보를 올바르게 입력해주세요!",Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     override fun onSwitch(position: Int, tabText: String?) {
-        Log.d("switch","onSwitch")
         if (position == FIND_ID) {
             binding.layoutFindAccountFindUsername.visibility = View.VISIBLE
             binding.layoutFindAccountFindPassword.visibility = View.INVISIBLE
         } else if (position == FIND_PW) {
             binding.layoutFindAccountFindUsername.visibility = View.INVISIBLE
             binding.layoutFindAccountFindPassword.visibility = View.VISIBLE
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.buttonFindUsername ->{
-                if(checkFindUsernameInputs()) {
-                    makeDialogSendId(this@FindAccountActivity)
-                } //서버 아이디 확인 작업 추가 요함
-                else Snackbar.make(binding.root,"정보를 올바르게 입력해주세요!",Snackbar.LENGTH_SHORT).show()
-            }
-            R.id.buttonFindPassword ->{
-                if(checkFindPasswordInputs())makeDialogSendPw(this@FindAccountActivity)
-                else Snackbar.make(binding.root,"정보를 올바르게 입력해주세요!",Snackbar.LENGTH_SHORT).show()
-            }
         }
     }
 
@@ -70,45 +68,35 @@ class FindAccountActivity : AppCompatActivity(), OnSwitchListener ,View.OnClickL
     }
 
     private fun makeDialogSendId(context: Context){
-        val dialog=MaterialDialog(context)
-            .positiveButton(null,"비밀번호 찾기")
-            .positiveButton {
+        val dialog = TwoButtonDialog(context)
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+            override fun onLeftClicked() {
                 binding.textInputEditTextFindUsernameFullName.text=null
                 binding.textInputEditTextFindUsernamePhone.text=null
                 binding.switchFindIdPassword.selectedTab=FIND_PW
                 onSwitch(FIND_PW,null)
             }
-            .neutralButton(null,"로그인 화면으로")
-            .neutralButton {
+        }
+        dialog.rightClickListener = object: TwoButtonDialog.TwoButtonDialogRightClickListener{
+            override fun onRightClicked() {
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
-            .customView(R.layout.find_account_send_id)
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window?.attributes)
-        lp.width = 800
-        lp.height = 500
-        dialog.show()
-        val window = dialog.window
-        window?.attributes=lp
+        }
+        dialog.start("아이디 찾기","입력하신 번호로 아이디가 전송되었습니다","비밀번호 찾기","로그인 화면으로")
     }
 
     private fun makeDialogSendPw(context: Context){
-        val dialog=MaterialDialog(context)
-            .positiveButton(null,"완료")
-            .positiveButton {
-                val intent = Intent(applicationContext, LoginActivity::class.java)
+        val dialog = OneButtonDialog(this)
+        dialog.centerClickListener = object: OneButtonDialog.OneButtonDialogClickListener{
+            override fun onCenterClicked() {
+                val intent=Intent(applicationContext, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
             }
-            .customView(R.layout.find_account_send_pw)
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window?.attributes)
-        lp.width = 800
-        lp.height = 500
-        dialog.show()
-        val window = dialog.window
-        window?.attributes=lp
+
+        }
+        dialog.start("비밀번호 찾기","임시 비밀번호가 전송되었습니다","로그인 화면으로")
     }
 }

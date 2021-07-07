@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.*
 import com.harry.pullgo.databinding.ActivitySignUpStudentBinding
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.ui.dialog.OneButtonDialog
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
 import com.lakue.lakuepopupactivity.PopupActivity
 import com.lakue.lakuepopupactivity.PopupGravity
@@ -40,7 +43,6 @@ class StudentSignUpActivity:AppCompatActivity(){
         signUpId = FragmentSignUpId()
         supportFragmentManager.beginTransaction().replace(R.id.studentSignUpContainer,signUpId).commit()
 
-        //id입력 후 id정보 바뀌면 다음 Fragment로
         viewModel.signUpId.observe(this){
             selectFragment(1)
         }
@@ -81,17 +83,6 @@ class StudentSignUpActivity:AppCompatActivity(){
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode== RESULT_OK){
-            if(requestCode==1){
-                val intent=Intent(applicationContext, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-            }
-        }
-    }
-
     private fun createStudent(student: Student?){
         val service= RetrofitClient.getApiService()
 
@@ -113,12 +104,15 @@ class StudentSignUpActivity:AppCompatActivity(){
     }
 
     private fun makePopup(){
-        val intent= Intent(baseContext, PopupActivity::class.java)
-        intent.putExtra("type", PopupType.NORMAL)
-        intent.putExtra("gravity", PopupGravity.CENTER)
-        intent.putExtra("title", "회원가입 완료!")
-        intent.putExtra("content", "가입하신 정보로 로그인해주세요")
-        intent.putExtra("buttonCenter", "로그인 화면으로")
-        startActivityForResult(intent,1)
+        val dialog = OneButtonDialog(this)
+        dialog.centerClickListener = object: OneButtonDialog.OneButtonDialogClickListener{
+            override fun onCenterClicked() {
+                val intent=Intent(applicationContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+
+        }
+        dialog.start("회원가입이 완료되었습니다!","가입하신 정보로 로그인해주세요","로그인 화면으로")
     }
 }

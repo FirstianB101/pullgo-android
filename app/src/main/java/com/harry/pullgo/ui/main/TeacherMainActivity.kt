@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
-import com.harry.pullgo.ui.FindAcademyActivity
+import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="12dp">
+        <TextView
+            android:id="@+id/titleTextViewTwoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:lineSpacingExtra="5sp"
+            android:text="Title"
+            android:gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/contentTextViewTwoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/light_gray"
+            android:textSize="14sp"
+            android:lineSpacingExtra="5sp"
+            android:layout_margin="3dp"
+            android:text="contents"
+            android:gravity="center_horizontal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/leftButtonTwoButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:layout_marginRight="2dp"
+                android:textSize="14sp"
+                android:text="확인"
+                android:layout_marginEnd="2dp" />
+
+            <Button
+                android:id="@+id/rightButtonTwoButton"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:layout_marginLeft="2dp"
+                android:textSize="14sp"
+                android:text="취소"
+                android:layout_marginStart="2dp" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

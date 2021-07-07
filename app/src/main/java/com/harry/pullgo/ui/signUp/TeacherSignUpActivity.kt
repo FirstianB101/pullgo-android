@@ -12,6 +12,7 @@ import com.harry.pullgo.*
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
 import com.lakue.lakuepopupactivity.PopupActivity
 import com.lakue.lakuepopupactivity.PopupGravity
@@ -63,7 +64,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
         }
     }
 
-    fun selectFragment(position: Int) {
+    private fun selectFragment(position: Int) {
         when(position){
             0->{//아이디 입력 프래그먼트
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
@@ -76,17 +77,6 @@ class TeacherSignUpActivity:AppCompatActivity(){
             2->{//패스워드 입력 프래그먼트에서 정보 입력으로 넘겨달라 요청
                 supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpInfoFragment).commit()
                 curPosition=2
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode== RESULT_OK){
-            if(requestCode==1){
-                val intent=Intent(applicationContext, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
             }
         }
     }
@@ -113,13 +103,16 @@ class TeacherSignUpActivity:AppCompatActivity(){
     }
 
     private fun makePopup(){
-        val intent= Intent(baseContext, PopupActivity::class.java)
-        intent.putExtra("type", PopupType.NORMAL)
-        intent.putExtra("gravity", PopupGravity.CENTER)
-        intent.putExtra("title", "회원가입 완료!")
-        intent.putExtra("content", "가입하신 정보로 로그인해주세요")
-        intent.putExtra("buttonCenter", "로그인 화면으로")
-        startActivityForResult(intent,1)
+        val dialog = OneButtonDialog(this)
+        dialog.centerClickListener = object: OneButtonDialog.OneButtonDialogClickListener{
+            override fun onCenterClicked() {
+                val intent=Intent(applicationContext, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+
+        }
+        dialog.start("회원가입이 완료되었습니다!","가입하신 정보로 로그인해주세요","로그인 화면으로")
     }
 }
 
