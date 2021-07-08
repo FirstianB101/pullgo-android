@@ -84,9 +84,9 @@ class StudentSignUpActivity:AppCompatActivity(){
     }
 
     private fun createStudent(student: Student?){
-        val service= RetrofitClient.getApiService()
-
         if (student != null) {
+            val service= RetrofitClient.getApiService()
+
             service.createStudent(student).enqueue(object: Callback<Student> {
                 override fun onResponse(call: Call<Student>, response: Response<Student>) {
                     if(response.isSuccessful){

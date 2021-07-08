@@ -1,0 +1,48 @@
+package com.harry.pullgo.ui.main
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
+import com.harry.pullgo.data.repository.LoginRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+
+class AppliedAcademyGroupViewModel(private val appliedAcademiesRepository: AppliedAcademyGroupRepository):ViewModel() {
+    private val _appliedAcademiesRepositories = MutableLiveData<List<Academy>>()
+    val appliedAcademiesRepositories = _appliedAcademiesRepositories
+
+    fun requestStudentAppliedAcademies(id: Long){
+        CoroutineScope(Dispatchers.IO).launch{
+            appliedAcademiesRepository.getStudentAppliedAcademies(id).let{ response ->
+                if(response.isSuccessful){
+                    response.body().let{
+                        _appliedAcademiesRepositories.postValue(it)
+                    }
+                }
+            }
+        }
+    }
+
+    fun requestTeacherAppliedAcademies(id: Long){
+        CoroutineScope(Dispatchers.IO).launch{
+            appliedAcademiesRepository.getTeacherAppliedAcademies(id).let{ response ->
+                if(response.isSuccessful){
+                    response.body().let{
+                        _appliedAcademiesRepositories.postValue(it)
+                    }
+                }
+            }
+        }
+    }
+}
+
+class AppliedAcademiesViewModelFactory(private val appliedAcademiesRepository: AppliedAcademyGroupRepository): ViewModelProvider.Factory{
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        return modelClass.getConstructor(AppliedAcademyGroupRepository::class.java).newInstance(appliedAcademiesRepository)
+    }
+}

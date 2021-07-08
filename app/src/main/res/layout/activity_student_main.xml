@@ -46,8 +46,8 @@
         app:menu="@menu/activity_student_main_drawer" >
 
         <TextView
+            android:id="@+id/textViewStudentApplyOtherAcademy"
             android:text="다른학원 가입"
-            android:onClick="applyOtherAcademyButtonClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -55,8 +55,8 @@
             android:layout_gravity="right|bottom"/>
 
         <TextView
+            android:id="@+id/textViewStudentLogout"
             android:text="로그아웃"
-            android:onClick="logoutButtonClicked"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

@@ -11,6 +11,7 @@ import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClick
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.ui.AcademySearchAdapter
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -82,20 +83,40 @@ class FindAcademyActivity : AppCompatActivity() {
     }
 
     private fun sendAcceptRequest(academyId:Long?){
-        val service = RetrofitClient.getApiService()
-
         if (academyId != null) {
-            // 회원가입 이후 학생 ID 넣어 요청보내기
-            service.sendStudentApplyAcademyRequest(4,academyId).enqueue(object: Callback<Unit>{
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    if(response.isSuccessful){
-                        Snackbar.make(binding.root,"요청 성공",Snackbar.LENGTH_SHORT).show()
-                    }
-                }
+            val isStudent = (LoginInfo.loginTeacher==null)
+            val service = RetrofitClient.getApiService()
 
-                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                }
-            })
+            if(isStudent)
+                service.sendStudentApplyAcademyRequest(LoginInfo.loginStudent?.id!!,academyId).enqueue(object: Callback<Unit>{
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                        if(response.isSuccessful){
+                            Snackbar.make(binding.root,"가입 요청이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
+                        }else{
+                            Snackbar.make(binding.root,"가입 요청에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        Snackbar.make(binding.root,"서버 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                    }
+                })
+            else
+                service.sendStudentApplyAcademyRequest(LoginInfo.loginTeacher?.id!!,academyId).enqueue(object: Callback<Unit>{
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                        if(response.isSuccessful){
+                            Snackbar.make(binding.root,"가입 요청이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
+                        }else{
+                            Snackbar.make(binding.root,"가입 요청에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<Unit>, t: Throwable) {
+                        Snackbar.make(binding.root,"서버 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                    }
+                })
         }
     }
+
+
 }

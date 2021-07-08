@@ -76,18 +76,12 @@ class LoginActivity: AppCompatActivity(){
 
     private fun startMainStudent(intent: Intent){
         val student = viewModel.loginStudentRepositories.value
-        intent.putExtra("fullName",student?.account?.fullName)
-        intent.putExtra("userName",student?.account?.username)
-        intent.putExtra("id",student?.id)
         LoginInfo.loginStudent=student
         startActivity(intent)
     }
 
     private fun startMainTeacher(intent: Intent){
         val teacher = viewModel.loginTeacherRepositories.value
-        intent.putExtra("fullName",teacher?.account?.fullName)
-        intent.putExtra("userName",teacher?.account?.username)
-        intent.putExtra("id",teacher?.id)
         LoginInfo.loginTeacher=teacher
         startActivity(intent)
     }
