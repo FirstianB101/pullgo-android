@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
@@ -83,7 +84,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         calendarFragment = CalendarFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
-        supportActionBar?.title = "Home"
 
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
         headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
@@ -144,22 +144,30 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun onFragmentSelected(position: TEACHER_MENU) {
         var curFragment: Fragment? = null
-        if (position == TEACHER_MENU.HOME) {
-            curFragment = teacherHomeFragment
-            binding.teacherToolbar.title = "Home"
-        } else if (position == TEACHER_MENU.CHANGE_INFO) {
-            curFragment = teacherChangeInfoFragment
-            binding.teacherToolbar.title = "회원정보 수정"
-        } else if (position == TEACHER_MENU.CALENDAR) {
-            curFragment = calendarFragment
-            binding.teacherToolbar.title = "일정"
-        }else if(position == TEACHER_MENU.CHANGE_INFO_CHECK_PW){
-            curFragment = changeInfoCheckPwFragment
-            binding.teacherToolbar.title = "회원정보 수정"
+        when(position){
+            TEACHER_MENU.HOME -> {
+                curFragment = teacherHomeFragment
+            }
+            TEACHER_MENU.CHANGE_INFO -> {
+                curFragment = teacherChangeInfoFragment
+            }
+            TEACHER_MENU.CALENDAR -> {
+                curFragment = calendarFragment
+            }
+            TEACHER_MENU.CHANGE_INFO_CHECK_PW -> {
+                curFragment = changeInfoCheckPwFragment
+            }
+            else -> {}
         }
 
-        supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, curFragment!!)
-            .commit()
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+            R.anim.enter_from_left,
+            R.anim.exit_to_right
+        )
+        transaction.replace(R.id.teacherMainFragment, curFragment!!).addToBackStack(null).commit()
     }
 
     private fun startFindAcademyActivity(){
@@ -175,7 +183,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             CoroutineScope(Dispatchers.IO).async {
                 academy=service.getOwnedAcademy(teacherId).execute().body()
             }.await()
-                if(academy!!.isEmpty()){
+                if(academy?.isEmpty() == true){
                     binding.navigationViewTeacher.menu.removeItem(R.id.nav_teacher_manage_academy)
                 }
         }
@@ -207,6 +215,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         CALENDAR,
         EXAM_LIST,
         PREVIOUS_EXAM,
-        CHANGE_INFO_CHECK_PW
+        CHANGE_INFO_CHECK_PW,
+        APPLY_CLASSROOM,
+        MANAGE_ACADEMY
     }
 }

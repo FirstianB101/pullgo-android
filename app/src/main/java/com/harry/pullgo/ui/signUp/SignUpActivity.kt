@@ -21,8 +21,6 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
     private fun setClickListeners(){
         binding.buttonSignUpAsStudent.setOnClickListener(this)
         binding.buttonSignUpAsTeacher.setOnClickListener(this)
-        binding.buttonKakaoLogin.setOnClickListener(this)
-        binding.buttonFacebookLogin.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -36,12 +34,6 @@ class SignUpActivity: AppCompatActivity(), View.OnClickListener{
                 val intent= Intent(applicationContext, TeacherSignUpActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
-            }
-            R.id.buttonKakaoLogin ->{
-                Toast.makeText(this,"KAKAO LOGIN",Toast.LENGTH_SHORT).show()
-            }
-            R.id.buttonFacebookLogin ->{
-                Toast.makeText(this,"FACEBOOK LOGIN",Toast.LENGTH_SHORT).show()
             }
         }
     }

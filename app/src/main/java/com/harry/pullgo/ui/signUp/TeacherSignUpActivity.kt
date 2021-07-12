@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Bundle;
 import android.util.Log
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.*
 
@@ -37,7 +39,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
     }
 
     private fun initialize(){
-        viewModel= ViewModelProvider(this).get(SignUpViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
         signUpInfoFragment = TeacherSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId()
@@ -64,20 +66,29 @@ class TeacherSignUpActivity:AppCompatActivity(){
     }
 
     private fun selectFragment(position: Int) {
+        var curFragment : Fragment? = null
         when(position){
-            0->{//아이디 입력 프래그먼트
-                supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
+            0 -> {//아이디 입력 프래그먼트
+                curFragment = signUpId
                 curPosition=0
             }
-            1->{//아이디 입력 프래그먼트에서 패스워드 입력으로 넘겨달라 요청
-                supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpPw).commit()
+            1 -> {//아이디 입력 프래그먼트에서 패스워드 입력으로 넘겨달라 요청
+                curFragment = signUpPw
                 curPosition=1
             }
-            2->{//패스워드 입력 프래그먼트에서 정보 입력으로 넘겨달라 요청
-                supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpInfoFragment).commit()
+            2 -> {//패스워드 입력 프래그먼트에서 정보 입력으로 넘겨달라 요청
+                curFragment = signUpInfoFragment
                 curPosition=2
             }
         }
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(
+            R.anim.enter_from_right,
+            R.anim.exit_to_left,
+            R.anim.enter_from_left,
+            R.anim.exit_to_right
+        )
+        transaction.replace(R.id.teacherSignUpContainer, curFragment!!).addToBackStack(null).commit()
     }
 
     private fun createTeacher(teacher: Teacher?){
