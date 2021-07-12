@@ -2,8 +2,10 @@ package com.harry.pullgo.ui.login;
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LoginRepository
@@ -76,13 +78,17 @@ class LoginActivity: AppCompatActivity(){
 
     private fun startMainStudent(intent: Intent){
         val student = viewModel.loginStudentRepositories.value
-        LoginInfo.loginStudent=student
-        startActivity(intent)
+        if(student?.id != null) {
+            LoginInfo.loginStudent = student
+            startActivity(intent)
+        }
     }
 
     private fun startMainTeacher(intent: Intent){
         val teacher = viewModel.loginTeacherRepositories.value
-        LoginInfo.loginTeacher=teacher
-        startActivity(intent)
+        if(teacher?.id != null) {
+            LoginInfo.loginTeacher = teacher
+            startActivity(intent)
+        }
     }
 }

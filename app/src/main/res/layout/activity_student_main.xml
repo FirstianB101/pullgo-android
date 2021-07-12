@@ -43,7 +43,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_student_main_drawer" >
+        app:menu="@menu/activity_student_main_drawer">
 
         <TextView
             android:id="@+id/textViewStudentApplyOtherAcademy"

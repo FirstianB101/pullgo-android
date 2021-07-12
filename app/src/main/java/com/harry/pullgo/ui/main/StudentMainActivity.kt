@@ -16,13 +16,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
+import com.harry.pullgo.data.api.OnCheckPw
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
+import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamListFragment
 import com.harry.pullgo.ui.studentFragment.StudentHomeFragmentNoAcademy
@@ -34,6 +35,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private val binding by lazy{ActivityStudentMainBinding.inflate(layoutInflater)}
     lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
     lateinit var studentChangeInfoFragment: StudentChangePersonInfoFragment
+    lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
     lateinit var studentExamListFragment: StudentExamListFragment
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
@@ -50,9 +52,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setSupportActionBar(binding.studentToolbar)
 
         initViewModels()
-        setListeners()
 
         initialize()
+        setListeners()
     }
 
     private fun initViewModels(){
@@ -68,13 +70,14 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginStudent = changeInfoViewModel.changeStudent.value
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
-            onFragmentSelected(0)
+            onFragmentSelected(STUDENT_MENU.HOME)
         }
     }
 
     private fun initialize(){
         studentHomeFragment = StudentHomeFragmentNoAcademy()
         studentChangeInfoFragment = StudentChangePersonInfoFragment()
+        changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
         calendarFragment = CalendarFragment()
         studentExamListFragment= StudentExamListFragment()
         studentExamHistoryFragment= StudentExamHistoryFragment()
@@ -108,6 +111,12 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginTeacher=null
             finish()
         }
+
+        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPw{
+            override fun onPasswordCheck() {
+                onFragmentSelected(STUDENT_MENU.CHANGE_INFO)
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -125,34 +134,38 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_student_home -> onFragmentSelected(0)
-            R.id.nav_student_change_info -> onFragmentSelected(1)
-            R.id.nav_student_calendar -> onFragmentSelected(2)
-            R.id.nav_student_exam_list -> onFragmentSelected(3)
-            R.id.nav_student_exam_history -> onFragmentSelected(4)
+            R.id.nav_student_home -> onFragmentSelected(STUDENT_MENU.HOME)
+            R.id.nav_student_change_info -> onFragmentSelected(STUDENT_MENU.CHANGE_INFO_CHECK_PW)
+            R.id.nav_student_calendar -> onFragmentSelected(STUDENT_MENU.CALENDAR)
+            R.id.nav_student_exam_list -> onFragmentSelected(STUDENT_MENU.EXAM_LIST)
+            R.id.nav_student_previous_exam -> onFragmentSelected(STUDENT_MENU.PREVIOUS_EXAM)
+            //R.id.nav_student_apply_classroom -> onFragmentSelected(5)
         }
         binding.studentDrawerLayout.closeDrawer(binding.navigationViewStudent)
         return true
     }
 
-    private fun onFragmentSelected(position: Int) {
+    private fun onFragmentSelected(position: STUDENT_MENU) {
         var curFragment: Fragment? = null
-        if (position == 0) {
+        if (position == STUDENT_MENU.HOME) {
             curFragment = studentHomeFragment
             binding.studentToolbar.title = "Home"
-        } else if (position == 1) {
-            studentChangeInfoFragment = StudentChangePersonInfoFragment()
-            curFragment = studentChangeInfoFragment
-            binding.studentToolbar.title = "회원정보 변경"
-        } else if (position == 2) {
+        } else if (position == STUDENT_MENU.CHANGE_INFO) {
+            //studentChangeInfoFragment = StudentChangePersonInfoFragment()
+            curFragment = StudentChangePersonInfoFragment()
+            binding.studentToolbar.title = "회원정보 수정"
+        } else if (position == STUDENT_MENU.CALENDAR) {
             curFragment = calendarFragment
             binding.studentToolbar.title = "일정"
-        }else if(position==3){
-            curFragment=studentExamListFragment
+        }else if(position == STUDENT_MENU.EXAM_LIST){
+            curFragment = studentExamListFragment
             binding.studentToolbar.title="시험 목록"
-        }else if(position==4){
-            curFragment=studentExamHistoryFragment
+        }else if(position == STUDENT_MENU.PREVIOUS_EXAM){
+            curFragment = studentExamHistoryFragment
             binding.studentToolbar.title="오답 노트"
+        }else if(position == STUDENT_MENU.CHANGE_INFO_CHECK_PW){
+            curFragment = changeInfoCheckPwFragment
+            binding.studentToolbar.title = "회원정보 수정"
         }
         supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, curFragment!!)
             .commit()
@@ -181,5 +194,14 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 }
             })
         }
+    }
+    enum class STUDENT_MENU{
+        HOME,
+        CHANGE_INFO,
+        CALENDAR,
+        EXAM_LIST,
+        PREVIOUS_EXAM,
+        CHANGE_INFO_CHECK_PW,
+        APPLY_CLASSROOM
     }
 }

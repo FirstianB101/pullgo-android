@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.signUp
+package com.harry.pullgo.ui.commonFragment
 
 import android.content.res.ColorStateList
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentSignupPwBinding
+import com.harry.pullgo.ui.signUp.SignUpViewModel
 import java.util.regex.Pattern
 
 

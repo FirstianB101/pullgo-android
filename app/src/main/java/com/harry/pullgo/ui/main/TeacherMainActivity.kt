@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
+import com.harry.pullgo.data.api.OnCheckPw
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.data.api.RetrofitClient
@@ -22,6 +23,7 @@ import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
+import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherHomeFragmentNoAcademy
 import kotlinx.coroutines.CoroutineScope
@@ -36,6 +38,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private val binding by lazy{ActivityTeacherMainBinding.inflate(layoutInflater)}
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
     lateinit var teacherChangeInfoFragment: TeacherChangePersonInfoFragment
+    lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
 
     lateinit var homeViewModel: AppliedAcademyGroupViewModel
@@ -49,9 +52,9 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setSupportActionBar(binding.teacherToolbar)
 
         initViewModels()
-        setListeners()
 
         initialize()
+        setListeners()
 
         changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
     }
@@ -69,13 +72,14 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
-            onFragmentSelected(0)
+            onFragmentSelected(TEACHER_MENU.HOME)
         }
     }
 
     private fun initialize(){
         teacherHomeFragment = TeacherHomeFragmentNoAcademy()
         teacherChangeInfoFragment = TeacherChangePersonInfoFragment()
+        changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
         calendarFragment = CalendarFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
@@ -107,6 +111,12 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginTeacher=null
             finish()
         }
+
+        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPw{
+            override fun onPasswordCheck() {
+                onFragmentSelected(TEACHER_MENU.CHANGE_INFO)
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -124,25 +134,28 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_teacher_home -> onFragmentSelected(0)
-            R.id.nav_teacher_change_info -> onFragmentSelected(1)
-            R.id.nav_teacher_calendar -> onFragmentSelected(2)
+            R.id.nav_teacher_home -> onFragmentSelected(TEACHER_MENU.HOME)
+            R.id.nav_teacher_change_info -> onFragmentSelected(TEACHER_MENU.CHANGE_INFO_CHECK_PW)
+            R.id.nav_teacher_calendar -> onFragmentSelected(TEACHER_MENU.CALENDAR)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
     }
 
-    private fun onFragmentSelected(position: Int) {
+    private fun onFragmentSelected(position: TEACHER_MENU) {
         var curFragment: Fragment? = null
-        if (position == 0) {
+        if (position == TEACHER_MENU.HOME) {
             curFragment = teacherHomeFragment
             binding.teacherToolbar.title = "Home"
-        } else if (position == 1) {
+        } else if (position == TEACHER_MENU.CHANGE_INFO) {
             curFragment = teacherChangeInfoFragment
-            binding.teacherToolbar.title = "회원정보 변경"
-        } else if (position == 2) {
+            binding.teacherToolbar.title = "회원정보 수정"
+        } else if (position == TEACHER_MENU.CALENDAR) {
             curFragment = calendarFragment
             binding.teacherToolbar.title = "일정"
+        }else if(position == TEACHER_MENU.CHANGE_INFO_CHECK_PW){
+            curFragment = changeInfoCheckPwFragment
+            binding.teacherToolbar.title = "회원정보 수정"
         }
 
         supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, curFragment!!)
@@ -186,5 +199,14 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 }
             })
         }
+    }
+
+    enum class TEACHER_MENU{
+        HOME,
+        CHANGE_INFO,
+        CALENDAR,
+        EXAM_LIST,
+        PREVIOUS_EXAM,
+        CHANGE_INFO_CHECK_PW
     }
 }

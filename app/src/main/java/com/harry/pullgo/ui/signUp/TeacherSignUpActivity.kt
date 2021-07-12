@@ -12,11 +12,10 @@ import com.harry.pullgo.*
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.ui.commonFragment.FragmentSignUpId
+import com.harry.pullgo.ui.commonFragment.FragmentSignUpPw
 import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
-import com.lakue.lakuepopupactivity.PopupActivity
-import com.lakue.lakuepopupactivity.PopupGravity
-import com.lakue.lakuepopupactivity.PopupType
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
