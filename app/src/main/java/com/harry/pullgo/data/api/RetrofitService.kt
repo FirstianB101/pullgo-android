@@ -1,8 +1,6 @@
 package com.harry.pullgo.data.api
 
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.objects.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -22,6 +20,9 @@ interface RetrofitService {
 
     @PATCH("teachers/{id}")
     fun changeTeacherInfo(@Path("id")id:Long, @Body teacher: Teacher):Call<Teacher>
+
+    @GET("academy/classrooms/")
+    suspend fun getClassroomsByTeacherId(@Query("teacherId")id:Long): Response<List<Classroom>>
 
 
     @GET("academies/")
@@ -48,4 +49,7 @@ interface RetrofitService {
 
     @PATCH("students/{id}")
     fun changeStudentInfo(@Path("id")id:Long, @Body student: Student):Call<Student>
+
+    @POST("academy/classroom/lessons")
+    fun createLesson(@Body lesson: Lesson): Call<Lesson>
 }

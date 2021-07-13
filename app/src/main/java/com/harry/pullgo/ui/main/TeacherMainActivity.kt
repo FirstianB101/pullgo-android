@@ -137,6 +137,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_teacher_home -> onFragmentSelected(TEACHER_MENU.HOME)
             R.id.nav_teacher_change_info -> onFragmentSelected(TEACHER_MENU.CHANGE_INFO_CHECK_PW)
             R.id.nav_teacher_calendar -> onFragmentSelected(TEACHER_MENU.CALENDAR)
+            R.id.nav_teacher_manage_classroom -> onFragmentSelected(TEACHER_MENU.MANAGE_CLASSROOM)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
@@ -156,6 +157,9 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             TEACHER_MENU.CHANGE_INFO_CHECK_PW -> {
                 curFragment = changeInfoCheckPwFragment
+            }
+            TEACHER_MENU.MANAGE_CLASSROOM -> {
+
             }
             else -> {}
         }
@@ -214,6 +218,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         CHANGE_INFO,
         CALENDAR,
         EXAM_LIST,
+        MANAGE_CLASSROOM,
         PREVIOUS_EXAM,
         CHANGE_INFO_CHECK_PW,
         APPLY_CLASSROOM,

@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentCalendarBottomSheetBinding
 import com.harry.pullgo.ui.FragmentLessonInfoDialog
 
-class FragmentCalendarBottomSheet : BottomSheetDialogFragment(), View.OnClickListener {
+class FragmentCalendarBottomSheet : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
     var date: String? = null
@@ -20,25 +17,26 @@ class FragmentCalendarBottomSheet : BottomSheetDialogFragment(), View.OnClickLis
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        initialize()
+        setListeners()
+
+        return binding.root
+    }
+
+    private fun initialize(){
         dialog!!.setCanceledOnTouchOutside(true)
         val dateBundle = arguments
         if (dateBundle != null) {
             date = dateBundle.getString("date")
             binding.textViewShowDate.text = date
         }
-        binding.emailLo.setOnClickListener(this)
-        return binding.root
     }
 
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.emailLo -> {
-                FragmentLessonInfoDialog().show(
-                    childFragmentManager, FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG
-                )
-                return
-            }
+    private fun setListeners(){
+        binding.emailLo.setOnClickListener {
+            FragmentLessonInfoDialog().show(childFragmentManager, FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG)
+            dismiss()
         }
-        dismiss()
     }
 }

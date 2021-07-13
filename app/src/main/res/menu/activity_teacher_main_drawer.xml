@@ -5,17 +5,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_student_home"
+            android:id="@+id/nav_teacher_home"
             android:title="홈으로"
             android:checked="true"/>
 
         <item
             android:id="@+id/nav_teacher_calendar"
             android:title="수업 일정"/>
-
-        <item
-            android:id="@+id/nav_teacher_change_info"
-            android:title="회원정보 수정" />
 
         <item
             android:id="@+id/nav_teacher_manage_classroom"
@@ -28,6 +24,10 @@
         <item
             android:id="@+id/nav_teacher_apply_classroom"
             android:title="반 가입 요청"/>
+
+        <item
+            android:id="@+id/nav_teacher_change_info"
+            android:title="회원정보 수정" />
 
         <item
             android:id="@+id/nav_teacher_manage_accept_academy"

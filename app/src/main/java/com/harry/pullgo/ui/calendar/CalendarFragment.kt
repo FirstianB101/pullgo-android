@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.calendar
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.style.ForegroundColorSpan
@@ -8,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.harry.pullgo.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.harry.pullgo.ui.lesson.CreateNewLessonActivity
+import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.databinding.FragmentCalendarBinding
 import com.prolificinteractive.materialcalendarview.*
 
@@ -21,7 +24,19 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         savedInstanceState: Bundle?
     ): View {
         initializeCalendar()
+        setListeners()
         return binding.root
+    }
+
+    private fun setListeners(){
+        binding.floatingActionButtonCalendar.setOnClickListener {
+            val intent = Intent(requireContext(), CreateNewLessonActivity::class.java)
+            startActivity(intent)
+        }
+
+        if(LoginInfo.loginTeacher == null){
+            binding.floatingActionButtonCalendar.visibility = FloatingActionButton.GONE
+        }
     }
 
     private fun initializeCalendar(){

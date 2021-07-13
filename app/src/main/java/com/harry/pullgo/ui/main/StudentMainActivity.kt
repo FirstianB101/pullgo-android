@@ -88,6 +88,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
         headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
+
+        calendarFragment
     }
 
     private fun setListeners(){
