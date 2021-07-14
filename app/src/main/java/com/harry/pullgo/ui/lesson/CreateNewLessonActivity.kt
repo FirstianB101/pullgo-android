@@ -105,13 +105,21 @@ class CreateNewLessonActivity : AppCompatActivity() {
         }
 
         binding.buttonCreateNewLesson.setOnClickListener {
-            val beginTime = String.format("%02d:%02d:00",startHour,startMinute)
-            val endTime = String.format("%02d:%02d:00",endHour,endMinute)
-            val date = MillToDate(selectedDate!!)
-            val schedule = Schedule(date,beginTime,endTime)
-            val newLesson = Lesson(binding.textNewLessonName.text.toString(),selectedClassroom?.id,schedule)
-            createLesson(newLesson)
-            finish()
+            if(isSelectedAllOptions()) {
+                val beginTime = String.format("%02d:%02d:00", startHour, startMinute)
+                val endTime = String.format("%02d:%02d:00", endHour, endMinute)
+                val date = MillToDate(selectedDate!!)
+                val schedule = Schedule(date, beginTime, endTime)
+                val newLesson = Lesson(
+                    binding.textNewLessonName.text.toString(),
+                    selectedClassroom?.id,
+                    schedule
+                )
+                createLesson(newLesson)
+                finish()
+            }else{
+                Snackbar.make(binding.root,"선택하지 않은 항목이 존재합니다",Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -164,4 +172,8 @@ class CreateNewLessonActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun isSelectedAllOptions(): Boolean =
+        (startHour != -1 && startMinute != -1 && endHour != -1 && endMinute != -1
+            && selectedDate != null && selectedClassroom != null)
 }

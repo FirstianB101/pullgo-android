@@ -62,11 +62,13 @@ class FindAcademyActivity : AppCompatActivity() {
     private fun displayAcademies(){
         val data = viewModel.findAcademyRepositories.value
 
-        val academyAdapter = AcademySearchAdapter(data)
-        academyAdapter.itemClickListener = object: OnAcademyClick {
-            override fun onAcademyClick(view: View,academy: Academy?) {
-                selectedAcademy=academy
-                showEnrollRequestDialog(academy)
+        val academyAdapter = data?.let { AcademySearchAdapter(it) }
+        if (academyAdapter != null) {
+            academyAdapter.itemClickListener = object: OnAcademyClick {
+                override fun onAcademyClick(view: View,academy: Academy?) {
+                    selectedAcademy=academy
+                    showEnrollRequestDialog(academy)
+                }
             }
         }
         binding.findAcademyRecyclerView.adapter = academyAdapter

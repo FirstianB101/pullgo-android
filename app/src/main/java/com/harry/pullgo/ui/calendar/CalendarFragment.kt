@@ -40,7 +40,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     }
 
     private fun initializeCalendar(){
-        binding.calendarView.selectedDate=CalendarDay.today()
+        binding.calendarView.selectedDate = CalendarDay.today()
         binding.calendarView.addDecorators(
             CalendarSaturdayDecorator(),
             CalendarSundayDecorator(),

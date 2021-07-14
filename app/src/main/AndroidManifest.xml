@@ -11,14 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".ui.lesson.CreateNewLessonActivity"></activity>
-        <activity android:name=".ui.findAcademy.FindAcademyActivity" />
+        <activity
+            android:name=".ui.lesson.CreateNewLessonActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".ui.findAcademy.FindAcademyActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.main.StudentMainActivity"
             android:label="@string/title_activity_student_main"
-            android:theme="@style/Theme.Pullgo.NoActionBar" />
-        <activity android:name=".ui.main.TeacherMainActivity" />
-        <activity android:name=".ui.findAccount.FindAccountActivity" />
+            android:theme="@style/Theme.Pullgo.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.main.TeacherMainActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".ui.findAccount.FindAccountActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.signUp.StudentSignUpActivity"
             android:windowSoftInputMode="adjustPan" />

@@ -80,6 +80,7 @@ class LoginActivity: AppCompatActivity(){
         val student = viewModel.loginStudentRepositories.value
         if(student?.id != null) {
             LoginInfo.loginStudent = student
+            LoginInfo.loginTeacher = null
             startActivity(intent)
         }
     }
@@ -87,6 +88,7 @@ class LoginActivity: AppCompatActivity(){
     private fun startMainTeacher(intent: Intent){
         val teacher = viewModel.loginTeacherRepositories.value
         if(teacher?.id != null) {
+            LoginInfo.loginStudent = null
             LoginInfo.loginTeacher = teacher
             startActivity(intent)
         }

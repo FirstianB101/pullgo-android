@@ -30,4 +30,6 @@
     <dimen name="find_academy_search_area">300dp</dimen>
     <dimen name="date_pick_text_view_width">100dp</dimen>
     <dimen name="date_pick_spinner_width">200dp</dimen>
+    <dimen name="date_pick_spinner_width_small">180dp</dimen>
+    <dimen name="calendar_lesson_dialog_text_size">18sp</dimen>
 </resources>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/textViewLessonInfoSelectClassroom"
+            android:layout_width="@dimen/date_pick_text_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:text="반"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoLessonName" />
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/spinnerLessonInfoSelectClassroom"
+            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:enabled="false"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectClassroom"
+            app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoNewLessonName" />
+
+        <TextView
+            android:id="@+id/textViewLessonInfoSelectDate"
+            android:layout_width="@dimen/date_pick_text_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:text="수업 날짜"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoSelectClassroom" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinnerLessonInfoLayoutSelectDate"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="날짜"
+            app:endIconMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectDate"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLessonInfoSelectClassroom">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/spinnerLessonInfoTextViewSelectDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textViewLessonInfoSelectTime"
+            android:layout_width="@dimen/date_pick_text_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:text="수업 시간"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoSelectDate" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinnerLessonInfoLayoutSelectStartTime"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="시작 시간"
+            app:endIconMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectTime"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLessonInfoLayoutSelectDate">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/spinnerTextViewLessonInfoSelectStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinnerLessonInfoLayoutSelectEndTime"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="종료 시간"
+            app:endIconMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectTime"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLessonInfoLayoutSelectStartTime">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/spinnerTextViewLessonInfoSelectEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textViewLessonInfoLessonName"
+            android:layout_width="@dimen/date_pick_text_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="수업 이름"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutLessonInfoNewLessonName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_height="wrap_content"
+            app:errorEnabled="false"
+            app:helperTextEnabled="true"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoLessonName"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textLessonInfoNewLessonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="수업 이름"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/light_gray" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLessonInfoSave"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/rounded_button_main_color"
+            android:text="수정하기"
+            android:textColor="@color/white"
+            android:textSize="@dimen/success_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLessonInfoLayoutSelectEndTime" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonLessonInfoRemove"
+            android:layout_width="135dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/rounded_button_main_color"
+            android:text="삭제하기"
+            android:textColor="@color/white"
+            android:textSize="@dimen/success_button_text"
+            app:backgroundTint="#E53935"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLessonInfoLayoutSelectEndTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

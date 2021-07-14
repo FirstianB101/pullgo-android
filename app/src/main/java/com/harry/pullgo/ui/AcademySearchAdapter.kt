@@ -9,7 +9,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnAcademyClick
 import com.harry.pullgo.data.objects.Academy
 
-class AcademySearchAdapter(private val dataSet: List<Academy>?):
+class AcademySearchAdapter(private val dataSet: List<Academy>):
     RecyclerView.Adapter<AcademySearchAdapter.ViewHolder>(){
     var itemClickListener: OnAcademyClick? = null
 
@@ -20,17 +20,17 @@ class AcademySearchAdapter(private val dataSet: List<Academy>?):
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_search_academy_adapter,parent,false)
+            .inflate(R.layout.layout_search_academy_item,parent,false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textViewName.text= dataSet?.get(position)?.name.toString()
-        holder.textViewAddress.text=dataSet?.get(position)?.address.toString()
+        holder.textViewName.text= dataSet[position].name.toString()
+        holder.textViewAddress.text= dataSet[position].address.toString()
         holder.itemView.setOnClickListener {
-            itemClickListener?.onAcademyClick(holder.itemView, dataSet?.get(position))
+            itemClickListener?.onAcademyClick(holder.itemView, dataSet[position])
         }
     }
 
-    override fun getItemCount(): Int= dataSet?.size ?: 0
+    override fun getItemCount(): Int= dataSet.size ?: 0
 }
