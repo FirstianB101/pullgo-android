@@ -1,6 +1,5 @@
 package com.harry.pullgo.ui.findAcademy
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -13,24 +12,15 @@ import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
-import com.harry.pullgo.ui.AcademySearchAdapter
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import com.lakue.lakuepopupactivity.PopupActivity
-import com.lakue.lakuepopupactivity.PopupGravity
-import com.lakue.lakuepopupactivity.PopupResult
-import com.lakue.lakuepopupactivity.PopupType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.Provider
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
     private lateinit var viewModel: FindAcademyViewModel
+    private lateinit var repository: FindAcademyRepository
     private var selectedAcademy: Academy? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +35,9 @@ class FindAcademyActivity : AppCompatActivity() {
     }
 
     private fun initViewModel(){
-        val viewModelFactory = FindAcademyViewModelFactory(FindAcademyRepository())
+        repository = FindAcademyRepository()
+
+        val viewModelFactory = FindAcademyViewModelFactory(repository)
         viewModel = ViewModelProvider(this,viewModelFactory).get(FindAcademyViewModel::class.java)
 
         viewModel.findAcademyRepositories.observe(this){
@@ -62,19 +54,22 @@ class FindAcademyActivity : AppCompatActivity() {
     private fun displayAcademies(){
         val data = viewModel.findAcademyRepositories.value
 
-        val academyAdapter = data?.let { AcademySearchAdapter(it) }
+        val academyAdapter = data?.let {
+            AcademySearchAdapter(it)
+        }
+
         if (academyAdapter != null) {
             academyAdapter.itemClickListener = object: OnAcademyClick {
                 override fun onAcademyClick(view: View,academy: Academy?) {
                     selectedAcademy=academy
-                    showEnrollRequestDialog(academy)
+                    showApplyRequestDialog(academy)
                 }
             }
         }
         binding.findAcademyRecyclerView.adapter = academyAdapter
     }
 
-    private fun showEnrollRequestDialog(academy: Academy?){
+    private fun showApplyRequestDialog(academy: Academy?){
         val dialog = TwoButtonDialog(this)
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
             override fun onLeftClicked() {
@@ -86,7 +81,7 @@ class FindAcademyActivity : AppCompatActivity() {
 
     private fun sendAcceptRequest(academyId:Long?){
         if (academyId != null) {
-            val isStudent = (LoginInfo.loginTeacher==null)
+            val isStudent = (LoginInfo.loginTeacher == null)
             val service = RetrofitClient.getApiService()
 
             if(isStudent)

@@ -10,6 +10,9 @@ interface RetrofitService {
     @POST("teachers/")
     fun createTeacher(@Body params: Teacher):Call<Teacher>
 
+    @POST("teachers/{id}/apply-classroom")
+    fun sendTeacherApplyClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
+
     @PATCH("teachers/{id}")
     fun changeTeacherInfo(@Path("id")id:Long, @Body teacher: Teacher):Call<Teacher>
 
@@ -33,28 +36,45 @@ interface RetrofitService {
     fun getOwnedAcademy(@Query("ownerId")id:Long): Call<List<Academy>>
 
     @GET("academy/classroom/lessons")
-    suspend fun getLessonsByDatesBetween(@Query("sinceDate")sinceDate: String,
-                                         @Query("untilDate")untilDate:String): Response<List<Lesson>>
+    suspend fun getTeacherLessonsByDate(@Query("teacherId")id: Long, @Query("sinceDate")sinceDate: String,
+                                        @Query("untilDate")untilDate:String): Response<List<Lesson>>
+
+
+    @GET("academies/")
+    suspend fun getAcademiesStudentApplied(@Query("studentId")id: Long): Response<List<Academy>>
+
+    @GET("academies/")
+    suspend fun getAcademiesTeacherApplied(@Query("teacherId")id: Long): Response<List<Academy>>
 
 
     @POST("students/")
     fun createStudent(@Body student: Student):Call<Student>
 
-    @POST("students/{studentId}/apply-academy")
-    fun sendStudentApplyAcademyRequest(@Path("studentId") studentId : Long, @Body academyId : Long): Call<Unit>
+    @POST("students/{id}/apply-academy")
+    fun sendStudentApplyAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Call<Unit>
 
-    @PATCH("students/{id}")
-    fun changeStudentInfo(@Path("id")id:Long, @Body student: Student):Call<Student>
+    @POST("students/{id}/apply-classroom")
+    fun sendStudentApplyClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Call<Unit>
 
     @POST("academy/classroom/lessons")
     fun createLesson(@Body lesson: Lesson): Call<Lesson>
 
+    @PATCH("students/{id}")
+    fun changeStudentInfo(@Path("id")id: Long, @Body student: Student):Call<Student>
+
     @GET("students/{id}")
-    suspend fun getStudent(@Path("id")id:Long): Response<Student>
+    suspend fun getStudent(@Path("id")id: Long): Response<Student>
 
     @GET("students/")
-    suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")studentId:Long): Response<List<Academy>>
+    suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")studentId: Long): Response<List<Academy>>
 
     @GET("academy/classroom/lessons")
-    suspend fun getLessonsByStudentId(@Query("studentId")id:Long): Response<List<Lesson>>
+    suspend fun getLessonsByStudentId(@Query("studentId")id: Long): Response<List<Lesson>>
+
+    @GET("academy/classrooms")
+    suspend fun getClassroomsByNameAndAcademyId(@Query("academyId")id: Long,@Query("nameLike")name: String): Response<List<Classroom>>
+
+    @GET("academy/classroom/lessons")
+    suspend fun getStudentLessonsByDate(@Query("studentId")id: Long, @Query("sinceDate")sinceDate: String,
+                                        @Query("untilDate")untilDate:String): Response<List<Lesson>>
 }

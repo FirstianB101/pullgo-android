@@ -8,6 +8,6 @@ class Classroom(
     var name: String?
 ):Serializable {
     override fun toString(): String {
-        return name ?: ""
+        return name?.split(';')?.get(0) ?: ""
     }
 }

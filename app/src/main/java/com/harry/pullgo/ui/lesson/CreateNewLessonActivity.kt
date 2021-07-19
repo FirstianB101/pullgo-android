@@ -2,6 +2,8 @@ package com.harry.pullgo.ui.lesson
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -126,11 +128,15 @@ class CreateNewLessonActivity : AppCompatActivity() {
     private fun setSpinnerItems(){
         val classrooms = viewModel.createNewLessonRepositories.value!!.toMutableList()
         val adapter: ArrayAdapter<Classroom> = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,classrooms)
-        binding.spinnerSelectClassroom.setAdapter(adapter)
-        selectedClassroom = if(classrooms.isEmpty()) null else classrooms[0]
+        binding.spinnerSelectClassroom.adapter = adapter
 
-        binding.spinnerSelectClassroom.setOnItemSelectedListener { view, position, id, item ->
-            selectedClassroom = item as Classroom
+        binding.spinnerSelectClassroom.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedClassroom = classrooms[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
         }
     }
 

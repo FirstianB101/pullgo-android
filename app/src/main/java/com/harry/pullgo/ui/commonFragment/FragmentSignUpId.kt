@@ -72,14 +72,8 @@ class FragmentSignUpId(): Fragment() {
         }
     }
 
-    private fun teacherOverlap(userId:String):Boolean{
-        var isOverlap=false
-        //val retrofit=RetrofitClient.getInstance()
-        //val service=retrofit.create(RetrofitService::class.java)
-
-        //val call:Call<List<Teacher>> = service.getTeachersList()
-
-        return isOverlap
+    private fun teacherOverlap(userId: String): Boolean {
+        return false
     }
 
     fun checkId(inputId: String):Boolean{

@@ -21,6 +21,7 @@ import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
+import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
@@ -142,10 +143,15 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_student_calendar -> onFragmentSelected(STUDENT_MENU.CALENDAR)
             R.id.nav_student_exam_list -> onFragmentSelected(STUDENT_MENU.EXAM_LIST)
             R.id.nav_student_previous_exam -> onFragmentSelected(STUDENT_MENU.PREVIOUS_EXAM)
-            //R.id.nav_student_apply_classroom -> onFragmentSelected(STUDENT_MENU.)
+            R.id.nav_student_apply_classroom -> startApplyClassroomActivity()
         }
         binding.studentDrawerLayout.closeDrawer(binding.navigationViewStudent)
         return true
+    }
+
+    private fun startApplyClassroomActivity(){
+        val intent = Intent(this, ApplyClassroomActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onFragmentSelected(position: STUDENT_MENU) {

@@ -9,5 +9,7 @@ class Academy(
     var address: String?,
     var ownerId: Long?
 ) :Serializable {
-
+    override fun toString(): String {
+        return name ?: ""
+    }
 }

@@ -1,12 +1,10 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentLessonInfoDialogBinding
 
 class FragmentLessonInfoDialog : DialogFragment() {

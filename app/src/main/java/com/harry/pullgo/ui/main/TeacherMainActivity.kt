@@ -24,6 +24,7 @@ import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
+import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherHomeFragmentNoAcademy
@@ -138,9 +139,15 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_teacher_change_info -> onFragmentSelected(TEACHER_MENU.CHANGE_INFO_CHECK_PW)
             R.id.nav_teacher_calendar -> onFragmentSelected(TEACHER_MENU.CALENDAR)
             R.id.nav_teacher_manage_classroom -> onFragmentSelected(TEACHER_MENU.MANAGE_CLASSROOM)
+            R.id.nav_teacher_apply_classroom -> startApplyClassroomActivity()
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
+    }
+
+    private fun startApplyClassroomActivity(){
+        val intent = Intent(this, ApplyClassroomActivity::class.java)
+        startActivity(intent)
     }
 
     private fun onFragmentSelected(position: TEACHER_MENU) {

@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -12,8 +12,6 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
 import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.objects.Lesson
-import com.harry.pullgo.data.objects.Schedule
 import com.harry.pullgo.databinding.FragmentLessonInfoManageDialogBinding
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -143,7 +141,5 @@ class FragmentLessonInfoManageDialog :DialogFragment(){
 
     companion object {
         const val TAG_LESSON_INFO_MANAGE_DIALOG = "lesson_info_manage_dialog"
-        val instance: FragmentLessonInfoManageDialog
-            get() = FragmentLessonInfoManageDialog()
     }
 }

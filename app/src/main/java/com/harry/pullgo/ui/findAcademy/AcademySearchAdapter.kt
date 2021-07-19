@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui
+package com.harry.pullgo.ui.findAcademy
 
 import android.view.LayoutInflater
 import android.view.View

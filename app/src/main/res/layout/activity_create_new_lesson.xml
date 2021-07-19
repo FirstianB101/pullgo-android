@@ -17,11 +17,15 @@
         app:layout_constraintStart_toStartOf="@+id/guidelineCreateLesson"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.jaredrummler.materialspinner.MaterialSpinner
+    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
         android:id="@+id/spinnerSelectClassroom"
         android:layout_width="@dimen/date_pick_spinner_width"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        app:smsp_hint="학원을 선택하세요"
+        app:smsp_floatingLabelText="선택한 학원"
+        app:smsp_floatingLabelColor="@color/main_color"
+        app:smsp_hintSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewSelectClassroom"
         app:layout_constraintTop_toTopOf="parent" />

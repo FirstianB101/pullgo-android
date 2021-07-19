@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Pullgo.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarApplyClassroom"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Pullgo.PopupOverlay" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:layout_width="@dimen/date_pick_text_view_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="학원 선택"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/spinnerApplyClassroomSelectAcademy"
+            android:layout_width="@dimen/date_pick_spinner_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:smsp_hint="학원을 선택하세요"
+            app:smsp_floatingLabelText="선택한 학원"
+            app:smsp_floatingLabelColor="@color/main_color"
+            app:smsp_hintSize="18sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/searchAreaApplyClassroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/applyClassroomSearchLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="@dimen/find_academy_search_area"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/applyClassroomSearchText"
+                android:hint="선생님 이름 혹은 반 이름"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/buttonApplyClassroomSearch"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/main_color"
+            android:src="@drawable/baseline_search_black_18dp"
+            app:tint="@color/white" />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textViewApplyClassroomNoAcademy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:text="가입된 학원이 없습니다!"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical|center_horizontal"/>
+
+    <TextView
+        android:id="@+id/textViewApplyClassroomNoClassroom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="검색된 반이 존재하지 않습니다!"
+        android:layout_marginTop="100dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/applyClassroomRecyclerView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

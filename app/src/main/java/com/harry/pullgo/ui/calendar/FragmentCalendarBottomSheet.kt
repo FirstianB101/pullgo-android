@@ -9,21 +9,24 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.data.api.OnLessonClick
 import com.harry.pullgo.data.objects.Lesson
 import com.harry.pullgo.data.objects.LoginInfo
+import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBottomSheetBinding
-import com.harry.pullgo.ui.FragmentLessonInfoDialog
-import com.harry.pullgo.ui.FragmentLessonInfoManageDialog
+import com.harry.pullgo.ui.dialog.FragmentLessonInfoDialog
+import com.harry.pullgo.ui.dialog.FragmentLessonInfoManageDialog
 
 class FragmentCalendarBottomSheet : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
-    var date: String? = null
+    private lateinit var viewModel: LessonsViewModel
+    private var date: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         initialize()
+        setViewModel()
 
         return binding.root
     }
@@ -36,15 +39,26 @@ class FragmentCalendarBottomSheet : BottomSheetDialogFragment(){
             binding.textViewShowDate.text = date
         }
 
-        setItemClickListenerByAuthor()
         binding.recyclerViewBottomSheet.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    private fun setItemClickListenerByAuthor(){
-        val testLessons = Array(2){
-            Lesson("Lesson for test",null,null)
+    private fun setViewModel(){
+        viewModel = LessonsViewModel(LessonsRepository())
+
+        viewModel.dayLessonsRepositories.observe(requireActivity()){
+            showLessons()
         }
-        val adapter = BottomSheetLessonsAdapter(testLessons)
+
+        if(LoginInfo.loginTeacher != null){
+            viewModel.requestTeacherLessonOnDate(LoginInfo.loginTeacher?.id!!,date!!)
+        }else if(LoginInfo.loginStudent != null){
+            viewModel.requestStudentLessonOnDate(LoginInfo.loginStudent?.id!!,date!!)
+        }
+    }
+
+    private fun showLessons(){
+        val lessons = viewModel.dayLessonsRepositories.value
+        val adapter = BottomSheetLessonsAdapter(lessons)
 
         if(LoginInfo.loginStudent != null){ // student
             adapter.itemClickListener = object: OnLessonClick{
@@ -61,5 +75,8 @@ class FragmentCalendarBottomSheet : BottomSheetDialogFragment(){
         }
 
         binding.recyclerViewBottomSheet.adapter = adapter
+        val lessonNumText = if(lessons != null && lessons.isNotEmpty()) "${lessons?.size}개의 수업이 있습니다"
+                            else "해당 날짜에 수업이 없습니다"
+        binding.textViewLessonNum.text = lessonNumText
     }
 }
