@@ -54,9 +54,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         setSupportActionBar(binding.studentToolbar)
 
-        initViewModels()
-
         initialize()
+        initViewModels()
         setListeners()
     }
 
@@ -65,8 +64,6 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(AppliedAcademyGroupViewModel::class.java)
 
         changeInfoViewModel = ViewModelProvider(this).get(ChangeInfoViewModel::class.java)
-
-        headerView = binding.navigationViewStudent.getHeaderView(0)
 
         changeInfoViewModel.changeStudent.observe(this){
             changeStudentInfo(changeInfoViewModel.changeStudent.value)
@@ -87,10 +84,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, studentHomeFragment).commit()
 
+        headerView = binding.navigationViewStudent.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
         headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
-
-        calendarFragment
     }
 
     private fun setListeners(){

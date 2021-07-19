@@ -26,9 +26,11 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         initializeCalendar()
         setViewModel()
         setListeners()
+
         return binding.root
     }
 
@@ -63,7 +65,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             CalendarSaturdayDecorator(),
             CalendarSundayDecorator()
         )
-        binding.calendarView.addDecorator(CalendarEventDecorator(Color.RED, setOf(CalendarDay.today())))
         binding.calendarView.setOnDateChangedListener(this)
     }
 
@@ -94,12 +95,9 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         var tmp: List<Int>
         for(date in dates){
             //연도-월-일 형식이며 월은 0부터 시작하므로 1 빼줌
-            tmp = date.split('-').map{d->d.toInt()}
+            tmp = date.split('-').map{ d->d.toInt() }
             calList.add(CalendarDay.from(tmp[0],tmp[1] - 1,tmp[2]))
         }
-
-        for(cday in calList){
-            binding.calendarView.addDecorator(CalendarEventDecorator(R.color.secondary_color,calList))
-        }
+        binding.calendarView.addDecorator(CalendarEventDecorator(R.color.statusbar_color,calList))
     }
 }

@@ -53,9 +53,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         setContentView(binding.root)
         setSupportActionBar(binding.teacherToolbar)
 
-        initViewModels()
-
         initialize()
+        initViewModels()
         setListeners()
 
         changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
@@ -66,8 +65,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(AppliedAcademyGroupViewModel::class.java)
 
         changeInfoViewModel = ViewModelProvider(this).get(ChangeInfoViewModel::class.java)
-
-        headerView = binding.navigationViewTeacher.getHeaderView(0)
 
         changeInfoViewModel.changeTeacher.observe(this){
             changeTeacherInfo(changeInfoViewModel.changeTeacher.value)
@@ -86,6 +83,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
 
+        headerView = binding.navigationViewTeacher.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
         headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
     }
