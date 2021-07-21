@@ -98,7 +98,7 @@ class StudentSignUpActivity:AppCompatActivity(){
             service.createStudent(student).enqueue(object: Callback<Student> {
                 override fun onResponse(call: Call<Student>, response: Response<Student>) {
                     if(response.isSuccessful){
-                        val stu: Student?=response.body()
+                        Toast.makeText(applicationContext,"계정이 생성되었습니다",Toast.LENGTH_SHORT).show()
                     }else{
                         Toast.makeText(applicationContext,"계정을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
                     }

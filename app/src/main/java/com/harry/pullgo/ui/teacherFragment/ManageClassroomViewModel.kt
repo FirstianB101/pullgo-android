@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.lesson
+package com.harry.pullgo.ui.teacherFragment
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,16 +9,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CreateNewLessonViewModel(private val classroomsRepository: ClassroomsRepository):ViewModel() {
-    private val _createNewLessonRepositories = MutableLiveData<List<Classroom>>()
-    val createNewLessonRepositories = _createNewLessonRepositories
+class ManageClassroomViewModel(private val classroomsRepository: ClassroomsRepository): ViewModel() {
+    private val _getClassroomRepositories = MutableLiveData<List<Classroom>>()
+    val getClassroomRepositories = _getClassroomRepositories
 
     fun requestGetClassrooms(id: Long){
         CoroutineScope(Dispatchers.IO).launch {
             classroomsRepository.getClassroomsByTeacherId(id).let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
-                        _createNewLessonRepositories.postValue(it)
+                        _getClassroomRepositories.postValue(it)
                     }
                 }
             }
@@ -26,7 +26,7 @@ class CreateNewLessonViewModel(private val classroomsRepository: ClassroomsRepos
     }
 }
 
-class CreateNewLessonViewModelFactory(private val classroomsRepository: ClassroomsRepository): ViewModelProvider.Factory{
+class ManageClassroomViewModelFactory(private val classroomsRepository: ClassroomsRepository): ViewModelProvider.Factory{
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return modelClass.getConstructor(ClassroomsRepository::class.java).newInstance(classroomsRepository)
     }

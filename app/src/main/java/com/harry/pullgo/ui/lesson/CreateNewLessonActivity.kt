@@ -1,7 +1,6 @@
 package com.harry.pullgo.ui.lesson
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -15,7 +14,7 @@ import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.*
-import com.harry.pullgo.data.repository.CreateNewLessonRepository
+import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.ActivityCreateNewLessonBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,7 +43,7 @@ class CreateNewLessonActivity : AppCompatActivity() {
     }
 
     private fun initViewModel(){
-        val viewModelFactory = CreateNewLessonViewModelFactory(CreateNewLessonRepository())
+        val viewModelFactory = CreateNewLessonViewModelFactory(ClassroomsRepository())
         viewModel = ViewModelProvider(this,viewModelFactory).get(CreateNewLessonViewModel::class.java)
 
         viewModel.createNewLessonRepositories.observe(this){

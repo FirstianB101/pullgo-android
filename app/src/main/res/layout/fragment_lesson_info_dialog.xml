@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/textViewLessonName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/calendar_lesson_dialog_text_size"
         android:padding="10dp"
@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/textViewClassroomName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/calendar_lesson_dialog_text_size"
         android:padding="10dp"
@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/textViewLessonDate"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/calendar_lesson_dialog_text_size"
         android:padding="10dp"
@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/textViewLessonTime"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/calendar_lesson_dialog_text_size"
         android:padding="10dp"

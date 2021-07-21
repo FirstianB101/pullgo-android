@@ -77,4 +77,10 @@ interface RetrofitService {
     @GET("academy/classroom/lessons")
     suspend fun getStudentLessonsByDate(@Query("studentId")id: Long, @Query("sinceDate")sinceDate: String,
                                         @Query("untilDate")untilDate:String): Response<List<Lesson>>
+
+    @DELETE("academy/classrooms/{id}")
+    fun deleteClassroom(@Path("id")id: Long): Call<Unit>
+
+    @PATCH("academy/classrooms/{id}")
+    fun editClassroom(@Path("id")id: Long, @Body classroom: Classroom): Call<Classroom>
 }
