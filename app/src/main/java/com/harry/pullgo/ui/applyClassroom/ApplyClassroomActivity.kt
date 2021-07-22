@@ -72,7 +72,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     private fun setSpinnerItems(){
-        val academies = viewModel.appliedAcademiesRepository.value!!.toMutableList()
+        val academies = viewModel.appliedAcademiesRepository.value!!
 
         val adapter: ArrayAdapter<Academy> = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,academies)
         binding.spinnerApplyClassroomSelectAcademy.adapter = adapter

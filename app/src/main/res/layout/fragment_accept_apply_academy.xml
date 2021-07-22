@@ -62,15 +62,9 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewStudentAcceptApplyAcademy"
+            android:id="@+id/recyclerViewAcceptApplyAcademy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewTeacherAcceptApplyAcademy"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/textViewAcceptApplyAcademyNoAcademy"

@@ -125,7 +125,7 @@ class CreateNewLessonActivity : AppCompatActivity() {
     }
 
     private fun setSpinnerItems(){
-        val classrooms = viewModel.createNewLessonRepositories.value!!.toMutableList()
+        val classrooms = viewModel.createNewLessonRepositories.value!!
         val adapter: ArrayAdapter<Classroom> = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,classrooms)
         binding.spinnerSelectClassroom.adapter = adapter
 

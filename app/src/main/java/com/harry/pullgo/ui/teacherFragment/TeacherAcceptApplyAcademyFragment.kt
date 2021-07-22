@@ -44,33 +44,19 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun initialize(){
-        binding.recyclerViewStudentAcceptApplyAcademy.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewTeacherAcceptApplyAcademy.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewAcceptApplyAcademy.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.switchAcceptApplyAcademy.setOnCheckedChangeListener { buttonView, isChecked ->
-            changeVisibilityUserRecyclerView(isChecked)
+        binding.switchAcceptApplyAcademy.setOnCheckedChangeListener { _, isChecked ->
+            binding.textViewAcceptApplyAcademySwitch.text = if(isChecked) "선생님" else "학생"
             refreshAdapter(isChecked)
         }
     }
 
-    private fun changeVisibilityUserRecyclerView(isChecked: Boolean){
-        if(isChecked){
-            binding.recyclerViewStudentAcceptApplyAcademy.visibility = View.GONE
-            binding.recyclerViewTeacherAcceptApplyAcademy.visibility = View.VISIBLE
-            binding.textViewAcceptApplyAcademySwitch.text = "선생님"
-        }else{
-            binding.recyclerViewStudentAcceptApplyAcademy.visibility = View.VISIBLE
-            binding.recyclerViewTeacherAcceptApplyAcademy.visibility = View.GONE
-            binding.textViewAcceptApplyAcademySwitch.text = "학생"
-        }
-    }
-
     private fun refreshAdapter(isChecked: Boolean){
-        if(isChecked){
+        if(isChecked)
             viewModel.requestGetTeachers(selectedAcademy?.id!!)
-        }else{
+        else
             viewModel.requestGetStudents(selectedAcademy?.id!!)
-        }
     }
 
     private fun initViewModel(){
@@ -95,7 +81,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun setSpinnerItems(){
-        val academies = viewModel.academyRepositories.value!!.toMutableList()
+        val academies = viewModel.academyRepositories.value!!
 
         val adapter: ArrayAdapter<Academy> = ArrayAdapter(requireContext(),R.layout.simple_spinner_dropdown_item,academies)
         binding.spinnerAcceptApplyAcademy.adapter = adapter
@@ -119,7 +105,6 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     private fun initializeSwitch(){
         binding.switchAcceptApplyAcademy.isChecked = false
         binding.textViewAcceptApplyAcademySwitch.text = "학생"
-        changeVisibilityUserRecyclerView(false)
         refreshAdapter(false)
     }
 
@@ -138,13 +123,9 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                 }
             }
         }
-        binding.recyclerViewStudentAcceptApplyAcademy.adapter = adapter
+        binding.recyclerViewAcceptApplyAcademy.adapter = adapter
 
-        if(data?.isEmpty() == true){
-            binding.textViewAcceptApplyAcademyNoResult.visibility = View.VISIBLE
-        }else{
-            binding.textViewAcceptApplyAcademyNoResult.visibility = View.GONE
-        }
+        showNoResultText(data?.isEmpty() == true)
     }
 
     private fun displayTeachers(){
@@ -162,13 +143,16 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                 }
             }
         }
-        binding.recyclerViewTeacherAcceptApplyAcademy.adapter = adapter
+        binding.recyclerViewAcceptApplyAcademy.adapter = adapter
 
-        if(data?.isEmpty() == true){
+        showNoResultText(data?.isEmpty() == true)
+    }
+
+    private fun showNoResultText(isEmpty: Boolean){
+        if(isEmpty)
             binding.textViewAcceptApplyAcademyNoResult.visibility = View.VISIBLE
-        }else{
+        else
             binding.textViewAcceptApplyAcademyNoResult.visibility = View.GONE
-        }
     }
 
     private fun doStudentApplyProcess(){
