@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:enabled="false"
+            android:textColor="@color/black"
             android:hint="반 이름"
             android:inputType="textPersonName"
             android:textColorHint="@color/light_gray" />
@@ -70,6 +71,7 @@
             android:ems="10"
             android:enabled="false"
             android:hint="날짜"
+            android:textColor="@color/black"
             android:inputType="textPersonName"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -104,7 +106,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:enabled="false"
-            android:hint="반 이름"
+            android:hint="선생님 이름"
+            android:textColor="@color/black"
             android:inputType="textPersonName"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>

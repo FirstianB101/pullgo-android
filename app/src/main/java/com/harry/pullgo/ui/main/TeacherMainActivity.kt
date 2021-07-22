@@ -1,6 +1,5 @@
 package com.harry.pullgo.ui.main
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.navigation.NavigationView
@@ -10,8 +9,6 @@ import androidx.core.view.GravityCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -29,6 +26,7 @@ import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
+import com.harry.pullgo.ui.teacherFragment.TeacherAcceptApplyAcademyFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherHomeFragmentNoAcademy
 import com.harry.pullgo.ui.teacherFragment.TeacherManageClassroomFragment
@@ -47,6 +45,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
     lateinit var manageClassroomFragment: TeacherManageClassroomFragment
+    lateinit var acceptApplyAcademyFragmentFragment: TeacherAcceptApplyAcademyFragment
 
     lateinit var homeViewModel: AppliedAcademyGroupViewModel
     lateinit var changeInfoViewModel: ChangeInfoViewModel
@@ -86,6 +85,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
         calendarFragment = CalendarFragment()
         manageClassroomFragment = TeacherManageClassroomFragment()
+        acceptApplyAcademyFragmentFragment = TeacherAcceptApplyAcademyFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
 
@@ -144,6 +144,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_teacher_calendar -> onFragmentSelected(TEACHER_MENU.CALENDAR)
             R.id.nav_teacher_manage_classroom -> onFragmentSelected(TEACHER_MENU.MANAGE_CLASSROOM)
             R.id.nav_teacher_apply_classroom -> startApplyClassroomActivity()
+            R.id.nav_teacher_manage_accept_academy -> onFragmentSelected(TEACHER_MENU.ACCEPT_ACADEMY)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
@@ -171,6 +172,9 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             TEACHER_MENU.MANAGE_CLASSROOM -> {
                 curFragment = manageClassroomFragment
+            }
+            TEACHER_MENU.ACCEPT_ACADEMY -> {
+                curFragment = acceptApplyAcademyFragmentFragment
             }
             else -> {}
         }
@@ -233,6 +237,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         PREVIOUS_EXAM,
         CHANGE_INFO_CHECK_PW,
         APPLY_CLASSROOM,
+        ACCEPT_ACADEMY,
         MANAGE_ACADEMY
     }
 }

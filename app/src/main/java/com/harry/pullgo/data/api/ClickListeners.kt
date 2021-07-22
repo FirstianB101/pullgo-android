@@ -1,9 +1,7 @@
 package com.harry.pullgo.data.api
 
 import android.view.View
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.data.objects.*
 
 interface OnAcademyClick {
     fun onAcademyClick(view: View,academy: Academy?)
@@ -19,4 +17,12 @@ interface OnLessonClick {
 
 interface OnClassroomClick{
     fun onClassroomClick(view: View, classroom: Classroom?)
+}
+
+interface OnStudentAcceptAcademy{
+    fun onStudentAcceptAcademy(view: View, student: Student?)
+}
+
+interface OnTeacherAcceptAcademy{
+    fun onTeacherAcceptAcademy(view: View, teacher: Teacher?)
 }

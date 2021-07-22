@@ -31,7 +31,7 @@ class FindAcademyActivity : AppCompatActivity() {
         setListeners()
 
         binding.toolbarFindAcademy.title = "학원 찾기"
-        binding.findAcademyRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewFindAcademy.layoutManager = LinearLayoutManager(this)
     }
 
     private fun initViewModel(){
@@ -47,7 +47,7 @@ class FindAcademyActivity : AppCompatActivity() {
 
     private fun setListeners(){
         binding.buttonFindAcademySearch.setOnClickListener {
-            viewModel.requestGetAcademies(binding.findAcademySearchText.text.toString())
+            viewModel.requestGetAcademies(binding.searchTextFindAcademy.text.toString())
         }
     }
 
@@ -66,7 +66,7 @@ class FindAcademyActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.findAcademyRecyclerView.adapter = academyAdapter
+        binding.recyclerViewFindAcademy.adapter = academyAdapter
     }
 
     private fun showApplyRequestDialog(academy: Academy?){

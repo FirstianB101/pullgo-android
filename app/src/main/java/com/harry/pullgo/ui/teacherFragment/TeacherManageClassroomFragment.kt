@@ -53,8 +53,8 @@ class TeacherManageClassroomFragment: Fragment() {
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
-                when(it.data?.getIntExtra("finishedFragment",-1)){
-                    3 -> viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
+                if(it.data?.getStringExtra("finishedFragment") == "editClassroom"){
+                    viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
                 }
             }
         }

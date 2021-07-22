@@ -67,6 +67,7 @@ class EditClassroomFragment: Fragment() {
                 }
             }else{
                 setLayoutsEnabled()
+                binding.textEditClassroomName.requestFocus()
                 binding.buttonEditClassroomEdit.text = "수정 완료"
                 isEditModeOn = true
             }
@@ -146,7 +147,7 @@ class EditClassroomFragment: Fragment() {
 
     private fun finishActivity(){
         val intent = Intent()
-        intent.putExtra("finishedFragment",3)
+        intent.putExtra("finishedFragment","editClassroom")
         requireActivity().setResult(Activity.RESULT_OK,intent)
         requireActivity().finish()
         Toast.makeText(requireActivity().applicationContext,"반을 삭제했습니다",Toast.LENGTH_SHORT).show()
