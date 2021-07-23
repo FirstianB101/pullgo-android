@@ -58,10 +58,12 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
 
         viewModel.studentsRequestApplyClassroom.observe(requireActivity()){
             displayStudentRequests()
+            viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
         }
 
         viewModel.teachersRequestApplyClassroom.observe(requireActivity()){
             displayTeacherRequests()
+            viewModel.requestGetTeachersAppliedClassroom(selectedClassroom.id!!)
         }
 
         binding.recyclerViewManageClassroomRequest.layoutManager = LinearLayoutManager(requireContext())
