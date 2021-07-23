@@ -3,30 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_student_home"
-            android:title="홈으로"
-            android:checked="true"/>
-        <item
-            android:id="@+id/nav_student_calendar"
-            android:title="수업 일정" />
+    <item
+        android:id="@+id/nav_student_home"
+        android:title="홈으로"/>
+    <item
+        android:id="@+id/nav_student_calendar"
+        android:title="수업 일정" />
 
-        <item
-            android:id="@+id/nav_student_change_info"
-            android:title="회원정보 수정" />
+    <item
+        android:id="@+id/nav_student_change_info"
+        android:title="회원정보 수정" />
 
-        <item
-            android:id="@+id/nav_student_exam_list"
-            android:title="시험 목록"/>
+    <item
+        android:id="@+id/nav_student_exam_list"
+        android:title="시험 목록"/>
 
-        <item
-            android:id="@+id/nav_student_previous_exam"
-            android:title="오답 노트"/>
+    <item
+        android:id="@+id/nav_student_previous_exam"
+        android:title="오답 노트"/>
 
-        <item
-            android:id="@+id/nav_student_apply_classroom"
-            android:title="반 가입 요청"/>
-    </group>
+    <item
+        android:id="@+id/nav_student_apply_classroom"
+        android:title="반 가입 요청"/>
 </menu>

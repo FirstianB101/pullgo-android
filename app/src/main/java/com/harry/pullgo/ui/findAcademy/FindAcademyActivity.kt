@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.harry.pullgo.data.adapter.AcademySearchAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClick
 import com.harry.pullgo.data.api.RetrofitClient
@@ -90,7 +91,7 @@ class FindAcademyActivity : AppCompatActivity() {
                         if(response.isSuccessful){
                             Snackbar.make(binding.root,"가입 요청이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
                         }else{
-                            Snackbar.make(binding.root,"가입 요청에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root,"이미 해당 학원에 등록되어 있습니다",Snackbar.LENGTH_SHORT).show()
                         }
                     }
 
@@ -99,12 +100,12 @@ class FindAcademyActivity : AppCompatActivity() {
                     }
                 })
             else
-                service.sendStudentApplyAcademyRequest(LoginInfo.loginTeacher?.id!!,academyId).enqueue(object: Callback<Unit>{
+                service.sendTeacherApplyAcademyRequest(LoginInfo.loginTeacher?.id!!,academyId).enqueue(object: Callback<Unit>{
                     override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                         if(response.isSuccessful){
                             Snackbar.make(binding.root,"가입 요청이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
                         }else{
-                            Snackbar.make(binding.root,"가입 요청에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root,"이미 해당 학원에 등록되어 있습니다",Snackbar.LENGTH_SHORT).show()
                         }
                     }
 

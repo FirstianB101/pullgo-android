@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.teacherFragment
+package com.harry.pullgo.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +17,15 @@ class TeacherAcceptApplyAcademyAdapter(private val dataSet: List<Student>):
     var buttonAcceptAcademyListener: OnStudentAcceptAcademy? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewName: TextView = view.findViewById(R.id.textViewAcceptApplyAcademyName)
-        val textViewSchool: TextView = view.findViewById(R.id.textViewAcceptApplyAcademySchoolName)
-        val textViewYear: TextView = view.findViewById(R.id.textViewAcceptApplyAcademyYear)
-        val button: Button = view.findViewById(R.id.buttonAcceptApplyAcademy)
+        val textViewName: TextView = view.findViewById(R.id.textViewStudentItemName)
+        val textViewSchool: TextView = view.findViewById(R.id.textViewStudentItemSchoolName)
+        val textViewYear: TextView = view.findViewById(R.id.textViewStudentItemYear)
+        val button: Button = view.findViewById(R.id.buttonStudentItemApply)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_accept_apply_academy_item,parent,false)
+            .inflate(R.layout.layout_student_apply_item,parent,false)
         return ViewHolder(view)
     }
 
@@ -46,15 +46,15 @@ class TeacherAcceptApplyAcademyAdapterForTeacher(private val dataSet: List<Teach
     var buttonAcceptAcademyListener: OnTeacherAcceptAcademy? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewName: TextView = view.findViewById(R.id.textViewAcceptApplyAcademyName)
-        val textViewSchool: TextView = view.findViewById(R.id.textViewAcceptApplyAcademySchoolName)
-        val textViewYear: TextView = view.findViewById(R.id.textViewAcceptApplyAcademyYear)
-        val button: Button = view.findViewById(R.id.buttonAcceptApplyAcademy)
+        val textViewName: TextView = view.findViewById(R.id.textViewStudentItemName)
+        val textViewSchool: TextView = view.findViewById(R.id.textViewStudentItemSchoolName)
+        val textViewYear: TextView = view.findViewById(R.id.textViewStudentItemYear)
+        val button: Button = view.findViewById(R.id.buttonStudentItemApply)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_accept_apply_academy_item,parent,false)
+            .inflate(R.layout.layout_student_apply_item,parent,false)
         return ViewHolder(view)
     }
 

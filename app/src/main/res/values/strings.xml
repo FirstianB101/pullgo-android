@@ -31,4 +31,5 @@
     <string name="find_pw_success_comment">임시 비밀번호가 전송되었습니다\n로그인 후 비밀번호를 변경해 주세요</string>
     <string name="underlined_create_classroom"><u>반 생성</u></string>
     <string name="underlined_accept_apply_academy"><u>승인</u></string>
+    <string name="underlined_manage_classroom_kick_student"><u>반에서 제외</u></string>
 </resources>

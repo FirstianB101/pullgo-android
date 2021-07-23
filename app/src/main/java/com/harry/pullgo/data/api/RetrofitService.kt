@@ -13,6 +13,9 @@ interface RetrofitService {
     @POST("teachers/{id}/apply-classroom")
     fun sendTeacherApplyClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
 
+    @POST("teachers/{id}/apply-academy")
+    fun sendTeacherApplyAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Call<Unit>
+
     @PATCH("teachers/{id}")
     fun changeTeacherInfo(@Path("id")id:Long, @Body teacher: Teacher):Call<Teacher>
 
@@ -23,7 +26,13 @@ interface RetrofitService {
     suspend fun getAcademiesByTeacherAppliedAcademyId(@Query("appliedAcademyId")teacherId:Long): Response<List<Academy>>
 
     @GET("teachers")
-    suspend fun getTeachersAppliedAcademy(@Query("appliedAcademyId")id: Long): Response<List<Teacher>>
+    suspend fun getTeachersRequestApplyAcademy(@Query("appliedAcademyId")id: Long): Response<List<Teacher>>
+
+    @GET("teachers")
+    suspend fun getTeachersRequestApplyClassroom(@Query("appliedClassroomId")id: Long): Response<List<Teacher>>
+
+    @GET("teachers")
+    suspend fun getTeachersAppliedClassroom(@Query("classroomId")id: Long): Response<List<Teacher>>
 
     @GET("academy/classrooms/")
     suspend fun getClassroomsByTeacherId(@Query("teacherId")id:Long): Response<List<Classroom>>
@@ -72,7 +81,13 @@ interface RetrofitService {
     suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")studentId: Long): Response<List<Academy>>
 
     @GET("students")
-    suspend fun getStudentsAppliedAcademy(@Query("appliedAcademyId")id: Long, @Query("sort")sortBy: String): Response<List<Student>>
+    suspend fun getStudentsRequestApplyAcademy(@Query("appliedAcademyId")id: Long, @Query("sort")sortBy: String): Response<List<Student>>
+
+    @GET("students")
+    suspend fun getStudentsRequestApplyClassroom(@Query("appliedClassroomId")id: Long): Response<List<Student>>
+
+    @GET("students")
+    suspend fun getStudentsAppliedClassroom(@Query("classroomId")id: Long): Response<List<Student>>
 
     @GET("academy/classroom/lessons")
     suspend fun getLessonsByStudentId(@Query("studentId")id: Long): Response<List<Lesson>>
@@ -90,9 +105,22 @@ interface RetrofitService {
     @PATCH("academy/classrooms/{id}")
     fun editClassroom(@Path("id")id: Long, @Body classroom: Classroom): Call<Classroom>
 
+
     @POST("academies/{id}/accept-student")
-    fun acceptStudentApplyAcademy(@Path("id")academyId: Long?,@Body studentId: Long): Call<Unit>
+    fun acceptStudentApplyAcademy(@Path("id")academyId: Long,@Body studentId: Long): Call<Unit>
 
     @POST("academies/{id}/accept-teacher")
-    fun acceptTeacherApplyAcademy(@Path("id")academyId: Long?, @Body teacherId: Long): Call<Unit>
+    fun acceptTeacherApplyAcademy(@Path("id")academyId: Long, @Body teacherId: Long): Call<Unit>
+
+    @POST("academy/classrooms/{id}/accept-student")
+    fun acceptStudentApplyClassroom(@Path("id")classroomId: Long, @Body studentId: Long): Call<Unit>
+
+    @POST("academy/classrooms/{id}/accept-teacher")
+    fun acceptTeacherApplyClassroom(@Path("id")classroomId: Long, @Body teacherId: Long): Call<Unit>
+
+    @POST("academy/classrooms/{id}/kick-student")
+    fun kickStudentFromClassroom(@Path("id")classroomId: Long, @Body studentId: Long): Call<Unit>
+
+    @POST("academy/classrooms/{id}/kick-teacher")
+    fun kickTeacherFromClassroom(@Path("id")classroomId: Long, @Body teacherId: Long): Call<Unit>
 }

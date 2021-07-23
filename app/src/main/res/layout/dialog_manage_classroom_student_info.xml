@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="24dp"
+    android:padding="24dp"
+    tools:context=".ui.dialog.FragmentLessonInfoDialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="학생 이름"/>
+
+        <TextView
+            android:id="@+id/textViewManageClassroomStudentName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="학생 이름"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="학생 ID"/>
+
+        <TextView
+            android:id="@+id/textViewManageClassroomStudentID"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="학생 ID"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="전화번호"/>
+
+        <TextView
+            android:id="@+id/textViewManageClassroomStudentPhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="전화번호"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="학교"/>
+
+        <TextView
+            android:id="@+id/textViewManageClassroomStudentSchool"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="학교"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="학년"/>
+
+        <TextView
+            android:id="@+id/textViewManageClassroomStudentYear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="학년"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="보호자 연락처"/>
+
+        <TextView
+            android:id="@+id/textViewManageClassroomStudentParentPhone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="보호자 연락처"/>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonManageClassroomKickStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/underlined_manage_classroom_kick_student"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/material_700_red"
+        android:layout_margin="10dp"
+        android:layout_gravity="right"
+        android:backgroundTint="@color/white"/>
+
+</LinearLayout>

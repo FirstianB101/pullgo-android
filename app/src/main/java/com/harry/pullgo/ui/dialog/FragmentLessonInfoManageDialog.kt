@@ -12,13 +12,13 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
 import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.databinding.FragmentLessonInfoManageDialogBinding
+import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 class FragmentLessonInfoManageDialog :DialogFragment(){
-    private val binding by lazy{FragmentLessonInfoManageDialogBinding.inflate(layoutInflater)}
+    private val binding by lazy{DialogLessonInfoManageBinding.inflate(layoutInflater)}
     private var selectedDate: Long? = null
     private var startHour = -1
     private var startMinute = -1

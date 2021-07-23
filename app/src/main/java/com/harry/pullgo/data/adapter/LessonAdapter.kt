@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.calendar
+package com.harry.pullgo.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,8 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnLessonClick
 import com.harry.pullgo.data.objects.Lesson
 
-class BottomSheetLessonsAdapter(private val dataSet: List<Lesson>?):
-    RecyclerView.Adapter<BottomSheetLessonsAdapter.ViewHolder>() {
+class LessonAdapter(private val dataSet: List<Lesson>?):
+    RecyclerView.Adapter<LessonAdapter.ViewHolder>() {
 
     var itemClickListener: OnLessonClick? = null
 

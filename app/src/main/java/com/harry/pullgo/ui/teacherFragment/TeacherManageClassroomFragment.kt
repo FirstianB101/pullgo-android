@@ -16,10 +16,7 @@ import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
-import com.harry.pullgo.ui.calendar.CalendarFragment
-import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
-import com.harry.pullgo.ui.main.TeacherMainActivity
-import com.harry.pullgo.ui.manageClassroom.ManageClassroomActivity
+import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsActivity
 
 class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
@@ -96,7 +93,7 @@ class TeacherManageClassroomFragment: Fragment() {
     private fun startManageClassroomActivity(classroom: Classroom?){
         selectedClassroom = classroom
 
-        val intent = Intent(requireContext(),ManageClassroomActivity::class.java)
+        val intent = Intent(requireContext(),ManageClassroomDetailsActivity::class.java)
 
         intent.putExtra("selectedClassroomId",selectedClassroom?.id)
         intent.putExtra("selectedClassroomAcademyId",selectedClassroom?.academyId)

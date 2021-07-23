@@ -32,4 +32,5 @@
     <dimen name="date_pick_spinner_width">200dp</dimen>
     <dimen name="date_pick_spinner_width_small">180dp</dimen>
     <dimen name="calendar_lesson_dialog_text_size">18sp</dimen>
+    <dimen name="manage_classroom_student_dialog_textview_width">140dp</dimen>
 </resources>

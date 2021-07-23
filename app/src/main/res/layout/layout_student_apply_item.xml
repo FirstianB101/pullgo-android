@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textViewAcceptApplyAcademyName"
+            android:id="@+id/textViewStudentItemName"
             android:padding="8dp"
             android:textSize="19sp"
             android:textStyle="bold"
@@ -32,7 +32,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textViewAcceptApplyAcademySchoolName"
+                android:id="@+id/textViewStudentItemSchoolName"
                 android:padding="6dp"
                 android:textSize="17sp"
                 android:text="학교 이름"
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/textViewAcceptApplyAcademyYear"
+                android:id="@+id/textViewStudentItemYear"
                 android:padding="6dp"
                 android:textSize="16sp"
                 android:text="학년"
@@ -52,7 +52,7 @@
                 android:layout_weight="1"/>
 
             <Button
-                android:id="@+id/buttonAcceptApplyAcademy"
+                android:id="@+id/buttonStudentItemApply"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/underlined_accept_apply_academy"

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.harry.pullgo.data.adapter.BottomSheetLessonsAdapter
 import com.harry.pullgo.data.api.OnLessonClick
 import com.harry.pullgo.data.objects.Lesson
 import com.harry.pullgo.data.objects.LoginInfo
@@ -20,11 +21,7 @@ class FragmentCalendarBottomSheet : BottomSheetDialogFragment(){
     private lateinit var viewModel: LessonsViewModel
     private var date: String? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
         setViewModel()
 

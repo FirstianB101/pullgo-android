@@ -1,8 +1,7 @@
-package com.harry.pullgo.ui.manageClassroom
+package com.harry.pullgo.ui.manageClassroomDetails
 
 import android.app.Activity
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,24 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.R
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import com.harry.pullgo.ui.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class EditClassroomFragment: Fragment() {
+class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClasssroomEditClassroomBinding.inflate(layoutInflater)}
 
-    lateinit var selectedClassroom: Classroom
     private var isEditModeOn = false
     private var isFormatGood = true
 

@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.manageClassroom.ManageClassroomActivity">
+    tools:context=".ui.manageClassroomDetails.ManageClassroomDetailsActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarManageClassroom"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:titleTextColor="@color/white"
         app:title="Pullgo"
-        app:popupTheme="@style/Theme.Pullgo.PopupOverlay" />
+        app:popupTheme="@style/Theme.Pullgo.PopupOverlay"/>
 
     <FrameLayout
         android:id="@+id/mainFragmentManageClassroom"

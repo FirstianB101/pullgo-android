@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.applyClassroom
+package com.harry.pullgo.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnAcademyClick
 import com.harry.pullgo.data.api.OnClassroomClick
-import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.Classroom
 
-class ApplyClassroomAdapter(private val dataSet: List<Classroom>)
-    :RecyclerView.Adapter<ApplyClassroomAdapter.ViewHolder>(){
+class ClassroomAdapter(private val dataSet: List<Classroom>)
+    : RecyclerView.Adapter<ClassroomAdapter.ViewHolder>(){
 
     var itemClickListener: OnClassroomClick? = null
 

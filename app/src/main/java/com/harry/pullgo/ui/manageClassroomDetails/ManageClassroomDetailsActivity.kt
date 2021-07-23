@@ -1,16 +1,16 @@
-package com.harry.pullgo.ui.manageClassroom
+package com.harry.pullgo.ui.manageClassroomDetails
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.navigation.NavigationBarView
+import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
 import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.ActivityManageClassroomBinding
 
-class ManageClassroomActivity : AppCompatActivity() {
+class ManageClassroomDetailsActivity : AppCompatActivity() {
     val binding by lazy{ActivityManageClassroomBinding.inflate(layoutInflater)}
 
     private lateinit var editClassroomFragment: EditClassroomFragment
@@ -20,12 +20,20 @@ class ManageClassroomActivity : AppCompatActivity() {
 
     private lateinit var selectedClassroom: Classroom
 
+    private lateinit var viewModel: ManageClassroomDetailsViewModel
+    private lateinit var repository: ManageClassroomDetailsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initialize()
         setListeners()
+        initViewModel()
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 
     private fun initialize(){
@@ -34,14 +42,12 @@ class ManageClassroomActivity : AppCompatActivity() {
         val classroomName = intent?.getStringExtra("selectedClassroomName")
         selectedClassroom = Classroom(classroomId,classroomAcademyId,classroomName)
 
-        editClassroomFragment = EditClassroomFragment()
-        manageStudentFragment = ManageStudentFragment()
-        manageRequestsFragment = ManageRequestsFragment()
-        manageExamFragment = ManageExamFragment()
+        editClassroomFragment = EditClassroomFragment(selectedClassroom)
+        manageStudentFragment = ManageStudentFragment(selectedClassroom)
+        manageRequestsFragment = ManageRequestsFragment(selectedClassroom)
+        manageExamFragment = ManageExamFragment(selectedClassroom)
 
-        editClassroomFragment.selectedClassroom = selectedClassroom
-
-        supportFragmentManager.beginTransaction().replace(R.id.mainFragmentManageClassroom,editClassroomFragment).commit()
+        onFragmentSelected(0)
     }
 
     private fun setListeners(){
@@ -56,14 +62,33 @@ class ManageClassroomActivity : AppCompatActivity() {
         }
     }
 
+    private fun initViewModel(){
+        repository = ManageClassroomDetailsRepository()
+        val factory = ManageClassroomDetailsViewModelFactory(repository)
+
+        viewModel = ViewModelProvider(this,factory).get(ManageClassroomDetailsViewModel::class.java)
+    }
+
     private fun onFragmentSelected(position: Int): Boolean{
         var curFragment: Fragment? = null
 
         when(position){
-            0 -> curFragment = editClassroomFragment
-            1 -> curFragment = manageStudentFragment
-            2 -> curFragment = manageRequestsFragment
-            3 -> curFragment = manageExamFragment
+            0 -> {
+                curFragment = editClassroomFragment
+                binding.toolbarManageClassroom.title = "반 정보 관리"
+            }
+            1 -> {
+                curFragment = manageStudentFragment
+                binding.toolbarManageClassroom.title = "학생 관리"
+            }
+            2 -> {
+                curFragment = manageRequestsFragment
+                binding.toolbarManageClassroom.title = "가입 요청 관리"
+            }
+            3 -> {
+                curFragment = manageExamFragment
+                binding.toolbarManageClassroom.title = "시험 관리"
+            }
         }
 
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()

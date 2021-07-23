@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
+import com.harry.pullgo.data.adapter.ApplyClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClick
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.Classroom
@@ -20,7 +21,6 @@ import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.Serializable
 
 class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}

@@ -19,6 +19,10 @@ interface OnClassroomClick{
     fun onClassroomClick(view: View, classroom: Classroom?)
 }
 
+interface OnStudentClick{
+    fun onStudentClick(view: View, student: Student?)
+}
+
 interface OnStudentAcceptAcademy{
     fun onStudentAcceptAcademy(view: View, student: Student?)
 }

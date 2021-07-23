@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.findAcademy
+package com.harry.pullgo.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,8 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnAcademyClick
 import com.harry.pullgo.data.objects.Academy
 
-class AcademySearchAdapter(private val dataSet: List<Academy>):
-    RecyclerView.Adapter<AcademySearchAdapter.ViewHolder>(){
+class AcademyAdapter(private val dataSet: List<Academy>):
+    RecyclerView.Adapter<AcademyAdapter.ViewHolder>(){
     var itemClickListener: OnAcademyClick? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
