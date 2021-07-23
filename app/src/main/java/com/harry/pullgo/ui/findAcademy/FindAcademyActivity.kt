@@ -6,7 +6,7 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.data.adapter.AcademySearchAdapter
+import com.harry.pullgo.data.adapter.AcademyAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClick
 import com.harry.pullgo.data.api.RetrofitClient
@@ -56,7 +56,7 @@ class FindAcademyActivity : AppCompatActivity() {
         val data = viewModel.findAcademyRepositories.value
 
         val academyAdapter = data?.let {
-            AcademySearchAdapter(it)
+            AcademyAdapter(it)
         }
 
         if (academyAdapter != null) {

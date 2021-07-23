@@ -8,15 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.data.api.OnStudentAcceptAcademy
-import com.harry.pullgo.data.api.OnTeacherAcceptAcademy
+import com.harry.pullgo.data.adapter.StudentApplyAdapter
+import com.harry.pullgo.data.adapter.TeacherApplyAdapter
+import com.harry.pullgo.data.api.OnStudentClick
+import com.harry.pullgo.data.api.OnTeacherClick
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
-import com.harry.pullgo.data.adapter.TeacherAcceptApplyAcademyAdapter
-import com.harry.pullgo.data.adapter.TeacherAcceptApplyAcademyAdapterForTeacher
 
 class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
@@ -73,12 +73,12 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
         val data = viewModel.studentsRequestApplyClassroom.value
 
         val adapter = data?.let {
-            TeacherAcceptApplyAcademyAdapter(it)
+            StudentApplyAdapter(it)
         }
 
         if (adapter != null) {
-            adapter.buttonAcceptAcademyListener = object: OnStudentAcceptAcademy {
-                override fun onStudentAcceptAcademy(view: View, student: Student?) {
+            adapter.studentClickListener = object: OnStudentClick {
+                override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
                     Snackbar.make(binding.root,"선텍: ${student?.account?.fullName}",Snackbar.LENGTH_SHORT).show()
                 }
@@ -93,12 +93,12 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
         val data = viewModel.teachersRequestApplyClassroom.value
 
         val adapter = data?.let {
-            TeacherAcceptApplyAcademyAdapterForTeacher(it)
+            TeacherApplyAdapter(it)
         }
 
         if (adapter != null) {
-            adapter.buttonAcceptAcademyListener = object: OnTeacherAcceptAcademy {
-                override fun onTeacherAcceptAcademy(view: View, teacher: Teacher?) {
+            adapter.teacherClickListener = object: OnTeacherClick {
+                override fun onTeacherClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
                     Snackbar.make(binding.root,"선텍: ${teacher?.account?.fullName}",Snackbar.LENGTH_SHORT).show()
                 }

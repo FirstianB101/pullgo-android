@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.harry.pullgo.data.adapter.BottomSheetLessonsAdapter
+import com.harry.pullgo.data.adapter.LessonAdapter
 import com.harry.pullgo.data.api.OnLessonClick
 import com.harry.pullgo.data.objects.Lesson
 import com.harry.pullgo.data.objects.LoginInfo
@@ -55,7 +55,7 @@ class FragmentCalendarBottomSheet : BottomSheetDialogFragment(){
 
     private fun showLessons(){
         val lessons = viewModel.dayLessonsRepositories.value
-        val adapter = BottomSheetLessonsAdapter(lessons)
+        val adapter = LessonAdapter(lessons)
 
         if(LoginInfo.loginStudent != null){ // student
             adapter.itemClickListener = object: OnLessonClick{

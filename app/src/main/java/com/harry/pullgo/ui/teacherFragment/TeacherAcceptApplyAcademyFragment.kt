@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.data.adapter.TeacherAcceptApplyAcademyAdapter
-import com.harry.pullgo.data.adapter.TeacherAcceptApplyAcademyAdapterForTeacher
-import com.harry.pullgo.data.api.OnStudentAcceptAcademy
-import com.harry.pullgo.data.api.OnTeacherAcceptAcademy
+import com.harry.pullgo.data.adapter.StudentApplyAdapter
+import com.harry.pullgo.data.adapter.TeacherApplyAdapter
+import com.harry.pullgo.data.api.OnStudentClick
+import com.harry.pullgo.data.api.OnTeacherClick
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
@@ -114,12 +114,12 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         val data = viewModel.studentsAppliedAcademy.value
 
         val adapter = data?.let {
-            TeacherAcceptApplyAcademyAdapter(it)
+            StudentApplyAdapter(it)
         }
 
         if (adapter != null) {
-            adapter.buttonAcceptAcademyListener = object: OnStudentAcceptAcademy {
-                override fun onStudentAcceptAcademy(view: View, student: Student?) {
+            adapter.studentClickListener = object: OnStudentClick{
+                override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
                     doStudentApplyProcess()
                 }
@@ -134,12 +134,12 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         val data = viewModel.teacherAppliedAcademy.value
 
         val adapter = data?.let {
-            TeacherAcceptApplyAcademyAdapterForTeacher(it)
+            TeacherApplyAdapter(it)
         }
 
         if (adapter != null) {
-            adapter.buttonAcceptAcademyListener = object: OnTeacherAcceptAcademy {
-                override fun onTeacherAcceptAcademy(view: View, teacher: Teacher?) {
+            adapter.teacherClickListener = object: OnTeacherClick {
+                override fun onTeacherClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
                     doTeacherApplyProcess()
                 }

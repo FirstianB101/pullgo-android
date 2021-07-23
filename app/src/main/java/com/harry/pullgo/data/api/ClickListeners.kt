@@ -23,10 +23,6 @@ interface OnStudentClick{
     fun onStudentClick(view: View, student: Student?)
 }
 
-interface OnStudentAcceptAcademy{
-    fun onStudentAcceptAcademy(view: View, student: Student?)
-}
-
-interface OnTeacherAcceptAcademy{
-    fun onTeacherAcceptAcademy(view: View, teacher: Teacher?)
+interface OnTeacherClick{
+    fun onTeacherClick(view: View, teacher: Teacher?)
 }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.harry.pullgo.data.adapter.ManageClassroomDetailsStudentAdapter
+import com.harry.pullgo.data.adapter.StudentAdapter
 import com.harry.pullgo.data.api.OnStudentClick
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
@@ -44,7 +44,7 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
         val data = viewModel.studentsAppliedClassroom.value
 
         val studentAdapter = data?.let {
-            ManageClassroomDetailsStudentAdapter(it)
+            StudentAdapter(it)
         }
 
         if (studentAdapter != null) {

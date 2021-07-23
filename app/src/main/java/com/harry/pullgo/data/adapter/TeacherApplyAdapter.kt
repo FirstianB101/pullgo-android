@@ -7,12 +7,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnTeacherAcceptAcademy
+import com.harry.pullgo.data.api.OnTeacherClick
 import com.harry.pullgo.data.objects.Teacher
 
 class TeacherApplyAdapter(private val dataSet: List<Teacher>):
     RecyclerView.Adapter<TeacherApplyAdapter.ViewHolder>(){
-    var buttonAcceptAcademyListener: OnTeacherAcceptAcademy? = null
+    var teacherClickListener: OnTeacherClick? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewName: TextView = view.findViewById(R.id.textViewStudentItemName)
@@ -32,7 +32,7 @@ class TeacherApplyAdapter(private val dataSet: List<Teacher>):
         holder.textViewSchool.text = dataSet[position].account?.username
         holder.textViewYear.text = ""
         holder.button.setOnClickListener {
-            buttonAcceptAcademyListener?.onTeacherAcceptAcademy(holder.itemView,dataSet[position])
+            teacherClickListener?.onTeacherClick(holder.itemView,dataSet[position])
         }
     }
 
