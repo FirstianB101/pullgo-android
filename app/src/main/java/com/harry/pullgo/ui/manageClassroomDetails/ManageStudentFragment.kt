@@ -52,7 +52,7 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
                 override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
                     FragmentManageClassroomStudentDialog(student!!,selectedClassroom)
-                        .show(childFragmentManager,FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
+                        .show(parentFragmentManager,FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }
             }
         }

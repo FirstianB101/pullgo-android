@@ -61,7 +61,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         initViewModels()
         setListeners()
 
-        changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
+        //changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
     }
 
     private fun initViewModels(){

@@ -17,6 +17,8 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_change_info">회원정보 변경</string>
+    <string name="underlined_apply_other_academy"><u>다른 학원 가입</u></string>
+    <string name="underlined_logout"><u>로그아웃</u></string>
 
     <string name="full_name">이름</string>
     <string name="user_name">아이디</string>
@@ -32,4 +34,6 @@
     <string name="underlined_create_classroom"><u>반 생성</u></string>
     <string name="underlined_accept_apply_academy"><u>승인</u></string>
     <string name="underlined_manage_classroom_kick_student"><u>반에서 제외</u></string>
+    <string name="underlined_edit"><u>수정하기</u></string>
+    <string name="underlined_delete"><u>삭제하기</u></string>
 </resources>

@@ -14,9 +14,9 @@ class StudentAdapter (private val dataSet: List<Student>):
     var studentClickListener: OnStudentClick? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewName: TextView = view.findViewById(R.id.textViewStudentItemName)
-        val textViewSchool: TextView = view.findViewById(R.id.textViewStudentItemSchoolName)
-        val textViewYear: TextView = view.findViewById(R.id.textViewStudentItemYear)
+        val textViewName: TextView = view.findViewById(R.id.textViewStudentItemNoButtonName)
+        val textViewSchool: TextView = view.findViewById(R.id.textViewStudentItemNoButtonSchoolName)
+        val textViewYear: TextView = view.findViewById(R.id.textViewStudentItemNoButtonYear)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -12,17 +12,20 @@ import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
 import com.harry.pullgo.data.api.OnStudentClick
 import com.harry.pullgo.data.api.OnTeacherClick
+import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragment() {
+class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
     private lateinit var viewModel: ManageClassroomDetailsViewModel
-    private lateinit var repository: ManageClassroomDetailsRepository
 
     private var selectedStudent: Student? = null
     private var selectedTeacher: Teacher? = null
@@ -37,8 +40,6 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
     }
 
     private fun initialize(){
-        binding.recyclerViewManageClassroomRequest.layoutManager = LinearLayoutManager(requireContext())
-
         binding.switchManageClassroomRequest.setOnCheckedChangeListener { _, isChecked ->
             binding.textViewManageClassroomRequestSwitch.text = if(isChecked) "선생님" else "학생"
             refreshAdapter(isChecked)
@@ -47,24 +48,23 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
 
     private fun refreshAdapter(isChecked: Boolean){
         if(isChecked)
-            viewModel.requestGetStudentsRequestApplyClassroom(selectedClassroom.id!!)
-        else
             viewModel.requestGetTeachersRequestApplyClassroom(selectedClassroom.id!!)
+        else
+            viewModel.requestGetStudentsRequestApplyClassroom(selectedClassroom.id!!)
     }
 
     private fun initViewModel(){
-        repository = ManageClassroomDetailsRepository()
+        viewModel = ViewModelProvider(requireActivity()).get(ManageClassroomDetailsViewModel::class.java)
 
-        val factory = ManageClassroomDetailsViewModelFactory(repository)
-        viewModel = ViewModelProvider(this,factory).get(ManageClassroomDetailsViewModel::class.java)
-
-        viewModel.studentsAppliedClassroom.observe(requireActivity()){
+        viewModel.studentsRequestApplyClassroom.observe(requireActivity()){
             displayStudentRequests()
         }
 
-        viewModel.teachersAppliedClassroom.observe(requireActivity()){
+        viewModel.teachersRequestApplyClassroom.observe(requireActivity()){
             displayTeacherRequests()
         }
+
+        binding.recyclerViewManageClassroomRequest.layoutManager = LinearLayoutManager(requireContext())
 
         refreshAdapter(false)
     }
@@ -80,7 +80,7 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
             adapter.studentClickListener = object: OnStudentClick {
                 override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
-                    Snackbar.make(binding.root,"선텍: ${student?.account?.fullName}",Snackbar.LENGTH_SHORT).show()
+                    acceptStudent(student!!)
                 }
             }
         }
@@ -100,7 +100,7 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
             adapter.teacherClickListener = object: OnTeacherClick {
                 override fun onTeacherClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
-                    Snackbar.make(binding.root,"선텍: ${teacher?.account?.fullName}",Snackbar.LENGTH_SHORT).show()
+                    acceptTeacher(teacher!!)
                 }
             }
         }
@@ -114,5 +114,41 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom ): Fragmen
             binding.textViewManageClassroomRequestNoResult.visibility = View.VISIBLE
         else
             binding.textViewManageClassroomRequestNoResult.visibility = View.GONE
+    }
+
+    private fun acceptStudent(student: Student){
+        val client = RetrofitClient.getApiService()
+        client.acceptStudentApplyClassroom(selectedClassroom.id!!,student.id!!).enqueue(object: Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Snackbar.make(binding.root,"반 등록이 승인되었습니다",Snackbar.LENGTH_SHORT).show()
+                    refreshAdapter(false)
+                }else{
+                    Snackbar.make(binding.root,"반 등록이 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun acceptTeacher(teacher: Teacher){
+        val client = RetrofitClient.getApiService()
+        client.acceptTeacherApplyClassroom(selectedClassroom.id!!,teacher.id!!).enqueue(object: Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Snackbar.make(binding.root,"반 등록이 승인되었습니다",Snackbar.LENGTH_SHORT).show()
+                    refreshAdapter(true)
+                }else{
+                    Snackbar.make(binding.root,"반 등록이 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+            }
+        })
     }
 }
