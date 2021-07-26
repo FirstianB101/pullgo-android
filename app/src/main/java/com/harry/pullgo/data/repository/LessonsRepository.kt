@@ -26,4 +26,7 @@ class LessonsRepository {
         cal.add(Calendar.DATE,1)
         return lessonClient.getTeacherLessonsByDate(id,date,df.format(cal.time))
     }
+
+    suspend fun getClassroomSuchLesson(classroomId: Long) = lessonClient.getClassroomById(classroomId)
+    suspend fun getAcademySuchClassroom(academyId: Long) = lessonClient.getAcademyById(academyId)
 }

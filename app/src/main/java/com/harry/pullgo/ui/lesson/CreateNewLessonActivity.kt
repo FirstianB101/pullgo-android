@@ -1,5 +1,7 @@
 package com.harry.pullgo.ui.lesson
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -46,7 +48,7 @@ class CreateNewLessonActivity : AppCompatActivity() {
         val viewModelFactory = CreateNewLessonViewModelFactory(ClassroomsRepository())
         viewModel = ViewModelProvider(this,viewModelFactory).get(CreateNewLessonViewModel::class.java)
 
-        viewModel.createNewLessonRepositories.observe(this){
+        viewModel.createNewLessonClassroomRepository.observe(this){
             setSpinnerItems()
         }
         viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
@@ -117,7 +119,6 @@ class CreateNewLessonActivity : AppCompatActivity() {
                     schedule
                 )
                 createLesson(newLesson)
-                finish()
             }else{
                 Snackbar.make(binding.root,"선택하지 않은 항목이 존재합니다",Snackbar.LENGTH_SHORT).show()
             }
@@ -125,7 +126,7 @@ class CreateNewLessonActivity : AppCompatActivity() {
     }
 
     private fun setSpinnerItems(){
-        val classrooms = viewModel.createNewLessonRepositories.value!!
+        val classrooms = viewModel.createNewLessonClassroomRepository.value!!
         val adapter: ArrayAdapter<Classroom> = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,classrooms)
         binding.spinnerSelectClassroom.adapter = adapter
 
@@ -165,8 +166,8 @@ class CreateNewLessonActivity : AppCompatActivity() {
         service.createLesson(lesson).enqueue(object: Callback<Lesson> {
             override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
                 if(response.isSuccessful){
-                    val lesson = response.body()
                     Toast.makeText(applicationContext,"수업을 생성하였습니다",Toast.LENGTH_SHORT).show()
+                    finishActivityWithResult()
                 }else{
                     Toast.makeText(applicationContext,"수업을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
                 }
@@ -176,6 +177,13 @@ class CreateNewLessonActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun finishActivityWithResult(){
+        val intent = Intent()
+        intent.putExtra("isMadeNewLesson","yes")
+        setResult(Activity.RESULT_OK,intent)
+        finish()
     }
 
     private fun isSelectedAllOptions(): Boolean =

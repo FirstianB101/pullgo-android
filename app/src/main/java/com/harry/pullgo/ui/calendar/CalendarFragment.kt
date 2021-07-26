@@ -1,5 +1,7 @@
 package com.harry.pullgo.ui.calendar
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -8,6 +10,8 @@ import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.harry.pullgo.R
@@ -21,6 +25,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     private val binding by lazy{FragmentCalendarBinding.inflate(layoutInflater)}
 
     private lateinit var viewModel: LessonsViewModel
+
+    private lateinit var lessonDecorator: CalendarEventDecorator
+
+    private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +58,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
     private fun setListeners(){
         binding.floatingActionButtonCalendar.setOnClickListener {
-            val intent = Intent(requireContext(), CreateNewLessonActivity::class.java)
-            startActivity(intent)
+            startForResult.launch(Intent(requireContext(), CreateNewLessonActivity::class.java))
         }
 
         if(LoginInfo.loginTeacher == null){
@@ -66,6 +73,19 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             CalendarSundayDecorator()
         )
         binding.calendarView.setOnDateChangedListener(this)
+
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+            if(result.resultCode == RESULT_OK){
+                if(result.data?.getStringExtra("isMadeNewLesson") == "yes"){
+                    binding.calendarView.removeDecorator(lessonDecorator)
+                    if(LoginInfo.loginTeacher != null){
+                        viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
+                    }else if(LoginInfo.loginStudent != null){
+                        viewModel.requestStudentLessons(LoginInfo.loginStudent?.id!!)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDateSelected(
@@ -74,10 +94,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         selected: Boolean
     ) {
         val selectedDate = String.format("%04d-%02d-%02d", date.year, date.month + 1, date.day)
-        val bottomSheet = FragmentCalendarBottomSheet()
-        val bundle = Bundle()
-        bundle.putString("date", selectedDate)
-        bottomSheet.arguments = bundle
+        val bottomSheet = FragmentCalendarBottomSheet(selectedDate)
         bottomSheet.show(childFragmentManager, "bottomSheetTestList")
     }
 
@@ -98,6 +115,8 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             tmp = date.split('-').map{ d->d.toInt() }
             calList.add(CalendarDay.from(tmp[0],tmp[1] - 1,tmp[2]))
         }
-        binding.calendarView.addDecorator(CalendarEventDecorator(R.color.statusbar_color,calList))
+
+        lessonDecorator = CalendarEventDecorator(R.color.statusbar_color,calList)
+        binding.calendarView.addDecorator(lessonDecorator)
     }
 }

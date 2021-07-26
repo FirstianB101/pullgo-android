@@ -10,15 +10,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateNewLessonViewModel(private val classroomsRepository: ClassroomsRepository):ViewModel() {
-    private val _createNewLessonRepositories = MutableLiveData<List<Classroom>>()
-    val createNewLessonRepositories = _createNewLessonRepositories
+    private val _createNewLessonClassroomRepository = MutableLiveData<List<Classroom>>()
+    val createNewLessonClassroomRepository = _createNewLessonClassroomRepository
 
     fun requestGetClassrooms(id: Long){
         CoroutineScope(Dispatchers.IO).launch {
             classroomsRepository.getClassroomsByTeacherId(id).let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
-                        _createNewLessonRepositories.postValue(it)
+                        _createNewLessonClassroomRepository.postValue(it)
                     }
                 }
             }

@@ -123,4 +123,11 @@ interface RetrofitService {
 
     @POST("academy/classrooms/{id}/kick-teacher")
     fun kickTeacherFromClassroom(@Path("id")classroomId: Long, @Body teacherId: Long): Call<Unit>
+
+
+    @GET("academy/classrooms/{id}")
+    suspend fun getClassroomById(@Path("id")classroomId: Long): Response<Classroom>
+
+    @GET("academies/{id}")
+    suspend fun getAcademyById(@Path("id")academyId: Long): Response<Academy>
 }
