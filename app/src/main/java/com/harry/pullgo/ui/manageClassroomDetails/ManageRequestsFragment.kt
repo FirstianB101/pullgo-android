@@ -18,6 +18,8 @@ import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
+import com.harry.pullgo.ui.dialog.FragmentManageClassroomRequestDialog
+import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,6 +84,15 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
             adapter.studentClickListener = object: OnStudentClick {
                 override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
+
+                    val dialog = FragmentManageClassroomRequestDialog(student!!)
+                    dialog.show(parentFragmentManager, FragmentManageClassroomRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                }
+            }
+
+            adapter.applyButtonClickListener = object: OnStudentClick {
+                override fun onStudentClick(view: View, student: Student?) {
+                    selectedStudent = student
                     acceptStudent(student!!)
                 }
             }
@@ -99,7 +110,7 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         }
 
         if (adapter != null) {
-            adapter.teacherClickListener = object: OnTeacherClick {
+            adapter.applyButtonClickListener = object: OnTeacherClick {
                 override fun onTeacherClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
                     acceptTeacher(teacher!!)

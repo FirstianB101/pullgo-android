@@ -90,6 +90,9 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
 
         binding.spinnerAcceptApplyAcademy.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(!binding.switchAcceptApplyAcademy.isEnabled)
+                    binding.switchAcceptApplyAcademy.isEnabled = true
+
                 selectedAcademy = academies[position]
                 viewModel.requestGetStudents(academies[position].id!!)
 

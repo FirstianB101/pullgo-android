@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.data.adapter.LessonAdapter
+import com.harry.pullgo.data.api.OnCalendarReset
 import com.harry.pullgo.data.api.OnLessonClick
 import com.harry.pullgo.data.objects.Lesson
 import com.harry.pullgo.data.objects.LoginInfo
@@ -19,6 +21,8 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
     private lateinit var viewModel: LessonsViewModel
+
+    var calendarResetListener: OnCalendarReset? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -47,6 +51,16 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
         }else if(LoginInfo.loginStudent != null){
             viewModel.requestStudentLessonOnDate(LoginInfo.loginStudent?.id!!,selectedDate)
         }
+
+        setFragmentResultListener("isLessonPatched"){ _, bundle ->
+            if(bundle.getString("Patched") == "yes"){
+                if(LoginInfo.loginTeacher != null){
+                    viewModel.requestTeacherLessonOnDate(LoginInfo.loginTeacher?.id!!,selectedDate)
+                }else if(LoginInfo.loginStudent != null){
+                    viewModel.requestStudentLessonOnDate(LoginInfo.loginStudent?.id!!,selectedDate)
+                }
+            }
+        }
     }
 
     private fun showLessons(){
@@ -62,7 +76,9 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
         }else if(LoginInfo.loginTeacher != null){ // teacher
             adapter.itemClickListener = object: OnLessonClick{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
-                    FragmentLessonInfoManageDialog(lesson!!).show(childFragmentManager, FragmentLessonInfoManageDialog.TAG_LESSON_INFO_MANAGE_DIALOG)
+                    val dialog = FragmentLessonInfoManageDialog(lesson!!)
+                    dialog.calendarResetListener = calendarResetListener
+                    dialog.show(childFragmentManager, FragmentLessonInfoManageDialog.TAG_LESSON_INFO_MANAGE_DIALOG)
                 }
             }
         }

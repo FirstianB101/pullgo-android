@@ -3,10 +3,10 @@ package com.harry.pullgo.ui.dialog
 import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -14,12 +14,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.api.OnCalendarReset
+import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.data.objects.Schedule
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
@@ -27,12 +32,15 @@ import java.util.concurrent.TimeUnit
 class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :DialogFragment(){
     private val binding by lazy{DialogLessonInfoManageBinding.inflate(layoutInflater)}
     private var selectedDate: Long? = null
-    private var startHour = -1
-    private var startMinute = -1
-    private var endHour = -1
-    private var endMinute = -1
+    private var startHour = selectedLesson.schedule?.beginTime!!.split(':')[0].toInt()
+    private var startMinute = selectedLesson.schedule?.beginTime!!.split(':')[1].toInt()
+    private var endHour = selectedLesson.schedule?.endTime!!.split(':')[0].toInt()
+    private var endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
+    private var isEditModeOn = false
 
     lateinit var viewModel: LessonsViewModel
+
+    var calendarResetListener: OnCalendarReset? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -82,14 +90,14 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
         startTimePicker.addOnPositiveButtonClickListener {
             startHour = startTimePicker.hour
             startMinute = startTimePicker.minute
-            binding.textViewLessonInfoManageSelectStartTime.setText("${startHour}시 ${startMinute}분 ~")
+            binding.textViewLessonInfoManageSelectStartTime.setText(String.format("%02d:%02d:00",startHour,startMinute))
             resetIfTimeNotAppropriate()
         }
 
         endTimePicker.addOnPositiveButtonClickListener {
             endHour = endTimePicker.hour
             endMinute = endTimePicker.minute
-            binding.textViewLessonInfoManageSelectEndTime.setText("${endHour}시 ${endMinute}분 까지")
+            binding.textViewLessonInfoManageSelectEndTime.setText(String.format("%02d:%02d:00",endHour,endMinute))
             resetIfTimeNotAppropriate()
         }
 
@@ -108,23 +116,88 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     private fun setListeners() {
         binding.buttonLessonInfoManageSave.setOnClickListener {
-            editModeOn()
+            changeLayoutIfEditModeOn()
         }
 
         binding.buttonLessonInfoManageRemove.setOnClickListener {
-            Snackbar.make(binding.root,"삭제 버튼",Snackbar.LENGTH_SHORT).show()
+            requestDeleteLesson()
         }
     }
 
-    private fun editModeOn(){
-        binding.textLessonInfoManageLessonName.isEnabled = true
-        binding.textViewLessonInfoManageSelectDate.isEnabled = true
-        binding.textViewLessonInfoManageSelectStartTime.isEnabled = true
-        binding.textViewLessonInfoManageSelectEndTime.isEnabled = true
+    private fun changeLayoutIfEditModeOn(){
+        if(isEditModeOn){
+            binding.textLessonInfoManageLessonName.isEnabled = false
+            binding.textViewLessonInfoManageSelectDate.isEnabled = false
+            binding.textViewLessonInfoManageSelectStartTime.isEnabled = false
+            binding.textViewLessonInfoManageSelectEndTime.isEnabled = false
 
-        binding.textLessonInfoManageLessonName.requestFocus()
+            binding.buttonLessonInfoManageSave.text = resources.getText(R.string.underlined_edit)
+            isEditModeOn = false
 
-        Toast.makeText(requireContext(),"편집 모드로 전환되었습니다",Toast.LENGTH_SHORT).show()
+            requestPatchLesson()
+        }else{
+            binding.textLessonInfoManageLessonName.isEnabled = true
+            binding.textViewLessonInfoManageSelectDate.isEnabled = true
+            binding.textViewLessonInfoManageSelectStartTime.isEnabled = true
+            binding.textViewLessonInfoManageSelectEndTime.isEnabled = true
+
+            binding.buttonLessonInfoManageSave.text = resources.getText(R.string.underlined_edit_success)
+
+            binding.textLessonInfoManageLessonName.requestFocus()
+
+            Toast.makeText(requireContext(),"편집 모드로 전환되었습니다",Toast.LENGTH_SHORT).show()
+            isEditModeOn = true
+        }
+    }
+
+    private fun requestPatchLesson(){
+        val client = RetrofitClient.getApiService()
+
+        selectedLesson.name = binding.textLessonInfoManageLessonName.text.toString()
+
+        val schedule = Schedule(null,null,null)
+        schedule.date = binding.textViewLessonInfoManageSelectDate.text.toString()
+        schedule.beginTime = binding.textViewLessonInfoManageSelectStartTime.text.toString()
+        schedule.endTime = binding.textViewLessonInfoManageSelectEndTime.text.toString()
+        selectedLesson.schedule = schedule
+
+        client.patchLessonInfo(selectedLesson.id!!,selectedLesson).enqueue(object: Callback<Lesson> {
+            override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
+                if(response.isSuccessful){
+                    Toast.makeText(requireContext(),"수업 정보가 변경되었습니다",Toast.LENGTH_SHORT).show()
+                    calendarResetListener?.onResetCalendar()
+                    parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
+                    dismiss()
+                }else{
+                    Toast.makeText(requireContext(),"수업 정보가 변경에 실패했습니다",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Lesson>, t: Throwable) {
+                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun requestDeleteLesson(){
+        val client = RetrofitClient.getApiService()
+        
+        client.deleteLesson(selectedLesson.id!!).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Toast.makeText(requireContext(),"수업이 삭제되었습니다",Toast.LENGTH_SHORT).show()
+                    calendarResetListener?.onResetCalendar()
+                    parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
+                    dismiss()
+                }else{
+                    Toast.makeText(requireContext(),"수업 삭제에 실패했습니다",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initViewModel(){
@@ -149,12 +222,13 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
         if(startHour == -1 || startMinute == -1 || endHour == -1 || endMinute == -1)return
 
         if(startHour > endHour || (startHour == endHour && startMinute > endMinute)){
-            startHour = -1
-            startMinute = -1
-            endHour = -1
-            endMinute = -1
-            binding.textViewLessonInfoManageSelectStartTime.setText("")
-            binding.textViewLessonInfoManageSelectEndTime.setText("")
+            startHour = selectedLesson.schedule?.beginTime!!.split(':')[0].toInt()
+            startMinute = selectedLesson.schedule?.beginTime!!.split(':')[1].toInt()
+            endHour = selectedLesson.schedule?.endTime!!.split(':')[0].toInt()
+            endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
+
+            binding.textViewLessonInfoManageSelectStartTime.setText(selectedLesson.schedule?.beginTime!!.toString())
+            binding.textViewLessonInfoManageSelectEndTime.setText(selectedLesson.schedule?.endTime!!.toString())
             Snackbar.make(binding.root,"잘못된 시간 정보입니다",Snackbar.LENGTH_SHORT).show()
         }
     }

@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.harry.pullgo.R
+import com.harry.pullgo.data.api.OnCalendarReset
 import com.harry.pullgo.ui.lesson.CreateNewLessonActivity
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
@@ -78,23 +79,21 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             if(result.resultCode == RESULT_OK){
                 if(result.data?.getStringExtra("isMadeNewLesson") == "yes"){
                     binding.calendarView.removeDecorator(lessonDecorator)
-                    if(LoginInfo.loginTeacher != null){
-                        viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
-                    }else if(LoginInfo.loginStudent != null){
-                        viewModel.requestStudentLessons(LoginInfo.loginStudent?.id!!)
-                    }
+                    viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
                 }
             }
         }
     }
 
-    override fun onDateSelected(
-        widget: MaterialCalendarView,
-        date: CalendarDay,
-        selected: Boolean
-    ) {
+    override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
         val selectedDate = String.format("%04d-%02d-%02d", date.year, date.month + 1, date.day)
         val bottomSheet = FragmentCalendarBottomSheet(selectedDate)
+        bottomSheet.calendarResetListener = object: OnCalendarReset{
+            override fun onResetCalendar() {
+                binding.calendarView.removeDecorator(lessonDecorator)
+                viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
+            }
+        }
         bottomSheet.show(childFragmentManager, "bottomSheetTestList")
     }
 

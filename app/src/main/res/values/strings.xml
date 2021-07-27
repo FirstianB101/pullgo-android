@@ -35,5 +35,6 @@
     <string name="underlined_accept_apply_academy"><u>승인</u></string>
     <string name="underlined_manage_classroom_kick_student"><u>반에서 제외</u></string>
     <string name="underlined_edit"><u>수정하기</u></string>
+    <string name="underlined_edit_success"><u>수정완료</u></string>
     <string name="underlined_delete"><u>삭제하기</u></string>
 </resources>

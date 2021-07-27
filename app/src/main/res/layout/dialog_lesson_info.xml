@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:text="정보를 불러올 수 없습니다"
             android:textSize="17sp"
             android:padding="10dp"
             android:gravity="center"/>

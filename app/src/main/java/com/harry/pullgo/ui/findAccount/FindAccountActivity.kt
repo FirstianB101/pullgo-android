@@ -3,14 +3,9 @@ package com.harry.pullgo.ui.findAccount
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.R
 import com.harry.pullgo.databinding.ActivityFindAccountBinding
 import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.dialog.TwoButtonDialog

@@ -17,19 +17,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FragmentManageClassroomStudentDialog(
-    private val selectedStudent: Student,
-    private val selectedClassroom: Classroom
-): DialogFragment() {
+class FragmentManageClassroomRequestDialog(private val selectedStudent: Student): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
-
-    private lateinit var viewModel: ManageClassroomDetailsViewModel
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
         initialize()
-        setListeners()
-        initViewModel()
         builder.setView(binding.root)
 
         val _dialog = builder.create()
@@ -46,38 +39,11 @@ class FragmentManageClassroomStudentDialog(
         binding.textViewManageClassroomStudentPhone.text = selectedStudent.account?.phone
         binding.textViewManageClassroomStudentSchool.text = selectedStudent.schoolName
         binding.textViewManageClassroomStudentYear.text = selectedStudent.schoolYear.toString()
-    }
 
-    private fun setListeners(){
-        binding.buttonManageClassroomKickStudent.setOnClickListener {
-            kickStudent()
-        }
-    }
-
-    private fun initViewModel(){
-        viewModel = ViewModelProvider(requireActivity()).get(ManageClassroomDetailsViewModel::class.java)
-    }
-
-    private fun kickStudent(){
-        val client = RetrofitClient.getApiService()
-        client.kickStudentFromClassroom(selectedClassroom.id!!, selectedStudent.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"해당 학생을 반에서 제외시켰습니다",Toast.LENGTH_SHORT).show()
-                    viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"해당 반에 존재하지 않는 학생입니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        binding.buttonManageClassroomKickStudent.visibility = View.GONE
     }
 
     companion object {
-        const val TAG_MANAGE_STUDENT_DIALOG = "manage_classroom_student_dialog"
+        const val TAG_MANAGE_STUDENT_DIALOG = "manage_classroom_request_dialog"
     }
 }

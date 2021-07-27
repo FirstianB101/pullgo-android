@@ -26,3 +26,7 @@ interface OnStudentClick{
 interface OnTeacherClick{
     fun onTeacherClick(view: View, teacher: Teacher?)
 }
+
+interface OnCalendarReset{
+    fun onResetCalendar()
+}

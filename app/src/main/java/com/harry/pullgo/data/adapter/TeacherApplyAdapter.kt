@@ -13,6 +13,7 @@ import com.harry.pullgo.data.objects.Teacher
 class TeacherApplyAdapter(private val dataSet: List<Teacher>):
     RecyclerView.Adapter<TeacherApplyAdapter.ViewHolder>(){
     var teacherClickListener: OnTeacherClick? = null
+    var applyButtonClickListener: OnTeacherClick? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewName: TextView = view.findViewById(R.id.textViewStudentItemName)
@@ -31,8 +32,11 @@ class TeacherApplyAdapter(private val dataSet: List<Teacher>):
         holder.textViewName.text = dataSet[position].account?.fullName
         holder.textViewSchool.text = dataSet[position].account?.username
         holder.textViewYear.text = ""
-        holder.button.setOnClickListener {
+        holder.itemView.setOnClickListener {
             teacherClickListener?.onTeacherClick(holder.itemView,dataSet[position])
+        }
+        holder.button.setOnClickListener {
+            applyButtonClickListener?.onTeacherClick(holder.itemView,dataSet[position])
         }
     }
 

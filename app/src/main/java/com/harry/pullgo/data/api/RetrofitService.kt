@@ -130,4 +130,11 @@ interface RetrofitService {
 
     @GET("academies/{id}")
     suspend fun getAcademyById(@Path("id")academyId: Long): Response<Academy>
+
+
+    @PATCH("academy/classroom/lessons/{id}")
+    fun patchLessonInfo(@Path("id")lessonId: Long, @Body lesson: Lesson): Call<Lesson>
+
+    @DELETE("academy/classroom/lessons/{id}")
+    fun deleteLesson(@Path("id")lessonId: Long): Call<Unit>
 }
