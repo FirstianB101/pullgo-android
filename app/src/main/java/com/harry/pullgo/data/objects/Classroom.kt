@@ -11,3 +11,11 @@ class Classroom(
         return name?.split(';')?.get(0) ?: ""
     }
 }
+
+class MakeClassroom(
+    var name: String?,
+    var academyId: Long?,
+    var creatorId: Long?
+):Serializable{
+
+}

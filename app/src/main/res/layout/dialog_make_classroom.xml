@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:background="@drawable/rounded"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/textViewMakeClassroomSelectAcademy"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="학원 선택"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+        android:id="@+id/spinnerMakeClassroomSelectAcademy"
+        android:layout_width="@dimen/date_pick_spinner_width"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintStart_toEndOf="@+id/textViewMakeClassroomSelectAcademy"
+        app:layout_constraintTop_toTopOf="parent"
+        app:smsp_floatingLabelColor="@color/main_color"
+        app:smsp_floatingLabelText="선택한 학원"
+        app:smsp_hint="학원을 선택하세요"
+        app:smsp_hintSize="16sp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMakeClassroomExcludeAcademySelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerMakeClassroomSelectAcademy">
+
+        <TextView
+            android:id="@+id/textViewMakeClassroomName"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="반 이름"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutNewClassroomName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="@dimen/date_pick_spinner_width"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            app:errorEnabled="true"
+            app:helperTextEnabled="true"
+            app:layout_constraintStart_toEndOf="@+id/textViewMakeClassroomName"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textNewClassroomName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="반 이름을 입력하세요"
+                android:inputType="textPersonName"
+                android:textColorHint="@color/light_gray" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textViewMakeClassroomDay"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="날짜 선택"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewMakeClassroomName" />
+
+        <ca.antonious.materialdaypicker.MaterialDayPicker
+            android:id="@+id/dayPickerMakeClassroom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewMakeClassroomDay" />
+
+        <Button
+            android:id="@+id/buttonMakeClassroom"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/rounded_button_main_color"
+            android:text="반 생성"
+            android:textColor="@color/white"
+            android:textSize="@dimen/success_button_text"
+            android:enabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dayPickerMakeClassroom" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

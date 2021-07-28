@@ -2,6 +2,9 @@ package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
@@ -29,6 +32,12 @@ class TwoButtonDialog(context: Context) {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.layout_dialog_two_button)
         dialog.setCancelable(false)
+
+        dialog.window!!.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         initialize()
 

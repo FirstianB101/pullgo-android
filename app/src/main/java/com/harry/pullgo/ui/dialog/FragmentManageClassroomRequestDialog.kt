@@ -1,8 +1,11 @@
 package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
@@ -19,6 +22,19 @@ import retrofit2.Response
 
 class FragmentManageClassroomRequestDialog(private val selectedStudent: Student): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
+
+    override fun onStart() {
+        super.onStart()
+
+        val dialog = dialog
+        if (dialog != null) {
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())

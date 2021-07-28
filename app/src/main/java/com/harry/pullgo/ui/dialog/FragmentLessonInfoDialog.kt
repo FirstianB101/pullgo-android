@@ -2,8 +2,11 @@ package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,15 +24,32 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
 
     lateinit var viewModel: LessonsViewModel
 
+    override fun onStart() {
+        super.onStart()
+
+        val dialog = dialog
+        if (dialog != null) {
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
 
         setLessonInformation()
         initViewModel()
+        setListeners()
 
         builder.setView(binding.root)
-            .setPositiveButton("확인") { _: DialogInterface?, _: Int -> dismiss() }
         return builder.create()
+    }
+
+    private fun setListeners(){
+        binding.buttonDialogLessonInfo.setOnClickListener { dismiss() }
     }
 
     private fun setLessonInformation() {

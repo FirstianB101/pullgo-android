@@ -121,7 +121,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
 
         if (adapter != null) {
-            adapter.studentClickListener = object: OnStudentClick{
+            adapter.applyButtonClickListener = object: OnStudentClick{
                 override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
                     doStudentApplyProcess()
@@ -141,7 +141,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
 
         if (adapter != null) {
-            adapter.teacherClickListener = object: OnTeacherClick {
+            adapter.applyButtonClickListener = object: OnTeacherClick {
                 override fun onTeacherClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
                     doTeacherApplyProcess()

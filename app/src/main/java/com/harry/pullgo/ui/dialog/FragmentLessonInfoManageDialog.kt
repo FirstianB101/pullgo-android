@@ -1,6 +1,8 @@
 package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -41,6 +43,19 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     lateinit var viewModel: LessonsViewModel
 
     var calendarResetListener: OnCalendarReset? = null
+
+    override fun onStart() {
+        super.onStart()
+
+        val dialog = dialog
+        if (dialog != null) {
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())

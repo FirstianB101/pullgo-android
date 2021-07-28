@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.api.OnClassroomClick
@@ -16,6 +17,7 @@ import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
+import com.harry.pullgo.ui.dialog.FragmentMakeClassroomDialog
 import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsActivity
 
 class TeacherManageClassroomFragment: Fragment() {
@@ -25,6 +27,7 @@ class TeacherManageClassroomFragment: Fragment() {
     private lateinit var repository: ClassroomsRepository
 
     private var selectedClassroom: Classroom? = null
+    private var buttonPushed = false
 
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
@@ -41,11 +44,13 @@ class TeacherManageClassroomFragment: Fragment() {
         binding.recyclerViewManageClassroom.layoutManager = LinearLayoutManager(requireContext())
 
         binding.buttonCreateNewClassroom.setOnClickListener {
-
+            buttonPushed = true
+            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.loginTeacher?.id!!)
         }
 
         binding.floatingActionButtonManageClassroom.setOnClickListener {
-
+            buttonPushed = true
+            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.loginTeacher?.id!!)
         }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -53,6 +58,12 @@ class TeacherManageClassroomFragment: Fragment() {
                 if(it.data?.getStringExtra("finishedFragment") == "editClassroom"){
                     viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
                 }
+            }
+        }
+
+        setFragmentResultListener("createNewClassroom"){ _, bundle ->
+            if(bundle.getString("isCreated") == "yes"){
+                viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
             }
         }
     }
@@ -65,6 +76,12 @@ class TeacherManageClassroomFragment: Fragment() {
 
         viewModel.getClassroomRepositories.observe(requireActivity()){
             displayClassrooms()
+        }
+
+        viewModel.academiesForSpinnerRepository.observe(requireActivity()){
+            if(buttonPushed)
+                makeClassroom()
+            buttonPushed = false
         }
 
         viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
@@ -108,5 +125,10 @@ class TeacherManageClassroomFragment: Fragment() {
         }else{
             binding.layoutManageClassroomNoClassroom.visibility = View.GONE
         }
+    }
+
+    private fun makeClassroom(){
+        val academies = viewModel.academiesForSpinnerRepository.value
+        FragmentMakeClassroomDialog(academies!!).show(childFragmentManager,FragmentMakeClassroomDialog.TAG_LESSON_INFO_DIALOG)
     }
 }

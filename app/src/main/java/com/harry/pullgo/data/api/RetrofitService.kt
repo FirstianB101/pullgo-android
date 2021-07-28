@@ -131,6 +131,9 @@ interface RetrofitService {
     @GET("academies/{id}")
     suspend fun getAcademyById(@Path("id")academyId: Long): Response<Academy>
 
+    @POST("academy/classrooms")
+    fun createClassroom(@Body newClassroom: MakeClassroom): Call<Classroom>
+
 
     @PATCH("academy/classroom/lessons/{id}")
     fun patchLessonInfo(@Path("id")lessonId: Long, @Body lesson: Lesson): Call<Lesson>

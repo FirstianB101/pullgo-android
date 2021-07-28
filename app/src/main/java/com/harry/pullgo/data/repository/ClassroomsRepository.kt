@@ -6,4 +6,5 @@ class ClassroomsRepository {
     private val getClassroomsClient = RetrofitClient.getApiService()
 
     suspend fun getClassroomsByTeacherId(id: Long) = getClassroomsClient.getClassroomsByTeacherId(id)
+    suspend fun getAcademiesByTeacherId(id: Long) = getClassroomsClient.getAcademiesTeacherApplied(id)
 }
