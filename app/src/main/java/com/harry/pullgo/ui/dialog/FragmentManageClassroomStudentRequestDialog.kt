@@ -7,20 +7,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
-import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class FragmentManageClassroomRequestDialog(private val selectedStudent: Student): DialogFragment() {
+class FragmentManageClassroomStudentRequestDialog(private val selectedStudent: Student): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
     override fun onStart() {

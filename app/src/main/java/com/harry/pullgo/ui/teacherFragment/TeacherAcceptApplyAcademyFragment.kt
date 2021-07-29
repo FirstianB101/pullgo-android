@@ -22,6 +22,8 @@ import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
+import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentRequestDialog
+import com.harry.pullgo.ui.dialog.FragmentManageClassroomTeacherRequestDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -121,6 +123,14 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
 
         if (adapter != null) {
+            adapter.studentClickListener = object: OnStudentClick {
+                override fun onStudentClick(view: View, student: Student?) {
+                    selectedStudent = student
+
+                    FragmentManageClassroomStudentRequestDialog(student!!).show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                }
+            }
+
             adapter.applyButtonClickListener = object: OnStudentClick{
                 override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
@@ -141,6 +151,14 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
 
         if (adapter != null) {
+            adapter.teacherClickListener = object: OnTeacherClick {
+                override fun onTeacherClick(view: View, teacher: Teacher?) {
+                    selectedTeacher = teacher
+
+                    FragmentManageClassroomTeacherRequestDialog(teacher!!).show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                }
+            }
+
             adapter.applyButtonClickListener = object: OnTeacherClick {
                 override fun onTeacherClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher

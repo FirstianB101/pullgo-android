@@ -3,7 +3,6 @@ package com.harry.pullgo.ui.signUp
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.ActivitySignUpBinding

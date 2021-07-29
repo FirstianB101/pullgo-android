@@ -22,23 +22,19 @@ import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
-import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.studentFragment.StudentChangePersonInfoFragment
-import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
-import com.harry.pullgo.ui.studentFragment.StudentExamListFragment
+import com.harry.pullgo.ui.studentFragment.StudentHomeFragmentNoAcademy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+class StudentMainActivityNoAcademy  : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val binding by lazy{ActivityStudentMainBinding.inflate(layoutInflater)}
+    lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
     lateinit var studentChangeInfoFragment: StudentChangePersonInfoFragment
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
-    lateinit var calendarFragment: CalendarFragment
-    lateinit var studentExamListFragment: StudentExamListFragment
-    lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
 
     lateinit var homeViewModel: AppliedAcademyGroupViewModel
     lateinit var changeInfoViewModel: ChangeInfoViewModel
@@ -67,18 +63,20 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginStudent = changeInfoViewModel.changeStudent.value
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
-            onFragmentSelected(STUDENT_MENU.CALENDAR)
+            onFragmentSelected(STUDENT_MENU.HOME)
         }
     }
 
     private fun initialize(){
+        binding.navigationViewStudent.menu.clear()
+        binding.navigationViewStudent.inflateMenu(R.menu.activity_student_main_drawer_no_academy)
+        binding.textViewStudentApplyOtherAcademy.visibility = View.GONE
+
+        studentHomeFragment = StudentHomeFragmentNoAcademy()
         studentChangeInfoFragment = StudentChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
-        calendarFragment = CalendarFragment()
-        studentExamListFragment= StudentExamListFragment()
-        studentExamHistoryFragment= StudentExamHistoryFragment()
 
-        supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, calendarFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, studentHomeFragment).commit()
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
@@ -103,8 +101,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         binding.textViewStudentLogout.setOnClickListener {
-            LoginInfo.loginStudent = null
-            LoginInfo.loginTeacher = null
+            LoginInfo.loginStudent=null
+            LoginInfo.loginTeacher=null
             finish()
         }
 
@@ -130,10 +128,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.nav_student_home -> onFragmentSelected(STUDENT_MENU.HOME)
             R.id.nav_student_change_info -> onFragmentSelected(STUDENT_MENU.CHANGE_INFO_CHECK_PW)
-            R.id.nav_student_calendar -> onFragmentSelected(STUDENT_MENU.CALENDAR)
-            R.id.nav_student_exam_list -> onFragmentSelected(STUDENT_MENU.EXAM_LIST)
-            R.id.nav_student_previous_exam -> onFragmentSelected(STUDENT_MENU.PREVIOUS_EXAM)
             R.id.nav_student_apply_classroom -> startApplyClassroomActivity()
         }
         binding.studentDrawerLayout.closeDrawer(binding.navigationViewStudent)
@@ -147,23 +143,16 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun onFragmentSelected(position: STUDENT_MENU) {
         var curFragment: Fragment? = null
-        when(position){
+        curFragment = when(position){
+            STUDENT_MENU.HOME -> {
+                studentHomeFragment
+            }
             STUDENT_MENU.CHANGE_INFO -> {
-                curFragment = StudentChangePersonInfoFragment()
-            }
-            STUDENT_MENU.CALENDAR -> {
-                curFragment = calendarFragment
-            }
-            STUDENT_MENU.EXAM_LIST -> {
-                curFragment = studentExamListFragment
-            }
-            STUDENT_MENU.PREVIOUS_EXAM -> {
-                curFragment = studentExamHistoryFragment
+                StudentChangePersonInfoFragment()
             }
             STUDENT_MENU.CHANGE_INFO_CHECK_PW -> {
-                curFragment = changeInfoCheckPwFragment
+                changeInfoCheckPwFragment
             }
-            else -> {}
         }
 
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -173,7 +162,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.anim.enter_from_left,
             R.anim.exit_to_right
         )
-        transaction.replace(R.id.studentMainFragment, curFragment!!).addToBackStack(null).commit()
+        transaction.replace(R.id.studentMainFragment, curFragment).addToBackStack(null).commit()
     }
 
     private fun startFindAcademyActivity(){
@@ -202,11 +191,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     enum class STUDENT_MENU{
+        HOME,
         CHANGE_INFO,
-        CALENDAR,
-        EXAM_LIST,
-        PREVIOUS_EXAM,
-        CHANGE_INFO_CHECK_PW,
-        APPLY_CLASSROOM
+        CHANGE_INFO_CHECK_PW
     }
 }

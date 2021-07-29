@@ -16,10 +16,8 @@ import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
-import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
-import com.harry.pullgo.ui.dialog.FragmentManageClassroomRequestDialog
-import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentDialog
+import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentRequestDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -85,8 +83,8 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
                 override fun onStudentClick(view: View, student: Student?) {
                     selectedStudent = student
 
-                    val dialog = FragmentManageClassroomRequestDialog(student!!)
-                    dialog.show(parentFragmentManager, FragmentManageClassroomRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                    val dialog = FragmentManageClassroomStudentRequestDialog(student!!)
+                    dialog.show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }
             }
 

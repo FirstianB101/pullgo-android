@@ -1,13 +1,10 @@
 package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,8 +13,6 @@ import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
-import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 
 class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragment() {
     private val binding by lazy{DialogLessonInfoBinding.inflate(layoutInflater)}

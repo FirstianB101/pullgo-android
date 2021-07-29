@@ -1,19 +1,14 @@
 package com.harry.pullgo.ui.applyClassroom
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ApplyClassroomViewModel(private val applyClassroomRepository: ApplyClassroomRepository): ViewModel() {
     private val _appliedAcademiesRepository = MutableLiveData<List<Academy>>()

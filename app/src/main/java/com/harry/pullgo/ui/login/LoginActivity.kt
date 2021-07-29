@@ -2,17 +2,17 @@ package com.harry.pullgo.ui.login;
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LoginRepository
 import com.harry.pullgo.ui.findAccount.FindAccountActivity
 import com.harry.pullgo.ui.signUp.SignUpActivity
 import com.harry.pullgo.ui.main.StudentMainActivity
+import com.harry.pullgo.ui.main.StudentMainActivityNoAcademy
 import com.harry.pullgo.ui.main.TeacherMainActivity
+import com.harry.pullgo.ui.main.TeacherMainActivityNoAcademy
 
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
@@ -30,25 +30,37 @@ class LoginActivity: AppCompatActivity(){
 
     private fun initViewModel(){
         val viewModelFactory = LoginViewModelFactory(LoginRepository())
-        viewModel=ViewModelProvider(this,viewModelFactory).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this,viewModelFactory).get(LoginViewModel::class.java)
 
         viewModel.loginStudentRepositories.observe(this){
-            val mainIntent=Intent(applicationContext, StudentMainActivity::class.java)
+            viewModel.requestStudentAcademies(binding.loginId.text.toString().toLong())
+        }
+
+        viewModel.academyRepositoryStudentApplied.observe(this){
+            val studentAcademies = viewModel.academyRepositoryStudentApplied.value
+
+            val mainIntent = if(studentAcademies.isNullOrEmpty())
+                Intent(applicationContext, StudentMainActivityNoAcademy::class.java)
+            else
+                Intent(applicationContext, StudentMainActivity::class.java)
+
             startMainStudent(mainIntent)
         }
 
         viewModel.loginTeacherRepositories.observe(this){
-            val mainIntent=Intent(applicationContext, TeacherMainActivity::class.java)
+            viewModel.requestTeacherAcademies(binding.loginId.text.toString().toLong())
+        }
+
+        viewModel.academyRepositoryTeacherApplied.observe(this){
+            val teacherAcademies = viewModel.academyRepositoryTeacherApplied.value
+
+            val mainIntent = if(teacherAcademies.isNullOrEmpty())
+                Intent(applicationContext, TeacherMainActivityNoAcademy::class.java)
+            else
+                Intent(applicationContext, TeacherMainActivity::class.java)
+
             startMainTeacher(mainIntent)
         }
-    }
-
-    private fun getStudent(){
-        viewModel.requestStudentLogin(binding.loginId.text.toString().toLong())
-    }
-
-    private fun getTeacher(){
-        viewModel.requestTeacherLogin(binding.loginId.text.toString().toLong())
     }
 
     private fun setClickListeners(){
@@ -68,11 +80,10 @@ class LoginActivity: AppCompatActivity(){
         }
 
         binding.buttonLogin.setOnClickListener {
-            if(isStudent){
-                getStudent()
-            }else{
-                getTeacher()
-            }
+            if(isStudent)
+                viewModel.requestStudentLogin(binding.loginId.text.toString().toLong())
+            else
+                viewModel.requestTeacherLogin(binding.loginId.text.toString().toLong())
         }
     }
 

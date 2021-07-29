@@ -14,6 +14,4 @@ class Schedule(
     var date: String?,
     var beginTime: String?,
     var endTime: String?
-):Serializable{
-
-}
+):Serializable

@@ -1,12 +1,8 @@
 package com.harry.pullgo.ui.calendar
 
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
-import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

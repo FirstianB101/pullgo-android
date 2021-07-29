@@ -5,10 +5,7 @@ import android.view.ViewGroup
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import com.harry.pullgo.R
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +14,6 @@ import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.databinding.FragmentStudentChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
-import com.harry.pullgo.ui.signUp.SignUpViewModel
 import java.util.regex.Pattern
 
 class StudentChangePersonInfoFragment : Fragment() {

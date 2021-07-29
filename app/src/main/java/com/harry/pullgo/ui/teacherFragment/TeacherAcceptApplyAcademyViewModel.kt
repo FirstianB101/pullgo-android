@@ -7,7 +7,6 @@ import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
-import com.harry.pullgo.data.repository.FindAcademyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -17,33 +17,24 @@ import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCheckPw
-import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
-import com.harry.pullgo.ui.teacherFragment.TeacherAcceptApplyAcademyFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
-import com.harry.pullgo.ui.teacherFragment.TeacherManageClassroomFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import com.harry.pullgo.ui.teacherFragment.TeacherHomeFragmentNoAcademy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy{ActivityTeacherMainBinding.inflate(layoutInflater)}
+    lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
     lateinit var teacherChangeInfoFragment: TeacherChangePersonInfoFragment
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
-    lateinit var calendarFragment: CalendarFragment
-    lateinit var manageClassroomFragment: TeacherManageClassroomFragment
-    lateinit var acceptApplyAcademyFragmentFragment: TeacherAcceptApplyAcademyFragment
 
     lateinit var homeViewModel: AppliedAcademyGroupViewModel
     lateinit var changeInfoViewModel: ChangeInfoViewModel
@@ -73,18 +64,20 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
-            onFragmentSelected(TEACHER_MENU.CALENDAR)
+            onFragmentSelected(TEACHER_MENU.HOME)
         }
     }
 
     private fun initialize(){
+        binding.navigationViewTeacher.menu.clear()
+        binding.navigationViewTeacher.inflateMenu(R.menu.activity_teacher_main_no_academy)
+        binding.textViewTeacherApplyOtherAcademy.visibility = View.GONE
+
+        teacherHomeFragment = TeacherHomeFragmentNoAcademy()
         teacherChangeInfoFragment = TeacherChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
-        calendarFragment = CalendarFragment()
-        manageClassroomFragment = TeacherManageClassroomFragment()
-        acceptApplyAcademyFragmentFragment = TeacherAcceptApplyAcademyFragment()
 
-        supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
 
         headerView = binding.navigationViewTeacher.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
@@ -136,11 +129,9 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.nav_teacher_home -> onFragmentSelected(TEACHER_MENU.HOME)
             R.id.nav_teacher_change_info -> onFragmentSelected(TEACHER_MENU.CHANGE_INFO_CHECK_PW)
-            R.id.nav_teacher_calendar -> onFragmentSelected(TEACHER_MENU.CALENDAR)
-            R.id.nav_teacher_manage_classroom -> onFragmentSelected(TEACHER_MENU.MANAGE_CLASSROOM)
             R.id.nav_teacher_apply_classroom -> startApplyClassroomActivity()
-            R.id.nav_teacher_manage_accept_academy -> onFragmentSelected(TEACHER_MENU.ACCEPT_ACADEMY)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
@@ -153,23 +144,16 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun onFragmentSelected(position: TEACHER_MENU) {
         var curFragment: Fragment? = null
-        when(position){
-            TEACHER_MENU.CHANGE_INFO -> {
-                curFragment = teacherChangeInfoFragment
+        curFragment = when(position){
+            TEACHER_MENU.HOME -> {
+                teacherHomeFragment
             }
-            TEACHER_MENU.CALENDAR -> {
-                curFragment = calendarFragment
+            TEACHER_MENU.CHANGE_INFO -> {
+                teacherChangeInfoFragment
             }
             TEACHER_MENU.CHANGE_INFO_CHECK_PW -> {
-                curFragment = changeInfoCheckPwFragment
+                changeInfoCheckPwFragment
             }
-            TEACHER_MENU.MANAGE_CLASSROOM -> {
-                curFragment = manageClassroomFragment
-            }
-            TEACHER_MENU.ACCEPT_ACADEMY -> {
-                curFragment = acceptApplyAcademyFragmentFragment
-            }
-            else -> {}
         }
 
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -179,7 +163,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.anim.enter_from_left,
             R.anim.exit_to_right
         )
-        transaction.replace(R.id.teacherMainFragment, curFragment!!).addToBackStack(null).commit()
+        transaction.replace(R.id.teacherMainFragment, curFragment).addToBackStack(null).commit()
     }
 
     private fun startFindAcademyActivity(){
@@ -188,17 +172,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        val service= RetrofitClient.getApiService()
-        var academy: List<Academy>? = null
 
-        CoroutineScope(Dispatchers.Main).launch {
-            CoroutineScope(Dispatchers.IO).async {
-                academy=service.getOwnedAcademy(teacherId).execute().body()
-            }.await()
-                if(academy?.isEmpty() == true){
-                    binding.navigationViewTeacher.menu.removeItem(R.id.nav_teacher_manage_academy)
-                }
-        }
     }
 
     private fun changeTeacherInfo(teacher: Teacher?){
@@ -222,14 +196,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     enum class TEACHER_MENU{
+        HOME,
         CHANGE_INFO,
-        CALENDAR,
-        EXAM_LIST,
-        MANAGE_CLASSROOM,
-        PREVIOUS_EXAM,
-        CHANGE_INFO_CHECK_PW,
-        APPLY_CLASSROOM,
-        ACCEPT_ACADEMY,
-        MANAGE_ACADEMY
+        CHANGE_INFO_CHECK_PW
     }
 }

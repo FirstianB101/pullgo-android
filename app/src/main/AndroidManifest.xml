@@ -21,11 +21,15 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.main.StudentMainActivity"
-            android:label="@string/title_activity_student_main"
-            android:theme="@style/Theme.Pullgo.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.main.StudentMainActivityNoAcademy"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.main.TeacherMainActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.main.TeacherMainActivityNoAcademy"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.findAccount.FindAccountActivity"

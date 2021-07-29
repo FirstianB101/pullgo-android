@@ -13,7 +13,6 @@ import com.harry.pullgo.ui.login.LoginActivity
 import lib.kingja.switchbutton.SwitchMultiButton.OnSwitchListener
 import java.util.regex.Pattern
 
-
 class FindAccountActivity : AppCompatActivity(), OnSwitchListener{
     private val binding by lazy{ActivityFindAccountBinding.inflate(layoutInflater)}
     private val FIND_ID=0
