@@ -50,6 +50,7 @@ class FragmentMakeClassroomDialog(private val academies: List<Academy>): DialogF
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         }
     }
 

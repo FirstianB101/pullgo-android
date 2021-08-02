@@ -49,10 +49,16 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
 
         if (studentAdapter != null) {
             studentAdapter.studentClickListener = object: OnStudentClick {
-                override fun onStudentClick(view: View, student: Student?) {
+                override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
                     FragmentManageClassroomStudentDialog(student!!,selectedClassroom)
                         .show(parentFragmentManager,FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
+                }
+
+                override fun onApplyButtonClick(view: View, student: Student?) {
+                }
+
+                override fun onRemoveButtonClick(view: View, student: Student?) {
                 }
             }
         }

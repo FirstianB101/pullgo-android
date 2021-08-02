@@ -38,6 +38,8 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     private var selectedTeacher: Teacher? = null
     private var selectedAcademy: Academy? = null
 
+    private val client by lazy{RetrofitClient.getApiService()}
+
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
@@ -56,8 +58,8 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
     }
 
-    private fun refreshAdapter(isChecked: Boolean){
-        if(isChecked)
+    private fun refreshAdapter(isTeacher: Boolean){
+        if(isTeacher)
             viewModel.requestGetTeachers(selectedAcademy?.id!!)
         else
             viewModel.requestGetStudents(selectedAcademy?.id!!)
@@ -119,22 +121,24 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         val data = viewModel.studentsAppliedAcademy.value
 
         val adapter = data?.let {
-            StudentApplyAdapter(it)
+            StudentApplyAdapter(it,true)
         }
 
         if (adapter != null) {
             adapter.studentClickListener = object: OnStudentClick {
-                override fun onStudentClick(view: View, student: Student?) {
+                override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
 
                     FragmentManageClassroomStudentRequestDialog(student!!).show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }
-            }
 
-            adapter.applyButtonClickListener = object: OnStudentClick{
-                override fun onStudentClick(view: View, student: Student?) {
+                override fun onApplyButtonClick(view: View, student: Student?) {
                     selectedStudent = student
                     doStudentApplyProcess()
+                }
+
+                override fun onRemoveButtonClick(view: View, student: Student?) {
+                    removeStudentRequest(student!!)
                 }
             }
         }
@@ -147,22 +151,24 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         val data = viewModel.teacherAppliedAcademy.value
 
         val adapter = data?.let {
-            TeacherApplyAdapter(it)
+            TeacherApplyAdapter(it,true)
         }
 
         if (adapter != null) {
             adapter.teacherClickListener = object: OnTeacherClick {
-                override fun onTeacherClick(view: View, teacher: Teacher?) {
+                override fun onBackgroundClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
 
                     FragmentManageClassroomTeacherRequestDialog(teacher!!).show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }
-            }
 
-            adapter.applyButtonClickListener = object: OnTeacherClick {
-                override fun onTeacherClick(view: View, teacher: Teacher?) {
+                override fun onApplyButtonClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
                     doTeacherApplyProcess()
+                }
+
+                override fun onRemoveButtonClick(view: View, teacher: Teacher?) {
+                    removeTeacherRequest(teacher!!)
                 }
             }
         }
@@ -179,7 +185,6 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun doStudentApplyProcess(){
-        val client = RetrofitClient.getApiService()
         client.acceptStudentApplyAcademy(selectedAcademy?.id!!,selectedStudent?.id!!).enqueue(object: Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
@@ -197,7 +202,6 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun doTeacherApplyProcess(){
-        val client = RetrofitClient.getApiService()
         client.acceptTeacherApplyAcademy(selectedAcademy?.id!!,selectedTeacher?.id!!).enqueue(object: Callback<Unit>{
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
@@ -205,6 +209,40 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                     viewModel.requestGetTeachers(selectedAcademy?.id!!)
                 }else{
                     Snackbar.make(binding.root,"요청 승인에 실패하였습니다",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun removeStudentRequest(student: Student){
+        client.removeStudentAcademyRequest(student.id!!,selectedAcademy?.id!!).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Snackbar.make(binding.root,"요청이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
+                    refreshAdapter(false)
+                }else{
+                    Snackbar.make(binding.root,"요청을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun removeTeacherRequest(teacher: Teacher){
+        client.removeTeacherAcademyRequest(teacher.id!!,selectedAcademy?.id!!).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Snackbar.make(binding.root,"요청이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
+                    refreshAdapter(true)
+                }else{
+                    Snackbar.make(binding.root,"요청을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
                 }
             }
 

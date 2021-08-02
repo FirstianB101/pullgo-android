@@ -15,14 +15,14 @@ class ManageClassroomAdapter(private val dataSet: List<Classroom>)
     var itemClickListener: OnClassroomClick? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewName: TextView = view.findViewById(R.id.textViewManageClassroomName)
-        val textViewTeacherName: TextView = view.findViewById(R.id.textViewManageClassroomTeacherName)
-        val textViewDate: TextView = view.findViewById(R.id.textViewManageClassroomDate)
+        val textViewName: TextView = view.findViewById(R.id.textViewTeacherClassroomName)
+        val textViewTeacherName: TextView = view.findViewById(R.id.textViewTeacherName)
+        val textViewDate: TextView = view.findViewById(R.id.textViewTeacherClassroomDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_manage_classroom_item,parent,false)
+            .inflate(R.layout.layout_teacher_item,parent,false)
         return ViewHolder(view)
     }
 

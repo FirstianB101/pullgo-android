@@ -30,7 +30,7 @@ class StudentAdapter (private val dataSet: List<Student>):
         holder.textViewSchool.text = dataSet[position].schoolName
         holder.textViewYear.text = "${dataSet[position].schoolYear.toString()}학년"
         holder.itemView.setOnClickListener {
-            studentClickListener?.onStudentClick(holder.itemView,dataSet[position])
+            studentClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
     }
 

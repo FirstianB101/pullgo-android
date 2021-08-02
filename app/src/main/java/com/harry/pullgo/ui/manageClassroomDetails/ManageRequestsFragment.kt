@@ -30,6 +30,8 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
     private var selectedStudent: Student? = null
     private var selectedTeacher: Teacher? = null
 
+    private val client by lazy{RetrofitClient.getApiService()}
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
@@ -46,8 +48,8 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         }
     }
 
-    private fun refreshAdapter(isChecked: Boolean){
-        if(isChecked)
+    private fun refreshAdapter(isTeacher: Boolean){
+        if(isTeacher)
             viewModel.requestGetTeachersRequestApplyClassroom(selectedClassroom.id!!)
         else
             viewModel.requestGetStudentsRequestApplyClassroom(selectedClassroom.id!!)
@@ -75,23 +77,25 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         val data = viewModel.studentsRequestApplyClassroom.value
 
         val adapter = data?.let {
-            StudentApplyAdapter(it)
+            StudentApplyAdapter(it,true)
         }
 
         if (adapter != null) {
             adapter.studentClickListener = object: OnStudentClick {
-                override fun onStudentClick(view: View, student: Student?) {
+                override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
 
                     val dialog = FragmentManageClassroomStudentRequestDialog(student!!)
                     dialog.show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }
-            }
 
-            adapter.applyButtonClickListener = object: OnStudentClick {
-                override fun onStudentClick(view: View, student: Student?) {
+                override fun onApplyButtonClick(view: View, student: Student?) {
                     selectedStudent = student
                     acceptStudent(student!!)
+                }
+
+                override fun onRemoveButtonClick(view: View, student: Student?) {
+                    removeStudentRequest(student!!)
                 }
             }
         }
@@ -104,14 +108,21 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         val data = viewModel.teachersRequestApplyClassroom.value
 
         val adapter = data?.let {
-            TeacherApplyAdapter(it)
+            TeacherApplyAdapter(it,true)
         }
 
         if (adapter != null) {
-            adapter.applyButtonClickListener = object: OnTeacherClick {
-                override fun onTeacherClick(view: View, teacher: Teacher?) {
+            adapter.teacherClickListener = object: OnTeacherClick{
+                override fun onBackgroundClick(view: View, teacher: Teacher?) {
+                }
+
+                override fun onApplyButtonClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
                     acceptTeacher(teacher!!)
+                }
+
+                override fun onRemoveButtonClick(view: View, teacher: Teacher?) {
+                    removeTeacherRequest(teacher!!)
                 }
             }
         }
@@ -128,14 +139,13 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
     }
 
     private fun acceptStudent(student: Student){
-        val client = RetrofitClient.getApiService()
         client.acceptStudentApplyClassroom(selectedClassroom.id!!,student.id!!).enqueue(object: Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
                     Snackbar.make(binding.root,"반 등록이 승인되었습니다",Snackbar.LENGTH_SHORT).show()
                     refreshAdapter(false)
                 }else{
-                    Snackbar.make(binding.root,"반 등록이 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root,"반 등록에 실패했습니다",Snackbar.LENGTH_SHORT).show()
                 }
             }
 
@@ -146,14 +156,47 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
     }
 
     private fun acceptTeacher(teacher: Teacher){
-        val client = RetrofitClient.getApiService()
         client.acceptTeacherApplyClassroom(selectedClassroom.id!!,teacher.id!!).enqueue(object: Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
                     Snackbar.make(binding.root,"반 등록이 승인되었습니다",Snackbar.LENGTH_SHORT).show()
                     refreshAdapter(true)
                 }else{
-                    Snackbar.make(binding.root,"반 등록이 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.root,"반 등록에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun removeStudentRequest(student: Student){
+        client.removeStudentClassroomRequest(student.id!!,selectedClassroom.id!!).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Snackbar.make(binding.root,"요청이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
+                    refreshAdapter(false)
+                }else{
+                    Snackbar.make(binding.root,"요청을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun removeTeacherRequest(teacher: Teacher){
+        client.removeTeacherClassroomRequest(teacher.id!!,selectedClassroom.id!!).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    Snackbar.make(binding.root,"요청이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
+                    refreshAdapter(true)
+                }else{
+                    Snackbar.make(binding.root,"요청을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
                 }
             }
 

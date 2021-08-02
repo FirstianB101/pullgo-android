@@ -2,43 +2,45 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.lesson.CreateNewLessonActivity">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded"
+    android:padding="25dp">
 
     <TextView
         android:id="@+id/textViewSelectClassroom"
         android:layout_width="@dimen/date_pick_text_view_width"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="반 선택"
-        android:textSize="20sp"
         android:textColor="@color/black"
-        android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineCreateLesson"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
         android:id="@+id/spinnerSelectClassroom"
         android:layout_width="@dimen/date_pick_spinner_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        app:smsp_hint="반을 선택하세요"
-        app:smsp_floatingLabelText="선택한 반"
-        app:smsp_floatingLabelColor="@color/main_color"
-        app:smsp_hintSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewSelectClassroom"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:smsp_floatingLabelColor="@color/main_color"
+        app:smsp_floatingLabelText="선택한 반"
+        app:smsp_hint="반을 선택하세요"
+        app:smsp_hintSize="16sp" />
 
     <TextView
         android:id="@+id/textViewSelectDate"
         android:layout_width="@dimen/date_pick_text_view_width"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="날짜 선택"
-        android:textSize="20sp"
         android:textColor="@color/black"
-        android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineCreateLesson"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSelectClassroom" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -46,12 +48,11 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="@dimen/date_pick_spinner_width"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:hint="날짜를 선택하세요"
-        android:layout_marginTop="110dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:endIconMode="none"
         app:layout_constraintStart_toEndOf="@+id/textViewSelectDate"
-        app:layout_constraintTop_toTopOf="parent"
-        app:endIconMode="none">
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSelectClassroom">
 
         <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/spinnerTextViewSelectDate"
@@ -67,11 +68,12 @@
         android:id="@+id/textViewSelectTime"
         android:layout_width="@dimen/date_pick_text_view_width"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:text="시간"
-        android:textSize="20sp"
         android:textColor="@color/black"
-        android:layout_marginTop="50dp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineCreateLesson"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSelectDate" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -82,7 +84,6 @@
         android:layout_marginTop="20dp"
         android:hint="시작 시간을 선택하세요"
         app:endIconMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewSelectTime"
         app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectDate">
 
@@ -104,7 +105,6 @@
         android:layout_marginTop="15dp"
         android:hint="종료 시간을 선택하세요"
         app:endIconMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewSelectTime"
         app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectStartTime">
 
@@ -122,11 +122,12 @@
         android:id="@+id/textViewLessonName"
         android:layout_width="@dimen/date_pick_text_view_width"
         android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
         android:text="수업 이름"
-        android:textSize="20sp"
         android:textColor="@color/black"
-        android:layout_marginTop="120dp"
-        app:layout_constraintStart_toStartOf="@+id/guidelineCreateLesson"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewSelectTime" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -137,7 +138,6 @@
         android:layout_marginTop="15dp"
         app:errorEnabled="false"
         app:helperTextEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewLessonName"
         app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectEndTime">
@@ -154,21 +154,16 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonCreateNewLesson"
-        android:layout_width="@dimen/success_button_width"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="수업 생성"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"
-        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layoutNewLessonName" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineCreateLesson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="35dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

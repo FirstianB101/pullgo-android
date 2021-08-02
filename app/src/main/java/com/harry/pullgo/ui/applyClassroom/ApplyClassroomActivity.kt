@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
-import com.harry.pullgo.data.adapter.ApplyClassroomAdapter
+import com.harry.pullgo.data.adapter.ClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClick
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.Classroom
@@ -110,7 +110,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
         val data = viewModel.applyClassroomsRepositories.value
 
         val academyAdapter = data?.let {
-            ApplyClassroomAdapter(it)
+            ClassroomAdapter(it)
         }
 
         if (academyAdapter != null) {

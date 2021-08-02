@@ -8,7 +8,7 @@ import retrofit2.http.*
 interface RetrofitService {
 
     @POST("teachers/")
-    fun createTeacher(@Body params: Teacher):Call<Teacher>
+    fun createTeacher(@Body teacher: Teacher):Call<Teacher>
 
     @POST("teachers/{id}/apply-classroom")
     fun sendTeacherApplyClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
@@ -17,50 +17,56 @@ interface RetrofitService {
     fun sendTeacherApplyAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Call<Unit>
 
     @PATCH("teachers/{id}")
-    fun changeTeacherInfo(@Path("id")id:Long, @Body teacher: Teacher):Call<Teacher>
+    fun changeTeacherInfo(@Path("id")teacherId:Long, @Body teacher: Teacher):Call<Teacher>
+
+    @POST("teachers/{id}/remove-applied-academy")
+    fun removeTeacherAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Call<Unit>
+
+    @POST("teachers/{id}/remove-applied-classroom")
+    fun removeTeacherClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
 
     @GET("teachers/{id}")
-    suspend fun getTeacher(@Path("id")id:Long):Response<Teacher>
+    suspend fun getTeacher(@Path("id")teacherId: Long):Response<Teacher>
 
     @GET("teachers/")
-    suspend fun getAcademiesByTeacherAppliedAcademyId(@Query("appliedAcademyId")teacherId:Long): Response<List<Academy>>
+    suspend fun getAcademiesByTeacherAppliedAcademyId(@Query("appliedAcademyId")academyId:Long): Response<List<Academy>>
 
     @GET("teachers")
-    suspend fun getTeachersRequestApplyAcademy(@Query("appliedAcademyId")id: Long): Response<List<Teacher>>
+    suspend fun getTeachersRequestApplyAcademy(@Query("appliedAcademyId")academyId: Long): Response<List<Teacher>>
 
     @GET("teachers")
-    suspend fun getTeachersRequestApplyClassroom(@Query("appliedClassroomId")id: Long): Response<List<Teacher>>
+    suspend fun getTeachersRequestApplyClassroom(@Query("appliedClassroomId")academyId: Long): Response<List<Teacher>>
 
     @GET("teachers")
-    suspend fun getTeachersAppliedClassroom(@Query("classroomId")id: Long): Response<List<Teacher>>
+    suspend fun getTeachersAppliedClassroom(@Query("classroomId")classroomId: Long): Response<List<Teacher>>
 
     @GET("academy/classrooms/")
-    suspend fun getClassroomsByTeacherId(@Query("teacherId")id:Long): Response<List<Classroom>>
+    suspend fun getClassroomsByTeacherId(@Query("teacherId")teacherId:Long): Response<List<Classroom>>
 
     @GET("academy/classroom/lessons")
-    suspend fun getLessonsByTeacherId(@Query("teacherId")id:Long): Response<List<Lesson>>
+    suspend fun getLessonsByTeacherId(@Query("teacherId")teacherId:Long): Response<List<Lesson>>
 
 
     @GET("academies/")
-    suspend fun getAcademiesByName(@Query("nameLike")name:String): Response<List<Academy>>
+    suspend fun getAcademiesByName(@Query("nameLike")name: String): Response<List<Academy>>
 
     @GET("academies/")
-    fun getOwnedAcademy(@Query("ownerId")id:Long): Call<List<Academy>>
+    fun getOwnedAcademy(@Query("ownerId")ownerId: Long): Call<List<Academy>>
 
     @GET("academy/classroom/lessons")
-    suspend fun getTeacherLessonsByDate(@Query("teacherId")id: Long, @Query("sinceDate")sinceDate: String,
+    suspend fun getTeacherLessonsByDate(@Query("teacherId")teacherId: Long, @Query("sinceDate")sinceDate: String,
                                         @Query("untilDate")untilDate:String): Response<List<Lesson>>
 
 
     @GET("academies/")
-    suspend fun getAcademiesStudentApplied(@Query("studentId")id: Long): Response<List<Academy>>
+    suspend fun getAcademiesStudentApplied(@Query("studentId")studentId: Long): Response<List<Academy>>
 
     @GET("academies/")
-    suspend fun getAcademiesTeacherApplied(@Query("teacherId")id: Long): Response<List<Academy>>
+    suspend fun getAcademiesTeacherApplied(@Query("teacherId")teacherId: Long): Response<List<Academy>>
 
 
     @POST("students/")
-    fun createStudent(@Body student: Student):Call<Student>
+    fun createStudent(@Body student: Student): Call<Student>
 
     @POST("students/{id}/apply-academy")
     fun sendStudentApplyAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Call<Unit>
@@ -72,38 +78,45 @@ interface RetrofitService {
     fun createLesson(@Body lesson: Lesson): Call<Lesson>
 
     @PATCH("students/{id}")
-    fun changeStudentInfo(@Path("id")id: Long, @Body student: Student):Call<Student>
+    fun changeStudentInfo(@Path("id")studentId: Long, @Body student: Student):Call<Student>
+
+    @POST("students/{id}/remove-applied-academy")
+    fun removeStudentAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Call<Unit>
+
+    @POST("students/{id}/remove-applied-classroom")
+    fun removeStudentClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Call<Unit>
+
 
     @GET("students/{id}")
-    suspend fun getStudent(@Path("id")id: Long): Response<Student>
+    suspend fun getStudent(@Path("id")studentId: Long): Response<Student>
 
     @GET("students/")
-    suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")studentId: Long): Response<List<Academy>>
+    suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")academyId: Long): Response<List<Academy>>
 
     @GET("students")
-    suspend fun getStudentsRequestApplyAcademy(@Query("appliedAcademyId")id: Long, @Query("sort")sortBy: String): Response<List<Student>>
+    suspend fun getStudentsRequestApplyAcademy(@Query("appliedAcademyId")academyId: Long, @Query("sort")sortBy: String): Response<List<Student>>
 
     @GET("students")
-    suspend fun getStudentsRequestApplyClassroom(@Query("appliedClassroomId")id: Long): Response<List<Student>>
+    suspend fun getStudentsRequestApplyClassroom(@Query("appliedClassroomId")classroomId: Long): Response<List<Student>>
 
     @GET("students")
-    suspend fun getStudentsAppliedClassroom(@Query("classroomId")id: Long): Response<List<Student>>
+    suspend fun getStudentsAppliedClassroom(@Query("classroomId")classroomId: Long): Response<List<Student>>
 
     @GET("academy/classroom/lessons")
-    suspend fun getLessonsByStudentId(@Query("studentId")id: Long): Response<List<Lesson>>
+    suspend fun getLessonsByStudentId(@Query("studentId")studentId: Long): Response<List<Lesson>>
 
     @GET("academy/classrooms")
-    suspend fun getClassroomsByNameAndAcademyId(@Query("academyId")id: Long,@Query("nameLike")name: String): Response<List<Classroom>>
+    suspend fun getClassroomsByNameAndAcademyId(@Query("academyId")academyId: Long,@Query("nameLike")name: String): Response<List<Classroom>>
 
     @GET("academy/classroom/lessons")
-    suspend fun getStudentLessonsByDate(@Query("studentId")id: Long, @Query("sinceDate")sinceDate: String,
+    suspend fun getStudentLessonsByDate(@Query("studentId")studentId: Long, @Query("sinceDate")sinceDate: String,
                                         @Query("untilDate")untilDate:String): Response<List<Lesson>>
 
     @DELETE("academy/classrooms/{id}")
-    fun deleteClassroom(@Path("id")id: Long): Call<Unit>
+    fun deleteClassroom(@Path("id")classroomId: Long): Call<Unit>
 
     @PATCH("academy/classrooms/{id}")
-    fun editClassroom(@Path("id")id: Long, @Body classroom: Classroom): Call<Classroom>
+    fun editClassroom(@Path("id")classroomId: Long, @Body classroom: Classroom): Call<Classroom>
 
 
     @POST("academies/{id}/accept-student")

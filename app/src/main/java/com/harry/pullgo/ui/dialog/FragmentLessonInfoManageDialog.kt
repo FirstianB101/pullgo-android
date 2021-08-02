@@ -54,6 +54,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         }
     }
 

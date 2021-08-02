@@ -1,15 +1,22 @@
 package com.harry.pullgo.ui.lesson
 
-import android.app.Activity
-import android.content.Intent
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -17,7 +24,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.*
 import com.harry.pullgo.data.repository.ClassroomsRepository
-import com.harry.pullgo.databinding.ActivityCreateNewLessonBinding
+import com.harry.pullgo.databinding.FragmentCreateNewLessonBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,8 +32,8 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
-class CreateNewLessonActivity : AppCompatActivity() {
-    val binding by lazy {ActivityCreateNewLessonBinding.inflate(layoutInflater)}
+class FragmentCreateNewLessonDialog : DialogFragment() {
+    val binding by lazy {FragmentCreateNewLessonBinding.inflate(layoutInflater)}
     private var selectedDate: Long? = null
     private var startHour = -1
     private var startMinute = -1
@@ -36,12 +43,33 @@ class CreateNewLessonActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CreateNewLessonViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun onStart() {
+        super.onStart()
+
+        val dialog = dialog
+        if (dialog != null) {
+            dialog.window!!.setLayout(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        }
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val builder = MaterialAlertDialogBuilder(requireActivity())
 
         initialize()
         initViewModel()
+
+        builder.setView(binding.root)
+
+        val _dialog = builder.create()
+        _dialog.setCanceledOnTouchOutside(false)
+        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
+        return _dialog
     }
 
     private fun initViewModel(){
@@ -96,15 +124,15 @@ class CreateNewLessonActivity : AppCompatActivity() {
         }
 
         binding.spinnerTextViewSelectDate.setOnClickListener {
-            datePicker.show(supportFragmentManager,"date")
+            datePicker.show(childFragmentManager,"date")
         }
 
         binding.spinnerTextViewSelectStartTime.setOnClickListener {
-            startTimePicker.show(supportFragmentManager,"startTime")
+            startTimePicker.show(childFragmentManager,"startTime")
         }
 
         binding.spinnerTextViewSelectEndTime.setOnClickListener {
-            endTimePicker.show(supportFragmentManager,"endTime")
+            endTimePicker.show(childFragmentManager,"endTime")
         }
 
         binding.buttonCreateNewLesson.setOnClickListener {
@@ -127,7 +155,7 @@ class CreateNewLessonActivity : AppCompatActivity() {
 
     private fun setSpinnerItems(){
         val classrooms = viewModel.createNewLessonClassroomRepository.value!!
-        val adapter: ArrayAdapter<Classroom> = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,classrooms)
+        val adapter: ArrayAdapter<Classroom> = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_dropdown_item,classrooms)
         binding.spinnerSelectClassroom.adapter = adapter
 
         binding.spinnerSelectClassroom.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -166,27 +194,25 @@ class CreateNewLessonActivity : AppCompatActivity() {
         service.createLesson(lesson).enqueue(object: Callback<Lesson> {
             override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
                 if(response.isSuccessful){
-                    Toast.makeText(applicationContext,"수업을 생성하였습니다",Toast.LENGTH_SHORT).show()
-                    finishActivityWithResult()
+                    Toast.makeText(requireContext(),"수업을 생성하였습니다",Toast.LENGTH_SHORT).show()
+                    parentFragment?.setFragmentResult("isMadeNewLesson", bundleOf("isMade" to "yes"))
+                    dismiss()
                 }else{
-                    Toast.makeText(applicationContext,"수업을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),"수업을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<Lesson>, t: Throwable) {
-                Toast.makeText(applicationContext,"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun finishActivityWithResult(){
-        val intent = Intent()
-        intent.putExtra("isMadeNewLesson","yes")
-        setResult(Activity.RESULT_OK,intent)
-        finish()
     }
 
     private fun isSelectedAllOptions(): Boolean =
         (startHour != -1 && startMinute != -1 && endHour != -1 && endMinute != -1
             && selectedDate != null && selectedClassroom != null)
+
+    companion object {
+        const val TAG_CREATE_NEW_LESSON_DIALOG = "create_new_lesson_dialog"
+    }
 }

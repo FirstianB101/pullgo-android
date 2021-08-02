@@ -20,11 +20,15 @@ interface OnClassroomClick{
 }
 
 interface OnStudentClick{
-    fun onStudentClick(view: View, student: Student?)
+    fun onBackgroundClick(view: View, student: Student?)
+    fun onApplyButtonClick(view: View, student: Student?)
+    fun onRemoveButtonClick(view: View, student: Student?)
 }
 
 interface OnTeacherClick{
-    fun onTeacherClick(view: View, teacher: Teacher?)
+    fun onBackgroundClick(view: View, teacher: Teacher?)
+    fun onApplyButtonClick(view: View, teacher: Teacher?)
+    fun onRemoveButtonClick(view: View, teacher: Teacher?)
 }
 
 interface OnCalendarReset{

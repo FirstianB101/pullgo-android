@@ -9,10 +9,11 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCalendarReset
-import com.harry.pullgo.ui.lesson.CreateNewLessonActivity
+import com.harry.pullgo.ui.lesson.FragmentCreateNewLessonDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBinding
@@ -24,8 +25,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     private lateinit var viewModel: LessonsViewModel
 
     private lateinit var lessonDecorator: CalendarEventDecorator
-
-    private lateinit var startForResult: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +54,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
     private fun setListeners(){
         binding.floatingActionButtonCalendar.setOnClickListener {
-            startForResult.launch(Intent(requireContext(), CreateNewLessonActivity::class.java))
+            FragmentCreateNewLessonDialog().show(childFragmentManager,FragmentCreateNewLessonDialog.TAG_CREATE_NEW_LESSON_DIALOG)
         }
 
         if(LoginInfo.loginTeacher == null){
@@ -71,12 +70,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         )
         binding.calendarView.setOnDateChangedListener(this)
 
-        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
-            if(result.resultCode == RESULT_OK){
-                if(result.data?.getStringExtra("isMadeNewLesson") == "yes"){
-                    binding.calendarView.removeDecorator(lessonDecorator)
-                    viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
-                }
+        setFragmentResultListener("isMadeNewLesson"){ _, bundle ->
+            if(bundle.getString("isMade") == "yes"){
+                binding.calendarView.removeDecorator(lessonDecorator)
+                viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
             }
         }
     }
