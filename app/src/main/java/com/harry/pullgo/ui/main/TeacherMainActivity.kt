@@ -28,6 +28,7 @@ import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherAcceptApplyAcademyFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
+import com.harry.pullgo.ui.teacherFragment.TeacherManageAcademyFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherManageClassroomFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,12 +44,15 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
     lateinit var manageClassroomFragment: TeacherManageClassroomFragment
-    lateinit var acceptApplyAcademyFragmentFragment: TeacherAcceptApplyAcademyFragment
+    lateinit var acceptApplyAcademyFragment: TeacherAcceptApplyAcademyFragment
+    lateinit var manageAcademyFragment: TeacherManageAcademyFragment
 
     lateinit var homeViewModel: AppliedAcademyGroupViewModel
     lateinit var changeInfoViewModel: ChangeInfoViewModel
 
     private lateinit var headerView: View
+
+    private val client by lazy{RetrofitClient.getApiService()}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +63,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         initViewModels()
         setListeners()
 
-        //changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
+        changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
     }
 
     private fun initViewModels(){
@@ -82,7 +86,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
         calendarFragment = CalendarFragment()
         manageClassroomFragment = TeacherManageClassroomFragment()
-        acceptApplyAcademyFragmentFragment = TeacherAcceptApplyAcademyFragment()
+        acceptApplyAcademyFragment = TeacherAcceptApplyAcademyFragment()
+        manageAcademyFragment = TeacherManageAcademyFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).commit()
 
@@ -129,10 +134,10 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.student_additional_setting, menu)
         return true
-    }
+    }*/
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -141,6 +146,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_teacher_manage_classroom -> onFragmentSelected(TEACHER_MENU.MANAGE_CLASSROOM)
             R.id.nav_teacher_apply_classroom -> startApplyClassroomActivity()
             R.id.nav_teacher_manage_accept_academy -> onFragmentSelected(TEACHER_MENU.ACCEPT_ACADEMY)
+            R.id.nav_teacher_manage_academy -> onFragmentSelected(TEACHER_MENU.MANAGE_ACADEMY)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
@@ -167,7 +173,10 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = manageClassroomFragment
             }
             TEACHER_MENU.ACCEPT_ACADEMY -> {
-                curFragment = acceptApplyAcademyFragmentFragment
+                curFragment = acceptApplyAcademyFragment
+            }
+            TEACHER_MENU.MANAGE_ACADEMY -> {
+                curFragment = manageAcademyFragment
             }
             else -> {}
         }
@@ -188,24 +197,24 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        val service= RetrofitClient.getApiService()
-        var academy: List<Academy>? = null
-
-        CoroutineScope(Dispatchers.Main).launch {
-            CoroutineScope(Dispatchers.IO).async {
-                academy=service.getOwnedAcademy(teacherId).execute().body()
-            }.await()
-                if(academy?.isEmpty() == true){
-                    binding.navigationViewTeacher.menu.removeItem(R.id.nav_teacher_manage_academy)
+        client.getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
+            override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
+                if(response.isSuccessful){
+                    response.body().let{
+                        if(it?.isNotEmpty() == true)
+                            binding.navigationViewTeacher.menu.getItem(6).isVisible = true
+                    }
                 }
-        }
+            }
+
+            override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
+            }
+        })
     }
 
     private fun changeTeacherInfo(teacher: Teacher?){
         if (teacher != null) {
-            val service= RetrofitClient.getApiService()
-
-            service.changeTeacherInfo(teacher.id!!,teacher).enqueue(object: Callback<Teacher> {
+            client.changeTeacherInfo(teacher.id!!,teacher).enqueue(object: Callback<Teacher> {
                 override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
                     if(response.isSuccessful){
                         Snackbar.make(binding.root,"계정 정보가 수정되었습니다", Snackbar.LENGTH_SHORT).show()

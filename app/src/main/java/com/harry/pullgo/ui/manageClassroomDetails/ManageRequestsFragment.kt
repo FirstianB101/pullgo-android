@@ -17,7 +17,7 @@ import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
-import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentRequestDialog
+import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -85,8 +85,8 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
                 override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
 
-                    val dialog = FragmentManageClassroomStudentRequestDialog(student!!)
-                    dialog.show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                    val dialog = FragmentShowStudentInfoDialog(student!!)
+                    dialog.show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {

@@ -34,3 +34,7 @@ interface OnTeacherClick{
 interface OnCalendarReset{
     fun onResetCalendar()
 }
+
+interface OnDataChanged{
+    fun onChangeData(isTeacher: Boolean, isChanged: Boolean)
+}

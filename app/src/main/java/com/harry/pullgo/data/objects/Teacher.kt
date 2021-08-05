@@ -7,7 +7,6 @@ class Teacher(account: Account) : Serializable{
     var account: Account? = account
 
     override fun toString(): String {
-        return "id:$id userName:${account?.username} fullName:${account?.fullName} phone:${account?.phone}"
+        return "${account?.fullName} (${account?.username})"
     }
-
 }

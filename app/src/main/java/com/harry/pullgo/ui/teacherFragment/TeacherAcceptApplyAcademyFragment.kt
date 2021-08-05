@@ -22,8 +22,8 @@ import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
-import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentRequestDialog
-import com.harry.pullgo.ui.dialog.FragmentManageClassroomTeacherRequestDialog
+import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
+import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -129,7 +129,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                 override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
 
-                    FragmentManageClassroomStudentRequestDialog(student!!).show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                    FragmentShowStudentInfoDialog(student!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {
@@ -159,7 +159,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
                     selectedTeacher = teacher
 
-                    FragmentManageClassroomTeacherRequestDialog(teacher!!).show(parentFragmentManager, FragmentManageClassroomStudentRequestDialog.TAG_MANAGE_STUDENT_DIALOG)
+                    FragmentShowTeacherInfoDialog(teacher!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, teacher: Teacher?) {

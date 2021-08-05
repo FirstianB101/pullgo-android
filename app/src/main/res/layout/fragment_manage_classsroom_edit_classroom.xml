@@ -134,7 +134,7 @@
         android:textStyle="bold"
         android:layout_marginRight="40dp"
         android:layout_marginTop="50dp"
-        android:textColor="#E53935"
+        android:textColor="@color/warning_color"
         android:textSize="@dimen/success_button_text"
         app:backgroundTint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"

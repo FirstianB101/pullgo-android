@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.objects.Teacher
-import com.harry.pullgo.databinding.DialogManageClassroomTeacherInfoBinding
+import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
 
-class FragmentManageClassroomTeacherRequestDialog(private val selectedTeacher: Teacher): DialogFragment() {
-    private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
+class FragmentShowStudentInfoDialog(private val selectedStudent: Student): DialogFragment() {
+    private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
     override fun onStart() {
         super.onStart()
@@ -41,14 +41,17 @@ class FragmentManageClassroomTeacherRequestDialog(private val selectedTeacher: T
     }
 
     private fun initialize(){
-        binding.textViewManageClassroomTeacherName.text = selectedTeacher.account?.fullName
-        binding.textViewManageClassroomTeacherID.text = selectedTeacher.account?.username
-        binding.textViewManageClassroomTeacherPhone.text = selectedTeacher.account?.phone
+        binding.textViewManageClassroomStudentName.text = selectedStudent.account?.fullName
+        binding.textViewManageClassroomStudentID.text = selectedStudent.account?.username
+        binding.textViewManageClassroomStudentParentPhone.text = selectedStudent.parentPhone
+        binding.textViewManageClassroomStudentPhone.text = selectedStudent.account?.phone
+        binding.textViewManageClassroomStudentSchool.text = selectedStudent.schoolName
+        binding.textViewManageClassroomStudentYear.text = selectedStudent.schoolYear.toString()
 
-        binding.buttonManageClassroomKickTeacher.visibility = View.GONE
+        binding.buttonManageClassroomKickStudent.visibility = View.GONE
     }
 
     companion object {
-        const val TAG_MANAGE_TEACHER_DIALOG = "manage_classroom_request_dialog"
+        const val TAG_STUDENT_INFO_DIALOG = "student_info_dialog"
     }
 }

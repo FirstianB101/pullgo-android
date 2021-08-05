@@ -40,6 +40,9 @@ interface RetrofitService {
     @GET("teachers")
     suspend fun getTeachersAppliedClassroom(@Query("classroomId")classroomId: Long): Response<List<Teacher>>
 
+    @GET("teachers")
+    suspend fun getTeachersSuchAcademy(@Query("academyId")academyId: Long): Response<List<Teacher>>
+
     @GET("academy/classrooms/")
     suspend fun getClassroomsByTeacherId(@Query("teacherId")teacherId:Long): Response<List<Classroom>>
 
@@ -47,11 +50,14 @@ interface RetrofitService {
     suspend fun getLessonsByTeacherId(@Query("teacherId")teacherId:Long): Response<List<Lesson>>
 
 
-    @GET("academies/")
+    @GET("academies")
     suspend fun getAcademiesByName(@Query("nameLike")name: String): Response<List<Academy>>
 
-    @GET("academies/")
-    fun getOwnedAcademy(@Query("ownerId")ownerId: Long): Call<List<Academy>>
+    @GET("academies")
+    suspend fun getOwnedAcademy(@Query("ownerId")teacherId: Long): Response<List<Academy>>
+
+    @GET("academies")
+    fun getOwnedAcademyByCall(@Query("ownerId")teacherId: Long): Call<List<Academy>>
 
     @GET("academy/classroom/lessons")
     suspend fun getTeacherLessonsByDate(@Query("teacherId")teacherId: Long, @Query("sinceDate")sinceDate: String,
@@ -63,6 +69,12 @@ interface RetrofitService {
 
     @GET("academies/")
     suspend fun getAcademiesTeacherApplied(@Query("teacherId")teacherId: Long): Response<List<Academy>>
+
+    @POST("academies/{id}/kick-student")
+    fun kickStudent(@Path("id")academyId: Long, @Body studentId: Long): Call<Unit>
+
+    @POST("academies/{id}/kick-teacher")
+    fun kickTeacher(@Path("id")academyId: Long, @Body teacherId: Long): Call<Unit>
 
 
     @POST("students/")
@@ -101,6 +113,9 @@ interface RetrofitService {
 
     @GET("students")
     suspend fun getStudentsAppliedClassroom(@Query("classroomId")classroomId: Long): Response<List<Student>>
+
+    @GET("students")
+    suspend fun getStudentsSuchAcademy(@Query("academyId")academyId: Long): Response<List<Student>>
 
     @GET("academy/classroom/lessons")
     suspend fun getLessonsByStudentId(@Query("studentId")studentId: Long): Response<List<Lesson>>

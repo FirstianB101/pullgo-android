@@ -11,6 +11,6 @@ class Student(
     var id:Long?=null
 
     override fun toString(): String {
-        return "account:$account, parentPhone:$parentPhone, schoolName:$schoolName, schoolYear:$schoolYear"
+        return "${account?.fullName} (${account?.username})"
     }
 }

@@ -37,4 +37,8 @@
     <string name="underlined_edit"><u>수정하기</u></string>
     <string name="underlined_edit_success"><u>수정완료</u></string>
     <string name="underlined_delete"><u>삭제하기</u></string>
+    <string name="underlined_delegate"><u>권한 위임</u></string>
+    <string name="underlined_delete_academy"><u>학원 삭제</u></string>
+    <string name="underlined_cancel"><u>취소</u></string>
+    <string name="underlined_kick_people"><u>제외하기</u></string>
 </resources>

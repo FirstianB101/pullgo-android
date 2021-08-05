@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".ui.manageClassroomDetails.ManageClassroomDetailsActivity"/>
+        <activity android:name=".ui.manageAcademy.ManageAcademyManagePeopleActivity"></activity>
+        <activity android:name=".ui.manageClassroomDetails.ManageClassroomDetailsActivity" />
         <activity android:name=".ui.applyClassroom.ApplyClassroomActivity" />
         <activity
             android:name=".ui.findAcademy.FindAcademyActivity"
