@@ -76,6 +76,15 @@ interface RetrofitService {
     @POST("academies/{id}/kick-teacher")
     fun kickTeacher(@Path("id")academyId: Long, @Body teacherId: Long): Call<Unit>
 
+    @POST("academies/")
+    fun createAcademy(@Body academy: Academy): Call<Academy>
+
+    @PATCH("academies/{id}")
+    fun editAcademy(@Path("id")academyId: Long, @Body academy: Academy): Call<Academy>
+
+    @DELETE("academies/{id}")
+    fun deleteAcademy(@Path("id")academyId: Long): Call<Unit>
+
 
     @POST("students/")
     fun createStudent(@Body student: Student): Call<Student>

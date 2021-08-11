@@ -121,6 +121,7 @@
         android:textColor="@color/material_700_red"
         android:layout_margin="10dp"
         android:layout_gravity="right"
-        android:backgroundTint="@color/white"/>
+        android:backgroundTint="@color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.databinding.FragmentTeacherHomeNoAcademyBinding
+import com.harry.pullgo.ui.findAcademy.CreateAcademyActivity
 
 class TeacherHomeFragmentNoAcademy: Fragment() {
     private val binding by lazy{FragmentTeacherHomeNoAcademyBinding.inflate(layoutInflater)}
@@ -15,15 +16,16 @@ class TeacherHomeFragmentNoAcademy: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding.buttonTeacherSignUpAcademy.setOnClickListener {
             val intent= Intent(requireContext(), FindAcademyActivity::class.java)
             startActivity(intent)
         }
 
-        binding.buttonTeacherMakeAcademy.setOnClickListener {
-            
+        binding.buttonTeacherCreateAcademy.setOnClickListener {
+            val intent = Intent(requireContext(), CreateAcademyActivity::class.java)
+            startActivity(intent)
         }
 
         return binding.root

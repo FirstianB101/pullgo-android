@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.main
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.navigation.NavigationView
@@ -9,6 +10,8 @@ import androidx.core.view.GravityCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -49,23 +52,6 @@ class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavig
         initialize()
         initViewModels()
         setListeners()
-
-        //changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
-    }
-
-    private fun initViewModels(){
-        val homeViewModelFactory = AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())
-        homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(AppliedAcademyGroupViewModel::class.java)
-
-        changeInfoViewModel = ViewModelProvider(this).get(ChangeInfoViewModel::class.java)
-
-        changeInfoViewModel.changeTeacher.observe(this){
-            changeTeacherInfo(changeInfoViewModel.changeTeacher.value)
-            LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
-            onFragmentSelected(TEACHER_MENU.HOME)
-        }
     }
 
     private fun initialize(){
@@ -83,6 +69,23 @@ class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavig
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
         headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
     }
+
+    private fun initViewModels(){
+        val homeViewModelFactory = AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())
+        homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(AppliedAcademyGroupViewModel::class.java)
+
+        changeInfoViewModel = ViewModelProvider(this).get(ChangeInfoViewModel::class.java)
+
+        changeInfoViewModel.changeTeacher.observe(this){
+            changeTeacherInfo(changeInfoViewModel.changeTeacher.value)
+            LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value
+            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
+            headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
+            onFragmentSelected(TEACHER_MENU.HOME)
+        }
+    }
+
+
 
     private fun setListeners(){
         val toggle = ActionBarDrawerToggle(
@@ -167,12 +170,8 @@ class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavig
     }
 
     private fun startFindAcademyActivity(){
-        val intent= Intent(applicationContext, FindAcademyActivity::class.java)
+        val intent = Intent(applicationContext, FindAcademyActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun changeMenuIfOwner(teacherId: Long){
-
     }
 
     private fun changeTeacherInfo(teacher: Teacher?){

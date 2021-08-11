@@ -118,5 +118,6 @@
         android:layout_gravity="right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:backgroundTint="@color/white"/>
+        app:backgroundTint="@color/white"
+        style="?android:attr/borderlessButtonStyle"/>
 </LinearLayout>

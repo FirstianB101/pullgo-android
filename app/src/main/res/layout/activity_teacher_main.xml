@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/textViewTeacherApplyOtherAcademy"
-            android:text="@string/underlined_apply_other_academy"
+            android:text="@string/underlined_apply_other_academy_or_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

@@ -18,7 +18,7 @@ class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
     private lateinit var viewModel: LoginViewModel
 
-    var isStudent=true
+    var isStudent = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.findAcademy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -28,10 +29,17 @@ class FindAcademyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        initialize()
         initViewModel()
         setListeners()
+    }
+
+    private fun initialize(){
+        if(intent.getBooleanExtra("calledByStudent",false))
+            binding.floatingActionButtonMakeAcademy.visibility = View.GONE
 
         binding.toolbarFindAcademy.title = "학원 찾기"
+
         binding.recyclerViewFindAcademy.layoutManager = LinearLayoutManager(this)
     }
 
@@ -49,6 +57,11 @@ class FindAcademyActivity : AppCompatActivity() {
     private fun setListeners(){
         binding.buttonFindAcademySearch.setOnClickListener {
             viewModel.requestGetAcademies(binding.searchTextFindAcademy.text.toString())
+        }
+
+        binding.floatingActionButtonMakeAcademy.setOnClickListener {
+            val intent = Intent(this,CreateAcademyActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -115,6 +128,4 @@ class FindAcademyActivity : AppCompatActivity() {
                 })
         }
     }
-
-
 }

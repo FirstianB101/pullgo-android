@@ -101,8 +101,8 @@ class StudentMainActivityNoAcademy  : AppCompatActivity(), NavigationView.OnNavi
         }
 
         binding.textViewStudentLogout.setOnClickListener {
-            LoginInfo.loginStudent=null
-            LoginInfo.loginTeacher=null
+            LoginInfo.loginStudent = null
+            LoginInfo.loginTeacher = null
             finish()
         }
 
@@ -121,10 +121,10 @@ class StudentMainActivityNoAcademy  : AppCompatActivity(), NavigationView.OnNavi
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.student_additional_setting, menu)
         return true
-    }
+    }*/
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -167,6 +167,7 @@ class StudentMainActivityNoAcademy  : AppCompatActivity(), NavigationView.OnNavi
 
     private fun startFindAcademyActivity(){
         val intent= Intent(applicationContext, FindAcademyActivity::class.java)
+        intent.putExtra("calledByStudent",true)
         startActivity(intent)
     }
 

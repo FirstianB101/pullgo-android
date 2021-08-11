@@ -1,6 +1,7 @@
 package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -24,6 +25,7 @@ import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
+import com.harry.pullgo.ui.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -136,7 +138,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
         }
 
         binding.buttonLessonInfoManageRemove.setOnClickListener {
-            requestDeleteLesson()
+            showRemoveDialog()
         }
     }
 
@@ -195,7 +197,17 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
         })
     }
 
-    private fun requestDeleteLesson(){
+    private fun showRemoveDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+            override fun onLeftClicked() {
+                requestRemoveLesson()
+            }
+        }
+        dialog.start("수업 삭제","${selectedLesson.name} 수업을 삭제하시겠습니까?","삭제하기","취소")
+    }
+
+    private fun requestRemoveLesson(){
         val client = RetrofitClient.getApiService()
         
         client.deleteLesson(selectedLesson.id!!).enqueue(object: Callback<Unit>{

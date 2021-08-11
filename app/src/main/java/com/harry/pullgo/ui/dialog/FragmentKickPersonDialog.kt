@@ -58,7 +58,7 @@ class FragmentKickStudentDialog(
 
     private fun initialize(){
         binding.textViewKickPersonInfo.text =
-            "${selectedStudent.account?.fullName} (${selectedStudent.account?.username})님을\n$academyName 학원에서\n제외하시겠습니까?"
+            "${selectedStudent.account?.fullName} (${selectedStudent.account?.username})님을 $academyName 학원에서 제외하시겠습니까?"
     }
 
     private fun setListeners(){
@@ -132,7 +132,7 @@ class FragmentKickTeacherDialog(
 
     private fun initialize(){
         binding.textViewKickPersonInfo.text =
-            "${selectedTeacher.account?.fullName} (${selectedTeacher.account?.username})님을\n$academyName 학원에서\n제외하시겠습니까?"
+            "${selectedTeacher.account?.fullName} (${selectedTeacher.account?.username})님을 $academyName 학원에서 제외하시겠습니까?"
     }
 
     private fun setListeners(){

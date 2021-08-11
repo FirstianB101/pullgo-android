@@ -114,21 +114,23 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonEditClassroomEdit"
-        android:layout_width="130dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="50dp"
         android:text="@string/underlined_edit"
-        android:textStyle="bold"
-        android:textSize="@dimen/success_button_text"
         android:textColor="@color/main_color"
+        android:textSize="@dimen/success_button_text"
+        android:textStyle="bold"
         app:backgroundTint="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonEditClassroomRemove"
         app:layout_constraintTop_toBottomOf="@+id/layoutEditClassroomTeacherName" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonEditClassroomRemove"
-        android:layout_width="130dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/underlined_delete"
         android:textStyle="bold"

@@ -17,7 +17,8 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_change_info">회원정보 변경</string>
-    <string name="underlined_apply_other_academy"><u>다른 학원 가입</u></string>
+    <string name="underlined_apply_other_academy_or_create"><u>학원 가입/생성</u></string>
+    <string name="underlined_apply_other_academy"><u>다른학원 가입</u></string>
     <string name="underlined_logout"><u>로그아웃</u></string>
 
     <string name="full_name">이름</string>
@@ -41,4 +42,6 @@
     <string name="underlined_delete_academy"><u>학원 삭제</u></string>
     <string name="underlined_cancel"><u>취소</u></string>
     <string name="underlined_kick_people"><u>제외하기</u></string>
+    <string name="underlined_make_academy"><u>학원 생성</u></string>
+    <string name="underlined_confirm"><u>확인</u></string>
 </resources>

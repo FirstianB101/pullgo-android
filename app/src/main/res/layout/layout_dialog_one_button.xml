@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="250dp"
     android:layout_height="wrap_content"
-    android:padding="10dp"
+    android:padding="5dp"
     android:background="@drawable/rounded">
 
     <LinearLayout
@@ -29,9 +31,8 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:padding="7dp"
-            android:textColor="@color/light_gray"
             android:textStyle="bold"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_margin="3dp"
             android:lineSpacingExtra="5sp"
             android:text="contents"
@@ -47,10 +48,13 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:textColor="@color/white"
+                android:text="@string/underlined_confirm"
+                android:textStyle="bold"
+                android:textColor="@color/main_color"
+                app:backgroundTint="@color/white"
                 android:layout_margin="3dp"
                 android:textSize="16sp"
-                android:text="확인"/>
+                style="?android:attr/borderlessButtonStyle"/>
 
         </LinearLayout>
 

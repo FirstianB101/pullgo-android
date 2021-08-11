@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.findAcademy.CreateAcademyActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarCreateAcademy"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.Pullgo.PopupOverlay"
+        app:title="학원 개설"
+        app:titleTextColor="@color/white" />
+
+    <TextView
+        android:id="@+id/textViewCreateAcademyName"
+        android:layout_width="@dimen/date_pick_text_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:text="학원 이름"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCreateAcademy" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCreateAcademyName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCreateAcademyName"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarCreateAcademy">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textCreateAcademyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="학원 이름"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textViewCreateAcademyAddress"
+        android:layout_width="@dimen/date_pick_text_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="63dp"
+        android:text="학원 주소"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAcademyName" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCreateAcademyAddress"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCreateAcademyName"
+        app:layout_constraintTop_toBottomOf="@+id/layoutCreateAcademyName">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textCreateAcademyAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="학원 주소"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textViewCreateAcademyDetailedAddress"
+        android:layout_width="@dimen/date_pick_text_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="63dp"
+        android:text="상세 주소"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAcademyAddress" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCreateAcademyDetailedAddress"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCreateAcademyName"
+        app:layout_constraintTop_toBottomOf="@+id/layoutCreateAcademyAddress">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textCreateAcademyDetailedAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="상세 주소"
+            android:inputType="textPersonName"
+            android:textColor="@color/black"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textViewCreateAcademyPhone"
+        android:layout_width="@dimen/date_pick_text_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="63dp"
+        android:text="전화번호"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAcademyDetailedAddress" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layoutCreateAcademyPhone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCreateAcademyName"
+        app:layout_constraintTop_toBottomOf="@+id/layoutCreateAcademyDetailedAddress">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textCreateAcademyPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="전화번호"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:textColorHint="@color/light_gray" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonCreateAcademyCreate"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="@string/underlined_make_academy"
+        android:textColor="@color/main_color"
+        android:textSize="@dimen/success_button_text"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonCreateAcademyCancel"
+        style="?android:attr/borderlessButtonStyle"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonCreateAcademyCancel"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="@string/underlined_cancel"
+        android:textColor="@color/warning_color"
+        android:textSize="@dimen/success_button_text"
+        android:textStyle="bold"
+        android:layout_margin="10dp"
+        app:backgroundTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="?android:attr/borderlessButtonStyle"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

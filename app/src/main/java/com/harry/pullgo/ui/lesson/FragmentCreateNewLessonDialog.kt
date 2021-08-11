@@ -151,6 +151,8 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
                 Snackbar.make(binding.root,"선택하지 않은 항목이 존재합니다",Snackbar.LENGTH_SHORT).show()
             }
         }
+
+        binding.buttonCancelCreateNewLesson.setOnClickListener { dismiss() }
     }
 
     private fun setSpinnerItems(){

@@ -72,8 +72,8 @@
             android:textStyle="bold"
             android:textSize="@dimen/success_button_text"
             android:textColor="@color/main_color"
-            android:layout_marginRight="10dp"
-            app:backgroundTint="@color/white"/>
+            app:backgroundTint="@color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonManageAcademyCancelDelegate"
@@ -83,7 +83,8 @@
             android:textStyle="bold"
             android:textSize="@dimen/success_button_text"
             android:textColor="@color/main_color"
-            app:backgroundTint="@color/white"/>
+            app:backgroundTint="@color/white"
+            style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 
 </LinearLayout>

@@ -178,6 +178,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun startFindAcademyActivity(){
         val intent= Intent(applicationContext, FindAcademyActivity::class.java)
+        intent.putExtra("calledByStudent",true)
         startActivity(intent)
     }
 

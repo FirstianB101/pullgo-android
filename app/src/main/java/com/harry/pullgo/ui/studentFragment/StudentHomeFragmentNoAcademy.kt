@@ -9,21 +9,18 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
+import com.harry.pullgo.databinding.FragmentStudentHomeNoAcademyBinding
 
 class StudentHomeFragmentNoAcademy: Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val root=inflater.inflate(R.layout.fragment_student_home_no_academy,container,false)
-        val button=root.findViewById(R.id.buttonStudentSignUpAcademy) as Button
+    private val binding by lazy{FragmentStudentHomeNoAcademyBinding.inflate(layoutInflater)}
 
-        button.setOnClickListener {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding.buttonStudentSignUpAcademy.setOnClickListener {
             val intent= Intent(requireContext(), FindAcademyActivity::class.java)
+            intent.putExtra("calledByStudent",true)
             startActivity(intent)
         }
 
-        return root
+        return binding.root
     }
 }

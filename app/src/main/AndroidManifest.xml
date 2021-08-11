@@ -3,6 +3,7 @@
     package="com.harry.pullgo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".ui.manageAcademy.ManageAcademyManagePeopleActivity"></activity>
+        <activity android:name=".ui.findAcademy.CreateAcademyActivity"></activity>
+        <activity android:name=".ui.manageAcademy.ManageAcademyManagePeopleActivity" />
         <activity android:name=".ui.manageClassroomDetails.ManageClassroomDetailsActivity" />
         <activity android:name=".ui.applyClassroom.ApplyClassroomActivity" />
         <activity
