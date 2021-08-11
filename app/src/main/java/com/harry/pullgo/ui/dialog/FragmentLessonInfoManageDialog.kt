@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -42,7 +43,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     private var endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
     private var isEditModeOn = false
 
-    lateinit var viewModel: LessonsViewModel
+    private val viewModel: LessonsViewModel by activityViewModels{LessonsViewModelFactory(LessonsRepository())}
 
     var calendarResetListener: OnCalendarReset? = null
 
@@ -229,9 +230,6 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     }
 
     private fun initViewModel(){
-        val factory = LessonsViewModelFactory(LessonsRepository())
-        viewModel = ViewModelProvider(requireActivity(),factory).get(LessonsViewModel::class.java)
-
         viewModel.classroomInfoRepository.observe(requireActivity()){
             binding.textViewLessonInfoManageSelectClassroom.setText(it.name!!.split(';')[0])
         }

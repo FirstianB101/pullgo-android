@@ -13,11 +13,8 @@ import com.harry.pullgo.databinding.FragmentStudentExamListBinding
 
 class StudentExamListFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private val binding by lazy{FragmentStudentExamListBinding.inflate(layoutInflater)}
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         ArrayAdapter.createFromResource(requireContext(),R.array.exam_list_filter,android.R.layout.simple_spinner_item)
             .also { adapter->
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

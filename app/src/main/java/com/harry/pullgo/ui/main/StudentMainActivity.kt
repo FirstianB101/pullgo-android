@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -40,8 +41,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var studentExamListFragment: StudentExamListFragment
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
 
-    lateinit var homeViewModel: AppliedAcademyGroupViewModel
-    lateinit var changeInfoViewModel: ChangeInfoViewModel
+    private val homeViewModel: AppliedAcademyGroupViewModel by viewModels{AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())}
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private lateinit var headerView: View
 
@@ -57,11 +58,6 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun initViewModels(){
-        val homeViewModelFactory = AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())
-        homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(AppliedAcademyGroupViewModel::class.java)
-
-        changeInfoViewModel = ViewModelProvider(this).get(ChangeInfoViewModel::class.java)
-
         changeInfoViewModel.changeStudent.observe(this){
             changeStudentInfo(changeInfoViewModel.changeStudent.value)
             LoginInfo.loginStudent = changeInfoViewModel.changeStudent.value

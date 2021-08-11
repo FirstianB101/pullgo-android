@@ -5,19 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.adapter.StudentAdapter
 import com.harry.pullgo.data.api.OnStudentClick
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageStudentBinding
 import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentDialog
 
 class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageStudentBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: ManageClassroomDetailsViewModel
+    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomDetailsViewModelFactory(
+        ManageClassroomDetailsRepository()
+    )}
+
     private var selectedStudent: Student? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -29,8 +35,6 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
     }
 
     private fun initialize(){
-        viewModel = ViewModelProvider(requireActivity()).get(ManageClassroomDetailsViewModel::class.java)
-
         viewModel.studentsAppliedClassroom.observe(requireActivity()){
             displayStudents()
         }

@@ -6,9 +6,9 @@ import android.content.Intent
 import android.os.Bundle;
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.*
 
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
@@ -27,7 +27,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
     lateinit var signUpId: FragmentSignUpId
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpInfoFragment: TeacherSignUpInfoFragment
-    lateinit var viewModel: SignUpViewModel
+    private val viewModel: SignUpViewModel by viewModels()
 
     var curPosition:Int=0
 
@@ -39,7 +39,6 @@ class TeacherSignUpActivity:AppCompatActivity(){
     }
 
     private fun initialize(){
-        viewModel = ViewModelProvider(this).get(SignUpViewModel::class.java)
         signUpInfoFragment = TeacherSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId()

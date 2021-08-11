@@ -6,6 +6,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -25,8 +26,8 @@ import retrofit2.Response
 class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: ApplyClassroomViewModel
-    private lateinit var repository: ApplyClassroomRepository
+    private val repository = ApplyClassroomRepository()
+    private val viewModel: ApplyClassroomViewModel by viewModels{ApplyClassroomViewModelFactory(repository)}
 
     private var selectedAcademy: Academy? = null
     private var selectedClassroom: Classroom? = null
@@ -41,11 +42,6 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     private fun initViewModel(){
-        repository = ApplyClassroomRepository()
-
-        val viewModelFactory = ApplyClassroomViewModelFactory(repository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(ApplyClassroomViewModel::class.java)
-
         viewModel.appliedAcademiesRepository.observe(this){
             setSpinnerItems()
         }

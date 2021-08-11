@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +18,7 @@ import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import retrofit2.Call
@@ -25,7 +28,9 @@ import retrofit2.Response
 class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: ManageClassroomDetailsViewModel
+    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomDetailsViewModelFactory(
+        ManageClassroomDetailsRepository()
+    )}
 
     private var selectedStudent: Student? = null
     private var selectedTeacher: Teacher? = null
@@ -56,8 +61,6 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
     }
 
     private fun initViewModel(){
-        viewModel = ViewModelProvider(requireActivity()).get(ManageClassroomDetailsViewModel::class.java)
-
         viewModel.studentsRequestApplyClassroom.observe(requireActivity()){
             displayStudentRequests()
             viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)

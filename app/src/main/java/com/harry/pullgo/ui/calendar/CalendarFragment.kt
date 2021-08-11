@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCalendarReset
@@ -18,14 +20,9 @@ import com.prolificinteractive.materialcalendarview.*
 class CalendarFragment : Fragment(), OnDateSelectedListener {
     private val binding by lazy{FragmentCalendarBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: LessonsViewModel
+    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
 
-    private lateinit var lessonDecorator: CalendarEventDecorator
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         initializeCalendar()
         setViewModel()
@@ -35,8 +32,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     }
 
     private fun setViewModel(){
-        viewModel = LessonsViewModel(LessonsRepository())
-
         viewModel.allLessonsRepositories.observe(requireActivity()){
             makeDots()
         }
@@ -59,6 +54,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     }
 
     private fun initializeCalendar(){
+        binding.calendarView.removeDecorators()
         binding.calendarView.selectedDate = CalendarDay.today()
         binding.calendarView.addDecorators(
             CalendarSaturdayDecorator(),
@@ -68,7 +64,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
         setFragmentResultListener("isMadeNewLesson"){ _, bundle ->
             if(bundle.getString("isMade") == "yes"){
-                binding.calendarView.removeDecorator(lessonDecorator)
                 viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
             }
         }
@@ -79,7 +74,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         val bottomSheet = FragmentCalendarBottomSheet(selectedDate)
         bottomSheet.calendarResetListener = object: OnCalendarReset{
             override fun onResetCalendar() {
-                binding.calendarView.removeDecorator(lessonDecorator)
                 viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
             }
         }
@@ -104,7 +98,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             calList.add(CalendarDay.from(tmp[0],tmp[1] - 1,tmp[2]))
         }
 
-        lessonDecorator = CalendarEventDecorator(R.color.statusbar_color,calList)
-        binding.calendarView.addDecorator(lessonDecorator)
+        binding.calendarView.removeDecorators()
+        binding.calendarView.addDecorator(CalendarEventDecorator(R.color.statusbar_color,calList))
     }
 }

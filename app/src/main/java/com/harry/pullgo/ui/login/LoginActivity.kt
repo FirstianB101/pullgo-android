@@ -2,6 +2,7 @@ package com.harry.pullgo.ui.login;
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.databinding.ActivityLoginBinding
@@ -16,7 +17,8 @@ import com.harry.pullgo.ui.main.TeacherMainActivityNoAcademy
 
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
-    private lateinit var viewModel: LoginViewModel
+
+    private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory(LoginRepository())}
 
     var isStudent = true
 
@@ -29,9 +31,6 @@ class LoginActivity: AppCompatActivity(){
     }
 
     private fun initViewModel(){
-        val viewModelFactory = LoginViewModelFactory(LoginRepository())
-        viewModel = ViewModelProvider(this,viewModelFactory).get(LoginViewModel::class.java)
-
         viewModel.loginStudentRepositories.observe(this){
             viewModel.requestStudentAcademies(binding.loginId.text.toString().toLong())
         }

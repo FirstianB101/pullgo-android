@@ -12,11 +12,7 @@ import com.harry.pullgo.ui.findAcademy.CreateAcademyActivity
 
 class TeacherHomeFragmentNoAcademy: Fragment() {
     private val binding by lazy{FragmentTeacherHomeNoAcademyBinding.inflate(layoutInflater)}
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         binding.buttonTeacherSignUpAcademy.setOnClickListener {
             val intent= Intent(requireContext(), FindAcademyActivity::class.java)

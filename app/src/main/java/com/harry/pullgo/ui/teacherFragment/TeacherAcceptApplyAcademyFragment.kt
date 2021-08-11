@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -31,8 +32,7 @@ import retrofit2.Response
 class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: TeacherAcceptApplyAcademyViewModel
-    private lateinit var repository: AcceptApplyAcademyRepository
+    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository())}
 
     private var selectedStudent: Student? = null
     private var selectedTeacher: Teacher? = null
@@ -66,11 +66,6 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun initViewModel(){
-        repository = AcceptApplyAcademyRepository()
-
-        val factory = TeacherAcceptApplyAcademyViewModelFactory(repository)
-        viewModel = ViewModelProvider(this,factory).get(TeacherAcceptApplyAcademyViewModel::class.java)
-
         viewModel.studentsAppliedAcademy.observe(requireActivity()){
             displayStudents()
         }

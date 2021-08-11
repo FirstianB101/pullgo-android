@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +24,7 @@ import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsActivity
 class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: ManageClassroomViewModel
-    private lateinit var repository: ClassroomsRepository
+    private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(ClassroomsRepository())}
 
     private var selectedClassroom: Classroom? = null
     private var buttonPushed = false
@@ -69,11 +69,6 @@ class TeacherManageClassroomFragment: Fragment() {
     }
 
     private fun setViewModel(){
-        repository = ClassroomsRepository()
-
-        val viewModelFactory = ManageClassroomViewModelFactory(repository)
-        viewModel = ViewModelProvider(requireActivity(),viewModelFactory).get(ManageClassroomViewModel::class.java)
-
         viewModel.getClassroomRepositories.observe(requireActivity()){
             displayClassrooms()
         }

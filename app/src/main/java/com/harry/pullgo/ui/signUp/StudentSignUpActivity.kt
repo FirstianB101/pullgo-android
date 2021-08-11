@@ -3,6 +3,7 @@ package com.harry.pullgo.ui.signUp;
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -24,7 +25,8 @@ class StudentSignUpActivity:AppCompatActivity(){
     lateinit var signUpId: FragmentSignUpId
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpSignUpInfoFragment: StudentSignUpInfoFragment
-    lateinit var viewModel: SignUpViewModel
+
+    private val viewModel: SignUpViewModel by viewModels()
 
     var curPosition:Int=0
 
@@ -36,7 +38,6 @@ class StudentSignUpActivity:AppCompatActivity(){
     }
 
     private fun initialize(){
-        viewModel=ViewModelProvider(this).get(SignUpViewModel::class.java)
         signUpSignUpInfoFragment = StudentSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId()

@@ -2,6 +2,7 @@ package com.harry.pullgo.ui.manageClassroomDetails
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +21,7 @@ class ManageClassroomDetailsActivity : AppCompatActivity() {
 
     private lateinit var selectedClassroom: Classroom
 
-    private lateinit var viewModel: ManageClassroomDetailsViewModel
+    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())}
     private lateinit var repository: ManageClassroomDetailsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +64,7 @@ class ManageClassroomDetailsActivity : AppCompatActivity() {
     }
 
     private fun initViewModel(){
-        repository = ManageClassroomDetailsRepository()
-        val factory = ManageClassroomDetailsViewModelFactory(repository)
-
-        viewModel = ViewModelProvider(this,factory).get(ManageClassroomDetailsViewModel::class.java)
+        
     }
 
     private fun onFragmentSelected(position: Int): Boolean{

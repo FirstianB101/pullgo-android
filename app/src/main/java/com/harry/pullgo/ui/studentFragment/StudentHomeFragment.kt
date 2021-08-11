@@ -9,10 +9,7 @@ import androidx.fragment.app.Fragment
 import com.harry.pullgo.R
 
 class StudentHomeFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_student_home, container, false)
         val textView = root.findViewById<TextView>(R.id.textStudentHome)
         textView.text = "홈 프래그먼트"

@@ -3,6 +3,7 @@ package com.harry.pullgo.ui.manageAcademy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +25,7 @@ import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChanged {
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: ManageAcademyManagePeopleViewModel
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())}
     private val selectedAcademyId by lazy{intent.getLongExtra("selectedAcademyId",-1L)}
     private val selectedAcademyName by lazy{intent.getStringExtra("selectedAcademyName")}
 
@@ -53,9 +54,6 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChanged {
     }
 
     private fun initViewModel(){
-        val factory = ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
-        viewModel = ViewModelProvider(this,factory).get(ManageAcademyManagePeopleViewModel::class.java)
-
         viewModel.studentsAtAcademyRepository.observe(this){
             displayStudents()
         }

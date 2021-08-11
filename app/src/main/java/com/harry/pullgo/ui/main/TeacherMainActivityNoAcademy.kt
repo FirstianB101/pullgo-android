@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -39,8 +40,8 @@ class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavig
     lateinit var teacherChangeInfoFragment: TeacherChangePersonInfoFragment
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
 
-    lateinit var homeViewModel: AppliedAcademyGroupViewModel
-    lateinit var changeInfoViewModel: ChangeInfoViewModel
+    private val homeViewModel: AppliedAcademyGroupViewModel by viewModels{AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())}
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private lateinit var headerView: View
 
@@ -71,11 +72,6 @@ class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavig
     }
 
     private fun initViewModels(){
-        val homeViewModelFactory = AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())
-        homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(AppliedAcademyGroupViewModel::class.java)
-
-        changeInfoViewModel = ViewModelProvider(this).get(ChangeInfoViewModel::class.java)
-
         changeInfoViewModel.changeTeacher.observe(this){
             changeTeacherInfo(changeInfoViewModel.changeTeacher.value)
             LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -21,8 +22,7 @@ import retrofit2.Response
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
-    private lateinit var viewModel: FindAcademyViewModel
-    private lateinit var repository: FindAcademyRepository
+    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository())}
     private var selectedAcademy: Academy? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,11 +44,6 @@ class FindAcademyActivity : AppCompatActivity() {
     }
 
     private fun initViewModel(){
-        repository = FindAcademyRepository()
-
-        val viewModelFactory = FindAcademyViewModelFactory(repository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(FindAcademyViewModel::class.java)
-
         viewModel.findAcademyRepositories.observe(this){
             displayAcademies()
         }

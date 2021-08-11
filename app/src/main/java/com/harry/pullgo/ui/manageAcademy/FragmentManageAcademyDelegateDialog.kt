@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.data.objects.Academy
@@ -22,7 +23,7 @@ import com.harry.pullgo.ui.teacherFragment.TeacherManageAcademyViewModel
 class FragmentManageAcademyDelegateDialog(private val selectedAcademy: Academy): DialogFragment() {
     private val binding by lazy{DialogManageAcademyDelegateBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: TeacherManageAcademyViewModel
+    private val viewModel: TeacherManageAcademyViewModel by activityViewModels()
 
     private lateinit var selectedTeacher: Teacher
 
@@ -53,8 +54,6 @@ class FragmentManageAcademyDelegateDialog(private val selectedAcademy: Academy):
     }
 
     private fun initViewModel(){
-        viewModel = ViewModelProvider(requireActivity()).get(TeacherManageAcademyViewModel::class.java)
-
         viewModel.teachersAtAcademyRepository.observe(requireActivity()){
             setSpinner()
         }

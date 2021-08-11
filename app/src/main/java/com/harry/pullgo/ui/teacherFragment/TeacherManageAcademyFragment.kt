@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.api.RetrofitClient
@@ -29,7 +30,7 @@ class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
     private val client by lazy{RetrofitClient.getApiService()}
 
-    private lateinit var viewModel: TeacherManageAcademyViewModel
+    private val viewModel: TeacherManageAcademyViewModel by activityViewModels{TeacherManageAcademyViewModelFactory(ManageAcademyRepository())}
 
     private var isLayoutVisible = false
     private var isEditMode = false
@@ -49,9 +50,6 @@ class TeacherManageAcademyFragment: Fragment() {
     }
 
     private fun initViewModel(){
-        val factory = TeacherManageAcademyViewModelFactory(ManageAcademyRepository())
-        viewModel = ViewModelProvider(requireActivity(),factory).get(TeacherManageAcademyViewModel::class.java)
-
         viewModel.ownedAcademiesRepository.observe(requireActivity()){
             setSpinnerItems()
         }

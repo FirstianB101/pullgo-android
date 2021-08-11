@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.data.adapter.LessonAdapter
@@ -20,7 +22,7 @@ import com.harry.pullgo.ui.dialog.FragmentLessonInfoManageDialog
 class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: LessonsViewModel
+    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
 
     var calendarResetListener: OnCalendarReset? = null
 
@@ -40,8 +42,6 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     }
 
     private fun setViewModel(){
-        viewModel = LessonsViewModel(LessonsRepository())
-
         viewModel.dayLessonsRepositories.observe(requireActivity()){
             showLessons()
         }

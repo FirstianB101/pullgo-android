@@ -13,12 +13,7 @@ class ChangeInfoCheckPwFragment: Fragment() {
 
     var pwCheckListener: OnCheckPw? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setListeners()
 
         return binding.root

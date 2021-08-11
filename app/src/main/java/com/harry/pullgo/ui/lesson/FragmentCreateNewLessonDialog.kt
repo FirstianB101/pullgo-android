@@ -7,14 +7,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -41,7 +40,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var endMinute = -1
     private var selectedClassroom: Classroom? = null
 
-    private lateinit var viewModel: CreateNewLessonViewModel
+    private val viewModel: CreateNewLessonViewModel by activityViewModels{CreateNewLessonViewModelFactory(ClassroomsRepository())}
 
     override fun onStart() {
         super.onStart()
@@ -73,9 +72,6 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     }
 
     private fun initViewModel(){
-        val viewModelFactory = CreateNewLessonViewModelFactory(ClassroomsRepository())
-        viewModel = ViewModelProvider(this,viewModelFactory).get(CreateNewLessonViewModel::class.java)
-
         viewModel.createNewLessonClassroomRepository.observe(this){
             setSpinnerItems()
         }

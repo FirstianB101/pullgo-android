@@ -11,14 +11,14 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/textViewStudentSignUpInfo"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:gravity="center"
-                android:padding="60dp"
                 android:text="개인정보 입력"
                 android:textColor="@color/black"
                 android:textSize="40sp"
@@ -48,7 +48,7 @@
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewStudentSignUpInfo">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -71,7 +71,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpStudentNameLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -104,7 +104,7 @@
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpPhoneLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -139,7 +139,7 @@
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpStudentPhoneVerifyLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -160,7 +160,7 @@
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpParentPhoneLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -181,7 +181,7 @@
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpSchoolNameLayout"
                 app:selectedColor="@color/main_color"
                 app:selectedTab="0"
@@ -203,16 +203,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentSignUpInfoGuideline"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpGradeSwitchButton"
                 app:layout_constraintVertical_bias="0.3" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/studentSignUpInfoGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="35dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

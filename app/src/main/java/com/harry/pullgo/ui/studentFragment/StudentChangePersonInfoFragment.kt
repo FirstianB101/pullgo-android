@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.objects.Account
@@ -21,7 +22,7 @@ class StudentChangePersonInfoFragment : Fragment() {
     private val PHONE_TYPE_EXPRESSION="^[0-9]*$"
     private var isCertificated=false
 
-    private lateinit var viewModel: ChangeInfoViewModel
+    private val viewModel: ChangeInfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +30,6 @@ class StudentChangePersonInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        viewModel= ViewModelProvider(requireActivity()).get(ChangeInfoViewModel::class.java)
 
         initialize()
         setListeners()
