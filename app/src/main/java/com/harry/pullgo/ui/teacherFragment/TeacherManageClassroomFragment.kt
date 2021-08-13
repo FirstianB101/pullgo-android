@@ -69,6 +69,10 @@ class TeacherManageClassroomFragment: Fragment() {
     }
 
     private fun setViewModel(){
+        viewModel.selectedClassroom.observe(requireActivity()){
+            startManageClassroomActivity()
+        }
+
         viewModel.getClassroomRepositories.observe(requireActivity()){
             displayClassrooms()
         }
@@ -92,7 +96,8 @@ class TeacherManageClassroomFragment: Fragment() {
         if(classroomAdapter != null){
             classroomAdapter.itemClickListener = object: OnClassroomClick{
                 override fun onClassroomClick(view: View, classroom: Classroom?) {
-                   startManageClassroomActivity(classroom)
+                    selectedClassroom = classroom
+                    viewModel.requestGetClassroomById(classroom?.id!!)
                 }
             }
         }
@@ -102,14 +107,14 @@ class TeacherManageClassroomFragment: Fragment() {
         binding.recyclerViewManageClassroom.adapter = classroomAdapter
     }
 
-    private fun startManageClassroomActivity(classroom: Classroom?){
-        selectedClassroom = classroom
-
+    private fun startManageClassroomActivity(){
         val intent = Intent(requireContext(),ManageClassroomDetailsActivity::class.java)
 
-        intent.putExtra("selectedClassroomId",selectedClassroom?.id)
-        intent.putExtra("selectedClassroomAcademyId",selectedClassroom?.academyId)
-        intent.putExtra("selectedClassroomName",selectedClassroom?.name)
+        val classroom = viewModel.selectedClassroom.value
+
+        intent.putExtra("selectedClassroomId",classroom?.id)
+        intent.putExtra("selectedClassroomAcademyId",classroom?.academyId)
+        intent.putExtra("selectedClassroomName",classroom?.name)
 
         startForResult.launch(intent)
     }

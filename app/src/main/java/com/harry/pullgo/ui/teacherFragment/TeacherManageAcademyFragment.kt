@@ -46,7 +46,7 @@ class TeacherManageAcademyFragment: Fragment() {
     }
 
     private fun initialize(){
-
+        makeLayoutInvisible()
     }
 
     private fun initViewModel(){

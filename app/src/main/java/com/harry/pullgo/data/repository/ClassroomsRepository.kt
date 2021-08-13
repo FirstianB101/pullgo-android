@@ -5,6 +5,7 @@ import com.harry.pullgo.data.api.RetrofitClient
 class ClassroomsRepository {
     private val getClassroomsClient = RetrofitClient.getApiService()
 
+    suspend fun getClassroomById(classroomId: Long) = getClassroomsClient.getClassroomById(classroomId)
     suspend fun getClassroomsByTeacherId(id: Long) = getClassroomsClient.getClassroomsByTeacherId(id)
     suspend fun getAcademiesByTeacherId(id: Long) = getClassroomsClient.getAcademiesTeacherApplied(id)
 }

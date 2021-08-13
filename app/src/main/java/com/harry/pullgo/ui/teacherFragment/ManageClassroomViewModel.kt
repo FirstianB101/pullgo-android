@@ -11,11 +11,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ManageClassroomViewModel(private val classroomsRepository: ClassroomsRepository): ViewModel() {
+    private val _selectedClassroom = MutableLiveData<Classroom>()
+    val selectedClassroom = _selectedClassroom
+
     private val _getClassroomRepositories = MutableLiveData<List<Classroom>>()
     val getClassroomRepositories = _getClassroomRepositories
 
     private val _academiesForSpinnerRepository = MutableLiveData<List<Academy>>()
     val academiesForSpinnerRepository = _academiesForSpinnerRepository
+
+    fun requestGetClassroomById(classroomId: Long){
+        CoroutineScope(Dispatchers.IO).launch {
+            classroomsRepository.getClassroomById(classroomId).let{response ->
+                if(response.isSuccessful){
+                    response.body().let{
+                        _selectedClassroom.postValue(it)
+                    }
+                }
+            }
+        }
+    }
 
     fun requestGetClassrooms(id: Long){
         CoroutineScope(Dispatchers.IO).launch {

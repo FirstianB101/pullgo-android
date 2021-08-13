@@ -66,7 +66,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
     }
-
+ 
     private fun initViewModels(){
         changeInfoViewModel.changeTeacher.observe(this){
             changeTeacherInfo(changeInfoViewModel.changeTeacher.value)
@@ -163,7 +163,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = calendarFragment
             }
             TEACHER_MENU.CHANGE_INFO_CHECK_PW -> {
-                curFragment = changeInfoCheckPwFragment
+                curFragment = ChangeInfoCheckPwFragment()
             }
             TEACHER_MENU.MANAGE_CLASSROOM -> {
                 curFragment = manageClassroomFragment
@@ -172,7 +172,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = acceptApplyAcademyFragment
             }
             TEACHER_MENU.MANAGE_ACADEMY -> {
-                curFragment = manageAcademyFragment
+                curFragment = TeacherManageAcademyFragment()
             }
             else -> {}
         }

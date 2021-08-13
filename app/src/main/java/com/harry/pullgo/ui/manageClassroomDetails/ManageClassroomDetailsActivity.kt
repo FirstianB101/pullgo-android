@@ -22,7 +22,6 @@ class ManageClassroomDetailsActivity : AppCompatActivity() {
     private lateinit var selectedClassroom: Classroom
 
     private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())}
-    private lateinit var repository: ManageClassroomDetailsRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

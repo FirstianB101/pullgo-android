@@ -98,6 +98,9 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
         client.editClassroom(selectedClassroom.id!!,selectedClassroom).enqueue(object: Callback<Classroom> {
             override fun onResponse(call: Call<Classroom>, response: Response<Classroom>) {
                 if(response.isSuccessful){
+                    val intent = Intent()
+                    intent.putExtra("finishedFragment","editClassroom")
+                    requireActivity().setResult(Activity.RESULT_OK,intent)
                     Snackbar.make(binding.root,"수정이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
                 }else{
                     Snackbar.make(binding.root,"수정하지 못했습니다",Snackbar.LENGTH_SHORT).show()

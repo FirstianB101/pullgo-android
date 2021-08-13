@@ -3,6 +3,7 @@ package com.harry.pullgo.ui.manageClassroomDetails
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
@@ -11,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ManageClassroomDetailsViewModel(private val detailsRepository: ManageClassroomDetailsRepository): ViewModel() {
+
     private val _studentsAppliedClassroom = MutableLiveData<List<Student>>()
     val studentsAppliedClassroom = _studentsAppliedClassroom
 
