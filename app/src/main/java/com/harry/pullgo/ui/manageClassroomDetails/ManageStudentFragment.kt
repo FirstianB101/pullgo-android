@@ -20,9 +20,9 @@ import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentDialog
 class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageStudentBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomDetailsViewModelFactory(
-        ManageClassroomDetailsRepository()
-    )}
+    private val viewModel: ManageClassroomDetailsViewModel by activityViewModels{
+        ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())
+    }
 
     private var selectedStudent: Student? = null
 
@@ -35,7 +35,7 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
     }
 
     private fun initialize(){
-        viewModel.studentsAppliedClassroom.observe(requireActivity()){
+        viewModel.studentsAppliedClassroom.observe(viewLifecycleOwner){
             displayStudents()
         }
 

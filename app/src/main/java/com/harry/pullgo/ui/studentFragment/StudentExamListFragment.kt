@@ -7,28 +7,81 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
+import com.harry.pullgo.data.adapter.AcademyAdapter
+import com.harry.pullgo.data.adapter.ExamAdapter
+import com.harry.pullgo.data.api.OnAcademyClick
+import com.harry.pullgo.data.api.OnExamClick
+import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.objects.Exam
+import com.harry.pullgo.data.objects.LoginInfo
+import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.databinding.FragmentStudentExamListBinding
 
-class StudentExamListFragment : Fragment(), AdapterView.OnItemSelectedListener{
+class StudentExamListFragment : Fragment(){
     private val binding by lazy{FragmentStudentExamListBinding.inflate(layoutInflater)}
 
+    private val viewModel: StudentExamListViewModel by viewModels{StudentExamListViewModelFactory(ExamsRepository())}
+
+    private var selectedExam: Exam? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        ArrayAdapter.createFromResource(requireContext(),R.array.exam_list_filter,android.R.layout.simple_spinner_item)
-            .also { adapter->
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                binding.spinnerExamList.adapter=adapter
-            }
-        binding.spinnerExamList.prompt="정렬"
-        binding.spinnerExamList.onItemSelectedListener=this
+        initialize()
+        initViewModel()
         return binding.root
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Snackbar.make(binding.root,"$position 선택",Snackbar.LENGTH_SHORT).show()
+    private fun initialize(){
+        ArrayAdapter.createFromResource(requireContext(),R.array.exam_list_filter,android.R.layout.simple_spinner_item)
+            .also { adapter->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerExamList.adapter = adapter
+            }
+
+        binding.spinnerExamList.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                filterExams(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+
+        binding.recyclerViewExamList.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    override fun onNothingSelected(parent: AdapterView<*>?) {
+    private fun initViewModel(){
+        viewModel.studentExamList.observe(requireActivity()){
+            displayExams()
+        }
+    }
+
+    private fun filterExams(case: Int){
+        when(case){
+            0 -> viewModel.requestExamsByName(LoginInfo.loginStudent?.id!!)
+            1 -> viewModel.requestExamsByBeginDate(LoginInfo.loginStudent?.id!!)
+            2 -> viewModel.requestExamsByEndDate(LoginInfo.loginStudent?.id!!)
+        }
+    }
+
+    private fun displayExams(){
+        val data = viewModel.studentExamList.value
+
+        val examsAdapter = data?.let {
+            ExamAdapter(it)
+        }
+
+        if (examsAdapter != null) {
+            examsAdapter.itemClickListener = object: OnExamClick {
+                override fun onExamClick(view: View, exam: Exam?) {
+                    selectedExam = exam
+                }
+            }
+        }
+        binding.recyclerViewExamList.adapter = examsAdapter
     }
 }

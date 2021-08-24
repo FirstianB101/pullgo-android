@@ -60,10 +60,16 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
     }
 
     private fun initViewModel(){
+        viewModel.classroomInfoRepository.observe(requireActivity()){
+            val classroom = it.name!!.split(';')
+            binding.textViewLessonInfoClassroomName.text = "${classroom[0]} (${classroom[1]})"
+        }
+
         viewModel.academyInfoRepository.observe(requireActivity()){
             binding.textViewLessonInfoAcademyName.text = it.name
         }
 
+        viewModel.getClassroomInfoOfLesson(selectedLesson)
         viewModel.getAcademyInfoOfLesson(selectedLesson)
     }
 

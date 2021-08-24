@@ -48,6 +48,32 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:text="반 이름"/>
+
+        <TextView
+            android:id="@+id/textViewLessonInfoClassroomName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="정보를 불러올 수 없습니다"
+            android:textSize="17sp"
+            android:padding="10dp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="수업 이름"/>
 
         <TextView

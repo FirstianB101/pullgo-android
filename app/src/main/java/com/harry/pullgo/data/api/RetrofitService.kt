@@ -177,4 +177,11 @@ interface RetrofitService {
 
     @DELETE("academy/classroom/lessons/{id}")
     fun deleteLesson(@Path("id")lessonId: Long): Call<Unit>
+
+
+    @GET("exams/")
+    suspend fun getSortedStudentExams(@Query("studentId")studentId: Long, @Query("sort")sort: String): Response<List<Exam>>
+
+    @GET("exams/")
+    suspend fun getStudentExamsDesc(@Query("id,desc")studentId: Long, @Query("sort")sort: String): Response<List<Exam>>
 }

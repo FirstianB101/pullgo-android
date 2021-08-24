@@ -19,6 +19,10 @@ interface OnClassroomClick{
     fun onClassroomClick(view: View, classroom: Classroom?)
 }
 
+interface OnExamClick{
+    fun onExamClick(view: View, exam: Exam?)
+}
+
 interface OnStudentClick{
     fun onBackgroundClick(view: View, student: Student?)
     fun onApplyButtonClick(view: View, student: Student?)

@@ -14,8 +14,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
 import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsViewModel
+import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsViewModelFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +28,7 @@ class FragmentManageClassroomStudentDialog(
 ): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomDetailsViewModel by activityViewModels()
+    private lateinit var viewModel: ManageClassroomDetailsViewModel
 
     override fun onStart() {
         super.onStart()
@@ -71,7 +73,8 @@ class FragmentManageClassroomStudentDialog(
     }
 
     private fun initViewModel(){
-
+        val factory = ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())
+        viewModel = ViewModelProvider(requireActivity(),factory).get(ManageClassroomDetailsViewModel::class.java)
     }
 
     private fun kickStudent(){

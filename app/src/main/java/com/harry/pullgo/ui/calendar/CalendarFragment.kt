@@ -56,9 +56,11 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     private fun initializeCalendar(){
         binding.calendarView.removeDecorators()
         binding.calendarView.selectedDate = CalendarDay.today()
+
         binding.calendarView.addDecorators(
             CalendarSaturdayDecorator(),
-            CalendarSundayDecorator()
+            CalendarSundayDecorator(),
+            CalendarTodayDecorator()
         )
         binding.calendarView.setOnDateChangedListener(this)
 
@@ -99,6 +101,11 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         }
 
         binding.calendarView.removeDecorators()
-        binding.calendarView.addDecorator(CalendarEventDecorator(R.color.statusbar_color,calList))
+        binding.calendarView.addDecorators(
+            CalendarEventDecorator(R.color.statusbar_color,calList),
+            CalendarSaturdayDecorator(),
+            CalendarSundayDecorator(),
+            CalendarTodayDecorator()
+        )
     }
 }
