@@ -32,7 +32,7 @@
             android:layout_width="@dimen/date_pick_text_view_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="학원 선택"
+            android:text="@string/select_academy"
             android:padding="10dp"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -42,8 +42,8 @@
             android:layout_width="@dimen/date_pick_spinner_width"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            app:smsp_hint="학원을 선택하세요"
-            app:smsp_floatingLabelText="선택한 학원"
+            app:smsp_hint="@string/comment_select_academy"
+            app:smsp_floatingLabelText="@string/selected_academy"
             app:smsp_floatingLabelColor="@color/main_color"
             app:smsp_hintSize="18sp"/>
     </LinearLayout>
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/applyClassroomSearchText"
-                android:hint="선생님 이름 혹은 반 이름"
+                android:hint="@string/search_by_teacher_or_classroom_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -88,7 +88,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:text="가입된 학원이 없습니다!"
+        android:text="@string/no_applied_academy"
         android:visibility="gone"
         android:layout_gravity="center_vertical|center_horizontal"/>
 
@@ -96,7 +96,7 @@
         android:id="@+id/textViewApplyClassroomNoClassroom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="검색된 반이 존재하지 않습니다!"
+        android:text="@string/no_search_classroom_result"
         android:layout_marginTop="100dp"
         android:textSize="24sp"
         android:textStyle="bold"

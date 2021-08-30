@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="아이디"
+            android:hint="@string/user_name"
             android:inputType="textPersonName"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="비밀번호"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="70dp"
         android:background="@drawable/rounded_button_main_color"
-        android:text="로그인"
+        android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,7 +85,7 @@
         android:id="@+id/checkBoxAutoLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="자동 로그인"
+        android:text="@string/auto_login"
         android:layout_marginTop="5dp"
         app:layout_constraintHorizontal_bias="0.87"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +100,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginBottom="10dp"
         android:background="@color/white"
-        android:text="회원가입"
+        android:text="@string/sign_up"
         android:textColor="@color/gray"
         app:backgroundTint="#FFFFFF"
         app:iconTint="#FFFFFF"
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="@color/gray"
-        android:text="아이디/비밀번호 찾기"
+        android:text="@string/find_username_and_password"
         android:textColor="#878383"
         app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"

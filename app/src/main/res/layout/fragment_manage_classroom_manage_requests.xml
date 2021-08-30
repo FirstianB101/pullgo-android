@@ -48,7 +48,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textAlignment="center"
-            android:text="가입 요청이 없습니다"
+            android:text="@string/no_apply_request"
             android:visibility="gone"
             android:layout_gravity="center_vertical|center_horizontal"/>
     </FrameLayout>

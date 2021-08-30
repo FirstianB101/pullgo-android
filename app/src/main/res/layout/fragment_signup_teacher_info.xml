@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:gravity="center"
-                android:text="개인정보 입력"
+                android:text="@string/input_person_info"
                 android:textColor="@color/black"
                 android:textSize="40sp"
                 android:textStyle="bold"
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="128dp"
-                android:text="원활한 이용을 위해 정확한 정보를 입력해주세요."
+                android:text="@string/comment_input_person_info"
                 android:textColor="@color/info_text_color"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="이름을 입력해 주세요"
+                    android:hint="@string/comment_input_name"
                     android:inputType="textPersonName"
                     android:textColorHint="@color/light_gray" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -80,7 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="전화번호를 입력해 주세요 (-제외)"
+                    android:hint="@string/comment_input_phone"
                     android:inputType="textPersonName"
                     android:textColorHint="@color/light_gray" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
-                android:text="인증 요청"
+                android:text="@string/request_verification"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -114,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="인증번호를 입력해주세요"
+                    android:hint="@string/comment_input_verification_num"
                     android:inputType="textPersonName"
                     android:textColorHint="@color/light_gray" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -124,7 +124,7 @@
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="인증번호 확인"
+                android:text="@string/check_verification_num"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0"
@@ -136,7 +136,7 @@
                 android:layout_width="@dimen/success_button_width"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_button_main_color"
-                android:text="회원가입 완료"
+                android:text="@string/sign_up_success"
                 android:textColor="@color/white"
                 android:textSize="@dimen/success_button_text"
                 android:layout_marginTop="30dp"

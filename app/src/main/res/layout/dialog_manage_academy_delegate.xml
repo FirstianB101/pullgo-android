@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="권한 위임"
+        android:text="@string/delegate_author"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="22sp"
@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="선택한 선생님에게 권한을 위임합니다"
+        android:text="@string/delegate_hint"
         android:textColor="@color/info_text_color"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="선생님"
+            android:text="@string/teacher"
             android:textColor="@color/black"
             android:textSize="20sp"/>
 
@@ -48,8 +48,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             app:smsp_floatingLabelColor="@color/main_color"
-            app:smsp_floatingLabelText="선택한 선생님"
-            app:smsp_hint="선생님을 선택하세요"
+            app:smsp_floatingLabelText="@string/selected_teacher"
+            app:smsp_hint="@string/comment_select_teacher"
             app:smsp_hintSize="16sp" />
     </LinearLayout>
 

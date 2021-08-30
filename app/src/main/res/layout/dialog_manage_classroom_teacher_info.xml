@@ -32,7 +32,7 @@
             android:textColor="@color/main_color_dark"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="선생님 정보"/>
+            android:text="@string/teacher_info"/>
 
     </LinearLayout>
 
@@ -50,7 +50,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="선생님 이름"/>
+            android:text="@string/teacher_name"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomTeacherName"
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="선생님 이름"/>
+            android:text="@string/teacher_name"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +75,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="선생님 ID"/>
+            android:text="@string/teacher_id"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomTeacherID"
@@ -83,7 +83,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="선생님 ID"/>
+            android:text="@string/teacher_id"/>
     </LinearLayout>
 
     <LinearLayout
@@ -100,7 +100,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="전화번호"/>
+            android:text="@string/phone"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomTeacherPhone"
@@ -108,7 +108,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="전화번호"/>
+            android:text="@string/phone"/>
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

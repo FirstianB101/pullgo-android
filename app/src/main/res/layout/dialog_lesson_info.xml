@@ -22,7 +22,7 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="학원 이름"/>
+            android:text="@string/academy_name"/>
 
         <TextView
             android:id="@+id/textViewLessonInfoAcademyName"
@@ -48,7 +48,7 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="반 이름"/>
+            android:text="@string/classroom_name"/>
 
         <TextView
             android:id="@+id/textViewLessonInfoClassroomName"
@@ -74,7 +74,7 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="수업 이름"/>
+            android:text="@string/lesson_name"/>
 
         <TextView
             android:id="@+id/textViewLessonInfoLessonName"
@@ -99,7 +99,7 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="수업 날짜"/>
+            android:text="@string/lesson_date"/>
 
         <TextView
             android:id="@+id/textViewLessonInfoLessonDate"
@@ -124,7 +124,7 @@
             android:padding="10dp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:text="수업 시간"/>
+            android:text="@string/lesson_time"/>
 
         <TextView
             android:id="@+id/textViewLessonInfoLessonTime"
@@ -138,7 +138,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonDialogLessonInfo"
-        android:text="확인"
+        android:text="@string/confirm"
         android:textStyle="bold"
         android:textSize="18sp"
         android:layout_gravity="right"

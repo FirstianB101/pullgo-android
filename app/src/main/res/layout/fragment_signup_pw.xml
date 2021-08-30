@@ -10,7 +10,7 @@
         android:layout_height="250dp"
         android:gravity="center"
         android:padding="60dp"
-        android:text="비밀번호 입력"
+        android:text="@string/input_password"
         android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="비밀번호를 입력해 주세요"
+            android:hint="@string/comment_input_password"
             android:inputType="textPassword"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="비밀번호를 다시 입력해주세요"
+            android:hint="@string/comment_re_input_password"
             android:inputType="textPassword"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/rounded_button_main_color"
-        android:text="다음으로"
+        android:text="@string/go_next"
         android:visibility="gone"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"

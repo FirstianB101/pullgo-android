@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가입된 반이 없습니다!"
+            android:text="@string/comment_no_applied_classroom"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:textSize="24sp"/>

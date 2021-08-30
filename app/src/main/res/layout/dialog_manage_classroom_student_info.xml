@@ -32,7 +32,7 @@
             android:textColor="@color/main_color_dark"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="학생 정보"/>
+            android:text="@string/student_info"/>
 
     </LinearLayout>
 
@@ -50,7 +50,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="학생 이름"/>
+            android:text="@string/student_name"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomStudentName"
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="학생 이름"/>
+            android:text="@string/student_name"/>
     </LinearLayout>
 
     <LinearLayout
@@ -75,7 +75,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="학생 ID"/>
+            android:text="@string/student_id"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomStudentID"
@@ -83,7 +83,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="학생 ID"/>
+            android:text="@string/student_id"/>
     </LinearLayout>
 
     <LinearLayout
@@ -100,7 +100,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="전화번호"/>
+            android:text="@string/phone"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomStudentPhone"
@@ -108,7 +108,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="전화번호"/>
+            android:text="@string/phone"/>
     </LinearLayout>
 
     <LinearLayout
@@ -125,7 +125,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="학교"/>
+            android:text="@string/school"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomStudentSchool"
@@ -133,7 +133,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="학교"/>
+            android:text="@string/school"/>
     </LinearLayout>
 
     <LinearLayout
@@ -150,7 +150,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="학년"/>
+            android:text="@string/grade"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomStudentYear"
@@ -158,7 +158,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="학년"/>
+            android:text="@string/grade"/>
     </LinearLayout>
 
     <LinearLayout
@@ -175,7 +175,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
-            android:text="보호자 연락처"/>
+            android:text="@string/parent_phone"/>
 
         <TextView
             android:id="@+id/textViewManageClassroomStudentParentPhone"
@@ -183,7 +183,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textSize="@dimen/calendar_lesson_dialog_text_size"
-            android:text="보호자 연락처"/>
+            android:text="@string/parent_phone"/>
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

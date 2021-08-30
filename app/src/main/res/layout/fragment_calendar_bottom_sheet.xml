@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/textViewLessonNum"
-            android:text="강의 개수"
+            android:text="@string/num_of_lessons"
             android:textColor="@color/secondary_color"
             android:textStyle="bold"
             android:textSize="17sp"

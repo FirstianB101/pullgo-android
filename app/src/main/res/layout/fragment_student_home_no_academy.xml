@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="가입된 학원이 없습니다!"
+        android:text="@string/no_applied_academy"
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="24sp"
@@ -21,7 +21,7 @@
         android:id="@+id/buttonStudentSignUpAcademy"
         android:layout_width="@dimen/success_button_width"
         android:layout_height="wrap_content"
-        android:text="가입하기"
+        android:text="@string/apply"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"
         android:background="@drawable/rounded_button_main_color"

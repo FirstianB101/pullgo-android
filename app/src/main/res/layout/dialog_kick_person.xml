@@ -17,7 +17,7 @@
         android:textSize="22dp"
         android:textColor="@color/black"
         android:textStyle="bold"
-        android:text="학원에서 제외"/>
+        android:text="@string/remove_from_academy"/>
 
     <TextView
         android:id="@+id/textViewKickPersonInfo"

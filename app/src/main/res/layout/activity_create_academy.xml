@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/Theme.Pullgo.PopupOverlay"
-        app:title="학원 개설"
+        app:title="@string/create_academy"
         app:titleTextColor="@color/white" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
-        android:text="학원 이름"
+        android:text="@string/academy_name"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="20sp"
@@ -46,7 +46,7 @@
             android:id="@+id/textCreateAcademyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="학원 이름"
+            android:hint="@string/academy_name"
             android:inputType="textPersonName"
             android:textColor="@color/black"
             android:textColorHint="@color/light_gray" />
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="63dp"
-        android:text="학원 주소"
+        android:text="@string/academy_address"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -80,7 +80,7 @@
             android:id="@+id/textCreateAcademyAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="학원 주소"
+            android:hint="@string/academy_address"
             android:inputType="textPersonName"
             android:textColor="@color/black"
             android:textColorHint="@color/light_gray" />
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="63dp"
-        android:text="상세 주소"
+        android:text="@string/detailed_address"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -114,7 +114,7 @@
             android:id="@+id/textCreateAcademyDetailedAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="상세 주소"
+            android:hint="@string/detailed_address"
             android:inputType="textPersonName"
             android:textColor="@color/black"
             android:textColorHint="@color/light_gray" />
@@ -126,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="63dp"
-        android:text="전화번호"
+        android:text="@string/phone"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -148,7 +148,7 @@
             android:id="@+id/textCreateAcademyPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="전화번호"
+            android:hint="@string/phone"
             android:inputType="number"
             android:textColor="@color/black"
             android:textColorHint="@color/light_gray" />

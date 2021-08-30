@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:textAlignment="center"
-        android:text="반에 속한 학생이 없습니다"
+        android:text="@string/comment_no_applied_students_in_classroom"
         android:visibility="gone"
         android:layout_gravity="center_vertical|center_horizontal"/>
 
