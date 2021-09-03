@@ -11,9 +11,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.harry.pullgo.data.api.OnClassroomClick
+import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
@@ -94,7 +93,7 @@ class TeacherManageClassroomFragment: Fragment() {
         }
 
         if(classroomAdapter != null){
-            classroomAdapter.itemClickListener = object: OnClassroomClick{
+            classroomAdapter.itemClickListenerListener = object: OnClassroomClickListener{
                 override fun onClassroomClick(view: View, classroom: Classroom?) {
                     selectedClassroom = classroom
                     viewModel.requestGetClassroomById(classroom?.id!!)

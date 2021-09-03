@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.data.adapter.LessonAdapter
-import com.harry.pullgo.data.api.OnCalendarReset
-import com.harry.pullgo.data.api.OnLessonClick
+import com.harry.pullgo.data.api.OnCalendarResetListener
+import com.harry.pullgo.data.api.OnLessonClickListener
 import com.harry.pullgo.data.objects.Lesson
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
@@ -24,7 +23,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
 
     private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
 
-    var calendarResetListener: OnCalendarReset? = null
+    var calendarResetListenerListener: OnCalendarResetListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -68,16 +67,16 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
         val adapter = LessonAdapter(lessons)
 
         if(LoginInfo.loginStudent != null){ // student
-            adapter.itemClickListener = object: OnLessonClick{
+            adapter.itemClickListenerListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     FragmentLessonInfoDialog(lesson!!).show(childFragmentManager, FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG)
                 }
             }
         }else if(LoginInfo.loginTeacher != null){ // teacher
-            adapter.itemClickListener = object: OnLessonClick{
+            adapter.itemClickListenerListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     val dialog = FragmentLessonInfoManageDialog(lesson!!)
-                    dialog.calendarResetListener = calendarResetListener
+                    dialog.calendarResetListenerListener = calendarResetListenerListener
                     dialog.show(childFragmentManager, FragmentLessonInfoManageDialog.TAG_LESSON_INFO_MANAGE_DIALOG)
                 }
             }

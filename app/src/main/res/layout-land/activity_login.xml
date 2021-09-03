@@ -8,28 +8,29 @@
 
     <TextView
         android:id="@+id/textViewLogo"
-        android:layout_width="@dimen/login_logo_size"
-        android:layout_height="@dimen/login_logo_size"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/rounded_button_main_color"
         android:backgroundTint="@color/main_color"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textSize="40sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.129" />
+        app:layout_constraintVertical_bias="0" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginIdLayout"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginSwitchButton"
         app:endIconMode="clear_text"
@@ -47,11 +48,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginPwLayout"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginIdLayout"
         app:endIconMode="password_toggle"
@@ -67,67 +68,72 @@
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="@dimen/login_editText_width"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/rounded_button_main_color"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginPwLayout"/>
-
     <CheckBox
         android:id="@+id/checkBoxAutoLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/auto_login"
         android:layout_marginTop="5dp"
-        app:layout_constraintHorizontal_bias="0.87"
+        app:layout_constraintHorizontal_bias="0.74"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPwLayout" />
+
+
+    <Button
+        android:id="@+id/buttonLogin"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/rounded_button_main_color"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toEndOf="@+id/loginIdLayout"
+        app:layout_constraintTop_toBottomOf="@+id/loginSwitchButton" />
 
     <Button
         android:id="@+id/buttonSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="110dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/white"
         android:text="@string/sign_up"
         android:textColor="@color/gray"
         app:backgroundTint="#FFFFFF"
         app:iconTint="#FFFFFF"
-        app:layout_constraintVertical_bias="0.7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPwLayout"
+        app:layout_constraintVertical_bias="0" />
 
     <Button
         android:id="@+id/buttonFindAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
         android:background="@color/gray"
         android:text="@string/find_username_and_password"
         android:textColor="#878383"
+        android:layout_marginTop="5dp"
         app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.7"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@+id/buttonSignUp"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/loginPwLayout"
+        app:layout_constraintVertical_bias="0" />
 
     <lib.kingja.switchbutton.SwitchMultiButton
         android:id="@+id/loginSwitchButton"
-        android:layout_width="@dimen/switch_button_width"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

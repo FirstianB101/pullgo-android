@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.adapter.StudentManageAdapter
 import com.harry.pullgo.data.adapter.TeacherManageAdapter
-import com.harry.pullgo.data.api.OnDataChanged
-import com.harry.pullgo.data.api.OnStudentClick
-import com.harry.pullgo.data.api.OnTeacherClick
-import com.harry.pullgo.data.objects.LoginInfo
+import com.harry.pullgo.data.api.OnDataChangedListener
+import com.harry.pullgo.data.api.OnStudentClickListener
+import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
 import com.harry.pullgo.data.repository.ManageAcademyRepository
@@ -22,7 +19,7 @@ import com.harry.pullgo.ui.dialog.FragmentKickTeacherDialog
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 
-class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChanged {
+class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListener {
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())}
@@ -73,7 +70,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChanged {
         }
 
         if (adapter != null) {
-            adapter.studentClickListener = object: OnStudentClick {
+            adapter.studentClickListenerListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
                     FragmentShowStudentInfoDialog(student!!)
                         .show(supportFragmentManager,FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
@@ -101,7 +98,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChanged {
         }
 
         if (adapter != null) {
-            adapter.teacherClickListener = object: OnTeacherClick {
+            adapter.teacherClickListenerListener = object: OnTeacherClickListener {
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
                     FragmentShowTeacherInfoDialog(teacher!!)
                         .show(supportFragmentManager,FragmentShowTeacherInfoDialog.TAG_TEACHER_INFO_DIALOG)

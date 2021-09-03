@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnLessonClick
+import com.harry.pullgo.data.api.OnLessonClickListener
 import com.harry.pullgo.data.objects.Lesson
 
 class LessonAdapter(private val dataSet: List<Lesson>?):
     RecyclerView.Adapter<LessonAdapter.ViewHolder>() {
 
-    var itemClickListener: OnLessonClick? = null
+    var itemClickListenerListener: OnLessonClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val lessonName: TextView = view.findViewById(R.id.textViewBottomSheetLessonName)
@@ -34,7 +34,7 @@ class LessonAdapter(private val dataSet: List<Lesson>?):
         holder.lessonName.text = dataSet?.get(position)?.name
         holder.lessonTime.text = "$startHour:$startMin ~ $endHour:$endMin"
         holder.itemView.setOnClickListener {
-            itemClickListener?.onLessonClick(holder.itemView, dataSet?.get(position))
+            itemClickListenerListener?.onLessonClick(holder.itemView, dataSet?.get(position))
         }
     }
 

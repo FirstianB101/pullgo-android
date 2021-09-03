@@ -1,6 +1,5 @@
 package com.harry.pullgo.ui.main
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.navigation.NavigationView
@@ -10,17 +9,14 @@ import androidx.core.view.GravityCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnCheckPw
+import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.LoginInfo
@@ -106,7 +102,7 @@ class TeacherMainActivityNoAcademy : AppCompatActivity(), NavigationView.OnNavig
             finish()
         }
 
-        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPw{
+        changeInfoCheckPwFragment.pwCheckListenerListener = object: OnCheckPwListener{
             override fun onPasswordCheck() {
                 onFragmentSelected(TEACHER_MENU.CHANGE_INFO)
             }

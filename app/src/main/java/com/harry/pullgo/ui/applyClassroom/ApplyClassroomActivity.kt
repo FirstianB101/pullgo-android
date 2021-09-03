@@ -7,12 +7,11 @@ import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.ClassroomAdapter
-import com.harry.pullgo.data.api.OnClassroomClick
+import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
@@ -110,7 +109,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
         }
 
         if (academyAdapter != null) {
-            academyAdapter.itemClickListener = object: OnClassroomClick {
+            academyAdapter.itemClickListenerListener = object: OnClassroomClickListener {
                 override fun onClassroomClick(view: View, classroom: Classroom?) {
                     selectedClassroom = classroom
                     showApplyRequestDialog(classroom)

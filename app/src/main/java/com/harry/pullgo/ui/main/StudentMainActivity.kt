@@ -12,11 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnCheckPw
+import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Student
@@ -45,6 +44,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private lateinit var headerView: View
+    private var curPosition: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +63,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginStudent = changeInfoViewModel.changeStudent.value
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
-            onFragmentSelected(STUDENT_MENU.CALENDAR)
+            onFragmentSelected(CALENDAR)
         }
     }
 
@@ -75,6 +75,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         studentExamHistoryFragment= StudentExamHistoryFragment()
 
         supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, calendarFragment).commit()
+        curPosition = CALENDAR
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
@@ -104,9 +105,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             finish()
         }
 
-        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPw{
+        changeInfoCheckPwFragment.pwCheckListenerListener = object: OnCheckPwListener{
             override fun onPasswordCheck() {
-                onFragmentSelected(STUDENT_MENU.CHANGE_INFO)
+                onFragmentSelected(CHANGE_INFO)
             }
         }
     }
@@ -126,10 +127,10 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_student_change_info -> onFragmentSelected(STUDENT_MENU.CHANGE_INFO_CHECK_PW)
-            R.id.nav_student_calendar -> onFragmentSelected(STUDENT_MENU.CALENDAR)
-            R.id.nav_student_exam_list -> onFragmentSelected(STUDENT_MENU.EXAM_LIST)
-            R.id.nav_student_previous_exam -> onFragmentSelected(STUDENT_MENU.PREVIOUS_EXAM)
+            R.id.nav_student_change_info -> onFragmentSelected(CHANGE_INFO_CHECK_PW)
+            R.id.nav_student_calendar -> onFragmentSelected(CALENDAR)
+            R.id.nav_student_exam_list -> onFragmentSelected(EXAM_LIST)
+            R.id.nav_student_previous_exam -> onFragmentSelected(PREVIOUS_EXAM)
             R.id.nav_student_apply_classroom -> startApplyClassroomActivity()
         }
         binding.studentDrawerLayout.closeDrawer(binding.navigationViewStudent)
@@ -141,22 +142,23 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
-    private fun onFragmentSelected(position: STUDENT_MENU) {
+    private fun onFragmentSelected(position: Int) {
         var curFragment: Fragment? = null
-        when(position){
-            STUDENT_MENU.CHANGE_INFO -> {
+        curPosition = position
+        when(curPosition){
+            CHANGE_INFO -> {
                 curFragment = StudentChangePersonInfoFragment()
             }
-            STUDENT_MENU.CALENDAR -> {
+            CALENDAR -> {
                 curFragment = calendarFragment
             }
-            STUDENT_MENU.EXAM_LIST -> {
+            EXAM_LIST -> {
                 curFragment = studentExamListFragment
             }
-            STUDENT_MENU.PREVIOUS_EXAM -> {
+            PREVIOUS_EXAM -> {
                 curFragment = studentExamHistoryFragment
             }
-            STUDENT_MENU.CHANGE_INFO_CHECK_PW -> {
+            CHANGE_INFO_CHECK_PW -> {
                 curFragment = changeInfoCheckPwFragment
             }
             else -> {}
@@ -198,12 +200,21 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
     }
 
-    enum class STUDENT_MENU{
-        CHANGE_INFO,
-        CALENDAR,
-        EXAM_LIST,
-        PREVIOUS_EXAM,
-        CHANGE_INFO_CHECK_PW,
-        APPLY_CLASSROOM
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(PREVIOUS_FRAGMENT,curPosition!!)
+        super.onSaveInstanceState(outState)
     }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        onFragmentSelected(savedInstanceState.getInt(PREVIOUS_FRAGMENT))
+        super.onRestoreInstanceState(savedInstanceState)
+    }
+
+    val CHANGE_INFO = 100
+    val CALENDAR = 101
+    val EXAM_LIST = 102
+    val PREVIOUS_EXAM = 103
+    val CHANGE_INFO_CHECK_PW = 104
+    val APPLY_CLASSROOM = 105
+    private val PREVIOUS_FRAGMENT = "previous_fragment"
 }

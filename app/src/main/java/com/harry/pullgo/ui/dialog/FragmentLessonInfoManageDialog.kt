@@ -1,7 +1,6 @@
 package com.harry.pullgo.ui.dialog
 
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,14 +10,13 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnCalendarReset
+import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Lesson
 import com.harry.pullgo.data.objects.Schedule
@@ -26,7 +24,6 @@ import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
-import com.harry.pullgo.ui.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,7 +42,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     private val viewModel: LessonsViewModel by activityViewModels{LessonsViewModelFactory(LessonsRepository())}
 
-    var calendarResetListener: OnCalendarReset? = null
+    var calendarResetListenerListener: OnCalendarResetListener? = null
 
     override fun onStart() {
         super.onStart()
@@ -184,7 +181,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
             override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
                 if(response.isSuccessful){
                     Toast.makeText(requireContext(),"수업 정보가 변경되었습니다",Toast.LENGTH_SHORT).show()
-                    calendarResetListener?.onResetCalendar()
+                    calendarResetListenerListener?.onResetCalendar()
                     parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
                     dismiss()
                 }else{
@@ -215,7 +212,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
                     Toast.makeText(requireContext(),"수업이 삭제되었습니다",Toast.LENGTH_SHORT).show()
-                    calendarResetListener?.onResetCalendar()
+                    calendarResetListenerListener?.onResetCalendar()
                     parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
                     dismiss()
                 }else{

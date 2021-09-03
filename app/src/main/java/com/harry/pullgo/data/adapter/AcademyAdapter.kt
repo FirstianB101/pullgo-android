@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnAcademyClick
+import com.harry.pullgo.data.api.OnAcademyClickListener
 import com.harry.pullgo.data.objects.Academy
 
 class AcademyAdapter(private val dataSet: List<Academy>):
     RecyclerView.Adapter<AcademyAdapter.ViewHolder>(){
-    var itemClickListener: OnAcademyClick? = null
+    var itemClickListenerListener: OnAcademyClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewName: TextView = view.findViewById(R.id.textViewSearchAcademyName)
@@ -28,7 +28,7 @@ class AcademyAdapter(private val dataSet: List<Academy>):
         holder.textViewName.text= dataSet[position].name.toString()
         holder.textViewAddress.text= dataSet[position].address.toString()
         holder.itemView.setOnClickListener {
-            itemClickListener?.onAcademyClick(holder.itemView, dataSet[position])
+            itemClickListenerListener?.onAcademyClick(holder.itemView, dataSet[position])
         }
     }
 

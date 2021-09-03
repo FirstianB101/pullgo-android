@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.adapter.AcademyAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
-import com.harry.pullgo.data.api.OnAcademyClick
+import com.harry.pullgo.data.api.OnAcademyClickListener
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
@@ -68,7 +67,7 @@ class FindAcademyActivity : AppCompatActivity() {
         }
 
         if (academyAdapter != null) {
-            academyAdapter.itemClickListener = object: OnAcademyClick {
+            academyAdapter.itemClickListenerListener = object: OnAcademyClickListener {
                 override fun onAcademyClick(view: View,academy: Academy?) {
                     selectedAcademy=academy
                     showApplyRequestDialog(academy)

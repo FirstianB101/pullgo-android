@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnStudentClick
+import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.objects.Student
 
 class StudentAdapter (private val dataSet: List<Student>):
     RecyclerView.Adapter<StudentAdapter.ViewHolder>(){
-    var studentClickListener: OnStudentClick? = null
+    var studentClickListenerListener: OnStudentClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewName: TextView = view.findViewById(R.id.textViewStudentItemNoButtonName)
@@ -30,7 +30,7 @@ class StudentAdapter (private val dataSet: List<Student>):
         holder.textViewSchool.text = dataSet[position].schoolName
         holder.textViewYear.text = "${dataSet[position].schoolYear.toString()}학년"
         holder.itemView.setOnClickListener {
-            studentClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
+            studentClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
     }
 

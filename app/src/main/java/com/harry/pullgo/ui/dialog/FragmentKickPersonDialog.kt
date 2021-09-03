@@ -1,6 +1,5 @@
 package com.harry.pullgo.ui.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,7 +9,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.api.OnDataChanged
+import com.harry.pullgo.data.api.OnDataChangedListener
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.objects.Teacher
@@ -27,11 +26,11 @@ class FragmentKickStudentDialog(
     ): DialogFragment() {
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
-    private var dataChanged: OnDataChanged? = null
+    private var dataChangedListener: OnDataChangedListener? = null
 
     override fun onStart() {
         super.onStart()
-        dataChanged = requireActivity() as OnDataChanged
+        dataChangedListener = requireActivity() as OnDataChangedListener
 
         val dialog = dialog
         if (dialog != null) {
@@ -76,7 +75,7 @@ class FragmentKickStudentDialog(
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
                     Toast.makeText(requireContext(),"학생을 제외했습니다",Toast.LENGTH_SHORT).show()
-                    dataChanged?.onChangeData(false,true)
+                    dataChangedListener?.onChangeData(false,true)
                     dismiss()
                 }else{
                     Toast.makeText(requireContext(),"학생을 제외하지 못했습니다",Toast.LENGTH_SHORT).show()
@@ -101,11 +100,11 @@ class FragmentKickTeacherDialog(
     ): DialogFragment() {
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
-    private var dataChanged: OnDataChanged? = null
+    private var dataChangedListener: OnDataChangedListener? = null
 
     override fun onStart() {
         super.onStart()
-        dataChanged = requireActivity() as OnDataChanged
+        dataChangedListener = requireActivity() as OnDataChangedListener
 
         val dialog = dialog
         if (dialog != null) {
@@ -150,7 +149,7 @@ class FragmentKickTeacherDialog(
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
                     Toast.makeText(requireContext(),"선생님을 제외했습니다",Toast.LENGTH_SHORT).show()
-                    dataChanged?.onChangeData(false,true)
+                    dataChangedListener?.onChangeData(false,true)
                     dismiss()
                 }else{
                     Toast.makeText(requireContext(),"선생님을 제외하지 못했습니다",Toast.LENGTH_SHORT).show()

@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.adapter.StudentAdapter
-import com.harry.pullgo.data.api.OnStudentClick
+import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
 import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
@@ -52,7 +50,7 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
         }
 
         if (studentAdapter != null) {
-            studentAdapter.studentClickListener = object: OnStudentClick {
+            studentAdapter.studentClickListenerListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
                     FragmentManageClassroomStudentDialog(student!!,selectedClassroom)

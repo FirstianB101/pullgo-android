@@ -7,12 +7,12 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnTeacherClick
+import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.objects.Teacher
 
 class TeacherManageAdapter(private val dataSet: List<Teacher>):
     RecyclerView.Adapter<TeacherManageAdapter.ViewHolder>(){
-    var teacherClickListener: OnTeacherClick? = null
+    var teacherClickListenerListener: OnTeacherClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewFullName: TextView = view.findViewById(R.id.textViewManagePeopleFullName)
@@ -32,10 +32,10 @@ class TeacherManageAdapter(private val dataSet: List<Teacher>):
         holder.textViewUserName.text = "(${dataSet[position].account?.username})"
         holder.textViewPhone.text = dataSet[position].account?.phone
         holder.itemView.setOnClickListener {
-            teacherClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
+            teacherClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
         holder.buttonKick.setOnClickListener {
-            teacherClickListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
+            teacherClickListenerListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
         }
     }
 

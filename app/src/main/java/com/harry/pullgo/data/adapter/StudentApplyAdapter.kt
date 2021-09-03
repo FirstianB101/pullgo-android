@@ -8,12 +8,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnStudentClick
+import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.objects.Student
 
 class StudentApplyAdapter  (private val dataSet: List<Student>, private val showRemoveButton: Boolean):
     RecyclerView.Adapter<StudentApplyAdapter.ViewHolder>(){
-    var studentClickListener: OnStudentClick? = null
+    var studentClickListenerListener: OnStudentClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val textViewName: TextView = view.findViewById(R.id.textViewApplyItemName)
@@ -34,16 +34,16 @@ class StudentApplyAdapter  (private val dataSet: List<Student>, private val show
         holder.textViewSchool.text = dataSet[position].schoolName
         holder.textViewYear.text = "${dataSet[position].schoolYear.toString()}학년"
         holder.itemView.setOnClickListener {
-            studentClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
+            studentClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
         holder.buttonApply.setOnClickListener {
-            studentClickListener?.onApplyButtonClick(holder.itemView,dataSet[position])
+            studentClickListenerListener?.onApplyButtonClick(holder.itemView,dataSet[position])
         }
 
         if(showRemoveButton){
             holder.buttonRemove.visibility = View.VISIBLE
             holder.buttonRemove.setOnClickListener {
-                studentClickListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
+                studentClickListenerListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
             }
         }
     }

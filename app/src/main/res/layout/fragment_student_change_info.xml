@@ -11,7 +11,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textViewStudentChangeInfo"
@@ -47,8 +47,8 @@
                 android:layout_height="wrap_content"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewStudentChangeInfo">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -61,73 +61,90 @@
                     android:textColorHint="@color/light_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:id="@+id/changePhoneLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="254dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/changeStudentNameLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/changeStudentPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/comment_input_phone"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/light_gray" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/buttonChangeStudentPhoneVerifyRequest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/request_verification"
-                android:textColor="@color/white"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@+id/changePhoneLayout"
-                app:layout_constraintTop_toBottomOf="@+id/changeStudentNameLayout" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/changeStudentNameLayout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/changeStudentPhoneVerifyLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
-                app:layout_constraintTop_toBottomOf="@+id/changePhoneLayout">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/changeStudentPhoneVerifyNum"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/changePhoneTextLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="254dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/comment_input_verification_num"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/light_gray" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/changeStudentNameLayout">
 
-            <Button
-                android:id="@+id/buttonStudentChangePhoneVerifyCheck"
-                android:layout_width="140dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/changeStudentPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/comment_input_phone"
+                        android:inputType="textPersonName"
+                        android:textColorHint="@color/light_gray" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonChangeStudentPhoneVerifyRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/request_verification"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/changePhoneLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/changeStudentNameLayout" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/changeStudentPhoneVerifyLayout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/check_verification_num"
-                android:textColor="@color/white"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@+id/changeStudentPhoneVerifyLayout"
-                app:layout_constraintTop_toBottomOf="@+id/changePhoneLayout" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/changePhoneLayout">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/changePhoneLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/changeStudentPhoneVerifyNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/comment_input_verification_num"
+                        android:inputType="textPersonName"
+                        android:textColorHint="@color/light_gray" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonStudentChangePhoneVerifyCheck"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_verification_num"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/changeStudentPhoneVerifyLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/changePhoneLayout" />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/changeParentPhoneLayout"
@@ -138,8 +155,8 @@
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/changeStudentPhoneVerifyLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -159,8 +176,8 @@
                 android:layout_height="wrap_content"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/changeParentPhoneLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -180,8 +197,8 @@
                 android:layout_marginTop="15dp"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/changeSchoolNameLayout"
                 app:selectedColor="@color/main_color"
                 app:selectedTab="0"
@@ -202,17 +219,12 @@
                 android:textSize="@dimen/success_button_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toStartOf="@+id/studentChangeInfoGuideline"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/changeGradeSwitchButton"
                 app:layout_constraintVertical_bias="0.3" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/studentChangeInfoGuideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="35dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </FrameLayout>

@@ -6,18 +6,16 @@ import com.google.android.material.navigation.NavigationView
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.GravityCompat
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnCheckPw
+import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.data.api.RetrofitClient
@@ -31,10 +29,6 @@ import com.harry.pullgo.ui.teacherFragment.TeacherAcceptApplyAcademyFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherManageAcademyFragment
 import com.harry.pullgo.ui.teacherFragment.TeacherManageClassroomFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -115,7 +109,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             finish()
         }
 
-        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPw{
+        changeInfoCheckPwFragment.pwCheckListenerListener = object: OnCheckPwListener{
             override fun onPasswordCheck() {
                 onFragmentSelected(TEACHER_MENU.CHANGE_INFO)
             }

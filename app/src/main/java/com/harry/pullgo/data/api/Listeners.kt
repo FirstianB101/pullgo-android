@@ -3,42 +3,42 @@ package com.harry.pullgo.data.api
 import android.view.View
 import com.harry.pullgo.data.objects.*
 
-interface OnAcademyClick {
+interface OnAcademyClickListener {
     fun onAcademyClick(view: View,academy: Academy?)
 }
 
-interface OnCheckPw {
+interface OnCheckPwListener {
     fun onPasswordCheck()
 }
 
-interface OnLessonClick {
+interface OnLessonClickListener {
     fun onLessonClick(view: View, lesson: Lesson?)
 }
 
-interface OnClassroomClick{
+interface OnClassroomClickListener{
     fun onClassroomClick(view: View, classroom: Classroom?)
 }
 
-interface OnExamClick{
+interface OnExamClickListener{
     fun onExamClick(view: View, exam: Exam?)
 }
 
-interface OnStudentClick{
+interface OnStudentClickListener{
     fun onBackgroundClick(view: View, student: Student?)
     fun onApplyButtonClick(view: View, student: Student?)
     fun onRemoveButtonClick(view: View, student: Student?)
 }
 
-interface OnTeacherClick{
+interface OnTeacherClickListener{
     fun onBackgroundClick(view: View, teacher: Teacher?)
     fun onApplyButtonClick(view: View, teacher: Teacher?)
     fun onRemoveButtonClick(view: View, teacher: Teacher?)
 }
 
-interface OnCalendarReset{
+interface OnCalendarResetListener{
     fun onResetCalendar()
 }
 
-interface OnDataChanged{
+interface OnDataChangedListener{
     fun onChangeData(isTeacher: Boolean, isChanged: Boolean)
 }

@@ -9,10 +9,9 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.ExamAdapter
-import com.harry.pullgo.data.api.OnExamClick
+import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.objects.Exam
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ExamsRepository
@@ -72,7 +71,7 @@ class StudentExamHistoryFragment : Fragment(){
         }
 
         if (examsAdapter != null) {
-            examsAdapter.itemClickListener = object: OnExamClick {
+            examsAdapter.itemClickListenerListener = object: OnExamClickListener {
                 override fun onExamClick(view: View, exam: Exam?) {
                     selectedExam = exam
                 }

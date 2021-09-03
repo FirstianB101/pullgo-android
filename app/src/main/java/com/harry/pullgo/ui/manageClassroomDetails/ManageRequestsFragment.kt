@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
-import com.harry.pullgo.data.api.OnStudentClick
-import com.harry.pullgo.data.api.OnTeacherClick
+import com.harry.pullgo.data.api.OnStudentClickListener
+import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Classroom
 import com.harry.pullgo.data.objects.Student
@@ -84,7 +82,7 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         }
 
         if (adapter != null) {
-            adapter.studentClickListener = object: OnStudentClick {
+            adapter.studentClickListenerListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
 
@@ -115,7 +113,7 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         }
 
         if (adapter != null) {
-            adapter.teacherClickListener = object: OnTeacherClick{
+            adapter.teacherClickListenerListener = object: OnTeacherClickListener{
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
                 }
 

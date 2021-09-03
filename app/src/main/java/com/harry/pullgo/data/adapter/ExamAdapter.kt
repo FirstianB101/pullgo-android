@@ -8,20 +8,16 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.OnExamClick
+import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.objects.Exam
 import java.text.SimpleDateFormat
 import java.time.Duration
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ExamAdapter(private val dataSet: List<Exam>?):
     RecyclerView.Adapter<ExamAdapter.ViewHolder>() {
 
-    var itemClickListener: OnExamClick? = null
+    var itemClickListenerListener: OnExamClickListener? = null
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val academyName: TextView = view.findViewById(R.id.textViewExamAcademyName)
