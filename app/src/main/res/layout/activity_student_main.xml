@@ -44,7 +44,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_student_main_drawer">
+        app:menu="@menu/activity_student_main_drawer_no_academy">
 
         <TextView
             android:id="@+id/textViewStudentApplyOtherAcademy"
@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:visibility="gone"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_gravity="right|bottom"/>

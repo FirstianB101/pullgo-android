@@ -28,6 +28,7 @@ import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.studentFragment.StudentChangePersonInfoFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamListFragment
+import com.harry.pullgo.ui.studentFragment.StudentHomeFragmentNoAcademy
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,8 +40,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var calendarFragment: CalendarFragment
     lateinit var studentExamListFragment: StudentExamListFragment
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
+    lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
 
-    private val homeViewModel: AppliedAcademyGroupViewModel by viewModels{AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())}
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private lateinit var headerView: View
@@ -70,12 +71,23 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initialize(){
         studentChangeInfoFragment = StudentChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
-        calendarFragment = CalendarFragment()
-        studentExamListFragment= StudentExamListFragment()
-        studentExamHistoryFragment= StudentExamHistoryFragment()
 
-        supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, calendarFragment).commit()
-        curPosition = CALENDAR
+        if(intent.getBooleanExtra("appliedAcademyExist",false)){
+            calendarFragment = CalendarFragment()
+            studentExamListFragment = StudentExamListFragment()
+            studentExamHistoryFragment = StudentExamHistoryFragment()
+
+            supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, calendarFragment).commit()
+            curPosition = CALENDAR
+
+            binding.navigationViewStudent.menu.clear()
+            binding.navigationViewStudent.inflateMenu(R.menu.activity_student_main_drawer)
+            binding.textViewStudentApplyOtherAcademy.visibility = View.VISIBLE
+        }else{
+            studentHomeFragment = StudentHomeFragmentNoAcademy()
+
+            supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, studentHomeFragment).commit()
+        }
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
@@ -131,6 +143,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_student_calendar -> onFragmentSelected(CALENDAR)
             R.id.nav_student_exam_list -> onFragmentSelected(EXAM_LIST)
             R.id.nav_student_previous_exam -> onFragmentSelected(PREVIOUS_EXAM)
+            R.id.nav_student_home -> onFragmentSelected(HOME)
             R.id.nav_student_apply_classroom -> startApplyClassroomActivity()
         }
         binding.studentDrawerLayout.closeDrawer(binding.navigationViewStudent)
@@ -160,6 +173,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             CHANGE_INFO_CHECK_PW -> {
                 curFragment = changeInfoCheckPwFragment
+            }
+            HOME -> {
+                curFragment = studentHomeFragment
             }
             else -> {}
         }
@@ -216,5 +232,6 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     val PREVIOUS_EXAM = 103
     val CHANGE_INFO_CHECK_PW = 104
     val APPLY_CLASSROOM = 105
+    val HOME = 106
     private val PREVIOUS_FRAGMENT = "previous_fragment"
 }

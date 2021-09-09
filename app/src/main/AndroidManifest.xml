@@ -33,13 +33,7 @@
             android:name=".ui.main.StudentMainActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.main.StudentMainActivityNoAcademy"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".ui.main.TeacherMainActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.main.TeacherMainActivityNoAcademy"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.findAccount.FindAccountActivity"

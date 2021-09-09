@@ -1,21 +1,17 @@
 package com.harry.pullgo.ui.login;
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LoginRepository
 import com.harry.pullgo.ui.findAccount.FindAccountActivity
 import com.harry.pullgo.ui.signUp.SignUpActivity
 import com.harry.pullgo.ui.main.StudentMainActivity
-import com.harry.pullgo.ui.main.StudentMainActivityNoAcademy
 import com.harry.pullgo.ui.main.TeacherMainActivity
-import com.harry.pullgo.ui.main.TeacherMainActivityNoAcademy
 
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
@@ -68,10 +64,10 @@ class LoginActivity: AppCompatActivity(){
                 resetAutoLoginInfo()
             }
 
-            val mainIntent = if(studentAcademies.isNullOrEmpty())
-                Intent(applicationContext, StudentMainActivityNoAcademy::class.java)
-            else
-                Intent(applicationContext, StudentMainActivity::class.java)
+            val mainIntent = Intent(applicationContext, StudentMainActivity::class.java)
+
+            if(studentAcademies?.isNotEmpty() == true)
+                mainIntent.putExtra("appliedAcademyExist",true)
 
             startMainStudent(mainIntent)
         }
@@ -89,10 +85,10 @@ class LoginActivity: AppCompatActivity(){
                 resetAutoLoginInfo()
             }
 
-            val mainIntent = if(teacherAcademies.isNullOrEmpty())
-                Intent(applicationContext, TeacherMainActivityNoAcademy::class.java)
-            else
-                Intent(applicationContext, TeacherMainActivity::class.java)
+            val mainIntent = Intent(applicationContext, TeacherMainActivity::class.java)
+
+            if(teacherAcademies?.isNotEmpty() == true)
+                mainIntent.putExtra("appliedAcademyExist",true)
 
             startMainTeacher(mainIntent)
         }

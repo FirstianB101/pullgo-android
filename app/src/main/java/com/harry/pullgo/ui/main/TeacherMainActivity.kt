@@ -22,13 +22,9 @@ import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.objects.Teacher
-import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
-import com.harry.pullgo.ui.teacherFragment.TeacherAcceptApplyAcademyFragment
-import com.harry.pullgo.ui.teacherFragment.TeacherChangePersonInfoFragment
-import com.harry.pullgo.ui.teacherFragment.TeacherManageAcademyFragment
-import com.harry.pullgo.ui.teacherFragment.TeacherManageClassroomFragment
+import com.harry.pullgo.ui.teacherFragment.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,11 +37,12 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var manageClassroomFragment: TeacherManageClassroomFragment
     lateinit var acceptApplyAcademyFragment: TeacherAcceptApplyAcademyFragment
     lateinit var manageAcademyFragment: TeacherManageAcademyFragment
+    lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
 
-    private val homeViewModel: AppliedAcademyGroupViewModel by viewModels{AppliedAcademiesViewModelFactory(AppliedAcademyGroupRepository())}
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private lateinit var headerView: View
+    private var curPosition: Int? = null
 
     private val client by lazy{RetrofitClient.getApiService()}
 
@@ -57,8 +54,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         initialize()
         initViewModels()
         setListeners()
-
-        changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
     }
  
     private fun initViewModels(){
@@ -67,19 +62,33 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
-            onFragmentSelected(TEACHER_MENU.CALENDAR)
+            onFragmentSelected(CALENDAR)
         }
     }
 
     private fun initialize(){
         teacherChangeInfoFragment = TeacherChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
-        calendarFragment = CalendarFragment()
-        manageClassroomFragment = TeacherManageClassroomFragment()
-        acceptApplyAcademyFragment = TeacherAcceptApplyAcademyFragment()
-        manageAcademyFragment = TeacherManageAcademyFragment()
 
-        supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).commit()
+        if(intent.getBooleanExtra("appliedAcademyExist",false)){
+            calendarFragment = CalendarFragment()
+            manageClassroomFragment = TeacherManageClassroomFragment()
+            acceptApplyAcademyFragment = TeacherAcceptApplyAcademyFragment()
+            manageAcademyFragment = TeacherManageAcademyFragment()
+
+            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).commit()
+            curPosition = CALENDAR
+
+            binding.navigationViewTeacher.menu.clear()
+            binding.navigationViewTeacher.inflateMenu(R.menu.activity_teacher_main_drawer)
+            binding.textViewTeacherApplyOtherAcademy.visibility = View.VISIBLE
+            changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
+        }else{
+            teacherHomeFragment = TeacherHomeFragmentNoAcademy()
+
+            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
+            curPosition = HOME
+        }
 
         headerView = binding.navigationViewTeacher.getHeaderView(0)
         headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
@@ -111,7 +120,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
         changeInfoCheckPwFragment.pwCheckListenerListener = object: OnCheckPwListener{
             override fun onPasswordCheck() {
-                onFragmentSelected(TEACHER_MENU.CHANGE_INFO)
+                onFragmentSelected(CHANGE_INFO)
             }
         }
     }
@@ -131,12 +140,13 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.nav_teacher_change_info -> onFragmentSelected(TEACHER_MENU.CHANGE_INFO_CHECK_PW)
-            R.id.nav_teacher_calendar -> onFragmentSelected(TEACHER_MENU.CALENDAR)
-            R.id.nav_teacher_manage_classroom -> onFragmentSelected(TEACHER_MENU.MANAGE_CLASSROOM)
+            R.id.nav_teacher_change_info -> onFragmentSelected(CHANGE_INFO_CHECK_PW)
+            R.id.nav_teacher_calendar -> onFragmentSelected(CALENDAR)
+            R.id.nav_teacher_manage_classroom -> onFragmentSelected(MANAGE_CLASSROOM)
             R.id.nav_teacher_apply_classroom -> startApplyClassroomActivity()
-            R.id.nav_teacher_manage_accept_academy -> onFragmentSelected(TEACHER_MENU.ACCEPT_ACADEMY)
-            R.id.nav_teacher_manage_academy -> onFragmentSelected(TEACHER_MENU.MANAGE_ACADEMY)
+            R.id.nav_teacher_manage_accept_academy -> onFragmentSelected(ACCEPT_ACADEMY)
+            R.id.nav_teacher_manage_academy -> onFragmentSelected(MANAGE_ACADEMY)
+            R.id.nav_teacher_home -> onFragmentSelected(HOME)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
@@ -147,26 +157,30 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         startActivity(intent)
     }
 
-    private fun onFragmentSelected(position: TEACHER_MENU) {
+    private fun onFragmentSelected(position: Int) {
         var curFragment: Fragment? = null
-        when(position){
-            TEACHER_MENU.CHANGE_INFO -> {
+        curPosition = position
+        when(curPosition){
+            CHANGE_INFO -> {
                 curFragment = teacherChangeInfoFragment
             }
-            TEACHER_MENU.CALENDAR -> {
+            CALENDAR -> {
                 curFragment = calendarFragment
             }
-            TEACHER_MENU.CHANGE_INFO_CHECK_PW -> {
+            CHANGE_INFO_CHECK_PW -> {
                 curFragment = ChangeInfoCheckPwFragment()
             }
-            TEACHER_MENU.MANAGE_CLASSROOM -> {
+            MANAGE_CLASSROOM -> {
                 curFragment = manageClassroomFragment
             }
-            TEACHER_MENU.ACCEPT_ACADEMY -> {
+            ACCEPT_ACADEMY -> {
                 curFragment = acceptApplyAcademyFragment
             }
-            TEACHER_MENU.MANAGE_ACADEMY -> {
+            MANAGE_ACADEMY -> {
                 curFragment = TeacherManageAcademyFragment()
+            }
+            HOME -> {
+                curFragment = teacherHomeFragment
             }
             else -> {}
         }
@@ -220,15 +234,25 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
     }
 
-    enum class TEACHER_MENU{
-        CHANGE_INFO,
-        CALENDAR,
-        EXAM_LIST,
-        MANAGE_CLASSROOM,
-        PREVIOUS_EXAM,
-        CHANGE_INFO_CHECK_PW,
-        APPLY_CLASSROOM,
-        ACCEPT_ACADEMY,
-        MANAGE_ACADEMY
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(PREVIOUS_FRAGMENT,curPosition!!)
+        super.onSaveInstanceState(outState)
     }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        onFragmentSelected(savedInstanceState.getInt(PREVIOUS_FRAGMENT))
+        super.onRestoreInstanceState(savedInstanceState)
+    }
+
+    val CHANGE_INFO = 200
+    val CALENDAR = 201
+    val EXAM_LIST = 202
+    val MANAGE_CLASSROOM = 203
+    val PREVIOUS_EXAM = 204
+    val CHANGE_INFO_CHECK_PW = 205
+    val APPLY_CLASSROOM = 206
+    val ACCEPT_ACADEMY = 207
+    val MANAGE_ACADEMY = 208
+    val HOME = 209
+    private val PREVIOUS_FRAGMENT = "previous_fragment"
 }
