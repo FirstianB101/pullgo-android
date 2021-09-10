@@ -64,7 +64,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
 
     private fun showLessons(){
         val lessons = viewModel.dayLessonsRepositories.value
-        val adapter = LessonAdapter(lessons)
+        val adapter = LessonAdapter(lessons!!)
 
         if(LoginInfo.loginStudent != null){ // student
             adapter.itemClickListenerListener = object: OnLessonClickListener{
@@ -84,7 +84,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
 
         binding.recyclerViewBottomSheet.adapter = adapter
 
-        val lessonNumText = if(lessons != null && lessons.isNotEmpty()) "${lessons.size}개의 수업이 있습니다"
+        val lessonNumText = if(lessons.isNotEmpty()) "${lessons.size}개의 수업이 있습니다"
                             else "해당 날짜에 수업이 없습니다"
         binding.textViewLessonNum.text = lessonNumText
     }

@@ -68,7 +68,14 @@ class FragmentManageClassroomStudentDialog(
 
     private fun setListeners(){
         binding.buttonManageClassroomKickStudent.setOnClickListener {
-            kickStudent()
+            val dialog = TwoButtonDialog(requireContext())
+            dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+                override fun onLeftClicked() {
+                    kickStudent()
+                }
+            }
+            dialog.start("학생 제외","${selectedStudent.account?.fullName}(${selectedStudent.account?.username}) 학생을 반에서 제외하시겠습니까?",
+                "제외하기","취소")
         }
     }
 

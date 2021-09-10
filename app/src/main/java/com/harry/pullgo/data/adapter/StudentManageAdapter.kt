@@ -9,35 +9,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.databinding.LayoutManageAcademyPeopleItemBinding
 
 class StudentManageAdapter(private val dataSet: List<Student>):
     RecyclerView.Adapter<StudentManageAdapter.ViewHolder>(){
     var studentClickListenerListener: OnStudentClickListener? = null
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewFullName: TextView = view.findViewById(R.id.textViewManagePeopleFullName)
-        val textViewUserName: TextView = view.findViewById(R.id.textViewManagePeopleUserName)
-        val textViewPhone: TextView = view.findViewById(R.id.textViewManagePeoplePhone)
-        val buttonKick: Button = view.findViewById(R.id.buttonManagePeopleKick)
-    }
+    class ViewHolder(val binding: LayoutManageAcademyPeopleItemBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_manage_academy_people_item,parent,false)
-        return ViewHolder(view)
+        return ViewHolder(LayoutManageAcademyPeopleItemBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textViewFullName.text = dataSet[position].account?.fullName
-        holder.textViewUserName.text = "(${dataSet[position].account?.username})"
-        holder.textViewPhone.text = dataSet[position].account?.phone
+        holder.binding.student = dataSet[position]
         holder.itemView.setOnClickListener {
             studentClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
-        holder.buttonKick.setOnClickListener {
+        holder.binding.buttonManagePeopleKick.setOnClickListener {
             studentClickListenerListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
         }
     }
 
-    override fun getItemCount(): Int= dataSet.size ?: 0
+    override fun getItemCount(): Int= dataSet.size
 }

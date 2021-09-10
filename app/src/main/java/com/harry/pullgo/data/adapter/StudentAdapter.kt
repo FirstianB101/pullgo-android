@@ -8,31 +8,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.databinding.LayoutStudentItemNoButtonBinding
 
 class StudentAdapter (private val dataSet: List<Student>):
     RecyclerView.Adapter<StudentAdapter.ViewHolder>(){
     var studentClickListenerListener: OnStudentClickListener? = null
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val textViewName: TextView = view.findViewById(R.id.textViewStudentItemNoButtonName)
-        val textViewSchool: TextView = view.findViewById(R.id.textViewStudentItemNoButtonSchoolName)
-        val textViewYear: TextView = view.findViewById(R.id.textViewStudentItemNoButtonYear)
-    }
+    class ViewHolder(val binding: LayoutStudentItemNoButtonBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
             .inflate(R.layout.layout_student_item_no_button,parent,false)
-        return ViewHolder(view)
+        return ViewHolder(LayoutStudentItemNoButtonBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.textViewName.text = dataSet[position].account?.fullName
-        holder.textViewSchool.text = dataSet[position].schoolName
-        holder.textViewYear.text = "${dataSet[position].schoolYear.toString()}학년"
+        holder.binding.student = dataSet[position]
         holder.itemView.setOnClickListener {
             studentClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
     }
 
-    override fun getItemCount(): Int= dataSet.size ?: 0
+    override fun getItemCount(): Int= dataSet.size
 }

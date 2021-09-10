@@ -16,6 +16,4 @@ class MakeClassroom(
     var name: String?,
     var academyId: Long?,
     var creatorId: Long?
-):Serializable{
-
-}
+):Serializable

@@ -22,7 +22,7 @@ class ManageClassroomAdapter(private val dataSet: List<Classroom>)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_teacher_item,parent,false)
+            .inflate(R.layout.layout_classroom_item,parent,false)
         return ViewHolder(view)
     }
 

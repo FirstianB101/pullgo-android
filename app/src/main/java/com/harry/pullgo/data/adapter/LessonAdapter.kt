@@ -8,35 +8,33 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnLessonClickListener
 import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.databinding.LayoutBottomSheetItemBinding
 
-class LessonAdapter(private val dataSet: List<Lesson>?):
+class LessonAdapter(private val dataSet: List<Lesson>):
     RecyclerView.Adapter<LessonAdapter.ViewHolder>() {
 
     var itemClickListenerListener: OnLessonClickListener? = null
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val lessonName: TextView = view.findViewById(R.id.textViewBottomSheetLessonName)
-        val lessonTime: TextView = view.findViewById(R.id.textViewBottomSheetLessonTime)
-    }
+    class ViewHolder(val binding: LayoutBottomSheetItemBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_bottom_sheet_item,parent,false)
 
-        return ViewHolder(view)
+        return ViewHolder(LayoutBottomSheetItemBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val startHour = dataSet?.get(position)?.schedule?.beginTime?.split(':')?.get(0)
-        val startMin = dataSet?.get(position)?.schedule?.beginTime?.split(':')?.get(1)
-        val endHour = dataSet?.get(position)?.schedule?.endTime?.split(':')?.get(0)
-        val endMin = dataSet?.get(position)?.schedule?.endTime?.split(':')?.get(1)
+        val startHour = dataSet[position].schedule?.beginTime?.split(':')?.get(0)
+        val startMin = dataSet[position].schedule?.beginTime?.split(':')?.get(1)
+        val endHour = dataSet[position].schedule?.endTime?.split(':')?.get(0)
+        val endMin = dataSet[position].schedule?.endTime?.split(':')?.get(1)
 
-        holder.lessonName.text = dataSet?.get(position)?.name
-        holder.lessonTime.text = "$startHour:$startMin ~ $endHour:$endMin"
+        holder.binding.lessonName = dataSet[position].name
+        holder.binding.lessonTime = "$startHour:$startMin ~ $endHour:$endMin"
         holder.itemView.setOnClickListener {
-            itemClickListenerListener?.onLessonClick(holder.itemView, dataSet?.get(position))
+            itemClickListenerListener?.onLessonClick(holder.itemView, dataSet[position])
         }
     }
 
-    override fun getItemCount() = dataSet?.size ?: 0
+    override fun getItemCount() = dataSet.size
 }

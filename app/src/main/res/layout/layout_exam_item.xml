@@ -1,102 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
-    android:focusable="true"
-    android:checkable="true"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="5dp"
-    app:contentPadding="7dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <data>
+        <variable
+            name="exam"
+            type="com.harry.pullgo.data.objects.Exam" />
+        <variable
+            name="examDate"
+            type="String" />
+        <variable
+            name="examTime"
+            type="String" />
+    </data>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/textViewExamName"
-                android:padding="6dp"
-                android:textSize="19sp"
-                android:text="시험 이름"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                android:id="@+id/textViewExamDate"
-                android:padding="6dp"
-                android:textSize="16sp"
-                android:text="시험 기간"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-        </LinearLayout>
-
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textViewExamAcademyName"
-            android:padding="8dp"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/main_color_dark"
-            android:text="학원 이름"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/textViewExamClassroomName"
-            android:padding="8dp"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/secondary_color"
-            android:text="반 이름"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
+        android:layout_margin="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:checkable="true"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:contentPadding="7dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewExamTime"
-                android:padding="6dp"
-                android:textSize="17sp"
-                android:text="제한 시간"
-                android:textColor="@color/main_color"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textViewExamName"
+                    android:padding="6dp"
+                    android:textSize="19sp"
+                    android:text="@{exam.name}"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <TextView
-                android:id="@+id/textViewExamPassScore"
-                android:padding="6dp"
-                android:textSize="17sp"
-                android:text="통과 점수"
-                android:textColor="@color/main_color"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/textViewExamDate"
+                    android:padding="6dp"
+                    android:textSize="16sp"
+                    android:text="@{examDate}"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewExamAcademyName"
+                    android:padding="8dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/main_color_dark"
+                    android:text="학원 이름"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewExamClassroomName"
+                    android:padding="8dp"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_color"
+                    android:text="반 이름"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/textViewExamTime"
+                    android:padding="6dp"
+                    android:textSize="17sp"
+                    android:text="@{examTime}"
+                    android:textColor="@color/main_color"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/textViewExamPassScore"
+                    android:padding="6dp"
+                    android:textSize="17sp"
+                    android:text="@{@string/examPassScoreFormat(exam.passScore)}"
+                    android:textColor="@color/main_color"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
         </LinearLayout>
-
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
