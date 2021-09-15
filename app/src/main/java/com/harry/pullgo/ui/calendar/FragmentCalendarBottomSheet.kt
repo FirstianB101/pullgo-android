@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.LessonAdapter
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.api.OnLessonClickListener
@@ -24,6 +26,11 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()

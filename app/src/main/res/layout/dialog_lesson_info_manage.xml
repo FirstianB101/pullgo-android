@@ -4,213 +4,248 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rounded">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="40dp">
+        android:layout_gravity="center"
+        android:padding="20dp"
+        android:background="@drawable/rounded">
 
-        <TextView
-            android:id="@+id/textViewLessonInfoSelectClassroom"
-            android:layout_width="@dimen/date_pick_text_view_width"
+        <LinearLayout
+            android:id="@+id/layoutLessonInfoNewLessonName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="@string/classroom"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoLessonName" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutLessonInfoManageSelectClassroom"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="@dimen/date_pick_spinner_width_small"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="@string/selected_classroom"
-            app:endIconMode="none"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectClassroom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textViewLessonInfoLessonName"
+                android:layout_width="@dimen/date_pick_text_view_width"
+                android:layout_height="wrap_content"
+                android:text="@string/lesson_name"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutLessonInfoNewLessonName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="@dimen/date_pick_spinner_width_small"
+                android:layout_height="wrap_content"
+                app:errorEnabled="false"
+                app:helperTextEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoLessonName"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textLessonInfoManageLessonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:hint="@string/lesson_name"
+                    android:inputType="textPersonName"
+                    android:textColorHint="@color/light_gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutLessonInfoManageSelectClassroom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoNewLessonName">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/textViewLessonInfoManageSelectClassroom"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewLessonInfoSelectClassroom"
+                android:layout_width="@dimen/date_pick_text_view_width"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                tools:ignore="KeyboardInaccessibleWidget" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/classroom"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoLessonName" />
 
-        <TextView
-            android:id="@+id/textViewLessonInfoSelectDate"
-            android:layout_width="@dimen/date_pick_text_view_width"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="@string/lesson_date"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoSelectClassroom" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutLessonInfoManageSelectClassroom"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="@dimen/date_pick_spinner_width_small"
+                android:layout_height="wrap_content"
+                android:hint="@string/selected_classroom"
+                app:endIconMode="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectClassroom"
+                app:layout_constraintTop_toBottomOf="@+id/inputLayoutLessonInfoNewLessonName">
 
-        <com.google.android.material.textfield.TextInputLayout
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/textViewLessonInfoManageSelectClassroom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    tools:ignore="KeyboardInaccessibleWidget" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/layoutLessonInfoManageSelectDate"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="@string/date"
-            app:endIconMode="none"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectDate"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectClassroom">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/textViewLessonInfoManageSelectDate"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewLessonInfoSelectDate"
+                android:layout_width="@dimen/date_pick_text_view_width"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                tools:ignore="KeyboardInaccessibleWidget" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/lesson_date"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectClassroom" />
 
-        <TextView
-            android:id="@+id/textViewLessonInfoSelectTime"
-            android:layout_width="@dimen/date_pick_text_view_width"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="@string/lesson_time"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewLessonInfoSelectDate" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutLessonInfoManageSelectDate"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="@dimen/date_pick_spinner_width_small"
+                android:layout_height="wrap_content"
+                android:hint="@string/date"
+                app:endIconMode="none"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectDate"
+                app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectClassroom">
 
-        <com.google.android.material.textfield.TextInputLayout
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/textViewLessonInfoManageSelectDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    tools:ignore="KeyboardInaccessibleWidget" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/layoutLessonInfoManageSelectStartTime"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="@dimen/date_pick_spinner_width_small"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:hint="@string/begin_time"
-            app:endIconMode="none"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"
+            android:layout_margin="20dp"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectDate">
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/textViewLessonInfoManageSelectStartTime"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewLessonInfoSelectTime"
+                android:layout_width="@dimen/date_pick_text_view_width"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                tools:ignore="KeyboardInaccessibleWidget" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/lesson_time"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLayoutLessonInfoManageSelectStartTime"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="@dimen/date_pick_spinner_width_small"
+                android:layout_height="wrap_content"
+                android:hint="@string/begin_time"
+                app:endIconMode="none">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/textViewLessonInfoManageSelectStartTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:enabled="false"
+                    android:focusable="false"
+                    tools:ignore="KeyboardInaccessibleWidget" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutLessonInfoManageSelectEndTime"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="@dimen/date_pick_spinner_width_small"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:hint="@string/end_time"
+            android:layout_margin="20dp"
             app:endIconMode="none"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoSelectTime"
             app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectStartTime">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/textViewLessonInfoManageSelectEndTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:clickable="false"
                 android:cursorVisible="false"
+                android:enabled="false"
                 android:focusable="false"
                 tools:ignore="KeyboardInaccessibleWidget" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/textViewLessonInfoLessonName"
-            android:layout_width="@dimen/date_pick_text_view_width"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/lesson_name"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutLessonInfoNewLessonName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="@dimen/date_pick_spinner_width_small"
-            android:layout_height="wrap_content"
-            app:errorEnabled="false"
-            app:helperTextEnabled="true"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewLessonInfoLessonName"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textLessonInfoManageLessonName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/lesson_name"
-                android:enabled="false"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/light_gray" />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLessonInfoManageSave"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="@string/edit"
-            android:textStyle="bold"
             android:textSize="@dimen/success_button_text"
-            style="?android:attr/borderlessButtonStyle"
+            android:textStyle="bold"
+            android:layout_margin="20dp"
+            app:backgroundTint="@color/white"
             app:icon="@drawable/ic_edit"
             app:iconSize="22dp"
-            app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectEndTime" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLessonInfoManageRemove"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="@string/delete"
             android:textColor="@color/warning_color"
-            android:textStyle="bold"
             android:textSize="@dimen/success_button_text"
-            style="?android:attr/borderlessButtonStyle"
-            app:icon="@drawable/outline_delete_white_24dp"
-            app:iconTint="@color/warning_color"
-            app:iconSize="22dp"
+            android:textStyle="bold"
+            android:layout_margin="20dp"
             app:backgroundTint="@color/white"
+            app:icon="@drawable/outline_delete_white_24dp"
+            app:iconSize="22dp"
+            app:iconTint="@color/warning_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutLessonInfoManageSelectEndTime" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

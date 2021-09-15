@@ -47,15 +47,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     override fun onStart() {
         super.onStart()
 
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        }
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -69,7 +61,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
 
         return _dialog
     }
