@@ -3,13 +3,10 @@ package com.harry.pullgo.data.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnStudentClickListener
-import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.databinding.LayoutApplyItemBinding
 
 class StudentApplyAdapter  (private val dataSet: List<Student>, private val showRemoveButton: Boolean):

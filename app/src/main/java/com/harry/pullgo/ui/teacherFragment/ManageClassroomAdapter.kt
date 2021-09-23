@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnClassroomClickListener
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Classroom
 
 class ManageClassroomAdapter(private val dataSet: List<Classroom>)
     :RecyclerView.Adapter<ManageClassroomAdapter.ViewHolder>(){

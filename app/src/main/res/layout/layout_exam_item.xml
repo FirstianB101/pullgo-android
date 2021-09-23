@@ -5,7 +5,7 @@
     <data>
         <variable
             name="exam"
-            type="com.harry.pullgo.data.objects.Exam" />
+            type="com.harry.pullgo.data.models.Exam" />
         <variable
             name="examDate"
             type="String" />

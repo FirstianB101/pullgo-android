@@ -7,11 +7,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.*
 import com.harry.pullgo.databinding.ActivitySignUpStudentBinding
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.repository.SignUpRepository
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpId
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpPw
 import com.harry.pullgo.ui.dialog.OneButtonDialog
@@ -26,15 +26,16 @@ class StudentSignUpActivity:AppCompatActivity(){
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpSignUpInfoFragment: StudentSignUpInfoFragment
 
-    private val viewModel: SignUpViewModel by viewModels()
+    private val viewModel: SignUpViewModel by viewModels{SignUpViewModelFactory(SignUpRepository())}
 
-    var curPosition:Int=0
+    var curPosition:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initialize()
+        initViewModel()
     }
 
     private fun initialize(){
@@ -42,24 +43,31 @@ class StudentSignUpActivity:AppCompatActivity(){
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId()
         supportFragmentManager.beginTransaction().replace(R.id.studentSignUpContainer,signUpId).commit()
+    }
 
+    private fun initViewModel(){
         viewModel.signUpId.observe(this){
             selectFragment(1)
         }
-        
+
         viewModel.signUpPw.observe(this){
             selectFragment(2)
         }
-        
-        viewModel.signUpStudent.observe(this){
-            createStudent(viewModel.signUpStudent.value)
 
-            makePopup()
+        viewModel.signUpStudent.observe(this){
+            viewModel.createStudent(it)
+        }
+
+        viewModel.createMessage.observe(this){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+            if(it == "계정이 생성되었습니다"){
+                makePopup()
+            }
         }
     }
 
     override fun onBackPressed() {
-        if(curPosition==0){
+        if(curPosition == 0){
             super.onBackPressed()
         }else{
             selectFragment(curPosition-1)
@@ -68,18 +76,16 @@ class StudentSignUpActivity:AppCompatActivity(){
 
     private fun selectFragment(position: Int) {
         var curFragment : Fragment? = null
-        when(position){
+        curPosition = position
+        when(curPosition){
             0 -> {//아이디 입력 프래그먼트
                 curFragment = signUpId
-                curPosition=0
             }
             1 -> {//아이디 입력 프래그먼트에서 패스워드 입력으로 넘겨달라 요청
                 curFragment = signUpPw
-                curPosition=1
             }
             2 -> {//패스워드 입력 프래그먼트에서 정보 입력으로 넘겨달라 요청
                 curFragment = signUpSignUpInfoFragment
-                curPosition=2
             }
         }
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -90,26 +96,6 @@ class StudentSignUpActivity:AppCompatActivity(){
             R.anim.exit_to_right
         )
         transaction.replace(R.id.studentSignUpContainer, curFragment!!).addToBackStack(null).commit()
-    }
-
-    private fun createStudent(student: Student?){
-        if (student != null) {
-            val service= RetrofitClient.getApiService()
-
-            service.createStudent(student).enqueue(object: Callback<Student> {
-                override fun onResponse(call: Call<Student>, response: Response<Student>) {
-                    if(response.isSuccessful){
-                        Toast.makeText(applicationContext,"계정이 생성되었습니다",Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(applicationContext,"계정을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<Student>, t: Throwable) {
-                    Toast.makeText(applicationContext,"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
     }
 
     private fun makePopup(){

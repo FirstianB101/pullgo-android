@@ -1,4 +1,4 @@
-package com.harry.pullgo.data.objects
+package com.harry.pullgo.data.models
 
 import java.io.Serializable
 

@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,8 +19,9 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
+import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
@@ -42,7 +44,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
     lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
 
-    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
+        ChangeInfoRepository()
+    )}
 
     private lateinit var headerView: View
     private var curPosition: Int? = null
@@ -60,11 +64,15 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun initViewModels(){
         changeInfoViewModel.changeStudent.observe(this){
-            changeStudentInfo(changeInfoViewModel.changeStudent.value)
-            LoginInfo.loginStudent = changeInfoViewModel.changeStudent.value
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
+            changeInfoViewModel.changeStudentInfo(it.id!!,it)
+            LoginInfo.loginStudent = it
+            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${it.account?.fullName}님"
+            headerView.findViewById<TextView>(R.id.textViewNavId).text="${it.account?.username}"
             onFragmentSelected(CALENDAR)
+        }
+
+        changeInfoViewModel.changeInfoMessage.observe(this){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -87,6 +95,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             studentHomeFragment = StudentHomeFragmentNoAcademy()
 
             supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, studentHomeFragment).commit()
+            curPosition = HOME
         }
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
@@ -130,11 +139,6 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.student_additional_setting, menu)
-        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -194,26 +198,6 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         val intent= Intent(applicationContext, FindAcademyActivity::class.java)
         intent.putExtra("calledByStudent",true)
         startActivity(intent)
-    }
-
-    private fun changeStudentInfo(student: Student?){
-        if (student != null) {
-            val service= RetrofitClient.getApiService()
-
-            service.changeStudentInfo(student.id!!,student).enqueue(object: Callback<Student> {
-                override fun onResponse(call: Call<Student>, response: Response<Student>) {
-                    if(response.isSuccessful){
-                        Snackbar.make(binding.root,"계정 정보가 수정되었습니다",Snackbar.LENGTH_SHORT).show()
-                    }else{
-                        Snackbar.make(binding.root,"계정 정보 수정에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<Student>, t: Throwable) {
-                    Snackbar.make(binding.root,"서버와 연결에 실패하였습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            })
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

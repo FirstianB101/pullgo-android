@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.dialog
+package com.harry.pullgo.ui.manageAcademy
 
 import android.app.Dialog
 import android.graphics.Color
@@ -8,15 +8,13 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.data.api.OnDataChangedListener
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.DialogKickPersonBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
 class FragmentKickStudentDialog(
@@ -27,6 +25,10 @@ class FragmentKickStudentDialog(
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
     private var dataChangedListener: OnDataChangedListener? = null
+
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
+    }
 
     override fun onStart() {
         super.onStart()
@@ -46,6 +48,7 @@ class FragmentKickStudentDialog(
         val builder = MaterialAlertDialogBuilder(requireActivity())
         initialize()
         setListeners()
+        initViewModel()
         builder.setView(binding.root)
 
         val _dialog = builder.create()
@@ -66,26 +69,18 @@ class FragmentKickStudentDialog(
         }
 
         binding.buttonDialogKick.setOnClickListener {
-            kickStudent()
+            viewModel.kickStudent(academyId,selectedStudent.id!!)
         }
     }
 
-    private fun kickStudent(){
-        RetrofitClient.getApiService().kickStudent(academyId,selectedStudent.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"학생을 제외했습니다",Toast.LENGTH_SHORT).show()
-                    dataChangedListener?.onChangeData(false,true)
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"학생을 제외하지 못했습니다",Toast.LENGTH_SHORT).show()
-                }
+    private fun initViewModel(){
+        viewModel.kickPersonMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "학생을 제외했습니다"){
+                dataChangedListener?.onChangeData(false,true)
+                dismiss()
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
 
     companion object {
@@ -101,6 +96,10 @@ class FragmentKickTeacherDialog(
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
     private var dataChangedListener: OnDataChangedListener? = null
+
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
+    }
 
     override fun onStart() {
         super.onStart()
@@ -120,6 +119,7 @@ class FragmentKickTeacherDialog(
         val builder = MaterialAlertDialogBuilder(requireActivity())
         initialize()
         setListeners()
+        initViewModel()
         builder.setView(binding.root)
 
         val _dialog = builder.create()
@@ -140,29 +140,21 @@ class FragmentKickTeacherDialog(
         }
 
         binding.buttonDialogKick.setOnClickListener {
-            kickTeacher()
+            viewModel.kickTeacher(academyId,selectedTeacher.id!!)
         }
     }
 
-    private fun kickTeacher(){
-        RetrofitClient.getApiService().kickTeacher(academyId,selectedTeacher.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"선생님을 제외했습니다",Toast.LENGTH_SHORT).show()
-                    dataChangedListener?.onChangeData(false,true)
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"선생님을 제외하지 못했습니다",Toast.LENGTH_SHORT).show()
-                }
+    private fun initViewModel(){
+        viewModel.kickPersonMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "선생님을 제외했습니다"){
+                dataChangedListener?.onChangeData(true,true)
+                dismiss()
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
 
     companion object {
-        const val TAG_KICK_STUDENT_DIALOG = "kick_student_dialog"
+        const val TAG_KICK_TEACHER_DIALOG = "kick_teacher_dialog"
     }
 }

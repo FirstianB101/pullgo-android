@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.FragmentSignupStudentInfoBinding
-import com.harry.pullgo.data.objects.Account
-import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.models.Account
+import com.harry.pullgo.data.models.Student
 import java.util.regex.Pattern
 
 class StudentSignUpInfoFragment: Fragment() {

@@ -2,14 +2,12 @@ package com.harry.pullgo.data.adapter
 
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnExamClickListener
-import com.harry.pullgo.data.objects.Exam
+import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.databinding.LayoutExamItemBinding
 import java.text.SimpleDateFormat
 import java.time.Duration

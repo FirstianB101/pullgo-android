@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -11,7 +12,7 @@ import com.harry.pullgo.data.adapter.AcademyAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClickListener
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -46,6 +47,10 @@ class FindAcademyActivity : AppCompatActivity() {
         viewModel.findAcademyRepositories.observe(this){
             displayAcademies()
         }
+
+        viewModel.requestMessage.observe(this){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setListeners(){
@@ -69,7 +74,7 @@ class FindAcademyActivity : AppCompatActivity() {
         if (academyAdapter != null) {
             academyAdapter.itemClickListenerListener = object: OnAcademyClickListener {
                 override fun onAcademyClick(view: View,academy: Academy?) {
-                    selectedAcademy=academy
+                    selectedAcademy = academy
                     showApplyRequestDialog(academy)
                 }
             }
@@ -90,36 +95,11 @@ class FindAcademyActivity : AppCompatActivity() {
     private fun sendAcceptRequest(academyId:Long?){
         if (academyId != null) {
             val isStudent = (LoginInfo.loginTeacher == null)
-            val service = RetrofitClient.getApiService()
 
             if(isStudent)
-                service.sendStudentApplyAcademyRequest(LoginInfo.loginStudent?.id!!,academyId).enqueue(object: Callback<Unit>{
-                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                        if(response.isSuccessful){
-                            Snackbar.make(binding.root,"가입 요청이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            Snackbar.make(binding.root,"이미 해당 학원에 등록되어 있습니다",Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-                        Snackbar.make(binding.root,"서버 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-                    }
-                })
+                viewModel.requestStudentApply(LoginInfo.loginStudent?.id!!,academyId)
             else
-                service.sendTeacherApplyAcademyRequest(LoginInfo.loginTeacher?.id!!,academyId).enqueue(object: Callback<Unit>{
-                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                        if(response.isSuccessful){
-                            Snackbar.make(binding.root,"가입 요청이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            Snackbar.make(binding.root,"이미 해당 학원에 등록되어 있습니다",Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-                        Snackbar.make(binding.root,"서버 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-                    }
-                })
+                viewModel.requestTeacherApply(LoginInfo.loginTeacher?.id!!,academyId)
         }
     }
 }

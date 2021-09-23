@@ -8,11 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.data.objects.Account
+import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.FragmentTeacherChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
 import java.util.regex.Pattern

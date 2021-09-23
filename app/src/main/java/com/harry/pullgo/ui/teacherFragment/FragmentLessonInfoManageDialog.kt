@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.dialog
+package com.harry.pullgo.ui.teacherFragment
 
 import android.app.Dialog
 import android.graphics.Color
@@ -8,8 +8,8 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -17,16 +17,13 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCalendarResetListener
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Lesson
-import com.harry.pullgo.data.objects.Schedule
+import com.harry.pullgo.data.models.Lesson
+import com.harry.pullgo.data.models.Schedule
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
@@ -40,15 +37,9 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     private var endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
     private var isEditModeOn = false
 
-    private val viewModel: LessonsViewModel by activityViewModels{LessonsViewModelFactory(LessonsRepository())}
+    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
-
-    override fun onStart() {
-        super.onStart()
-
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -61,7 +52,8 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        _dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         return _dialog
     }
@@ -109,16 +101,24 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
             resetIfTimeNotAppropriate()
         }
 
+        binding.textViewLessonInfoManageSelectClassroom.setOnClickListener {
+            if(isEditModeOn)
+                Toast.makeText(requireContext(),"반 정보는 바꿀 수 없습니다",Toast.LENGTH_SHORT).show()
+        }
+
         binding.textViewLessonInfoManageSelectDate.setOnClickListener {
-            datePicker.show(childFragmentManager,"date")
+            if(isEditModeOn)
+                datePicker.show(childFragmentManager,"date")
         }
 
         binding.textViewLessonInfoManageSelectStartTime.setOnClickListener {
-            startTimePicker.show(childFragmentManager,"startTime")
+            if(isEditModeOn)
+                startTimePicker.show(childFragmentManager,"startTime")
         }
 
         binding.textViewLessonInfoManageSelectEndTime.setOnClickListener {
-            endTimePicker.show(childFragmentManager,"endTime")
+            if(isEditModeOn)
+                endTimePicker.show(childFragmentManager,"endTime")
         }
     }
 
@@ -159,8 +159,6 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     }
 
     private fun requestPatchLesson(){
-        val client = RetrofitClient.getApiService()
-
         selectedLesson.name = binding.textLessonInfoManageLessonName.text.toString()
 
         val schedule = Schedule(null,null,null)
@@ -169,53 +167,17 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
         schedule.endTime = binding.textViewLessonInfoManageSelectEndTime.text.toString()
         selectedLesson.schedule = schedule
 
-        client.patchLessonInfo(selectedLesson.id!!,selectedLesson).enqueue(object: Callback<Lesson> {
-            override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"수업 정보가 변경되었습니다",Toast.LENGTH_SHORT).show()
-                    calendarResetListenerListener?.onResetCalendar()
-                    parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"수업 정보가 변경에 실패했습니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Lesson>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.patchLessonInfo(selectedLesson.id!!,selectedLesson)
     }
 
     private fun showRemoveDialog(){
         val dialog = TwoButtonDialog(requireContext())
-        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
             override fun onLeftClicked() {
-                requestRemoveLesson()
+                viewModel.deleteLesson(selectedLesson.id!!)
             }
         }
         dialog.start("수업 삭제","${selectedLesson.name} 수업을 삭제하시겠습니까?","삭제하기","취소")
-    }
-
-    private fun requestRemoveLesson(){
-        val client = RetrofitClient.getApiService()
-        
-        client.deleteLesson(selectedLesson.id!!).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"수업이 삭제되었습니다",Toast.LENGTH_SHORT).show()
-                    calendarResetListenerListener?.onResetCalendar()
-                    parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"수업 삭제에 실패했습니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun initViewModel(){
@@ -223,7 +185,20 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
             binding.textViewLessonInfoManageSelectClassroom.setText(it.name!!.split(';')[0])
         }
 
+        viewModel.lessonMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            saveAndCloseDialog(it)
+        }
+
         viewModel.getClassroomInfoOfLesson(selectedLesson)
+    }
+
+    private fun saveAndCloseDialog(msg: String?){
+        if(msg == "수업 정보가 변경되었습니다" || msg == "수업이 삭제되었습니다"){
+            calendarResetListenerListener?.onResetCalendar()
+            parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
+            dismiss()
+        }
     }
 
     private fun initLessonInfo(){

@@ -21,7 +21,7 @@
             android:name=".ui.manageAcademy.ManageAcademyManagePeopleActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.manageClassroomDetails.ManageClassroomDetailsActivity"
+            android:name=".ui.manageClassroom.ManageClassroomActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.applyClassroom.ApplyClassroomActivity"

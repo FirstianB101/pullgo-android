@@ -1,7 +1,7 @@
 package com.harry.pullgo.data.api
 
 import android.view.View
-import com.harry.pullgo.data.objects.*
+import com.harry.pullgo.data.models.*
 
 interface OnAcademyClickListener {
     fun onAcademyClick(view: View,academy: Academy?)

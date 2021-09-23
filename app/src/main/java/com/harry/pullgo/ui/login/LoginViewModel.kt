@@ -3,9 +3,9 @@ package com.harry.pullgo.ui.login
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.LoginRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -10,19 +10,20 @@ import com.harry.pullgo.data.adapter.TeacherManageAdapter
 import com.harry.pullgo.data.api.OnDataChangedListener
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
-import com.harry.pullgo.ui.dialog.FragmentKickStudentDialog
-import com.harry.pullgo.ui.dialog.FragmentKickTeacherDialog
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 
 class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListener {
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())}
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
+    }
+
     private val selectedAcademyId by lazy{intent.getLongExtra("selectedAcademyId",-1L)}
     private val selectedAcademyName by lazy{intent.getStringExtra("selectedAcademyName")}
 
@@ -81,7 +82,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
 
                 override fun onRemoveButtonClick(view: View, student: Student?) {
                     FragmentKickStudentDialog(student!!,selectedAcademyName,selectedAcademyId)
-                        .show(supportFragmentManager,FragmentKickStudentDialog.TAG_KICK_STUDENT_DIALOG)
+                        .show(supportFragmentManager, FragmentKickStudentDialog.TAG_KICK_STUDENT_DIALOG)
                 }
             }
         }
@@ -109,7 +110,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
 
                 override fun onRemoveButtonClick(view: View, teacher: Teacher?) {
                     FragmentKickTeacherDialog(teacher!!,selectedAcademyName,selectedAcademyId)
-                        .show(supportFragmentManager,FragmentKickTeacherDialog.TAG_KICK_STUDENT_DIALOG)
+                        .show(supportFragmentManager, FragmentKickTeacherDialog.TAG_KICK_TEACHER_DIALOG)
                 }
             }
         }

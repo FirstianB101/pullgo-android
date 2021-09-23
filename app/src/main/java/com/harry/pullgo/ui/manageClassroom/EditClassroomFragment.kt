@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.manageClassroomDetails
+package com.harry.pullgo.ui.manageClassroom
 
 import android.app.Activity
 import android.content.Intent
@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import retrofit2.Call
@@ -27,11 +29,17 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
 
     private val client by lazy{ RetrofitClient.getApiService() }
 
+    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository()
+    )}
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
         initialize()
         setListeners()
+        initViewModel()
 
         return binding.root
     }
@@ -72,6 +80,17 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
         }
     }
 
+    private fun initViewModel(){
+        viewModel.editClassroomMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "수정이 완료되었습니다"){
+                val intent = Intent()
+                intent.putExtra("finishedFragment","editClassroom")
+                requireActivity().setResult(Activity.RESULT_OK,intent)
+            }
+        }
+    }
+
     private fun setLayoutsEnabled(){
         binding.textEditClassroomName.isEnabled = true
         binding.textEditClassroomDate.isEnabled = true
@@ -87,30 +106,13 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     }
 
     private fun requestEditClassroom(){
-        val client = RetrofitClient.getApiService()
-        
         val name = binding.textEditClassroomName.text.toString()
         val date = binding.textEditClassroomDate.text.toString()
         val teacherName = binding.textEditClassroomTeacherName.text.toString()
         
         selectedClassroom.name = "$name;$teacherName;$date"
 
-        client.editClassroom(selectedClassroom.id!!,selectedClassroom).enqueue(object: Callback<Classroom> {
-            override fun onResponse(call: Call<Classroom>, response: Response<Classroom>) {
-                if(response.isSuccessful){
-                    val intent = Intent()
-                    intent.putExtra("finishedFragment","editClassroom")
-                    requireActivity().setResult(Activity.RESULT_OK,intent)
-                    Snackbar.make(binding.root,"수정이 완료되었습니다",Snackbar.LENGTH_SHORT).show()
-                }else{
-                    Snackbar.make(binding.root,"수정하지 못했습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Classroom>, t: Throwable) {
-                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.editClassroom(selectedClassroom.id!!,selectedClassroom)
     }
 
     private fun makeRemovePopup(){

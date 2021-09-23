@@ -3,15 +3,18 @@ package com.harry.pullgo.ui.calendar
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.repository.LessonsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class LessonsViewModel(private val lessonsRepository: LessonsRepository):ViewModel() {
+class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewModel() {
     private val _allLessonRepositories = MutableLiveData<List<Lesson>>()
     val allLessonsRepositories = _allLessonRepositories
 
@@ -23,6 +26,9 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository):ViewMod
 
     private val _academyInfoRepository = MutableLiveData<Academy>()
     val academyInfoRepository = _academyInfoRepository
+
+    private val _lessonMessage = MutableLiveData<String>()
+    val lessonMessage = _lessonMessage
 
     fun requestStudentLessons(id: Long){
         CoroutineScope(Dispatchers.IO).launch {
@@ -96,6 +102,38 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository):ViewMod
                 }
             }
         }
+    }
+
+    fun patchLessonInfo(lessonId: Long, lesson: Lesson){
+        lessonsRepository.requestPatchLessonInfo(lessonId,lesson).enqueue(object: Callback<Lesson> {
+            override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
+                if(response.isSuccessful){
+                    _lessonMessage.postValue("수업 정보가 변경되었습니다")
+                }else{
+                    _lessonMessage.postValue("수업 정보가 변경에 실패했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Lesson>, t: Throwable) {
+                _lessonMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+
+    fun deleteLesson(lessonId: Long){
+        lessonsRepository.requestDeleteLesson(lessonId).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _lessonMessage.postValue("수업이 삭제되었습니다")
+                }else{
+                    _lessonMessage.postValue("수업 삭제에 실패했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _lessonMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
     }
 }
 

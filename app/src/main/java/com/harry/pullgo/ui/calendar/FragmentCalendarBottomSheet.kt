@@ -6,19 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.LessonAdapter
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.api.OnLessonClickListener
-import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBottomSheetBinding
-import com.harry.pullgo.ui.dialog.FragmentLessonInfoDialog
-import com.harry.pullgo.ui.dialog.FragmentLessonInfoManageDialog
+import com.harry.pullgo.ui.studentFragment.FragmentLessonInfoDialog
+import com.harry.pullgo.ui.teacherFragment.FragmentLessonInfoManageDialog
 
 class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
@@ -60,11 +59,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
 
         setFragmentResultListener("isLessonPatched"){ _, bundle ->
             if(bundle.getString("Patched") == "yes"){
-                if(LoginInfo.loginTeacher != null){
-                    viewModel.requestTeacherLessonOnDate(LoginInfo.loginTeacher?.id!!,selectedDate)
-                }else if(LoginInfo.loginStudent != null){
-                    viewModel.requestStudentLessonOnDate(LoginInfo.loginStudent?.id!!,selectedDate)
-                }
+                viewModel.requestTeacherLessonOnDate(LoginInfo.loginTeacher?.id!!,selectedDate)
             }
         }
     }

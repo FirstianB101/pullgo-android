@@ -1,17 +1,16 @@
-package com.harry.pullgo.ui.manageClassroomDetails
+package com.harry.pullgo.ui.manageClassroom
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
-import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.ActivityManageClassroomBinding
 
-class ManageClassroomDetailsActivity : AppCompatActivity() {
+class ManageClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityManageClassroomBinding.inflate(layoutInflater)}
 
     private lateinit var editClassroomFragment: EditClassroomFragment
@@ -21,7 +20,7 @@ class ManageClassroomDetailsActivity : AppCompatActivity() {
 
     private lateinit var selectedClassroom: Classroom
 
-    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())}
+    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(ManageClassroomRepository())}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,8 @@ class ManageClassroomDetailsActivity : AppCompatActivity() {
         val classroomId = intent?.getLongExtra("selectedClassroomId",-1L)
         val classroomAcademyId = intent?.getLongExtra("selectedClassroomAcademyId",-1L)
         val classroomName = intent?.getStringExtra("selectedClassroomName")
-        selectedClassroom = Classroom(classroomId,classroomAcademyId,classroomName)
+        selectedClassroom = Classroom(classroomAcademyId,classroomName)
+        selectedClassroom.id = classroomId
 
         editClassroomFragment = EditClassroomFragment(selectedClassroom)
         manageStudentFragment = ManageStudentFragment(selectedClassroom)

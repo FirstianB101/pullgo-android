@@ -6,21 +6,18 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.ClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClickListener
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
 import com.harry.pullgo.databinding.ActivityRequestApplyClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
@@ -47,6 +44,10 @@ class ApplyClassroomActivity : AppCompatActivity() {
 
         viewModel.applyClassroomsRepositories.observe(this){
             displayClassrooms()
+        }
+
+        viewModel.appliedClassroomsMessage.observe(this){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }
 
         if(LoginInfo.loginTeacher != null) {
@@ -144,42 +145,14 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     private fun resetSearchResults(){
-        viewModel.applyClassroomsRepositories.postValue(null)
+        viewModel.resetClassroomSearchResult()
     }
 
     fun requestClassroomApply(){
         if(LoginInfo.loginStudent != null) {
-            repository.studentApplyClassroom(LoginInfo.loginStudent?.id!!, selectedClassroom?.id!!)
-                .enqueue(object : Callback<Unit> {
-                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                        if (response.isSuccessful) {
-                            Snackbar.make(binding.root,"가입 요청이 성공하였습니다",Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            Snackbar.make(binding.root,"이미 가입된 반입니다",Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-                        Snackbar.make(binding.root, "서버와 연결에 실패했습니다", Snackbar.LENGTH_SHORT).show()
-                    }
-
-                })
+            viewModel.requestStudentApplyClassroom(selectedClassroom)
         }else if(LoginInfo.loginTeacher != null){
-            repository.teacherApplyClassroom(LoginInfo.loginTeacher?.id!!, selectedClassroom?.id!!)
-                .enqueue(object : Callback<Unit> {
-                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                        if (response.isSuccessful) {
-                            Snackbar.make(binding.root,"가입 요청이 성공하였습니다",Snackbar.LENGTH_SHORT).show()
-                        }else{
-                            Snackbar.make(binding.root,"이미 가입된 반입니다",Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<Unit>, t: Throwable) {
-                        Snackbar.make(binding.root, "서버와 연결에 실패했습니다", Snackbar.LENGTH_SHORT).show()
-                    }
-
-                })
+            viewModel.requestTeacherApplyClassroom(selectedClassroom)
         }
     }
 }

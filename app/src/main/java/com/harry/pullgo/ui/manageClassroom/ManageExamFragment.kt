@@ -1,11 +1,11 @@
-package com.harry.pullgo.ui.manageClassroomDetails
+package com.harry.pullgo.ui.manageClassroom
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.databinding.FragmentManageClassroomManageExamBinding
 
 class ManageExamFragment(private val selectedClassroom: Classroom): Fragment() {

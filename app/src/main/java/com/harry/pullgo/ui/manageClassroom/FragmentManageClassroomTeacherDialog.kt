@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.dialog
+package com.harry.pullgo.ui.manageClassroom
 
 import android.app.Dialog
 import android.graphics.Color
@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.DialogManageClassroomTeacherInfoBinding
-import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsViewModel
 
 class FragmentManageClassroomTeacherDialog(
     private val selectedTeacher: Teacher,

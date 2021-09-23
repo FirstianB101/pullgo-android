@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnTeacherClickListener
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.LayoutManageAcademyPeopleItemBinding
 
 class TeacherManageAdapter(private val dataSet: List<Teacher>):

@@ -16,10 +16,10 @@ import com.harry.pullgo.data.adapter.TeacherApplyAdapter
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
@@ -33,11 +33,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
 
     private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository())}
 
-    private var selectedStudent: Student? = null
-    private var selectedTeacher: Teacher? = null
     private var selectedAcademy: Academy? = null
-
-    private val client by lazy{RetrofitClient.getApiService()}
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -75,6 +71,15 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
 
         viewModel.academyRepositories.observe(requireActivity()){
             setSpinnerItems()
+        }
+
+        viewModel.acceptOrDenyMessage.observe(requireActivity()){
+            when(it){
+                "해당 학생의 요청을 승인하였습니다" -> viewModel.requestGetStudents(selectedAcademy?.id!!)
+                "해당 선생님의 요청을 승인하였습니다" -> viewModel.requestGetTeachers(selectedAcademy?.id!!)
+                "해당 학생의 요청이 삭제되었습니다" -> refreshAdapter(false)
+                "해당 선생님의 요청이 삭제되었습니다" -> refreshAdapter(true)
+            }
         }
 
         viewModel.requestTeacherAcademies(LoginInfo.loginTeacher?.id!!)
@@ -121,18 +126,15 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         if (adapter != null) {
             adapter.studentClickListenerListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
-                    selectedStudent = student
-
-                    FragmentShowStudentInfoDialog(student!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
+                   FragmentShowStudentInfoDialog(student!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {
-                    selectedStudent = student
-                    doStudentApplyProcess()
+                    viewModel.acceptStudentApplyAcademy(selectedAcademy?.id!!,student?.id!!)
                 }
 
                 override fun onRemoveButtonClick(view: View, student: Student?) {
-                    removeStudentRequest(student!!)
+                    viewModel.denyStudentApplyAcademy(selectedAcademy?.id!!,student?.id!!)
                 }
             }
         }
@@ -151,18 +153,15 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         if (adapter != null) {
             adapter.teacherClickListenerListener = object: OnTeacherClickListener {
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
-                    selectedTeacher = teacher
-
                     FragmentShowTeacherInfoDialog(teacher!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, teacher: Teacher?) {
-                    selectedTeacher = teacher
-                    doTeacherApplyProcess()
+                    viewModel.acceptTeacherApplyAcademy(selectedAcademy?.id!!,teacher?.id!!)
                 }
 
                 override fun onRemoveButtonClick(view: View, teacher: Teacher?) {
-                    removeTeacherRequest(teacher!!)
+                    viewModel.denyTeacherApplyAcademy(selectedAcademy?.id!!,teacher?.id!!)
                 }
             }
         }
@@ -176,73 +175,5 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
             binding.textViewAcceptApplyAcademyNoResult.visibility = View.VISIBLE
         else
             binding.textViewAcceptApplyAcademyNoResult.visibility = View.GONE
-    }
-
-    private fun doStudentApplyProcess(){
-        client.acceptStudentApplyAcademy(selectedAcademy?.id!!,selectedStudent?.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Snackbar.make(binding.root,"요청 승인에 성공하였습니다",Snackbar.LENGTH_SHORT).show()
-                    viewModel.requestGetStudents(selectedAcademy?.id!!)
-                }else{
-                    Snackbar.make(binding.root,"요청 승인에 실패하였습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun doTeacherApplyProcess(){
-        client.acceptTeacherApplyAcademy(selectedAcademy?.id!!,selectedTeacher?.id!!).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Snackbar.make(binding.root,"요청 승인에 성공하였습니다",Snackbar.LENGTH_SHORT).show()
-                    viewModel.requestGetTeachers(selectedAcademy?.id!!)
-                }else{
-                    Snackbar.make(binding.root,"요청 승인에 실패하였습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun removeStudentRequest(student: Student){
-        client.removeStudentAcademyRequest(student.id!!,selectedAcademy?.id!!).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Snackbar.make(binding.root,"요청이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
-                    refreshAdapter(false)
-                }else{
-                    Snackbar.make(binding.root,"요청을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-    private fun removeTeacherRequest(teacher: Teacher){
-        client.removeTeacherAcademyRequest(teacher.id!!,selectedAcademy?.id!!).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Snackbar.make(binding.root,"요청이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
-                    refreshAdapter(true)
-                }else{
-                    Snackbar.make(binding.root,"요청을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-            }
-        })
     }
 }

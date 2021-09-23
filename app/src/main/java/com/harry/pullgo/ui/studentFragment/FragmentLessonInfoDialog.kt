@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.dialog
+package com.harry.pullgo.ui.studentFragment
 
 import android.app.Dialog
 import android.graphics.Color
@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel

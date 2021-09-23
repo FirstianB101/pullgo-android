@@ -3,8 +3,8 @@ package com.harry.pullgo.ui.teacherFragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

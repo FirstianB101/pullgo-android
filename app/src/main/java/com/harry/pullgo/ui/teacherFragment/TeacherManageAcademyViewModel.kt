@@ -1,22 +1,31 @@
 package com.harry.pullgo.ui.teacherFragment
 
+import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Teacher
-import com.harry.pullgo.data.repository.ClassroomsRepository
+import com.google.android.material.snackbar.Snackbar
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class TeacherManageAcademyViewModel(private val manageAcademyRepository: ManageAcademyRepository): ViewModel() {
     private val _ownedAcademiesRepository = MutableLiveData<List<Academy>>()
-    val ownedAcademiesRepository = _ownedAcademiesRepository
+    val ownedAcademiesRepository: LiveData<List<Academy>> = _ownedAcademiesRepository
 
     private val _teachersAtAcademyRepository = MutableLiveData<List<Teacher>>()
-    val teachersAtAcademyRepository = _teachersAtAcademyRepository
+    val teachersAtAcademyRepository: LiveData<List<Teacher>> = _teachersAtAcademyRepository
+
+    private val _manageAcademyMessage = MutableLiveData<String>()
+    val manageAcademyMessage: LiveData<String> = _manageAcademyMessage
 
     fun requestGetOwnedAcademies(ownerId: Long){
         CoroutineScope(Dispatchers.IO).launch {
@@ -40,6 +49,38 @@ class TeacherManageAcademyViewModel(private val manageAcademyRepository: ManageA
                 }
             }
         }
+    }
+
+    fun editAcademy(academyId: Long, academy: Academy){
+        manageAcademyRepository.editAcademy(academyId, academy).enqueue(object: Callback<Academy> {
+            override fun onResponse(call: Call<Academy>, response: Response<Academy>) {
+                if(response.isSuccessful){
+                    _manageAcademyMessage.postValue("수정되었습니다")
+                }else{
+                    _manageAcademyMessage.postValue("수정하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Academy>, t: Throwable) {
+                _manageAcademyMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+
+    fun deleteAcademy(academyId: Long){
+        manageAcademyRepository.deleteAcademy(academyId).enqueue(object: Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _manageAcademyMessage.postValue("학원이 삭제되었습니다")
+                }else{
+                    _manageAcademyMessage.postValue("학원을 삭제하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _manageAcademyMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
     }
 }
 

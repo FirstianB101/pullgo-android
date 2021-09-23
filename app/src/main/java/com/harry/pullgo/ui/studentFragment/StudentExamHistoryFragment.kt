@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
-import com.harry.pullgo.data.objects.Exam
+import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.databinding.FragmentStudentExamHistoryBinding

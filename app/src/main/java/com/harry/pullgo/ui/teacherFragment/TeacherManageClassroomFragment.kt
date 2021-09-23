@@ -13,12 +13,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.api.OnClassroomClickListener
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
-import com.harry.pullgo.ui.dialog.FragmentMakeClassroomDialog
-import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsActivity
+import com.harry.pullgo.ui.manageClassroom.FragmentCreateClassroomDialog
+import com.harry.pullgo.ui.manageClassroom.ManageClassroomActivity
 
 class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
@@ -107,7 +107,7 @@ class TeacherManageClassroomFragment: Fragment() {
     }
 
     private fun startManageClassroomActivity(){
-        val intent = Intent(requireContext(),ManageClassroomDetailsActivity::class.java)
+        val intent = Intent(requireContext(),ManageClassroomActivity::class.java)
 
         val classroom = viewModel.selectedClassroom.value
 
@@ -128,6 +128,7 @@ class TeacherManageClassroomFragment: Fragment() {
 
     private fun makeClassroom(){
         val academies = viewModel.academiesForSpinnerRepository.value
-        FragmentMakeClassroomDialog(academies!!).show(childFragmentManager,FragmentMakeClassroomDialog.TAG_LESSON_INFO_DIALOG)
+        FragmentCreateClassroomDialog(academies!!).show(childFragmentManager,
+            FragmentCreateClassroomDialog.TAG_LESSON_INFO_DIALOG)
     }
 }

@@ -5,34 +5,33 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
-import com.harry.pullgo.data.api.RetrofitClient
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.models.Lesson
+import com.harry.pullgo.data.models.Schedule
 import com.harry.pullgo.data.objects.*
 import com.harry.pullgo.data.repository.ClassroomsRepository
-import com.harry.pullgo.databinding.FragmentCreateNewLessonBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.harry.pullgo.databinding.DialogCreateNewLessonBinding
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 class FragmentCreateNewLessonDialog : DialogFragment() {
-    val binding by lazy {FragmentCreateNewLessonBinding.inflate(layoutInflater)}
+    val binding by lazy {DialogCreateNewLessonBinding.inflate(layoutInflater)}
     private var selectedDate: Long? = null
     private var startHour = -1
     private var startMinute = -1
@@ -40,21 +39,9 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var endMinute = -1
     private var selectedClassroom: Classroom? = null
 
-    private val viewModel: CreateNewLessonViewModel by activityViewModels{CreateNewLessonViewModelFactory(ClassroomsRepository())}
+    private val viewModel: CreateNewLessonViewModel by viewModels{CreateNewLessonViewModelFactory(ClassroomsRepository())}
 
-    override fun onStart() {
-        super.onStart()
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        }
-    }
+    private var isLayoutVisible = false
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -66,7 +53,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
     }
@@ -75,6 +62,15 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         viewModel.createNewLessonClassroomRepository.observe(this){
             setSpinnerItems()
         }
+
+        viewModel.createMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "수업을 생성하였습니다"){
+                parentFragment?.setFragmentResult("isMadeNewLesson", bundleOf("isMade" to "yes"))
+                dismiss()
+            }
+        }
+
         viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
     }
 
@@ -142,9 +138,9 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
                     selectedClassroom?.id,
                     schedule
                 )
-                createLesson(newLesson)
+                viewModel.createNewLesson(newLesson)
             }else{
-                Snackbar.make(binding.root,"선택하지 않은 항목이 존재합니다",Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),"선택하지 않은 항목이 존재합니다",Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -159,12 +155,27 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         binding.spinnerSelectClassroom.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedClassroom = classrooms[position]
+                if(!isLayoutVisible)isLayoutVisible = true
+                changeLayoutVisibility()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
+                isLayoutVisible = false
+                changeLayoutVisibility()
             }
         }
     }
+
+    private fun changeLayoutVisibility(){
+        if(isLayoutVisible){
+            val anim = AnimationUtils.loadAnimation(requireContext(), R.anim.alpha)
+            binding.layoutCreateNewLesson.visibility = View.VISIBLE
+            binding.layoutCreateNewLesson.startAnimation(anim)
+        }else{
+            binding.layoutCreateNewLesson.visibility = View.GONE
+        }
+    }
+
 
     private fun resetIfTimeNotAppropriate(){
         if(startHour == -1 || startMinute == -1 || endHour == -1 || endMinute == -1)return
@@ -184,26 +195,6 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         val pattern = "yyyy-MM-dd"
         val formatter = SimpleDateFormat(pattern)
         return formatter.format(Timestamp(mills))
-    }
-
-    private fun createLesson(lesson: Lesson){
-        val service= RetrofitClient.getApiService()
-
-        service.createLesson(lesson).enqueue(object: Callback<Lesson> {
-            override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"수업을 생성하였습니다",Toast.LENGTH_SHORT).show()
-                    parentFragment?.setFragmentResult("isMadeNewLesson", bundleOf("isMade" to "yes"))
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"수업을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Lesson>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun isSelectedAllOptions(): Boolean =

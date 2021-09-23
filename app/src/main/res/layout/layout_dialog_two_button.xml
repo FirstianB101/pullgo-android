@@ -4,8 +4,7 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="25dp"
-    android:padding="3dp"
+    android:padding="5dp"
     android:background="@drawable/rounded">
 
     <LinearLayout
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:padding="7dp"
             android:lineSpacingExtra="5sp"
             android:text="Title"
@@ -49,7 +48,7 @@
                 android:id="@+id/leftButtonTwoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:text="@string/underlined_confirm"
                 android:textStyle="bold"
                 android:textColor="@color/main_color"
@@ -60,7 +59,7 @@
                 android:id="@+id/rightButtonTwoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="17sp"
                 android:text="@string/underlined_cancel"
                 android:textStyle="bold"
                 android:textColor="@color/main_color"
@@ -69,7 +68,5 @@
             
         </LinearLayout>
 
-
     </LinearLayout>
-
 </LinearLayout>

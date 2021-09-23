@@ -13,10 +13,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.DialogManageAcademyDelegateBinding
 import com.harry.pullgo.ui.teacherFragment.TeacherManageAcademyViewModel
 

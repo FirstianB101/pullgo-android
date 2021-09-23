@@ -1,6 +1,6 @@
 package com.harry.pullgo.data.api
 
-import com.harry.pullgo.data.objects.*
+import com.harry.pullgo.data.models.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
@@ -169,7 +169,7 @@ interface RetrofitService {
     suspend fun getAcademyById(@Path("id")academyId: Long): Response<Academy>
 
     @POST("academy/classrooms")
-    fun createClassroom(@Body newClassroom: MakeClassroom): Call<Classroom>
+    fun createClassroom(@Body newClassroom: Classroom): Call<Classroom>
 
 
     @PATCH("academy/classroom/lessons/{id}")

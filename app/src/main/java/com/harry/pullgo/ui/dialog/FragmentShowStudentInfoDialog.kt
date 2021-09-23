@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.objects.Student
+import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
 
 class FragmentShowStudentInfoDialog(private val selectedStudent: Student): DialogFragment() {

@@ -12,10 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.FragmentTeacherManageAcademyBinding
@@ -55,6 +54,14 @@ class TeacherManageAcademyFragment: Fragment() {
         }
 
         viewModel.requestGetOwnedAcademies(LoginInfo.loginTeacher?.id!!)
+
+        viewModel.manageAcademyMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "학원이 삭제되었습니다"){
+                viewModel.requestGetOwnedAcademies(LoginInfo.loginTeacher?.id!!)
+                makeLayoutInvisible()
+            }
+        }
     }
 
     private fun setListeners(){
@@ -77,7 +84,6 @@ class TeacherManageAcademyFragment: Fragment() {
 
         binding.buttonManageAcademyDelete.setOnClickListener {
             showDeleteAcademyDialog()
-            
         }
     }
     
@@ -85,28 +91,10 @@ class TeacherManageAcademyFragment: Fragment() {
         val dialog = TwoButtonDialog(requireContext())
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
             override fun onLeftClicked() {
-                deleteAcademy()
+                viewModel.deleteAcademy(selectedAcademy.id!!)
             }
         }
         dialog.start("학원 삭제","${selectedAcademy.name} 학원을 삭제하시겠습니까?","삭제하기","취소")
-    }
-
-    private fun deleteAcademy(){
-        client.deleteAcademy(selectedAcademy.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Snackbar.make(binding.root,"학원이 삭제되었습니다",Snackbar.LENGTH_SHORT).show()
-                    viewModel.requestGetOwnedAcademies(LoginInfo.loginTeacher?.id!!)
-                    makeLayoutInvisible()
-                }else{
-                    Toast.makeText(requireContext(),"학원을 삭제하지 못했습니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun setSpinnerItems(){
@@ -175,18 +163,6 @@ class TeacherManageAcademyFragment: Fragment() {
         selectedAcademy.phone = binding.textManageAcademyPhone.text.toString()
         selectedAcademy.address = binding.textManageAcademyAddress.text.toString()
 
-        client.editAcademy(selectedAcademy.id!!,selectedAcademy).enqueue(object: Callback<Academy>{
-            override fun onResponse(call: Call<Academy>, response: Response<Academy>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"수정되었습니다",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(requireContext(),"수정하지 못했습니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Academy>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.editAcademy(selectedAcademy.id!!,selectedAcademy)
     }
 }

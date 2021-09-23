@@ -8,6 +8,7 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
@@ -19,9 +20,10 @@ import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.objects.Teacher
+import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.teacherFragment.*
@@ -31,7 +33,6 @@ import retrofit2.Response
 
 class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy{ActivityTeacherMainBinding.inflate(layoutInflater)}
-    lateinit var teacherChangeInfoFragment: TeacherChangePersonInfoFragment
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
     lateinit var manageClassroomFragment: TeacherManageClassroomFragment
@@ -39,7 +40,9 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var manageAcademyFragment: TeacherManageAcademyFragment
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
 
-    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
+        ChangeInfoRepository()
+    )}
 
     private lateinit var headerView: View
     private var curPosition: Int? = null
@@ -58,16 +61,19 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
  
     private fun initViewModels(){
         changeInfoViewModel.changeTeacher.observe(this){
-            changeTeacherInfo(changeInfoViewModel.changeTeacher.value)
-            LoginInfo.loginTeacher = changeInfoViewModel.changeTeacher.value
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
+            changeInfoViewModel.changeTeacherInfo(it.id!!,it)
+            LoginInfo.loginTeacher = it
+            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${it.account?.fullName}님"
+            headerView.findViewById<TextView>(R.id.textViewNavId).text="${it.account?.username}"
             onFragmentSelected(CALENDAR)
+        }
+
+        changeInfoViewModel.changeInfoMessage.observe(this){
+            Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun initialize(){
-        teacherChangeInfoFragment = TeacherChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
 
         if(intent.getBooleanExtra("appliedAcademyExist",false)){
@@ -133,11 +139,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
     }
 
-    /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.student_additional_setting, menu)
-        return true
-    }*/
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_teacher_change_info -> onFragmentSelected(CHANGE_INFO_CHECK_PW)
@@ -162,13 +163,13 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         curPosition = position
         when(curPosition){
             CHANGE_INFO -> {
-                curFragment = teacherChangeInfoFragment
+                curFragment = TeacherChangePersonInfoFragment()
             }
             CALENDAR -> {
                 curFragment = calendarFragment
             }
             CHANGE_INFO_CHECK_PW -> {
-                curFragment = ChangeInfoCheckPwFragment()
+                curFragment = changeInfoCheckPwFragment
             }
             MANAGE_CLASSROOM -> {
                 curFragment = manageClassroomFragment
@@ -214,24 +215,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
             }
         })
-    }
-
-    private fun changeTeacherInfo(teacher: Teacher?){
-        if (teacher != null) {
-            client.changeTeacherInfo(teacher.id!!,teacher).enqueue(object: Callback<Teacher> {
-                override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
-                    if(response.isSuccessful){
-                        Snackbar.make(binding.root,"계정 정보가 수정되었습니다", Snackbar.LENGTH_SHORT).show()
-                    }else{
-                        Snackbar.make(binding.root,"계정 정보 수정에 실패했습니다", Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<Teacher>, t: Throwable) {
-                    Snackbar.make(binding.root,"서버와 연결에 실패하였습니다", Snackbar.LENGTH_SHORT).show()
-                }
-            })
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

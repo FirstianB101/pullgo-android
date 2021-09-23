@@ -1,13 +1,11 @@
 package com.harry.pullgo.data.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnAcademyClickListener
-import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.databinding.LayoutSearchAcademyItemBinding
 
 class AcademyAdapter(private val dataSet: List<Academy>):

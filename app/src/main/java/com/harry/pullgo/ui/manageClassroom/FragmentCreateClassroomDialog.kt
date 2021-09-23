@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.dialog
+package com.harry.pullgo.ui.manageClassroom
 
 import android.R
 import android.app.Dialog
@@ -18,20 +18,17 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
-import com.harry.pullgo.data.objects.Classroom
+import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.objects.MakeClassroom
-import com.harry.pullgo.databinding.DialogMakeClassroomBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.databinding.DialogCreateClassroomBinding
 import java.util.*
 
-class FragmentMakeClassroomDialog(private val academies: List<Academy>): DialogFragment() {
-    private val binding by lazy{DialogMakeClassroomBinding.inflate(layoutInflater)}
+class FragmentCreateClassroomDialog(private val academies: List<Academy>): DialogFragment() {
+    private val binding by lazy{ DialogCreateClassroomBinding.inflate(layoutInflater)}
 
     private var selectedAcademy: Academy? = null
 
@@ -39,6 +36,11 @@ class FragmentMakeClassroomDialog(private val academies: List<Academy>): DialogF
 
     private var isLayoutVisible = false
     private var isNameNotContainsSemicolon = true
+
+    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository()
+    )}
+
 
     override fun onStart() {
         super.onStart()
@@ -58,6 +60,7 @@ class FragmentMakeClassroomDialog(private val academies: List<Academy>): DialogF
         val builder = MaterialAlertDialogBuilder(requireActivity())
 
         initialize()
+        initViewModel()
         setSpinner()
         setListeners()
 
@@ -75,6 +78,16 @@ class FragmentMakeClassroomDialog(private val academies: List<Academy>): DialogF
         binding.dayPickerMakeClassroom.locale = Locale.KOREAN
 
         binding.textNewClassroomName.addTextChangedListener(watcher)
+    }
+
+    private fun initViewModel(){
+        viewModel.createClassroomMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "반이 생성되었습니다"){
+                parentFragment?.setFragmentResult("createNewClassroom", bundleOf("isCreated" to "yes"))
+            }
+            dismiss()
+        }
     }
 
     private fun setListeners(){
@@ -169,32 +182,15 @@ class FragmentMakeClassroomDialog(private val academies: List<Academy>): DialogF
     }
 
     private fun makeClassroom(){
-        val client = RetrofitClient.getApiService()
-
         val name = binding.textNewClassroomName.text.toString()
         val teacher = LoginInfo.loginTeacher?.account?.fullName
         val days = makeSelectedDaysToString()
         val classroomName = "$name;$teacher;$days"
 
-        val newClassroom = MakeClassroom(classroomName,selectedAcademy?.id!!,LoginInfo.loginTeacher?.id!!)
+        val newClassroom = Classroom(selectedAcademy?.id!!,classroomName)
+        newClassroom.creatorId = LoginInfo.loginTeacher?.id!!
 
-        client.createClassroom(newClassroom).enqueue(object:
-            Callback<Classroom> {
-            override fun onResponse(call: Call<Classroom>, response: Response<Classroom>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"반이 생성되었습니다",Toast.LENGTH_SHORT).show()
-                    parentFragment?.setFragmentResult("createNewClassroom", bundleOf("isCreated" to "yes"))
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"반을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
-                    dismiss()
-                }
-            }
-
-            override fun onFailure(call: Call<Classroom>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.createClassroom(newClassroom)
     }
 
     companion object {

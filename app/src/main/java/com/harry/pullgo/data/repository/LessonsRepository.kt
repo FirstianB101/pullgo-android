@@ -1,7 +1,7 @@
 package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Lesson
+import com.harry.pullgo.data.models.Lesson
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,4 +29,7 @@ class LessonsRepository {
 
     suspend fun getClassroomSuchLesson(classroomId: Long) = lessonClient.getClassroomById(classroomId)
     suspend fun getAcademySuchClassroom(academyId: Long) = lessonClient.getAcademyById(academyId)
+
+    fun requestPatchLessonInfo(lessonId: Long, lesson: Lesson) = lessonClient.patchLessonInfo(lessonId,lesson)
+    fun requestDeleteLesson(lessonId: Long) = lessonClient.deleteLesson(lessonId)
 }

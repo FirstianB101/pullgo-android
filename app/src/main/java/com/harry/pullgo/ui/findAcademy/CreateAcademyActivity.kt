@@ -1,14 +1,14 @@
 package com.harry.pullgo.ui.findAcademy
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.AddressActivity
 import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Academy
+import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
+import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.databinding.ActivityCreateAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import retrofit2.Call
@@ -18,7 +18,10 @@ import retrofit2.Response
 class CreateAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityCreateAcademyBinding.inflate(layoutInflater)}
 
-    private val client by lazy{RetrofitClient.getApiService()}
+    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(
+        FindAcademyRepository()
+    )}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,7 @@ class CreateAcademyActivity : AppCompatActivity() {
 
         initialize()
         setListeners()
+        initViewModel()
     }
 
     private fun initialize(){
@@ -43,6 +47,13 @@ class CreateAcademyActivity : AppCompatActivity() {
 
         binding.buttonCreateAcademyCancel.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun initViewModel(){
+        viewModel.createMessage.observe(this){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+            if(it == "학원을 생성하였습니다") finish()
         }
     }
 
@@ -69,19 +80,6 @@ class CreateAcademyActivity : AppCompatActivity() {
 
         val newAcademy = Academy(null,name,phone,address,LoginInfo.loginTeacher?.id)
         
-        client.createAcademy(newAcademy).enqueue(object: Callback<Academy> {
-            override fun onResponse(call: Call<Academy>, response: Response<Academy>) {
-                if(response.isSuccessful){
-                    Toast.makeText(applicationContext,"학원을 생성하였습니다",Toast.LENGTH_SHORT).show()
-                    finish()
-                }else{
-                    Toast.makeText(applicationContext,"학원을 생성하지 못했습니다",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Academy>, t: Throwable) {
-                Toast.makeText(applicationContext,"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        viewModel.createAcademy(newAcademy)
     }
 }

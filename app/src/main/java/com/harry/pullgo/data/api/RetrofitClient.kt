@@ -8,8 +8,8 @@ object RetrofitClient{
     private var instance: Retrofit?=null
 
     private fun getInstance():Retrofit{
-        if(instance ==null){
-            instance =Retrofit.Builder().baseUrl(BASE_URL)
+        if(instance == null){
+            instance = Retrofit.Builder().baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()).build()
         }
         return instance!!

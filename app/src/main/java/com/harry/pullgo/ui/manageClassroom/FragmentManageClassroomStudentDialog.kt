@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.dialog
+package com.harry.pullgo.ui.manageClassroom
 
 import android.app.Dialog
 import android.graphics.Color
@@ -9,18 +9,12 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
-import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsViewModel
-import com.harry.pullgo.ui.manageClassroomDetails.ManageClassroomDetailsViewModelFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 
 class FragmentManageClassroomStudentDialog(
     private val selectedStudent: Student,
@@ -28,7 +22,9 @@ class FragmentManageClassroomStudentDialog(
 ): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
-    private lateinit var viewModel: ManageClassroomDetailsViewModel
+    private val viewModel: ManageClassroomDetailsViewModel by activityViewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository()
+    )}
 
     override fun onStart() {
         super.onStart()
@@ -69,9 +65,9 @@ class FragmentManageClassroomStudentDialog(
     private fun setListeners(){
         binding.buttonManageClassroomKickStudent.setOnClickListener {
             val dialog = TwoButtonDialog(requireContext())
-            dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+            dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
                 override fun onLeftClicked() {
-                    kickStudent()
+                    viewModel.kickStudentFromClassroom(selectedClassroom.id!!,selectedStudent.id!!)
                 }
             }
             dialog.start("학생 제외","${selectedStudent.account?.fullName}(${selectedStudent.account?.username}) 학생을 반에서 제외하시겠습니까?",
@@ -80,27 +76,13 @@ class FragmentManageClassroomStudentDialog(
     }
 
     private fun initViewModel(){
-        val factory = ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())
-        viewModel = ViewModelProvider(requireActivity(),factory).get(ManageClassroomDetailsViewModel::class.java)
-    }
-
-    private fun kickStudent(){
-        val client = RetrofitClient.getApiService()
-        client.kickStudentFromClassroom(selectedClassroom.id!!, selectedStudent.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"해당 학생을 반에서 제외시켰습니다",Toast.LENGTH_SHORT).show()
-                    viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"해당 반에 존재하지 않는 학생입니다",Toast.LENGTH_SHORT).show()
-                }
+        viewModel.kickMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+            if(it == "해당 학생을 반에서 제외시켰습니다"){
+                viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
+                dismiss()
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
+        }
     }
 
     companion object {

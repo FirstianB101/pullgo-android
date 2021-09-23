@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.manageClassroomDetails
+package com.harry.pullgo.ui.manageClassroom
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,17 +9,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.adapter.StudentAdapter
 import com.harry.pullgo.data.api.OnStudentClickListener
-import com.harry.pullgo.data.objects.Classroom
-import com.harry.pullgo.data.objects.Student
-import com.harry.pullgo.data.repository.ManageClassroomDetailsRepository
+import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.models.Student
+import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageStudentBinding
-import com.harry.pullgo.ui.dialog.FragmentManageClassroomStudentDialog
 
 class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageStudentBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomDetailsViewModel by activityViewModels{
-        ManageClassroomDetailsViewModelFactory(ManageClassroomDetailsRepository())
+        ManageClassroomViewModelFactory(ManageClassroomRepository())
     }
 
     private var selectedStudent: Student? = null
@@ -54,7 +53,7 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
                 override fun onBackgroundClick(view: View, student: Student?) {
                     selectedStudent = student
                     FragmentManageClassroomStudentDialog(student!!,selectedClassroom)
-                        .show(parentFragmentManager,FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
+                        .show(parentFragmentManager, FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {

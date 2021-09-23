@@ -5,10 +5,10 @@
     <data>
         <variable
             name="student"
-            type="com.harry.pullgo.data.objects.Student" />
+            type="com.harry.pullgo.data.models.Student" />
         <variable
             name="teacher"
-            type="com.harry.pullgo.data.objects.Teacher" />
+            type="com.harry.pullgo.data.models.Teacher" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
