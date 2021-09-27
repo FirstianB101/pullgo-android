@@ -28,7 +28,7 @@ class StudentSignUpActivity:AppCompatActivity(){
 
     private val viewModel: SignUpViewModel by viewModels{SignUpViewModelFactory(SignUpRepository())}
 
-    var curPosition:Int = 0
+    var curPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -19,9 +19,8 @@ class CreateAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityCreateAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(
-        FindAcademyRepository()
+        FindAcademyRepository(LoginInfo.user?.token!!)
     )}
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +77,7 @@ class CreateAcademyActivity : AppCompatActivity() {
         val address = "${binding.textCreateAcademyAddress.text.toString()} ${binding.textCreateAcademyDetailedAddress.text.toString()}"
         val phone = binding.textCreateAcademyPhone.text.toString()
 
-        val newAcademy = Academy(null,name,phone,address,LoginInfo.loginTeacher?.id)
+        val newAcademy = Academy(null,name,phone,address,LoginInfo.user?.teacher?.id)
         
         viewModel.createAcademy(newAcademy)
     }

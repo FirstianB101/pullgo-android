@@ -26,15 +26,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginIdLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="30dp"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginSwitchButton"
-        app:endIconMode="clear_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogo">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginId"
@@ -84,15 +84,15 @@
         android:id="@+id/buttonLogin"
         android:layout_width="100dp"
         android:layout_height="120dp"
-        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.191"
         app:layout_constraintStart_toEndOf="@+id/loginIdLayout"
-        app:layout_constraintTop_toBottomOf="@+id/loginSwitchButton" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogo" />
 
     <Button
         android:id="@+id/buttonSignUp"
@@ -128,22 +128,5 @@
         app:layout_constraintStart_toEndOf="@+id/buttonSignUp"
         app:layout_constraintTop_toBottomOf="@+id/loginPwLayout"
         app:layout_constraintVertical_bias="0" />
-
-    <lib.kingja.switchbutton.SwitchMultiButton
-        android:id="@+id/loginSwitchButton"
-        android:layout_width="400dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogo"
-        app:selectedColor="@color/main_color"
-        app:selectedTab="0"
-        app:strokeRadius="5dp"
-        app:strokeWidth="1dp"
-        app:switchTabs="@array/kind"
-        app:textSize="18sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

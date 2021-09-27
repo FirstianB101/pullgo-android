@@ -57,9 +57,9 @@ class StudentExamListFragment : Fragment(){
 
     private fun filterExams(case: Int){
         when(case){
-            0 -> viewModel.requestExamsByName(LoginInfo.loginStudent?.id!!)
-            1 -> viewModel.requestExamsByBeginDate(LoginInfo.loginStudent?.id!!)
-            2 -> viewModel.requestExamsByEndDate(LoginInfo.loginStudent?.id!!)
+            0 -> viewModel.requestExamsByName(LoginInfo.user?.student?.id!!)
+            1 -> viewModel.requestExamsByBeginDate(LoginInfo.user?.student?.id!!)
+            2 -> viewModel.requestExamsByEndDate(LoginInfo.user?.student?.id!!)
         }
     }
 

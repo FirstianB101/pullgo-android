@@ -37,11 +37,11 @@ class StudentChangePersonInfoFragment : Fragment() {
     }
 
     private fun initialize(){
-        binding.changeStudentName.setText(LoginInfo.loginStudent?.account?.fullName)
-        binding.changeStudentPhone.setText(LoginInfo.loginStudent?.account?.phone)
-        binding.changeParentPhone.setText(LoginInfo.loginStudent?.parentPhone)
-        binding.changeSchoolName.setText(LoginInfo.loginStudent?.schoolName)
-        binding.changeGradeSwitchButton.selectedTab = LoginInfo.loginStudent?.schoolYear!! - 1
+        binding.changeStudentName.setText(LoginInfo.user?.student?.account?.fullName)
+        binding.changeStudentPhone.setText(LoginInfo.user?.student?.account?.phone)
+        binding.changeParentPhone.setText(LoginInfo.user?.student?.parentPhone)
+        binding.changeSchoolName.setText(LoginInfo.user?.student?.schoolName)
+        binding.changeGradeSwitchButton.selectedTab = LoginInfo.user?.student?.schoolYear!! - 1
     }
 
     private fun setListeners(){
@@ -70,11 +70,12 @@ class StudentChangePersonInfoFragment : Fragment() {
         val studentParentPhone = binding.changeParentPhone.text.toString()
         val studentSchoolName = binding.changeSchoolName.text.toString()
         val studentSchoolYear = binding.changeGradeSwitchButton.selectedTab+1
-        val userName = LoginInfo.loginStudent?.account?.username
+        val userName = LoginInfo.user?.student?.account?.username
+        val password = LoginInfo.user?.student?.account?.password
 
-        val account = Account(userName,studentName,studentPhone)
+        val account = Account(userName,studentName,studentPhone,password)
         val student = Student(account,studentParentPhone,studentSchoolName,studentSchoolYear)
-        student.id = LoginInfo.loginStudent?.id
+        student.id = LoginInfo.user?.student?.id
 
         viewModel.changeStudent.postValue(student)
     }

@@ -56,8 +56,9 @@ class StudentSignUpInfoFragment: Fragment() {
         val studentSchoolName = binding.signUpSchoolName.text.toString()
         val studentSchoolYear = binding.signUpGradeSwitchButton.selectedTab+1
         val userName = viewModel.signUpId.value
+        val password = viewModel.signUpPw.value
 
-        val account = Account(userName,studentName,studentPhone)
+        val account = Account(userName,studentName,studentPhone,password)
         val student = Student(account,studentParentPhone,studentSchoolName,studentSchoolYear)
 
         viewModel.signUpStudent.postValue(student)

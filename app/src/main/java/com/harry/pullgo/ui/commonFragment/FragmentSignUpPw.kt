@@ -35,7 +35,7 @@ class FragmentSignUpPw(): Fragment() {
     }
 
     private fun initViewModel(){
-        viewModel= ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
     }
 
     private fun setListeners(){

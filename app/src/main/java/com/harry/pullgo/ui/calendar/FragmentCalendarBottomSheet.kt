@@ -51,15 +51,15 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
             showLessons()
         }
 
-        if(LoginInfo.loginTeacher != null){
-            viewModel.requestTeacherLessonOnDate(LoginInfo.loginTeacher?.id!!,selectedDate)
-        }else if(LoginInfo.loginStudent != null){
-            viewModel.requestStudentLessonOnDate(LoginInfo.loginStudent?.id!!,selectedDate)
+        if(LoginInfo.user?.teacher != null){
+            viewModel.requestTeacherLessonOnDate(LoginInfo.user?.teacher?.id!!,selectedDate)
+        }else if(LoginInfo.user?.student != null){
+            viewModel.requestStudentLessonOnDate(LoginInfo.user?.student?.id!!,selectedDate)
         }
 
         setFragmentResultListener("isLessonPatched"){ _, bundle ->
             if(bundle.getString("Patched") == "yes"){
-                viewModel.requestTeacherLessonOnDate(LoginInfo.loginTeacher?.id!!,selectedDate)
+                viewModel.requestTeacherLessonOnDate(LoginInfo.user?.teacher?.id!!,selectedDate)
             }
         }
     }
@@ -68,13 +68,13 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
         val lessons = viewModel.dayLessonsRepositories.value
         val adapter = LessonAdapter(lessons!!)
 
-        if(LoginInfo.loginStudent != null){ // student
+        if(LoginInfo.user?.student != null){ // student
             adapter.itemClickListenerListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     FragmentLessonInfoDialog(lesson!!).show(childFragmentManager, FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG)
                 }
             }
-        }else if(LoginInfo.loginTeacher != null){ // teacher
+        }else if(LoginInfo.user?.teacher != null){ // teacher
             adapter.itemClickListenerListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     val dialog = FragmentLessonInfoManageDialog(lesson!!)

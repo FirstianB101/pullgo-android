@@ -25,15 +25,15 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginIdLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="@dimen/login_editText_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginSwitchButton"
-        app:endIconMode="clear_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintTop_toBottomOf="@+id/textViewLogo">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginId"
@@ -122,22 +122,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonSignUp"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
-
-    <lib.kingja.switchbutton.SwitchMultiButton
-        android:id="@+id/loginSwitchButton"
-        android:layout_width="@dimen/switch_button_width"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLogo"
-        app:selectedColor="@color/main_color"
-        app:selectedTab="0"
-        app:strokeRadius="5dp"
-        app:strokeWidth="1dp"
-        app:switchTabs="@array/kind"
-        app:textSize="18sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

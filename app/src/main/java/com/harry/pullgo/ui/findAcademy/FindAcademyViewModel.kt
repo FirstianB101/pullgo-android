@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.findAcademy
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -76,6 +77,7 @@ class FindAcademyViewModel(private val findAcademyRepository: FindAcademyReposit
                     _createMessage.postValue("학원을 생성하였습니다")
                 }else{
                     _createMessage.postValue("학원을 생성하지 못했습니다")
+                    Log.d("Create","code: ${response.code()}")
                 }
             }
 

@@ -66,7 +66,6 @@ class FragmentManageClassroomTeacherDialog(
     }
 
     private fun kickTeacher(){
-        val client = RetrofitClient.getApiService()
         /*
         client.kickStudentFromClassroom(selectedClassroom.id!!, selectedStudent.id!!).enqueue(object: Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {

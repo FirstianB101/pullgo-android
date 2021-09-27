@@ -27,8 +27,6 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     private var isEditModeOn = false
     private var isFormatGood = true
 
-    private val client by lazy{ RetrofitClient.getApiService() }
-
     private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(
         ManageClassroomRepository()
     )}
@@ -87,6 +85,9 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
                 val intent = Intent()
                 intent.putExtra("finishedFragment","editClassroom")
                 requireActivity().setResult(Activity.RESULT_OK,intent)
+            }else if(it == "반이 삭제되었습니다"){
+                Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+                finishActivity()
             }
         }
     }
@@ -121,27 +122,11 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
         val dialog = TwoButtonDialog(requireContext())
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
             override fun onLeftClicked() {
-                requestRemoveClassroom()
+                viewModel.deleteClassroom(selectedClassroom.id!!)
             }
         }
 
         dialog.start("다음 수업을 삭제하시겠습니까?","${info?.get(0)} - ${info?.get(1)} - ${info?.get(2)}","확인","취소")
-    }
-
-    private fun requestRemoveClassroom(){
-        client.deleteClassroom(selectedClassroom.id!!).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    finishActivity()
-                }else{
-                    Snackbar.make(binding.root,"반을 삭제하지 못했습니다",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Snackbar.make(binding.root,"서버와 연결에 실패했습니다",Snackbar.LENGTH_SHORT).show()
-            }
-        })
     }
 
     private fun finishActivity(){

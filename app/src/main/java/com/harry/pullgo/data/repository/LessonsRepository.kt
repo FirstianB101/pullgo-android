@@ -1,13 +1,15 @@
 package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.RetrofitClient
+import com.harry.pullgo.data.api.RetrofitService
 import com.harry.pullgo.data.models.Lesson
+import com.harry.pullgo.data.objects.LoginInfo
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
 class LessonsRepository {
-    private val lessonClient = RetrofitClient.getApiService()
+    private val lessonClient = RetrofitClient.getApiService(RetrofitService::class.java, LoginInfo.user?.token)
 
     suspend fun getStudentLessons(id: Long) = lessonClient.getLessonsByStudentId(id)
     suspend fun getTeacherLessons(id: Long) = lessonClient.getLessonsByTeacherId(id)

@@ -71,7 +71,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
             }
         }
 
-        viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
+        viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
     }
 
     private fun initialize(){

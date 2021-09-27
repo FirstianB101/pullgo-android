@@ -22,7 +22,7 @@ import retrofit2.Response
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
-    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository())}
+    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository(LoginInfo.user?.token!!))}
     private var selectedAcademy: Academy? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,12 +94,12 @@ class FindAcademyActivity : AppCompatActivity() {
 
     private fun sendAcceptRequest(academyId:Long?){
         if (academyId != null) {
-            val isStudent = (LoginInfo.loginTeacher == null)
+            val isStudent = (LoginInfo.user?.teacher == null)
 
             if(isStudent)
-                viewModel.requestStudentApply(LoginInfo.loginStudent?.id!!,academyId)
+                viewModel.requestStudentApply(LoginInfo.user?.student?.id!!,academyId)
             else
-                viewModel.requestTeacherApply(LoginInfo.loginTeacher?.id!!,academyId)
+                viewModel.requestTeacherApply(LoginInfo.user?.teacher?.id!!,academyId)
         }
     }
 }

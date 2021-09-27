@@ -2,7 +2,6 @@ package com.harry.pullgo.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -14,13 +13,9 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCheckPwListener
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.models.Student
-import com.harry.pullgo.data.repository.AppliedAcademyGroupRepository
 import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
@@ -31,9 +26,6 @@ import com.harry.pullgo.ui.studentFragment.StudentChangePersonInfoFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamListFragment
 import com.harry.pullgo.ui.studentFragment.StudentHomeFragmentNoAcademy
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val binding by lazy{ActivityStudentMainBinding.inflate(layoutInflater)}
@@ -65,7 +57,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initViewModels(){
         changeInfoViewModel.changeStudent.observe(this){
             changeInfoViewModel.changeStudentInfo(it.id!!,it)
-            LoginInfo.loginStudent = it
+            LoginInfo.user?.student = it
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${it.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${it.account?.username}"
             onFragmentSelected(CALENDAR)
@@ -99,8 +91,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
-        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginStudent?.account?.fullName}님"
-        headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginStudent?.account?.username}"
+        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.user?.student?.account?.fullName}님"
+        headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.user?.student?.account?.username}"
     }
 
     private fun setListeners(){
@@ -121,8 +113,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         binding.textViewStudentLogout.setOnClickListener {
-            LoginInfo.loginStudent = null
-            LoginInfo.loginTeacher = null
+            LoginInfo.user?.student = null
+            LoginInfo.user?.teacher = null
             finish()
         }
 

@@ -13,16 +13,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.data.api.RetrofitClient
+import com.harry.pullgo.data.api.RetrofitService
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
-import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
@@ -47,8 +46,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private lateinit var headerView: View
     private var curPosition: Int? = null
 
-    private val client by lazy{RetrofitClient.getApiService()}
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -62,7 +59,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initViewModels(){
         changeInfoViewModel.changeTeacher.observe(this){
             changeInfoViewModel.changeTeacherInfo(it.id!!,it)
-            LoginInfo.loginTeacher = it
+            LoginInfo.user?.teacher = it
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${it.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text="${it.account?.username}"
             onFragmentSelected(CALENDAR)
@@ -88,7 +85,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             binding.navigationViewTeacher.menu.clear()
             binding.navigationViewTeacher.inflateMenu(R.menu.activity_teacher_main_drawer)
             binding.textViewTeacherApplyOtherAcademy.visibility = View.VISIBLE
-            changeMenuIfOwner(LoginInfo.loginTeacher?.id!!)
+            changeMenuIfOwner(LoginInfo.user?.teacher?.id!!)
         }else{
             teacherHomeFragment = TeacherHomeFragmentNoAcademy()
 
@@ -97,8 +94,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         headerView = binding.navigationViewTeacher.getHeaderView(0)
-        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.loginTeacher?.account?.fullName}님"
-        headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.loginTeacher?.account?.username}"
+        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.user?.teacher?.account?.fullName}님"
+        headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.user?.teacher?.account?.username}"
     }
 
     private fun setListeners(){
@@ -119,8 +116,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         binding.textViewTeacherLogout.setOnClickListener {
-            LoginInfo.loginStudent=null
-            LoginInfo.loginTeacher=null
+            LoginInfo.user?.student = null
+            LoginInfo.user?.teacher = null
             finish()
         }
 
@@ -202,7 +199,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        client.getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
+        RetrofitClient.getApiService(RetrofitService::class.java,LoginInfo.user?.token).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
             override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
                 if(response.isSuccessful){
                     response.body().let{

@@ -33,8 +33,8 @@ class TeacherChangePersonInfoFragment : Fragment() {
     }
 
     private fun initialize(){
-        binding.changeTeacherName.setText(LoginInfo.loginTeacher?.account?.fullName)
-        binding.changeTeacherPhone.setText(LoginInfo.loginTeacher?.account?.phone)
+        binding.changeTeacherName.setText(LoginInfo.user?.teacher?.account?.fullName)
+        binding.changeTeacherPhone.setText(LoginInfo.user?.teacher?.account?.phone)
     }
 
     private fun setListeners(){
@@ -58,11 +58,12 @@ class TeacherChangePersonInfoFragment : Fragment() {
     private fun changeTeacherInfo(){
         val teacherName = binding.changeTeacherName.text.toString()
         val teacherPhone = binding.changeTeacherPhone.text.toString()
-        val userName = LoginInfo.loginTeacher?.account?.username
+        val userName = LoginInfo.user?.teacher?.account?.username
+        val password = LoginInfo.user?.teacher?.account?.password
 
-        val account = Account(userName,teacherName,teacherPhone)
+        val account = Account(userName,teacherName,teacherPhone,password)
         val teacher = Teacher(account)
-        teacher.id=LoginInfo.loginTeacher?.id
+        teacher.id = LoginInfo.user?.teacher?.id
 
         viewModel.changeTeacher.postValue(teacher)
     }

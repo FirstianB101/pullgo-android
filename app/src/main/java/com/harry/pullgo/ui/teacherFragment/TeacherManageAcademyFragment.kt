@@ -27,7 +27,6 @@ import retrofit2.Response
 
 class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
-    private val client by lazy{RetrofitClient.getApiService()}
 
     private val viewModel: TeacherManageAcademyViewModel by activityViewModels{TeacherManageAcademyViewModelFactory(ManageAcademyRepository())}
 
@@ -53,12 +52,12 @@ class TeacherManageAcademyFragment: Fragment() {
             setSpinnerItems()
         }
 
-        viewModel.requestGetOwnedAcademies(LoginInfo.loginTeacher?.id!!)
+        viewModel.requestGetOwnedAcademies(LoginInfo.user?.teacher?.id!!)
 
         viewModel.manageAcademyMessage.observe(requireActivity()){
             Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
             if(it == "학원이 삭제되었습니다"){
-                viewModel.requestGetOwnedAcademies(LoginInfo.loginTeacher?.id!!)
+                viewModel.requestGetOwnedAcademies(LoginInfo.user?.teacher?.id!!)
                 makeLayoutInvisible()
             }
         }

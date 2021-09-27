@@ -3,8 +3,11 @@ package com.harry.pullgo.ui.login;
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.harry.pullgo.data.models.Account
+import com.harry.pullgo.data.models.User
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LoginRepository
@@ -18,18 +21,17 @@ class LoginActivity: AppCompatActivity(){
 
     private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory(LoginRepository())}
 
-    var isStudent = true
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        autoLogin()
+        //autoLogin()
         setClickListeners()
         initViewModel()
     }
 
     private fun autoLogin(){
+        /*
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
         val loginId = pref.getString("loginId",null)
         val loginPw = pref.getString("loginPw",null)
@@ -39,7 +41,6 @@ class LoginActivity: AppCompatActivity(){
         if(loginId != null && loginPw != null){
             binding.loginId.setText(loginId)
             binding.loginPw.setText(loginPw)
-            binding.loginSwitchButton.selectedTab = if(wasStudent) 0 else 1
             binding.checkBoxAutoLogin.isChecked = autoLoginChecked
 
             if(wasStudent){
@@ -48,20 +49,26 @@ class LoginActivity: AppCompatActivity(){
                 viewModel.requestTeacherLogin(loginId.toLong())
             }
         }
+         */
     }
 
     private fun initViewModel(){
-        viewModel.loginStudentRepositories.observe(this){
-            viewModel.requestStudentAcademies(binding.loginId.text.toString().toLong())
+        viewModel.loginUserRepositories.observe(this){
+            LoginInfo.user = it
+
+            if(it.student != null)
+                viewModel.requestStudentAcademies(it.student?.id!!)
+            else if(it.teacher != null)
+                viewModel.requestTeacherAcademies(it.teacher?.id!!)
         }
 
         viewModel.academyRepositoryStudentApplied.observe(this){
             val studentAcademies = viewModel.academyRepositoryStudentApplied.value
 
             if(binding.checkBoxAutoLogin.isChecked){
-                saveAutoLoginInfo()
+                //saveAutoLoginInfo()
             }else{
-                resetAutoLoginInfo()
+                //resetAutoLoginInfo()
             }
 
             val mainIntent = Intent(applicationContext, StudentMainActivity::class.java)
@@ -69,20 +76,16 @@ class LoginActivity: AppCompatActivity(){
             if(studentAcademies?.isNotEmpty() == true)
                 mainIntent.putExtra("appliedAcademyExist",true)
 
-            startMainStudent(mainIntent)
-        }
-
-        viewModel.loginTeacherRepositories.observe(this){
-            viewModel.requestTeacherAcademies(binding.loginId.text.toString().toLong())
+            startActivity(mainIntent)
         }
 
         viewModel.academyRepositoryTeacherApplied.observe(this){
             val teacherAcademies = viewModel.academyRepositoryTeacherApplied.value
 
             if(binding.checkBoxAutoLogin.isChecked){
-                saveAutoLoginInfo()
+                //saveAutoLoginInfo()
             }else{
-                resetAutoLoginInfo()
+                //resetAutoLoginInfo()
             }
 
             val mainIntent = Intent(applicationContext, TeacherMainActivity::class.java)
@@ -90,7 +93,11 @@ class LoginActivity: AppCompatActivity(){
             if(teacherAcademies?.isNotEmpty() == true)
                 mainIntent.putExtra("appliedAcademyExist",true)
 
-            startMainTeacher(mainIntent)
+            startActivity(mainIntent)
+        }
+
+        viewModel.loginMessage.observe(this){
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -100,7 +107,6 @@ class LoginActivity: AppCompatActivity(){
 
         autoLogin.putString("loginId",binding.loginId.text.toString())
         autoLogin.putString("loginPw",binding.loginPw.text.toString())
-        autoLogin.putBoolean("wasStudent",isStudent)
         autoLogin.putBoolean("autoLoginChecked",binding.checkBoxAutoLogin.isChecked)
         autoLogin.apply()
     }
@@ -117,10 +123,6 @@ class LoginActivity: AppCompatActivity(){
     }
 
     private fun setClickListeners(){
-        binding.loginSwitchButton.setOnSwitchListener{ position, _ ->
-            isStudent = (position==0)
-        }
-
         binding.buttonSignUp.setOnClickListener {
             val intent=Intent(applicationContext, SignUpActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -133,28 +135,8 @@ class LoginActivity: AppCompatActivity(){
         }
 
         binding.buttonLogin.setOnClickListener {
-            if(isStudent)
-                viewModel.requestStudentLogin(binding.loginId.text.toString().toLong())
-            else
-                viewModel.requestTeacherLogin(binding.loginId.text.toString().toLong())
-        }
-    }
-
-    private fun startMainStudent(intent: Intent){
-        val student = viewModel.loginStudentRepositories.value
-        if(student?.id != null) {
-            LoginInfo.loginStudent = student
-            LoginInfo.loginTeacher = null
-            startActivity(intent)
-        }
-    }
-
-    private fun startMainTeacher(intent: Intent){
-        val teacher = viewModel.loginTeacherRepositories.value
-        if(teacher?.id != null) {
-            LoginInfo.loginStudent = null
-            LoginInfo.loginTeacher = teacher
-            startActivity(intent)
+            val account = Account(binding.loginId.text.toString(),null,null,binding.loginPw.text.toString())
+            viewModel.requestLogin(account)
         }
     }
 
@@ -162,14 +144,12 @@ class LoginActivity: AppCompatActivity(){
         super.onSaveInstanceState(outState)
         outState.putString(PREVIOUS_ID,binding.loginId.text.toString())
         outState.putString(PREVIOUS_PW,binding.loginPw.text.toString())
-        outState.putBoolean(PREVIOUS_IS_STUDENT,isStudent)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         binding.loginId.setText(savedInstanceState.getString(PREVIOUS_ID))
         binding.loginPw.setText(savedInstanceState.getString(PREVIOUS_PW))
-        binding.loginSwitchButton.selectedTab = if(savedInstanceState.getBoolean(PREVIOUS_IS_STUDENT)) 0 else 1
     }
 
     private val PREVIOUS_ID = "previous_id"

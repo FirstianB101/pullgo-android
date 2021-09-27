@@ -50,10 +50,10 @@ class ApplyClassroomActivity : AppCompatActivity() {
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
         }
 
-        if(LoginInfo.loginTeacher != null) {
-            viewModel.requestTeacherAppliedAcademies(LoginInfo.loginTeacher?.id!!)
-        }else if(LoginInfo.loginStudent != null){
-            viewModel.requestStudentAppliedAcademies(LoginInfo.loginStudent?.id!!)
+        if(LoginInfo.user?.teacher != null) {
+            viewModel.requestTeacherAppliedAcademies(LoginInfo.user?.teacher?.id!!)
+        }else if(LoginInfo.user?.student != null){
+            viewModel.requestStudentAppliedAcademies(LoginInfo.user?.student?.id!!)
         }
     }
 
@@ -149,9 +149,9 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     fun requestClassroomApply(){
-        if(LoginInfo.loginStudent != null) {
+        if(LoginInfo.user?.student != null) {
             viewModel.requestStudentApplyClassroom(selectedClassroom)
-        }else if(LoginInfo.loginTeacher != null){
+        }else if(LoginInfo.user?.teacher != null){
             viewModel.requestTeacherApplyClassroom(selectedClassroom)
         }
     }

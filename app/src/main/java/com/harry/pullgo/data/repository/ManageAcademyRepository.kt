@@ -1,10 +1,12 @@
 package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.RetrofitClient
+import com.harry.pullgo.data.api.RetrofitService
 import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.objects.LoginInfo
 
 class ManageAcademyRepository {
-    private val client = RetrofitClient.getApiService()
+    private val client = RetrofitClient.getApiService(RetrofitService::class.java, LoginInfo.user?.token)
 
     suspend fun getAcademiesByOwnerId(teacherId: Long) = client.getOwnedAcademy(teacherId)
     suspend fun getTeachersSuchAcademy(academyId: Long) = client.getTeachersSuchAcademy(academyId)

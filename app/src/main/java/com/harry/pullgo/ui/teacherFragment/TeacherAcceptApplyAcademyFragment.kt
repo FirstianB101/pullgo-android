@@ -82,7 +82,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
             }
         }
 
-        viewModel.requestTeacherAcademies(LoginInfo.loginTeacher?.id!!)
+        viewModel.requestTeacherAcademies(LoginInfo.user?.teacher?.id!!)
     }
 
     private fun setSpinnerItems(){

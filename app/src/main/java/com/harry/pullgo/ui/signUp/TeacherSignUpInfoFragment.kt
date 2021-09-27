@@ -51,8 +51,9 @@ class TeacherSignUpInfoFragment: Fragment() {
         val teacherName = binding.signUpTeacherName.text.toString()
         val teacherPhone = binding.signUpTeacherPhone.text.toString()
         val userName = viewModel.signUpId.value
+        val password = viewModel.signUpPw.value
 
-        val account = Account(userName,teacherName,teacherPhone)
+        val account = Account(userName,teacherName,teacherPhone,password)
         val teacher = Teacher(account)
 
         viewModel.signUpTeacher.postValue(teacher)

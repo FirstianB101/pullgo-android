@@ -141,6 +141,22 @@ class ManageClassroomDetailsViewModel(private val repository: ManageClassroomRep
         })
     }
 
+    fun deleteClassroom(classroomId: Long){
+        repository.deleteClassroom(classroomId).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _editClassroomMessage.postValue("반이 삭제되었습니다")
+                }else{
+                    _editClassroomMessage.postValue("반을 삭제하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _editClassroomMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+
     fun acceptStudent(classroomId: Long, studentId: Long){
         repository.acceptStudent(classroomId,studentId).enqueue(object: Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {

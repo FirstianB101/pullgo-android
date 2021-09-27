@@ -19,8 +19,8 @@ class ApplyClassroomViewModel(private val applyClassroomRepository: ApplyClassro
     private val _appliedAcademiesRepository = MutableLiveData<List<Academy>>()
     val appliedAcademiesRepository: LiveData<List<Academy>> = _appliedAcademiesRepository
 
-    private val _applyClassroomsRepositories = MutableLiveData<List<Classroom>>()
-    val applyClassroomsRepositories: LiveData<List<Classroom>> = _applyClassroomsRepositories
+    private val _applyClassroomsRepositories = MutableLiveData<List<Classroom>?>()
+    val applyClassroomsRepositories: LiveData<List<Classroom>?> = _applyClassroomsRepositories
 
     private val _appliedClassroomsMessage = MutableLiveData<String>()
     val appliedClassroomsMessage: LiveData<String> = _appliedClassroomsMessage
@@ -68,7 +68,7 @@ class ApplyClassroomViewModel(private val applyClassroomRepository: ApplyClassro
     }
 
     fun requestStudentApplyClassroom(selectedClassroom: Classroom?){
-        applyClassroomRepository.studentApplyClassroom(LoginInfo.loginStudent?.id!!, selectedClassroom?.id!!)
+        applyClassroomRepository.studentApplyClassroom(LoginInfo.user?.student?.id!!, selectedClassroom?.id!!)
             .enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {
@@ -84,7 +84,7 @@ class ApplyClassroomViewModel(private val applyClassroomRepository: ApplyClassro
     }
 
     fun requestTeacherApplyClassroom(selectedClassroom: Classroom?){
-        applyClassroomRepository.teacherApplyClassroom(LoginInfo.loginTeacher?.id!!, selectedClassroom?.id!!)
+        applyClassroomRepository.teacherApplyClassroom(LoginInfo.user?.teacher?.id!!, selectedClassroom?.id!!)
             .enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {

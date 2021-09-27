@@ -35,10 +35,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             makeDots()
         }
 
-        if(LoginInfo.loginTeacher != null){
-            viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
-        }else if(LoginInfo.loginStudent != null){
-            viewModel.requestStudentLessons(LoginInfo.loginStudent?.id!!)
+        if(LoginInfo.user?.teacher != null){
+            viewModel.requestTeacherLessons(LoginInfo.user?.teacher?.id!!)
+        }else if(LoginInfo.user?.student != null){
+            viewModel.requestStudentLessons(LoginInfo.user?.student?.id!!)
         }
     }
 
@@ -47,7 +47,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             FragmentCreateNewLessonDialog().show(childFragmentManager,FragmentCreateNewLessonDialog.TAG_CREATE_NEW_LESSON_DIALOG)
         }
 
-        if(LoginInfo.loginTeacher == null){
+        if(LoginInfo.user?.teacher == null){
             binding.floatingActionButtonCalendar.visibility = FloatingActionButton.GONE
         }
     }
@@ -65,7 +65,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
         setFragmentResultListener("isMadeNewLesson"){ _, bundle ->
             if(bundle.getString("isMade") == "yes"){
-                viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
+                viewModel.requestTeacherLessons(LoginInfo.user?.teacher?.id!!)
             }
         }
     }
@@ -75,7 +75,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         val bottomSheet = FragmentCalendarBottomSheet(selectedDate)
         bottomSheet.calendarResetListenerListener = object: OnCalendarResetListener{
             override fun onResetCalendar() {
-                viewModel.requestTeacherLessons(LoginInfo.loginTeacher?.id!!)
+                viewModel.requestTeacherLessons(LoginInfo.user?.teacher?.id!!)
             }
         }
         bottomSheet.show(childFragmentManager, "bottomSheetTestList")

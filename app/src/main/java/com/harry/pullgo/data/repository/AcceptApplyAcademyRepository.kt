@@ -1,9 +1,11 @@
 package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.RetrofitClient
+import com.harry.pullgo.data.api.RetrofitService
+import com.harry.pullgo.data.objects.LoginInfo
 
 class AcceptApplyAcademyRepository {
-    private val acceptClient = RetrofitClient.getApiService()
+    private val acceptClient = RetrofitClient.getApiService(RetrofitService::class.java,LoginInfo.user?.token)
 
     suspend fun getStudentsAppliedAcademy(id: Long) = acceptClient.getStudentsRequestApplyAcademy(id,"schoolYear")
     suspend fun getTeachersAppliedAcademy(id: Long) = acceptClient.getTeachersRequestApplyAcademy(id)

@@ -44,25 +44,25 @@ class TeacherManageClassroomFragment: Fragment() {
 
         binding.buttonCreateNewClassroom.setOnClickListener {
             buttonPushed = true
-            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.loginTeacher?.id!!)
+            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.user?.teacher?.id!!)
         }
 
         binding.floatingActionButtonManageClassroom.setOnClickListener {
             buttonPushed = true
-            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.loginTeacher?.id!!)
+            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.user?.teacher?.id!!)
         }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
                 if(it.data?.getStringExtra("finishedFragment") == "editClassroom"){
-                    viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
+                    viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
                 }
             }
         }
 
         setFragmentResultListener("createNewClassroom"){ _, bundle ->
             if(bundle.getString("isCreated") == "yes"){
-                viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
+                viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
             }
         }
     }
@@ -82,7 +82,7 @@ class TeacherManageClassroomFragment: Fragment() {
             buttonPushed = false
         }
 
-        viewModel.requestGetClassrooms(LoginInfo.loginTeacher?.id!!)
+        viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
     }
 
     private fun displayClassrooms(){
