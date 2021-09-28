@@ -31,7 +31,7 @@ import retrofit2.Response
 class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
 
-    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository())}
+    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository(requireContext()))}
 
     private var selectedAcademy: Academy? = null
 

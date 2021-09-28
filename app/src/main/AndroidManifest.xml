@@ -12,11 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
+        <activity android:name=".TakeExamActivity"></activity>
         <activity android:name=".AddressActivity" />
         <activity
             android:name=".ui.findAcademy.CreateAcademyActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:parentActivityName=".ui.findAcademy.FindAcademyActivity"/>
+            android:parentActivityName=".ui.findAcademy.FindAcademyActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.manageAcademy.ManageAcademyManagePeopleActivity"
             android:windowSoftInputMode="adjustPan" />

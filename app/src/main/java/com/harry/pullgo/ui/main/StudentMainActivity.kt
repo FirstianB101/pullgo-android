@@ -37,7 +37,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository()
+        ChangeInfoRepository(applicationContext)
     )}
 
     private lateinit var headerView: View

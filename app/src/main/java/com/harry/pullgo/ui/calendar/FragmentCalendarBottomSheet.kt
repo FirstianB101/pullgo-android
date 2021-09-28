@@ -22,7 +22,7 @@ import com.harry.pullgo.ui.teacherFragment.FragmentLessonInfoManageDialog
 class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
+    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
 

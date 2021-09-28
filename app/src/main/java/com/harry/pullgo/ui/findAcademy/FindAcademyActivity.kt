@@ -22,7 +22,7 @@ import retrofit2.Response
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
-    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository(LoginInfo.user?.token!!))}
+    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository(applicationContext))}
     private var selectedAcademy: Academy? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

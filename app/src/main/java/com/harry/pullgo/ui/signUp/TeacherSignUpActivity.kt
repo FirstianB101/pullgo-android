@@ -29,7 +29,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpInfoFragment: TeacherSignUpInfoFragment
 
-    private val viewModel: SignUpViewModel by viewModels{SignUpViewModelFactory(SignUpRepository())}
+    private val viewModel: SignUpViewModel by viewModels{SignUpViewModelFactory(SignUpRepository(applicationContext))}
 
     var curPosition:Int = 0
 

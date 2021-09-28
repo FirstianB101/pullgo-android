@@ -18,7 +18,7 @@ import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
 class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragment() {
     private val binding by lazy{DialogLessonInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by activityViewModels{LessonsViewModelFactory(LessonsRepository())}
+    private val viewModel: LessonsViewModel by activityViewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
 
     override fun onStart() {
         super.onStart()

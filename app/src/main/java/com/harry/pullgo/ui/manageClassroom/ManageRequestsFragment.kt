@@ -27,8 +27,8 @@ import retrofit2.Response
 class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository()
+    private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository(requireContext())
     )}
 
     private var selectedStudent: Student? = null

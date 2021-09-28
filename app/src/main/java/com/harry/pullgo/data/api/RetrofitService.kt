@@ -10,8 +10,8 @@ interface RetrofitService {
     @POST("auth/token/")
     suspend fun getToken(@Body account: Account): Response<User>
 
-    @POST("auth/me/")
-    fun authorizeUser()
+    @GET("auth/me/")
+    suspend fun authorizeUser(): Response<User>
 
 
     @POST("teachers/")
@@ -31,9 +31,6 @@ interface RetrofitService {
 
     @POST("teachers/{id}/remove-applied-classroom/")
     fun removeTeacherClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
-
-    @GET("teachers/{id}/")
-    suspend fun getTeacher(@Path("id")teacherId: Long):Response<Teacher>
 
     @GET("teachers/")
     suspend fun getAcademiesByTeacherAppliedAcademyId(@Query("appliedAcademyId")academyId:Long): Response<List<Academy>>
@@ -114,9 +111,6 @@ interface RetrofitService {
     @POST("students/{id}/remove-applied-classroom/")
     fun removeStudentClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Call<Unit>
 
-
-    @GET("students/{id}/")
-    suspend fun getStudent(@Path("id")studentId: Long): Response<Student>
 
     @GET("students/")
     suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")academyId: Long): Response<List<Academy>>

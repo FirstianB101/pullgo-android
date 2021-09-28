@@ -20,7 +20,7 @@ class FragmentManageClassroomTeacherDialog(
 ): DialogFragment() {
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomDetailsViewModel by activityViewModels()
+    private val viewModel: ManageClassroomViewModel by activityViewModels()
 
     override fun onStart() {
         super.onStart()

@@ -22,8 +22,8 @@ class FragmentManageClassroomStudentDialog(
 ): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomDetailsViewModel by activityViewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository()
+    private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository(requireContext())
     )}
 
     override fun onStart() {

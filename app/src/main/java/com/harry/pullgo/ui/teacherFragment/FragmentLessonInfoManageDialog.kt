@@ -37,7 +37,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     private var endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
     private var isEditModeOn = false
 
-    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
+    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
 

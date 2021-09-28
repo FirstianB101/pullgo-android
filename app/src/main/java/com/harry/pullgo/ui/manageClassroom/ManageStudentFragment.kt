@@ -17,8 +17,8 @@ import com.harry.pullgo.databinding.FragmentManageClassroomManageStudentBinding
 class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageStudentBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomDetailsViewModel by activityViewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository())
+    private val viewModel: ManageClassroomViewModel by activityViewModels{
+        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext()))
     }
 
     private var selectedStudent: Student? = null

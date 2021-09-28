@@ -20,7 +20,9 @@ class ManageClassroomActivity : AppCompatActivity() {
 
     private lateinit var selectedClassroom: Classroom
 
-    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(ManageClassroomRepository())}
+    private val viewModel: ManageClassroomViewModel by viewModels{
+        ManageClassroomViewModelFactory(ManageClassroomRepository(applicationContext))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

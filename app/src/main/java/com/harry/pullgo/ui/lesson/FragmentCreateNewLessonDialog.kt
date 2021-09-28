@@ -39,7 +39,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var endMinute = -1
     private var selectedClassroom: Classroom? = null
 
-    private val viewModel: CreateNewLessonViewModel by viewModels{CreateNewLessonViewModelFactory(ClassroomsRepository())}
+    private val viewModel: CreateNewLessonViewModel by viewModels{CreateNewLessonViewModelFactory(ClassroomsRepository(requireContext()))}
 
     private var isLayoutVisible = false
 

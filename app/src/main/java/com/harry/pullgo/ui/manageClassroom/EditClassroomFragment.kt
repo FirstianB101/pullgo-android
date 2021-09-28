@@ -27,8 +27,8 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     private var isEditModeOn = false
     private var isFormatGood = true
 
-    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository()
+    private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository(requireContext())
     )}
 
 

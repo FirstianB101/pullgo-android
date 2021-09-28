@@ -140,8 +140,10 @@
     <string name="change_info">정보 수정</string>
     <string name="name">이름</string>
 
-    <string formatted="false" name="classroomTeacherNameFormat">%s 선생님</string>
-    <string formatted="false" name="examPassScoreFormat">기준: %d점</string>
-    <string formatted="false" name="studentGradeFormat">%d학년</string>
-    <string formatted="false" name="personIdParenthesis">(%s)</string>
- </resources>
+    <string name="classroomTeacherNameFormat" formatted="false">%s 선생님</string>
+    <string name="examPassScoreFormat" formatted="false">기준: %d점</string>
+    <string name="studentGradeFormat" formatted="false">%d학년</string>
+    <string name="personIdParenthesis" formatted="false">(%s)</string>
+
+    <string name="end_exam">시험 종료</string>
+</resources>

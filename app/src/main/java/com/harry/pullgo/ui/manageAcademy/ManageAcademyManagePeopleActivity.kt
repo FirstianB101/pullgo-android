@@ -21,7 +21,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(applicationContext))
     }
 
     private val selectedAcademyId by lazy{intent.getLongExtra("selectedAcademyId",-1L)}

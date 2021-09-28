@@ -27,7 +27,7 @@ class FragmentKickStudentDialog(
     private var dataChangedListener: OnDataChangedListener? = null
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext()))
     }
 
     override fun onStart() {
@@ -98,7 +98,7 @@ class FragmentKickTeacherDialog(
     private var dataChangedListener: OnDataChangedListener? = null
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository())
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext()))
     }
 
     override fun onStart() {

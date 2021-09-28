@@ -12,23 +12,21 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.FragmentTeacherManageAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import com.harry.pullgo.ui.main.TeacherMainActivity
 import com.harry.pullgo.ui.manageAcademy.FragmentManageAcademyDelegateDialog
 import com.harry.pullgo.ui.manageAcademy.ManageAcademyManagePeopleActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
 
-    private val viewModel: TeacherManageAcademyViewModel by activityViewModels{TeacherManageAcademyViewModelFactory(ManageAcademyRepository())}
+    private val viewModel: TeacherManageAcademyViewModel by activityViewModels{
+        TeacherManageAcademyViewModelFactory(ManageAcademyRepository(requireContext()))
+    }
 
     private var isLayoutVisible = false
     private var isEditMode = false
@@ -50,6 +48,13 @@ class TeacherManageAcademyFragment: Fragment() {
     private fun initViewModel(){
         viewModel.ownedAcademiesRepository.observe(requireActivity()){
             setSpinnerItems()
+
+            if(it.isEmpty()){
+                val mainIntent = Intent(requireContext(), TeacherMainActivity::class.java)
+                mainIntent.putExtra("appliedAcademyExist",false)
+                mainIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(mainIntent)
+            }
         }
 
         viewModel.requestGetOwnedAcademies(LoginInfo.user?.teacher?.id!!)

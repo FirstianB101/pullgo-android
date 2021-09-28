@@ -37,8 +37,8 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
     private var isLayoutVisible = false
     private var isNameNotContainsSemicolon = true
 
-    private val viewModel: ManageClassroomDetailsViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository()
+    private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository(requireContext())
     )}
 
 

@@ -23,7 +23,9 @@ import com.harry.pullgo.ui.manageClassroom.ManageClassroomActivity
 class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(ClassroomsRepository())}
+    private val viewModel: ManageClassroomViewModel by activityViewModels{
+        ManageClassroomViewModelFactory(ClassroomsRepository(requireContext()))
+    }
 
     private var selectedClassroom: Classroom? = null
     private var buttonPushed = false

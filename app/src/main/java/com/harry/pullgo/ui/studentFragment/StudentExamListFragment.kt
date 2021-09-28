@@ -20,7 +20,7 @@ import com.harry.pullgo.databinding.FragmentStudentExamListBinding
 class StudentExamListFragment : Fragment(){
     private val binding by lazy{FragmentStudentExamListBinding.inflate(layoutInflater)}
 
-    private val viewModel: StudentExamListViewModel by viewModels{StudentExamListViewModelFactory(ExamsRepository())}
+    private val viewModel: StudentExamListViewModel by viewModels{StudentExamListViewModelFactory(ExamsRepository(requireContext()))}
 
     private var selectedExam: Exam? = null
 

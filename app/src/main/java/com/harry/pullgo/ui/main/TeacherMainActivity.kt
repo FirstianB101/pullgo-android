@@ -40,7 +40,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository()
+        ChangeInfoRepository(applicationContext)
     )}
 
     private lateinit var headerView: View
@@ -199,12 +199,12 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        RetrofitClient.getApiService(RetrofitService::class.java,LoginInfo.user?.token).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
+        RetrofitClient.getApiService(RetrofitService::class.java,LoginInfo.user?.token,applicationContext).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
             override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
                 if(response.isSuccessful){
                     response.body().let{
                         if(it?.isNotEmpty() == true)
-                            binding.navigationViewTeacher.menu.getItem(6).isVisible = true
+                            binding.navigationViewTeacher.menu.getItem(7).isVisible = true
                     }
                 }
             }

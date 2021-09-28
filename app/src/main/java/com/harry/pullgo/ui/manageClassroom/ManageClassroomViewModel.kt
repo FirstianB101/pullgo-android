@@ -1,13 +1,9 @@
 package com.harry.pullgo.ui.manageClassroom
 
-import android.app.Activity
-import android.content.Intent
-import android.widget.Toast
-import androidx.core.os.bundleOf
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
@@ -19,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ManageClassroomDetailsViewModel(private val repository: ManageClassroomRepository): ViewModel() {
+class ManageClassroomViewModel(private val repository: ManageClassroomRepository): ViewModel() {
 
     private val _studentsAppliedClassroom = MutableLiveData<List<Student>>()
     val studentsAppliedClassroom = _studentsAppliedClassroom

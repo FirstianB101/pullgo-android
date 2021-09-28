@@ -19,7 +19,7 @@ import com.prolificinteractive.materialcalendarview.*
 class CalendarFragment : Fragment(), OnDateSelectedListener {
     private val binding by lazy{FragmentCalendarBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository())}
+    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 

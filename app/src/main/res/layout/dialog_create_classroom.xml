@@ -7,85 +7,107 @@
     android:background="@drawable/rounded"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textViewMakeClassroomSelectAcademy"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:text="@string/select_academy"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
-        android:id="@+id/spinnerMakeClassroomSelectAcademy"
-        android:layout_width="@dimen/date_pick_spinner_width"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewMakeClassroomSelectAcademy"
-        app:layout_constraintTop_toTopOf="parent"
-        app:smsp_floatingLabelColor="@color/main_color"
-        app:smsp_floatingLabelText="@string/selected_academy"
-        app:smsp_hint="@string/comment_select_academy"
-        app:smsp_hintSize="16sp" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutMakeClassroomExcludeAcademySelect"
+    <LinearLayout
+        android:id="@+id/layoutMakeClassroomSelectAcademy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:visibility="gone"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerMakeClassroomSelectAcademy">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textViewMakeClassroomName"
+            android:id="@+id/textViewMakeClassroomSelectAcademy"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="@string/classroom_name"
+            android:gravity="center_vertical"
+            android:text="@string/select_academy"
             android:textColor="@color/black"
-            android:layout_marginTop="20dp"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutNewClassroomName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
+            android:id="@+id/spinnerMakeClassroomSelectAcademy"
             android:layout_width="@dimen/date_pick_spinner_width"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            app:errorEnabled="true"
-            app:helperTextEnabled="true"
-            app:layout_constraintStart_toEndOf="@+id/textViewMakeClassroomName"
+            app:layout_constraintStart_toEndOf="@+id/textViewMakeClassroomSelectAcademy"
+            app:layout_constraintTop_toTopOf="parent"
+            app:smsp_floatingLabelColor="@color/main_color"
+            app:smsp_floatingLabelText="@string/selected_academy"
+            app:smsp_hint="@string/comment_select_academy"
+            app:smsp_hintSize="16sp" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutMakeClassroomExcludeAcademySelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutMakeClassroomSelectAcademy">
+
+        <LinearLayout
+            android:id="@+id/layoutMakeClassroomName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textNewClassroomName"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewMakeClassroomName"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/comment_input_classroom_name"
-                android:inputType="textPersonName"
-                android:textColorHint="@color/light_gray" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:gravity="center_vertical"
+                android:text="@string/classroom_name"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutNewClassroomName"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="@dimen/date_pick_spinner_width"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                app:errorEnabled="true"
+                app:helperTextEnabled="true"
+                app:layout_constraintStart_toEndOf="@+id/textViewMakeClassroomName"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textNewClassroomName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/comment_input_classroom_name"
+                    android:inputType="textPersonName"
+                    android:textColorHint="@color/light_gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textViewMakeClassroomDay"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:text="@string/select_date"
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewMakeClassroomName" />
+            app:layout_constraintTop_toBottomOf="@id/layoutMakeClassroomName" />
 
         <ca.antonious.materialdaypicker.MaterialDayPicker
             android:id="@+id/dayPickerMakeClassroom"
@@ -100,7 +122,7 @@
             android:id="@+id/buttonMakeClassroom"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/rounded_button_main_color"
             android:text="@string/create_classroom"
             android:textColor="@color/white"

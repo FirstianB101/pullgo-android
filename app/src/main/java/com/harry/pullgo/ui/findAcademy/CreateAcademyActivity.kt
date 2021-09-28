@@ -1,5 +1,7 @@
 package com.harry.pullgo.ui.findAcademy
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -19,7 +21,7 @@ class CreateAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityCreateAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(
-        FindAcademyRepository(LoginInfo.user?.token!!)
+        FindAcademyRepository(applicationContext)
     )}
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +54,12 @@ class CreateAcademyActivity : AppCompatActivity() {
     private fun initViewModel(){
         viewModel.createMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            if(it == "학원을 생성하였습니다") finish()
+            if(it == "학원을 생성하였습니다"){
+                val intent = Intent()
+                intent.putExtra("createAcademy","yes")
+                setResult(Activity.RESULT_OK,intent)
+                finish()
+            }
         }
     }
 
@@ -68,8 +75,12 @@ class CreateAcademyActivity : AppCompatActivity() {
                 createAcademy()
             }
         }
-        dialog.start("학원 생성","","생성하기","취소")
+        val academyName = "학원 이름: ${binding.textCreateAcademyName.text.toString()}\n"
+        val academyAddress = "학원 주소: ${binding.textCreateAcademyAddress.text.toString()}\n"
+        val academyPhone = "전화번호 : ${binding.textCreateAcademyPhone.text.toString()}\n"
+        val comment = "위 정보로 학원을 생성하시겠습니까?"
 
+        dialog.start("학원 생성",academyName + academyAddress + academyPhone + comment,"생성하기","취소")
     }
 
     private fun createAcademy(){

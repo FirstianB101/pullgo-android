@@ -22,7 +22,7 @@ import com.harry.pullgo.ui.dialog.TwoButtonDialog
 class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
 
-    private val repository = ApplyClassroomRepository()
+    private val repository = ApplyClassroomRepository(applicationContext)
     private val viewModel: ApplyClassroomViewModel by viewModels{ApplyClassroomViewModelFactory(repository)}
 
     private var selectedAcademy: Academy? = null

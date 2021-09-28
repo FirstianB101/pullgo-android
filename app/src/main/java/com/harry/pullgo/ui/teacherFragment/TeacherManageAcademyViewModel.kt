@@ -1,14 +1,11 @@
 package com.harry.pullgo.ui.teacherFragment
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

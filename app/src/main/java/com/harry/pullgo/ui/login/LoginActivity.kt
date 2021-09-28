@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.login;
+package com.harry.pullgo.ui.login
 
 import android.app.Activity
 import android.content.Intent
@@ -19,42 +19,41 @@ import com.harry.pullgo.ui.main.TeacherMainActivity
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
 
-    private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory(LoginRepository())}
+    private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory(LoginRepository(applicationContext))}
+
+    var autoLoginToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //autoLogin()
+        autoLogin()
         setClickListeners()
         initViewModel()
     }
 
     private fun autoLogin(){
-        /*
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
-        val loginId = pref.getString("loginId",null)
-        val loginPw = pref.getString("loginPw",null)
-        val wasStudent = pref.getBoolean("wasStudent",false)
-        val autoLoginChecked = pref.getBoolean("autoLoginChecked",false)
+        autoLoginToken = pref.getString("token",null)
 
-        if(loginId != null && loginPw != null){
-            binding.loginId.setText(loginId)
-            binding.loginPw.setText(loginPw)
-            binding.checkBoxAutoLogin.isChecked = autoLoginChecked
+        if(autoLoginToken != null){
+            LoginInfo.user?.token = autoLoginToken
+            binding.checkBoxAutoLogin.isChecked = true
 
-            if(wasStudent){
-                viewModel.requestStudentLogin(loginId.toLong())
-            }else{
-                viewModel.requestTeacherLogin(loginId.toLong())
-            }
+            viewModel.requestAuthorize()
         }
-         */
     }
 
     private fun initViewModel(){
         viewModel.loginUserRepositories.observe(this){
             LoginInfo.user = it
+            if(autoLoginToken != null)LoginInfo.user?.token = autoLoginToken
+
+            if(binding.checkBoxAutoLogin.isChecked){
+                saveAutoLoginInfo()
+            }else{
+                resetAutoLoginInfo()
+            }
 
             if(it.student != null)
                 viewModel.requestStudentAcademies(it.student?.id!!)
@@ -64,12 +63,6 @@ class LoginActivity: AppCompatActivity(){
 
         viewModel.academyRepositoryStudentApplied.observe(this){
             val studentAcademies = viewModel.academyRepositoryStudentApplied.value
-
-            if(binding.checkBoxAutoLogin.isChecked){
-                //saveAutoLoginInfo()
-            }else{
-                //resetAutoLoginInfo()
-            }
 
             val mainIntent = Intent(applicationContext, StudentMainActivity::class.java)
 
@@ -81,12 +74,6 @@ class LoginActivity: AppCompatActivity(){
 
         viewModel.academyRepositoryTeacherApplied.observe(this){
             val teacherAcademies = viewModel.academyRepositoryTeacherApplied.value
-
-            if(binding.checkBoxAutoLogin.isChecked){
-                //saveAutoLoginInfo()
-            }else{
-                //resetAutoLoginInfo()
-            }
 
             val mainIntent = Intent(applicationContext, TeacherMainActivity::class.java)
 
@@ -105,9 +92,7 @@ class LoginActivity: AppCompatActivity(){
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
         val autoLogin = pref.edit()
 
-        autoLogin.putString("loginId",binding.loginId.text.toString())
-        autoLogin.putString("loginPw",binding.loginPw.text.toString())
-        autoLogin.putBoolean("autoLoginChecked",binding.checkBoxAutoLogin.isChecked)
+        autoLogin.putString("token",LoginInfo.user?.token)
         autoLogin.apply()
     }
 
@@ -115,10 +100,7 @@ class LoginActivity: AppCompatActivity(){
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
         val autoLogin = pref.edit()
 
-        autoLogin.putString("loginId",null)
-        autoLogin.putString("loginPw",null)
-        autoLogin.putBoolean("wasStudent",true)
-        autoLogin.putBoolean("autoLoginChecked",false)
+        autoLogin.putString("token",null)
         autoLogin.apply()
     }
 

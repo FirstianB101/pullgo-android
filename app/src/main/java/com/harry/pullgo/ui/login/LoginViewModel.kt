@@ -39,6 +39,18 @@ class LoginViewModel(private val loginRepository: LoginRepository): ViewModel() 
         }
     }
 
+    fun requestAuthorize(){
+        CoroutineScope(Dispatchers.IO).launch{
+            loginRepository.getAutoLoginUser().let{ response ->
+                if(response.isSuccessful){
+                    response.body().let{
+                        _loginUserRepositories.postValue(it)
+                    }
+                }
+            }
+        }
+    }
+
     fun requestStudentAcademies(id: Long){
         CoroutineScope(Dispatchers.IO).launch{
             loginRepository.getAcademiesByStudentId(id).let{ response ->
