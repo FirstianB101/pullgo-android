@@ -24,15 +24,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
+class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
         ManageClassroomRepository(requireContext())
     )}
-
-    private var selectedStudent: Student? = null
-    private var selectedTeacher: Teacher? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -91,14 +88,11 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
         if (adapter != null) {
             adapter.studentClickListenerListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
-                    selectedStudent = student
-
                     val dialog = FragmentShowStudentInfoDialog(student!!)
                     dialog.show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {
-                    selectedStudent = student
                     viewModel.acceptStudent(selectedClassroom.id!!,student?.id!!)
                 }
 
@@ -125,7 +119,6 @@ class ManageRequestsFragment(private val selectedClassroom: Classroom): Fragment
                 }
 
                 override fun onApplyButtonClick(view: View, teacher: Teacher?) {
-                    selectedTeacher = teacher
                     viewModel.acceptTeacher(selectedClassroom.id!!,teacher?.id!!)
                 }
 

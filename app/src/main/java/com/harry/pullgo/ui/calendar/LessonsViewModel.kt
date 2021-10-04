@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.calendar
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,19 +17,19 @@ import retrofit2.Response
 
 class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewModel() {
     private val _allLessonRepositories = MutableLiveData<List<Lesson>>()
-    val allLessonsRepositories = _allLessonRepositories
+    val allLessonsRepositories: LiveData<List<Lesson>> = _allLessonRepositories
 
     private val _dayLessonsRepositories = MutableLiveData<List<Lesson>>()
-    val dayLessonsRepositories = _dayLessonsRepositories
+    val dayLessonsRepositories: LiveData<List<Lesson>> = _dayLessonsRepositories
 
     private val _classroomInfoRepository = MutableLiveData<Classroom>()
-    val classroomInfoRepository = _classroomInfoRepository
+    val classroomInfoRepository: LiveData<Classroom> = _classroomInfoRepository
 
     private val _academyInfoRepository = MutableLiveData<Academy>()
-    val academyInfoRepository = _academyInfoRepository
+    val academyInfoRepository: LiveData<Academy> = _academyInfoRepository
 
     private val _lessonMessage = MutableLiveData<String>()
-    val lessonMessage = _lessonMessage
+    val lessonMessage: LiveData<String> = _lessonMessage
 
     fun requestStudentLessons(id: Long){
         CoroutineScope(Dispatchers.IO).launch {

@@ -28,6 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="128dp"
@@ -45,9 +46,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="340dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewStudentSignUpInfo">
 
@@ -61,73 +63,89 @@
                     android:textColorHint="@color/light_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:id="@+id/signUpPhoneLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="254dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpStudentNameLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signUpStudentPhone"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signUpPhoneInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="252dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/comment_input_phone"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/light_gray" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginTop="15dp"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true">
 
-            <Button
-                android:id="@+id/buttonSignUpStudentPhoneVerifyRequest"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signUpStudentPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/comment_input_phone"
+                        android:inputType="textPersonName"
+                        android:textColorHint="@color/light_gray" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonSignUpStudentPhoneVerifyRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/request_verification"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/signUpPhoneLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpStudentNameLayout" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/signUpStudentPhoneVerifyLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/request_verification"
-                android:textColor="@color/white"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@+id/signUpPhoneLayout"
-                app:layout_constraintTop_toBottomOf="@+id/signUpStudentNameLayout" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/signUpStudentPhoneVerifyLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpPhoneLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signUpStudentPhoneVerifyNum"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/signUpStudentPhoneVerifyInputLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/comment_input_verification_num"
-                    android:inputType="textPersonName"
-                    android:textColorHint="@color/light_gray" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    app:endIconMode="clear_text">
 
-            <Button
-                android:id="@+id/buttonStudentSignUpPhoneVerifyCheck"
-                android:layout_width="140dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:text="@string/check_verification_num"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@+id/signUpStudentPhoneVerifyLayout"
-                app:layout_constraintTop_toBottomOf="@+id/signUpPhoneLayout" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signUpStudentPhoneVerifyNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/comment_input_verification_num"
+                        android:inputType="textPersonName"
+                        android:textColorHint="@color/light_gray" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/buttonStudentSignUpPhoneVerifyCheck"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/check_verification_num"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toEndOf="@+id/signUpStudentPhoneVerifyLayout"
+                    app:layout_constraintTop_toBottomOf="@+id/signUpPhoneLayout" />
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUpParentPhoneLayout"
@@ -138,7 +156,7 @@
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpStudentPhoneVerifyLayout">
 
@@ -159,7 +177,7 @@
                 android:layout_height="wrap_content"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpParentPhoneLayout">
 
@@ -180,7 +198,7 @@
                 android:layout_marginTop="15dp"
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpSchoolNameLayout"
                 app:selectedColor="@color/main_color"
@@ -202,7 +220,7 @@
                 android:textSize="@dimen/success_button_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signUpGradeSwitchButton"
                 app:layout_constraintVertical_bias="0.3" />

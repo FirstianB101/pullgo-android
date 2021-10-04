@@ -66,6 +66,17 @@ interface RetrofitService {
     @GET("academy/classroom/lessons/")
     suspend fun getTeacherLessonsByDate(@Query("teacherId")teacherId: Long, @Query("sinceDate")sinceDate: String,
                                         @Query("untilDate")untilDate:String): Response<List<Lesson>>
+    @GET("academies/")
+    suspend fun getTeacherApplyingAcademies(@Query("applyingTeacherId")teacherId: Long): Response<List<Academy>>
+
+    @GET("academy/classrooms/")
+    suspend fun getTeacherApplyingClassrooms(@Query("applyingTeacherId")teacherId: Long): Response<List<Classroom>>
+
+    @POST("teachers/{id}/remove-applied-academy/")
+    fun removeTeacherAppliedAcademy(@Path("id")teacherId: Long, @Body academyId: Long): Call<Unit>
+
+    @POST("teachers/{id}/remove-applied-classroom/")
+    fun removeTeacherAppliedClassroom(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
 
 
     @GET("academies/")
@@ -142,6 +153,18 @@ interface RetrofitService {
 
     @PATCH("academy/classrooms/{id}/")
     fun editClassroom(@Path("id")classroomId: Long, @Body classroom: Classroom): Call<Classroom>
+
+    @GET("academies/")
+    suspend fun getStudentApplyingAcademies(@Query("applyingStudentId")studentId: Long): Response<List<Academy>>
+
+    @GET("academy/classrooms/")
+    suspend fun getStudentApplyingClassrooms(@Query("applyingStudentId")studentId: Long): Response<List<Classroom>>
+
+    @POST("students/{id}/remove-applied-academy/")
+    fun removeStudentAppliedAcademy(@Path("id")studentId: Long, @Body academyId: Long): Call<Unit>
+
+    @POST("students/{id}/remove-applied-classroom/")
+    fun removeStudentAppliedClassroom(@Path("id")studentId: Long, @Body classroomId: Long): Call<Unit>
 
 
     @POST("academies/{id}/accept-student/")

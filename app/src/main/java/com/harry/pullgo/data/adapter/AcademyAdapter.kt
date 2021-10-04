@@ -10,7 +10,7 @@ import com.harry.pullgo.databinding.LayoutSearchAcademyItemBinding
 
 class AcademyAdapter(private val dataSet: List<Academy>):
     RecyclerView.Adapter<AcademyAdapter.ViewHolder>(){
-    var itemClickListenerListener: OnAcademyClickListener? = null
+    var itemClickListener: OnAcademyClickListener? = null
 
     class ViewHolder(val binding: LayoutSearchAcademyItemBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -23,7 +23,7 @@ class AcademyAdapter(private val dataSet: List<Academy>):
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.academy = dataSet[position]
         holder.itemView.setOnClickListener {
-            itemClickListenerListener?.onAcademyClick(holder.itemView, dataSet[position])
+            itemClickListener?.onAcademyClick(holder.itemView, dataSet[position])
         }
     }
 

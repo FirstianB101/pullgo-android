@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.teacherFragment
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,13 +13,13 @@ import kotlinx.coroutines.launch
 
 class ManageClassroomViewModel(private val classroomsRepository: ClassroomsRepository): ViewModel() {
     private val _selectedClassroom = MutableLiveData<Classroom>()
-    val selectedClassroom = _selectedClassroom
+    val selectedClassroom: LiveData<Classroom> = _selectedClassroom
 
     private val _getClassroomRepositories = MutableLiveData<List<Classroom>>()
-    val getClassroomRepositories = _getClassroomRepositories
+    val getClassroomRepositories: LiveData<List<Classroom>> = _getClassroomRepositories
 
     private val _academiesForSpinnerRepository = MutableLiveData<List<Academy>>()
-    val academiesForSpinnerRepository = _academiesForSpinnerRepository
+    val academiesForSpinnerRepository: LiveData<List<Academy>> = _academiesForSpinnerRepository
 
     fun requestGetClassroomById(classroomId: Long){
         CoroutineScope(Dispatchers.IO).launch {

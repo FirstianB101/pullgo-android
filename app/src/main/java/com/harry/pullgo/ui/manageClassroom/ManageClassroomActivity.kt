@@ -14,9 +14,9 @@ class ManageClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityManageClassroomBinding.inflate(layoutInflater)}
 
     private lateinit var editClassroomFragment: EditClassroomFragment
-    private lateinit var manageStudentFragment: ManageStudentFragment
-    private lateinit var manageRequestsFragment: ManageRequestsFragment
-    private lateinit var manageExamFragment: ManageExamFragment
+    private lateinit var manageClassroomPeopleFragment: ManageClassroomPeopleFragment
+    private lateinit var manageClassroomRequestsFragment: ManageClassroomRequestsFragment
+    private lateinit var manageClassroomExamFragment: ManageClassroomExamFragment
 
     private lateinit var selectedClassroom: Classroom
 
@@ -45,9 +45,9 @@ class ManageClassroomActivity : AppCompatActivity() {
         selectedClassroom.id = classroomId
 
         editClassroomFragment = EditClassroomFragment(selectedClassroom)
-        manageStudentFragment = ManageStudentFragment(selectedClassroom)
-        manageRequestsFragment = ManageRequestsFragment(selectedClassroom)
-        manageExamFragment = ManageExamFragment(selectedClassroom)
+        manageClassroomPeopleFragment = ManageClassroomPeopleFragment(selectedClassroom)
+        manageClassroomRequestsFragment = ManageClassroomRequestsFragment(selectedClassroom)
+        manageClassroomExamFragment = ManageClassroomExamFragment(selectedClassroom)
 
         onFragmentSelected(0)
     }
@@ -77,15 +77,15 @@ class ManageClassroomActivity : AppCompatActivity() {
                 binding.toolbarManageClassroom.title = "반 정보 관리"
             }
             1 -> {
-                curFragment = manageStudentFragment
+                curFragment = manageClassroomPeopleFragment
                 binding.toolbarManageClassroom.title = "학생 관리"
             }
             2 -> {
-                curFragment = manageRequestsFragment
+                curFragment = manageClassroomRequestsFragment
                 binding.toolbarManageClassroom.title = "가입 요청 관리"
             }
             3 -> {
-                curFragment = manageExamFragment
+                curFragment = manageClassroomExamFragment
                 binding.toolbarManageClassroom.title = "시험 관리"
             }
         }

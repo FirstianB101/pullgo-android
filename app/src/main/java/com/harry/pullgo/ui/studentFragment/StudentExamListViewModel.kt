@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.studentFragment
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class StudentExamListViewModel(private val examsRepository: ExamsRepository): ViewModel() {
     private val _studentExamList = MutableLiveData<List<Exam>>()
-    val studentExamList = _studentExamList
+    val studentExamList: LiveData<List<Exam>> = _studentExamList
 
     fun requestExamsByName(studentId: Long){
         CoroutineScope(Dispatchers.IO).launch {

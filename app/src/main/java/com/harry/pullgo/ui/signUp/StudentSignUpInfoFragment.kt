@@ -80,9 +80,9 @@ class StudentSignUpInfoFragment: Fragment() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            binding.signUpPhoneLayout.error=null
+            binding.signUpPhoneInputLayout.error=null
             if(!Pattern.matches(PHONE_TYPE_EXPRESSION,s.toString())){
-                binding.signUpPhoneLayout.error="숫자만 입력해 주세요"
+                binding.signUpPhoneInputLayout.error="숫자만 입력해 주세요"
             }
         }
 

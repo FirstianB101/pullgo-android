@@ -7,18 +7,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.adapter.AcademyAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClickListener
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
@@ -72,7 +67,7 @@ class FindAcademyActivity : AppCompatActivity() {
         }
 
         if (academyAdapter != null) {
-            academyAdapter.itemClickListenerListener = object: OnAcademyClickListener {
+            academyAdapter.itemClickListener = object: OnAcademyClickListener {
                 override fun onAcademyClick(view: View,academy: Academy?) {
                     selectedAcademy = academy
                     showApplyRequestDialog(academy)

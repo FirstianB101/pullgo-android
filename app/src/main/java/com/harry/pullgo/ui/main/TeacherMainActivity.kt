@@ -25,6 +25,7 @@ import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
+import com.harry.pullgo.ui.commonFragment.ManageRequestFragment
 import com.harry.pullgo.ui.teacherFragment.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +39,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var acceptApplyAcademyFragment: TeacherAcceptApplyAcademyFragment
     lateinit var manageAcademyFragment: TeacherManageAcademyFragment
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
+    lateinit var manageRequestFragment: ManageRequestFragment
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
         ChangeInfoRepository(applicationContext)
@@ -72,6 +74,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun initialize(){
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
+        manageRequestFragment = ManageRequestFragment(true)
 
         if(intent.getBooleanExtra("appliedAcademyExist",false)){
             calendarFragment = CalendarFragment()
@@ -118,6 +121,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding.textViewTeacherLogout.setOnClickListener {
             LoginInfo.user?.student = null
             LoginInfo.user?.teacher = null
+            LoginInfo.user?.token = null
             finish()
         }
 
@@ -145,6 +149,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_teacher_manage_accept_academy -> onFragmentSelected(ACCEPT_ACADEMY)
             R.id.nav_teacher_manage_academy -> onFragmentSelected(MANAGE_ACADEMY)
             R.id.nav_teacher_home -> onFragmentSelected(HOME)
+            R.id.nav_teacher_manage_request -> onFragmentSelected(MANAGE_REQUEST)
         }
         binding.teacherDrawerLayout.closeDrawer(binding.navigationViewTeacher)
         return true
@@ -179,6 +184,9 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             HOME -> {
                 curFragment = teacherHomeFragment
+            }
+            MANAGE_REQUEST -> {
+                curFragment = manageRequestFragment
             }
             else -> {}
         }
@@ -234,5 +242,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     val ACCEPT_ACADEMY = 207
     val MANAGE_ACADEMY = 208
     val HOME = 209
+    val MANAGE_REQUEST = 210
     private val PREVIOUS_FRAGMENT = "previous_fragment"
 }

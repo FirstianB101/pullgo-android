@@ -21,6 +21,7 @@ import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
+import com.harry.pullgo.ui.commonFragment.ManageRequestFragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.studentFragment.StudentChangePersonInfoFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
@@ -35,6 +36,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var studentExamListFragment: StudentExamListFragment
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
     lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
+    lateinit var manageRequestFragment: ManageRequestFragment
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
         ChangeInfoRepository(applicationContext)
@@ -71,6 +73,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initialize(){
         studentChangeInfoFragment = StudentChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
+        manageRequestFragment = ManageRequestFragment(false)
 
         if(intent.getBooleanExtra("appliedAcademyExist",false)){
             calendarFragment = CalendarFragment()
@@ -115,6 +118,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding.textViewStudentLogout.setOnClickListener {
             LoginInfo.user?.student = null
             LoginInfo.user?.teacher = null
+            LoginInfo.user?.token = null
             finish()
         }
 
@@ -141,6 +145,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             R.id.nav_student_previous_exam -> onFragmentSelected(PREVIOUS_EXAM)
             R.id.nav_student_home -> onFragmentSelected(HOME)
             R.id.nav_student_apply_classroom -> startApplyClassroomActivity()
+            R.id.nav_student_manage_request -> onFragmentSelected(MANAGE_REQUEST)
         }
         binding.studentDrawerLayout.closeDrawer(binding.navigationViewStudent)
         return true
@@ -172,6 +177,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             }
             HOME -> {
                 curFragment = studentHomeFragment
+            }
+            MANAGE_REQUEST -> {
+                curFragment = manageRequestFragment
             }
             else -> {}
         }
@@ -209,5 +217,6 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     val CHANGE_INFO_CHECK_PW = 104
     val APPLY_CLASSROOM = 105
     val HOME = 106
+    val MANAGE_REQUEST = 107
     private val PREVIOUS_FRAGMENT = "previous_fragment"
 }

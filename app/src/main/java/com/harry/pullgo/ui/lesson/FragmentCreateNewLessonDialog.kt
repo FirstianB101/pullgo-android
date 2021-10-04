@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -23,7 +22,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
-import com.harry.pullgo.data.objects.*
+import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.DialogCreateNewLessonBinding
 import java.sql.Timestamp

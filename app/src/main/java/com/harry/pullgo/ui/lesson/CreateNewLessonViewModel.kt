@@ -1,8 +1,6 @@
 package com.harry.pullgo.ui.lesson
 
-import android.widget.Toast
-import androidx.core.os.bundleOf
-import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,10 +16,10 @@ import retrofit2.Response
 
 class CreateNewLessonViewModel(private val classroomsRepository: ClassroomsRepository):ViewModel() {
     private val _createNewLessonClassroomRepository = MutableLiveData<List<Classroom>>()
-    val createNewLessonClassroomRepository = _createNewLessonClassroomRepository
+    val createNewLessonClassroomRepository: LiveData<List<Classroom>> = _createNewLessonClassroomRepository
 
     private val _createMessage = MutableLiveData<String>()
-    val createMessage = _createMessage
+    val createMessage: LiveData<String> = _createMessage
 
     fun requestGetClassrooms(id: Long){
         CoroutineScope(Dispatchers.IO).launch {

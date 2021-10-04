@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.login
+package com.harry.pullgo.ui.login;
 
 import android.app.Activity
 import android.content.Intent
@@ -27,7 +27,7 @@ class LoginActivity: AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        autoLogin()
+        //autoLogin()
         setClickListeners()
         initViewModel()
     }
@@ -38,7 +38,6 @@ class LoginActivity: AppCompatActivity(){
 
         if(autoLoginToken != null){
             LoginInfo.user?.token = autoLoginToken
-            binding.checkBoxAutoLogin.isChecked = true
 
             viewModel.requestAuthorize()
         }
@@ -47,7 +46,6 @@ class LoginActivity: AppCompatActivity(){
     private fun initViewModel(){
         viewModel.loginUserRepositories.observe(this){
             LoginInfo.user = it
-            if(autoLoginToken != null)LoginInfo.user?.token = autoLoginToken
 
             if(binding.checkBoxAutoLogin.isChecked){
                 saveAutoLoginInfo()

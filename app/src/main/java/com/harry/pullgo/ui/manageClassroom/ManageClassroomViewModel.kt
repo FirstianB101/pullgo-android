@@ -1,6 +1,7 @@
 package com.harry.pullgo.ui.manageClassroom
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,28 +19,28 @@ import retrofit2.Response
 class ManageClassroomViewModel(private val repository: ManageClassroomRepository): ViewModel() {
 
     private val _studentsAppliedClassroom = MutableLiveData<List<Student>>()
-    val studentsAppliedClassroom = _studentsAppliedClassroom
+    val studentsAppliedClassroom: LiveData<List<Student>> = _studentsAppliedClassroom
 
     private val _teachersAppliedClassroom = MutableLiveData<List<Teacher>>()
-    val teachersAppliedClassroom = _teachersAppliedClassroom
+    val teachersAppliedClassroom: LiveData<List<Teacher>> = _teachersAppliedClassroom
 
     private val _studentsRequestApplyClassroom = MutableLiveData<List<Student>>()
-    val studentsRequestApplyClassroom = _studentsRequestApplyClassroom
+    val studentsRequestApplyClassroom: LiveData<List<Student>> = _studentsRequestApplyClassroom
 
     private val _teachersRequestApplyClassroom = MutableLiveData<List<Teacher>>()
-    val teachersRequestApplyClassroom = _teachersRequestApplyClassroom
+    val teachersRequestApplyClassroom: LiveData<List<Teacher>> = _teachersRequestApplyClassroom
 
     private val _createClassroomMessage = MutableLiveData<String>()
-    val createClassroomMessage = _createClassroomMessage
+    val createClassroomMessage: LiveData<String> = _createClassroomMessage
 
     private val _kickMessage = MutableLiveData<String>()
-    val kickMessage = _kickMessage
+    val kickMessage: LiveData<String> = _kickMessage
 
     private val _editClassroomMessage = MutableLiveData<String>()
-    val editClassroomMessage = _editClassroomMessage
+    val editClassroomMessage: LiveData<String> = _editClassroomMessage
 
     private val _manageRequestMessage = MutableLiveData<String>()
-    val manageRequestMessage = _manageRequestMessage
+    val manageRequestMessage: LiveData<String> = _manageRequestMessage
 
     fun requestGetStudentsAppliedClassroom(classroomId: Long){
         CoroutineScope(Dispatchers.IO).launch {
@@ -170,7 +171,7 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
     }
 
     fun acceptTeacher(classroomId: Long, teacherId: Long){
-        repository.acceptStudent(classroomId,teacherId).enqueue(object: Callback<Unit> {
+        repository.acceptTeacher(classroomId,teacherId).enqueue(object: Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
                     _manageRequestMessage.postValue("선생님 반 등록이 승인되었습니다")

@@ -14,14 +14,12 @@ import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageStudentBinding
 
-class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment() {
+class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageStudentBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels{
         ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext()))
     }
-
-    private var selectedStudent: Student? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -51,7 +49,6 @@ class ManageStudentFragment(private val selectedClassroom: Classroom): Fragment(
         if (studentAdapter != null) {
             studentAdapter.studentClickListenerListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
-                    selectedStudent = student
                     FragmentManageClassroomStudentDialog(student!!,selectedClassroom)
                         .show(parentFragmentManager, FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
                 }

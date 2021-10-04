@@ -1,13 +1,10 @@
 package com.harry.pullgo.ui.findAcademy
 
-import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,13 +15,13 @@ import retrofit2.Response
 
 class FindAcademyViewModel(private val findAcademyRepository: FindAcademyRepository): ViewModel() {
     private val _findAcademyRepositories = MutableLiveData<List<Academy>>()
-    val findAcademyRepositories = _findAcademyRepositories
+    val findAcademyRepositories: LiveData<List<Academy>> = _findAcademyRepositories
 
     private val _requestMessage = MutableLiveData<String>()
-    val requestMessage = _requestMessage
+    val requestMessage: LiveData<String> = _requestMessage
 
     private val _createMessage = MutableLiveData<String>()
-    val createMessage = _createMessage
+    val createMessage: LiveData<String> = _createMessage
 
     fun requestGetAcademies(name: String){
         CoroutineScope(Dispatchers.IO).launch{
@@ -77,7 +74,6 @@ class FindAcademyViewModel(private val findAcademyRepository: FindAcademyReposit
                     _createMessage.postValue("학원을 생성하였습니다")
                 }else{
                     _createMessage.postValue("학원을 생성하지 못했습니다")
-                    Log.d("Create","code: ${response.code()}")
                 }
             }
 

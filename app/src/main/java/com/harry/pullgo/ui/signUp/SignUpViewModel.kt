@@ -1,12 +1,10 @@
 package com.harry.pullgo.ui.signUp
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.data.repository.SignUpRepository
 import retrofit2.Call
 import retrofit2.Callback

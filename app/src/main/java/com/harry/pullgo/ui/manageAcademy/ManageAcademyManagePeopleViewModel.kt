@@ -16,10 +16,10 @@ import retrofit2.Response
 
 class ManageAcademyManagePeopleViewModel(private val manageAcademyRepository: ManageAcademyRepository): ViewModel() {
     private val _teachersAtAcademyRepository = MutableLiveData<List<Teacher>>()
-    val teachersAtAcademyRepository = _teachersAtAcademyRepository
+    val teachersAtAcademyRepository: LiveData<List<Teacher>> = _teachersAtAcademyRepository
 
     private val _studentsAtAcademyRepository = MutableLiveData<List<Student>>()
-    val studentsAtAcademyRepository = _studentsAtAcademyRepository
+    val studentsAtAcademyRepository: LiveData<List<Student>> = _studentsAtAcademyRepository
 
     private val _kickPersonMessage = MutableLiveData<String>()
     val kickPersonMessage: LiveData<String> = _kickPersonMessage

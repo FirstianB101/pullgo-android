@@ -11,7 +11,7 @@ import com.harry.pullgo.databinding.LayoutClassroomItemBinding
 class ClassroomAdapter(private val dataSet: List<Classroom>)
     : RecyclerView.Adapter<ClassroomAdapter.ViewHolder>(){
 
-    var itemClickListenerListener: OnClassroomClickListener? = null
+    var itemClickListener: OnClassroomClickListener? = null
 
     class ViewHolder(val binding: LayoutClassroomItemBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -25,7 +25,7 @@ class ClassroomAdapter(private val dataSet: List<Classroom>)
         holder.binding.classroomInfo = dataSet[position].name.toString().split(';')
 
         holder.itemView.setOnClickListener {
-            itemClickListenerListener?.onClassroomClick(holder.itemView, dataSet[position])
+            itemClickListener?.onClassroomClick(holder.itemView, dataSet[position])
         }
     }
 

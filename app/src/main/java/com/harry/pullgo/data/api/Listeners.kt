@@ -7,6 +7,11 @@ interface OnAcademyClickListener {
     fun onAcademyClick(view: View,academy: Academy?)
 }
 
+interface OnAcademyRequestListener{
+    fun onAcademyClick(view: View, academy: Academy?)
+    fun onRemoveRequest(view: View, academy: Academy?)
+}
+
 interface OnCheckPwListener {
     fun onPasswordCheck()
 }
@@ -17,6 +22,11 @@ interface OnLessonClickListener {
 
 interface OnClassroomClickListener{
     fun onClassroomClick(view: View, classroom: Classroom?)
+}
+
+interface OnClassroomRequestListener{
+    fun onClassroomClick(view: View, classroom: Classroom?)
+    fun onRemoveRequest(view: View, classroom: Classroom?)
 }
 
 interface OnExamClickListener{
