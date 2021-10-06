@@ -20,17 +20,12 @@ class ManageClassroomActivity : AppCompatActivity() {
 
     private lateinit var selectedClassroom: Classroom
 
-    private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(applicationContext))
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initialize()
         setListeners()
-        initViewModel()
     }
 
     override fun onBackPressed() {
@@ -64,10 +59,6 @@ class ManageClassroomActivity : AppCompatActivity() {
         }
     }
 
-    private fun initViewModel(){
-        
-    }
-
     private fun onFragmentSelected(position: Int): Boolean{
         var curFragment: Fragment? = null
 
@@ -78,7 +69,7 @@ class ManageClassroomActivity : AppCompatActivity() {
             }
             1 -> {
                 curFragment = manageClassroomPeopleFragment
-                binding.toolbarManageClassroom.title = "학생 관리"
+                binding.toolbarManageClassroom.title = "구성원 관리"
             }
             2 -> {
                 curFragment = manageClassroomRequestsFragment

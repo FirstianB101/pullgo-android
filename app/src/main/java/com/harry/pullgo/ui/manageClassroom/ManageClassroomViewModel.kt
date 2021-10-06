@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomRepository
@@ -17,7 +18,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class ManageClassroomViewModel(private val repository: ManageClassroomRepository): ViewModel() {
-
     private val _studentsAppliedClassroom = MutableLiveData<List<Student>>()
     val studentsAppliedClassroom: LiveData<List<Student>> = _studentsAppliedClassroom
 
@@ -30,6 +30,9 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
     private val _teachersRequestApplyClassroom = MutableLiveData<List<Teacher>>()
     val teachersRequestApplyClassroom: LiveData<List<Teacher>> = _teachersRequestApplyClassroom
 
+    private val _examsWithinClassroom = MutableLiveData<List<Exam>>()
+    val examsWithinClassroom: LiveData<List<Exam>> = _examsWithinClassroom
+
     private val _createClassroomMessage = MutableLiveData<String>()
     val createClassroomMessage: LiveData<String> = _createClassroomMessage
 
@@ -41,6 +44,9 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
 
     private val _manageRequestMessage = MutableLiveData<String>()
     val manageRequestMessage: LiveData<String> = _manageRequestMessage
+
+    private val _createExamMessage = MutableLiveData<String>()
+    val createExamMessage: LiveData<String> = _createExamMessage
 
     fun requestGetStudentsAppliedClassroom(classroomId: Long){
         CoroutineScope(Dispatchers.IO).launch {
@@ -90,6 +96,18 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
         }
     }
 
+    fun requestGetExamsWithinClassroom(classroomId: Long){
+        CoroutineScope(Dispatchers.IO).launch {
+            repository.getExamsWithinClassroom(classroomId).let{response ->
+                if(response.isSuccessful){
+                    response.body().let{
+                        _examsWithinClassroom.postValue(it)
+                    }
+                }
+            }
+        }
+    }
+
     fun createClassroom(classroom: Classroom){
         repository.createClassroom(classroom).enqueue(object: Callback<Classroom> {
             override fun onResponse(call: Call<Classroom>, response: Response<Classroom>) {
@@ -113,6 +131,22 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
                     _kickMessage.postValue("해당 학생을 반에서 제외시켰습니다")
                 }else{
                     _kickMessage.postValue("해당 반에 존재하지 않는 학생입니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _kickMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+    
+    fun kickTeacherFromClassroom(classroomId: Long, teacherId: Long){
+        repository.kickTeacherFromClassroom(classroomId, teacherId).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _kickMessage.postValue("해당 선생님을 반에서 제외시켰습니다")
+                }else{
+                    _kickMessage.postValue("해당 반에 존재하지 않는 선생님입니다")
                 }
             }
 
@@ -214,6 +248,22 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
                 _manageRequestMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+
+    fun createExam(exam: Exam){
+        repository.createExam(exam).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _createExamMessage.postValue("시험이 생성되었습니다")
+                }else{
+                    _createExamMessage.postValue("시험을 생성하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _createExamMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
     }

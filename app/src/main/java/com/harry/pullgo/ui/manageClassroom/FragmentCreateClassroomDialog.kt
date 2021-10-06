@@ -41,21 +41,6 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
         ManageClassroomRepository(requireContext())
     )}
 
-
-    override fun onStart() {
-        super.onStart()
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
 
@@ -70,6 +55,7 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
         _dialog.setCanceledOnTouchOutside(false)
         _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         _dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
     }

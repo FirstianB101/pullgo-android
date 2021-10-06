@@ -10,7 +10,7 @@
         android:id="@+id/nav_manage_student"
         android:enabled="true"
         android:icon="@drawable/ic_person"
-        android:title="학생 관리"/>
+        android:title="구성원 관리"/>
 
     <item
         android:id="@+id/nav_manage_request"

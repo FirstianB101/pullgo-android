@@ -7,10 +7,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.harry.pullgo.data.models.Account
-import com.harry.pullgo.data.models.User
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LoginRepository
+import com.harry.pullgo.ui.commonFragment.LoadingDialogFragment
 import com.harry.pullgo.ui.findAccount.FindAccountActivity
 import com.harry.pullgo.ui.signUp.SignUpActivity
 import com.harry.pullgo.ui.main.StudentMainActivity
@@ -83,6 +84,7 @@ class LoginActivity: AppCompatActivity(){
 
         viewModel.loginMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+            LoadingDialog.dialog.dismiss()
         }
     }
 
@@ -117,6 +119,7 @@ class LoginActivity: AppCompatActivity(){
         binding.buttonLogin.setOnClickListener {
             val account = Account(binding.loginId.text.toString(),null,null,binding.loginPw.text.toString())
             viewModel.requestLogin(account)
+            LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
         }
     }
 

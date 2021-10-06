@@ -27,20 +27,20 @@ import retrofit2.Response
 class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext())
+    private val viewModel: ManageClassroomViewModel by viewModels{
+        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext())
     )}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        initialize()
+        setListeners()
         initViewModel()
 
         return binding.root
     }
 
-    private fun initialize(){
+    private fun setListeners(){
         binding.switchManageClassroomRequest.setOnCheckedChangeListener { _, isChecked ->
             binding.textViewManageClassroomRequestSwitch.text = if(isChecked) "선생님" else "학생"
             refreshAdapter(isChecked)
@@ -57,12 +57,10 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     private fun initViewModel(){
         viewModel.studentsRequestApplyClassroom.observe(requireActivity()){
             displayStudentRequests()
-            viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
         }
 
         viewModel.teachersRequestApplyClassroom.observe(requireActivity()){
             displayTeacherRequests()
-            viewModel.requestGetTeachersAppliedClassroom(selectedClassroom.id!!)
         }
 
         viewModel.manageRequestMessage.observe(requireActivity()){
@@ -72,8 +70,6 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
                 "선생님 반 등록이 승인되었습니다", "해당 선생님의 요청이 삭제되었습니다" -> refreshAdapter(true)
             }
         }
-
-        binding.recyclerViewManageClassroomRequest.layoutManager = LinearLayoutManager(requireContext())
 
         refreshAdapter(false)
     }

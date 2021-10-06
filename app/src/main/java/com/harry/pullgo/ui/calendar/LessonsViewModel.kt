@@ -33,7 +33,7 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewMo
 
     fun requestStudentLessons(id: Long){
         CoroutineScope(Dispatchers.IO).launch {
-            lessonsRepository.getStudentLessons(id).let{ response ->
+            lessonsRepository.getStudentLessonsOnMonth(id).let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
                         _allLessonRepositories.postValue(it)
@@ -45,7 +45,7 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewMo
 
     fun requestTeacherLessons(id: Long){
         CoroutineScope(Dispatchers.IO).launch {
-            lessonsRepository.getTeacherLessons(id).let{ response ->
+            lessonsRepository.getTeacherLessonsOnMonth(id).let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
                         _allLessonRepositories.postValue(it)
@@ -57,7 +57,7 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewMo
 
     fun requestStudentLessonOnDate(id: Long, date: String){
         CoroutineScope(Dispatchers.IO).launch {
-            lessonsRepository.getStudentLessonOnDate(id,date).let{ response ->
+            lessonsRepository.getStudentLessonsOnDate(id,date).let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
                         _dayLessonsRepositories.postValue(it)
@@ -69,7 +69,7 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewMo
 
     fun requestTeacherLessonOnDate(id: Long, date: String){
         CoroutineScope(Dispatchers.IO).launch {
-            lessonsRepository.getTeacherLessonOnDate(id,date).let{ response ->
+            lessonsRepository.getTeacherLessonsOnDate(id,date).let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
                         _dayLessonsRepositories.postValue(it)

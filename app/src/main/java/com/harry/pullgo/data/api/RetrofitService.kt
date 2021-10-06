@@ -65,7 +65,7 @@ interface RetrofitService {
 
     @GET("academy/classroom/lessons/")
     suspend fun getTeacherLessonsByDate(@Query("teacherId")teacherId: Long, @Query("sinceDate")sinceDate: String,
-                                        @Query("untilDate")untilDate:String): Response<List<Lesson>>
+                                        @Query("untilDate")untilDate:String, @Query("size")size: Int): Response<List<Lesson>>
     @GET("academies/")
     suspend fun getTeacherApplyingAcademies(@Query("applyingTeacherId")teacherId: Long): Response<List<Academy>>
 
@@ -146,7 +146,7 @@ interface RetrofitService {
 
     @GET("academy/classroom/lessons/")
     suspend fun getStudentLessonsByDate(@Query("studentId")studentId: Long, @Query("sinceDate")sinceDate: String,
-                                        @Query("untilDate")untilDate:String): Response<List<Lesson>>
+                                        @Query("untilDate")untilDate:String, @Query("size")size: Int): Response<List<Lesson>>
 
     @DELETE("academy/classrooms/{id}/")
     fun deleteClassroom(@Path("id")classroomId: Long): Call<Unit>
@@ -208,4 +208,11 @@ interface RetrofitService {
 
     @GET("exams/")
     suspend fun getStudentExamsDesc(@Query("id,desc")studentId: Long, @Query("sort")sort: String): Response<List<Exam>>
+
+    @GET("exams")
+    suspend fun getClassroomExams(@Query("classroomId")classroomId: Long): Response<List<Exam>>
+
+
+    @POST("exams/")
+    fun createExam(@Body exam: Exam): Call<Unit>
 }

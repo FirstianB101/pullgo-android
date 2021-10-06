@@ -7,7 +7,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewManageClassroomExams"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButtonManageClassroomExams"
@@ -16,5 +17,17 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="24dp"
         app:srcCompat="@drawable/ic_plus_white"/>
+
+    <TextView
+        android:id="@+id/textViewManageClassroomNoExam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:text="@string/comment_no_exam"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical|center_horizontal"/>
 
 </FrameLayout>

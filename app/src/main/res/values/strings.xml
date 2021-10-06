@@ -41,6 +41,8 @@
     <string name="comment_find_pw_success">임시 비밀번호가 전송되었습니다\n로그인 후 비밀번호를 변경해 주세요</string>
     <string name="comment_no_people">소속된 인원이 없습니다</string>
     <string name="comment_select_date">날짜를 선택하세요</string>
+    <string name="comment_select_start_date">시작 날짜를 선택하세요</string>
+    <string name="comment_select_end_date">종료 날짜를 선택하세요</string>
     <string name="comment_input_password_for_edit_person_info">정보 수정을 위해 비밀번호를 입력해 주세요</string>
     <string name="comment_input_password">비밀번호를 입력해주세요</string>
     <string name="comment_select_begin_time">시작 시간을 선택하세요</string>
@@ -48,6 +50,7 @@
     <string name="comment_input_lesson_name">수업 이름을 입력하세요</string>
     <string name="comment_no_applied_classroom">가입된 반이 없습니다!</string>
     <string name="comment_no_applied_students_in_classroom">반에 속한 학생이 없습니다</string>
+    <string name="comment_no_applied_teachers_in_classroom">반에 속한 선생님이 없습니다</string>
     <string name="comment_input_id">아이디를 입력해주세요</string>
     <string name="comment_re_input_password">비밀번호를 다시 입력해주세요</string>
     <string name="comment_input_person_info">원활한 이용을 위해 정확한 정보를 입력해주세요</string>
@@ -61,6 +64,10 @@
     <string name="comment_select_academy">학원을 선택하세요</string>
     <string name="comment_select_teacher">선생님을 선택하세요</string>
     <string name="comment_input_classroom_name">반 이름을 입력하세요</string>
+    <string name="comment_input_exam_name">시험 이름을 입력하세요</string>
+    <string name="comment_input_exam_time_limit">제한 시간을 입력하세요</string>
+    <string name="comment_input_exam_standard_score">기준 점수를 입력하세요</string>
+    <string name="comment_no_exam">현재 생성된 시험이 없습니다</string>
 
     <string name="create_academy">학원 개설</string>
     <string name="academy_name">학원 이름</string>
@@ -91,6 +98,11 @@
     <string name="end_time">종료 시간</string>
     <string name="edit">수정하기</string>
     <string name="delete">삭제하기</string>
+
+    <string name="exam_name">시험 이름</string>
+    <string name="exam_time_limit">제한 시간</string>
+    <string name="exam_standard_score">기준 점수</string>
+    <string name="create_exam">시험 생성</string>
 
     <string name="full_name">이름</string>
     <string name="user_name">아이디</string>

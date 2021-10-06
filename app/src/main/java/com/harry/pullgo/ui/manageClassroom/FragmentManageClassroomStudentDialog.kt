@@ -26,19 +26,6 @@ class FragmentManageClassroomStudentDialog(
         ManageClassroomRepository(requireContext())
     )}
 
-    override fun onStart() {
-        super.onStart()
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
         initialize()
@@ -48,8 +35,8 @@ class FragmentManageClassroomStudentDialog(
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         return _dialog
     }
 
@@ -64,14 +51,7 @@ class FragmentManageClassroomStudentDialog(
 
     private fun setListeners(){
         binding.buttonManageClassroomKickStudent.setOnClickListener {
-            val dialog = TwoButtonDialog(requireContext())
-            dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
-                override fun onLeftClicked() {
-                    viewModel.kickStudentFromClassroom(selectedClassroom.id!!,selectedStudent.id!!)
-                }
-            }
-            dialog.start("학생 제외","${selectedStudent.account?.fullName}(${selectedStudent.account?.username}) 학생을 반에서 제외하시겠습니까?",
-                "제외하기","취소")
+            showKickStudentDialog()
         }
     }
 
@@ -83,6 +63,17 @@ class FragmentManageClassroomStudentDialog(
                 dismiss()
             }
         }
+    }
+
+    private fun showKickStudentDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                viewModel.kickStudentFromClassroom(selectedClassroom.id!!,selectedStudent.id!!)
+            }
+        }
+        dialog.start("학생 제외","${selectedStudent.account?.fullName}(${selectedStudent.account?.username}) 학생을 반에서 제외하시겠습니까?",
+            "제외하기","취소")
     }
 
     companion object {

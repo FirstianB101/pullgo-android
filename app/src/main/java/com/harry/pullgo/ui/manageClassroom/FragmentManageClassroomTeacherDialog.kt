@@ -6,13 +6,16 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogManageClassroomTeacherInfoBinding
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 
 class FragmentManageClassroomTeacherDialog(
     private val selectedTeacher: Teacher,
@@ -20,20 +23,9 @@ class FragmentManageClassroomTeacherDialog(
 ): DialogFragment() {
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by activityViewModels()
-
-    override fun onStart() {
-        super.onStart()
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        }
-    }
+    private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(
+        ManageClassroomRepository(requireContext())
+    )}
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -44,7 +36,8 @@ class FragmentManageClassroomTeacherDialog(
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         return _dialog
     }
@@ -57,32 +50,29 @@ class FragmentManageClassroomTeacherDialog(
 
     private fun setListeners(){
         binding.buttonManageClassroomKickTeacher.setOnClickListener {
-            //kickTeacher()
+            showKickTeacherDialog()
         }
     }
 
     private fun initViewModel(){
-        
+        viewModel.kickMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it, Toast.LENGTH_SHORT).show()
+            if(it == "해당 선생님을 반에서 제외시켰습니다"){
+                viewModel.requestGetTeachersAppliedClassroom(selectedClassroom.id!!)
+                dismiss()
+            }
+        }
     }
 
-    private fun kickTeacher(){
-        /*
-        client.kickStudentFromClassroom(selectedClassroom.id!!, selectedStudent.id!!).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if(response.isSuccessful){
-                    Toast.makeText(requireContext(),"해당 선생님을 반에서 제외시켰습니다",Toast.LENGTH_SHORT).show()
-                    viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
-                    dismiss()
-                }else{
-                    Toast.makeText(requireContext(),"해당 반에 존재하지 않는 학생입니다",Toast.LENGTH_SHORT).show()
-                }
+    private fun showKickTeacherDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                viewModel.kickTeacherFromClassroom(selectedClassroom.id!!,selectedTeacher.id!!)
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                Toast.makeText(requireContext(),"서버와 연결에 실패했습니다",Toast.LENGTH_SHORT).show()
-            }
-        })
-         */
+        }
+        dialog.start("선생님 제외","${selectedTeacher.account?.fullName}(${selectedTeacher.account?.username}) 선생님을 반에서 제외하시겠습니까?",
+            "제외하기","취소")
     }
 
     companion object {

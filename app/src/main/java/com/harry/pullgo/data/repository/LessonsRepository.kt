@@ -12,22 +12,50 @@ import java.util.*
 class LessonsRepository(context: Context) {
     private val lessonClient = RetrofitClient.getApiService(RetrofitService::class.java, LoginInfo.user?.token,context)
 
+    val MAX_LESSONS = 100
+
     suspend fun getStudentLessons(id: Long) = lessonClient.getLessonsByStudentId(id)
     suspend fun getTeacherLessons(id: Long) = lessonClient.getLessonsByTeacherId(id)
 
-    suspend fun getStudentLessonOnDate(id: Long, date: String): Response<List<Lesson>> {
+    suspend fun getStudentLessonsOnDate(id: Long, date: String): Response<List<Lesson>> {
         val cal = Calendar.getInstance()
         val df = SimpleDateFormat("yyyy-MM-dd")
         cal.time = df.parse(date)
         cal.add(Calendar.DATE,1)
-        return lessonClient.getStudentLessonsByDate(id,date,df.format(cal.time))
+        return lessonClient.getStudentLessonsByDate(id,date,df.format(cal.time),MAX_LESSONS)
     }
-    suspend fun getTeacherLessonOnDate(id: Long, date: String): Response<List<Lesson>> {
+
+    suspend fun getTeacherLessonsOnDate(id: Long, date: String): Response<List<Lesson>> {
         val cal = Calendar.getInstance()
         val df = SimpleDateFormat("yyyy-MM-dd")
         cal.time = df.parse(date)
         cal.add(Calendar.DATE,1)
-        return lessonClient.getTeacherLessonsByDate(id,date,df.format(cal.time))
+        return lessonClient.getTeacherLessonsByDate(id,date,df.format(cal.time),MAX_LESSONS)
+    }
+
+    //현재 날짜 앞뒤 30일 레슨들
+    suspend fun getStudentLessonsOnMonth(id: Long): Response<List<Lesson>>{
+        val cal = Calendar.getInstance()
+        val df = SimpleDateFormat("yyyy-MM-dd")
+        val today = df.format(cal.time)
+        cal.time = df.parse(today)
+        cal.add(Calendar.DATE,-30)
+        val start = df.format(cal.time)
+        cal.add(Calendar.DATE,60)
+        val end = df.format(cal.time)
+        return lessonClient.getStudentLessonsByDate(id,start,end,MAX_LESSONS)
+    }
+
+    suspend fun getTeacherLessonsOnMonth(id: Long): Response<List<Lesson>>{
+        val cal = Calendar.getInstance()
+        val df = SimpleDateFormat("yyyy-MM-dd")
+        val today = df.format(cal.time)
+        cal.time = df.parse(today)
+        cal.add(Calendar.DATE,-30)
+        val start = df.format(cal.time)
+        cal.add(Calendar.DATE,60)
+        val end = df.format(cal.time)
+        return lessonClient.getTeacherLessonsByDate(id,start,end,MAX_LESSONS)
     }
 
     suspend fun getClassroomSuchLesson(classroomId: Long) = lessonClient.getClassroomById(classroomId)
