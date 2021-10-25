@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
@@ -20,12 +21,13 @@ import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogCreateExamBinding
+import com.harry.pullgo.databinding.DialogExamInfoBinding
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.time.Duration
 
-class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFragment() {
-    private val binding by lazy{DialogCreateExamBinding.inflate(layoutInflater)}
+class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
+    private val binding by lazy{DialogExamInfoBinding.inflate(layoutInflater)}
 
     private lateinit var beginDatePicker: MaterialDatePicker<Long>
     private lateinit var endDatePicker: MaterialDatePicker<Long>
@@ -48,11 +50,13 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
+        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun initialize(){
         beginDatePicker = MaterialDatePicker.Builder.datePicker()
             .setTheme(R.style.ThemeOverlay_App_DatePicker)
@@ -81,24 +85,37 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
         }
 
         beginTimePicker.addOnPositiveButtonClickListener {
-            binding.spinnerTextViewSelectStartTime.setText(String.format("%02d:%02d",beginTimePicker.hour,beginTimePicker.minute))
+            binding.spinnerTextViewSelectStartTime.setText("${beginTimePicker.hour}:${beginTimePicker.minute}")
         }
 
         endTimePicker.addOnPositiveButtonClickListener {
-            binding.spinnerTextViewSelectEndTime.setText(String.format("%02d:%02d",endTimePicker.hour,endTimePicker.minute))
+            binding.spinnerTextViewSelectEndTime.setText("${endTimePicker.hour}:${endTimePicker.minute}")
         }
+
+        binding.textExamName.setText(selectedExam.name)
+        binding.textExamStandardScore.setText(selectedExam.passScore.toString())
+        binding.textExamTimeLimit.setText(translatePTFormat(selectedExam.timeLimit!!))
+        val beginDateTime = selectedExam.beginDateTime?.split('T')
+        binding.spinnerTextViewSelectStartDate.setText(beginDateTime?.get(0))
+        binding.spinnerTextViewSelectStartTime.setText(beginDateTime?.get(1))
+        val endDateTime = selectedExam.endDateTime?.split('T')
+        binding.spinnerTextViewSelectEndDate.setText(endDateTime?.get(0))
+        binding.spinnerTextViewSelectEndTime.setText(endDateTime?.get(1))
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setListeners(){
-        binding.buttonCreateNewExam.setOnClickListener {
+        binding.buttonEditExam.setOnClickListener {
             if(isAllTextWritten()){
-                createExam()
+                editExam()
             }
         }
 
-        binding.buttonCancelCreateExam.setOnClickListener {
-            dismiss()
+        binding.buttonFinishExam.setOnClickListener {
+
+        }
+
+        binding.buttonCancelExam.setOnClickListener {
+
         }
 
         binding.spinnerTextViewSelectStartDate.setOnClickListener {
@@ -119,28 +136,11 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
     }
 
     private fun initViewModel(){
-        viewModel.manageExamMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "시험이 생성되었습니다"){
-                parentFragment?.setFragmentResult("isCreatedExam", bundleOf("isCreated" to "yes"))
-                dismiss()
-            }
-        }
+
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createExam(){
-        val examName = binding.textExamName.text.toString()
-        val beginDateTime = binding.spinnerTextViewSelectStartDate.text.toString() + 'T' +
-                String.format("%02d:%02d:00",beginTimePicker.hour,beginTimePicker.minute)
-        val endDateTime = binding.spinnerTextViewSelectEndDate.text.toString() + 'T' +
-                String.format("%02d:%02d:00",endTimePicker.hour,endTimePicker.minute)
-        val timeLimit = Duration.ofMinutes(binding.textExamTimeLimit.text.toString().toLong()).toString()
-        val passScore = binding.textExamStandardScore.text.toString().toInt()
+    private fun editExam(){
 
-        val newExam = Exam(selectedClassroomId, LoginInfo.user?.teacher?.id, examName, beginDateTime, endDateTime,
-                            timeLimit,passScore,false,false)
-        viewModel.createExam(newExam)
     }
 
     private fun isAllTextWritten() = binding.textExamName.text!!.isNotEmpty() &&
@@ -155,5 +155,11 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
         val pattern = "yyyy-MM-dd"
         val formatter = SimpleDateFormat(pattern)
         return formatter.format(Timestamp(mills))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun translatePTFormat(time: String): String{
+        val duration = Duration.parse(time)
+        return duration.toMinutes().toString()
     }
 }

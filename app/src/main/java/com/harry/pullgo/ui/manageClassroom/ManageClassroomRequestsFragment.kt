@@ -7,22 +7,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
@@ -82,7 +76,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
         }
 
         if (adapter != null) {
-            adapter.studentClickListenerListener = object: OnStudentClickListener {
+            adapter.studentClickListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
                     val dialog = FragmentShowStudentInfoDialog(student!!)
                     dialog.show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
@@ -110,7 +104,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
         }
 
         if (adapter != null) {
-            adapter.teacherClickListenerListener = object: OnTeacherClickListener{
+            adapter.teacherClickListener = object: OnTeacherClickListener{
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
                 }
 

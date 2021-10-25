@@ -70,11 +70,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="@dimen/date_pick_spinner_width"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:hint="@string/comment_select_date"
             app:endIconMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textViewSelectDate"
-            app:layout_constraintTop_toBottomOf="@+id/layoutCreateLessonSelectClassroom">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/spinnerTextViewSelectDate"

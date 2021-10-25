@@ -134,7 +134,6 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
         intent.putExtra("finishedFragment","editClassroom")
         requireActivity().setResult(Activity.RESULT_OK,intent)
         requireActivity().finish()
-        Toast.makeText(requireActivity().applicationContext,"반을 삭제했습니다",Toast.LENGTH_SHORT).show()
     }
 
     private val watcher=object: TextWatcher {

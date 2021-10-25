@@ -13,6 +13,7 @@ import com.harry.pullgo.data.adapter.LessonAdapter
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.api.OnLessonClickListener
 import com.harry.pullgo.data.models.Lesson
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBottomSheetBinding
@@ -49,6 +50,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     private fun setViewModel(){
         viewModel.dayLessonsRepositories.observe(requireActivity()){
             showLessons()
+            LoadingDialog.dialog.dismiss()
         }
 
         if(LoginInfo.user?.teacher != null){
@@ -57,9 +59,12 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
             viewModel.requestStudentLessonOnDate(LoginInfo.user?.student?.id!!,selectedDate)
         }
 
+        LoadingDialog.dialog.show(childFragmentManager, LoadingDialog.loadingDialogStr)
+
         setFragmentResultListener("isLessonPatched"){ _, bundle ->
             if(bundle.getString("Patched") == "yes"){
                 viewModel.requestTeacherLessonOnDate(LoginInfo.user?.teacher?.id!!,selectedDate)
+                LoadingDialog.dialog.show(childFragmentManager, LoadingDialog.loadingDialogStr)
             }
         }
     }
@@ -69,13 +74,13 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
         val adapter = LessonAdapter(lessons!!)
 
         if(LoginInfo.user?.student != null){ // student
-            adapter.itemClickListenerListener = object: OnLessonClickListener{
+            adapter.itemClickListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     FragmentLessonInfoDialog(lesson!!).show(childFragmentManager, FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG)
                 }
             }
         }else if(LoginInfo.user?.teacher != null){ // teacher
-            adapter.itemClickListenerListener = object: OnLessonClickListener{
+            adapter.itemClickListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     val dialog = FragmentLessonInfoManageDialog(lesson!!)
                     dialog.calendarResetListenerListener = calendarResetListenerListener

@@ -61,7 +61,7 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
     private fun displayStudents(students: List<Student>){
         val studentAdapter = StudentAdapter(students)
 
-        studentAdapter.studentClickListenerListener = object: OnStudentClickListener {
+        studentAdapter.studentClickListener = object: OnStudentClickListener {
             override fun onBackgroundClick(view: View, student: Student?) {
                 FragmentManageClassroomStudentDialog(student!!,selectedClassroom)
                     .show(parentFragmentManager, FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)

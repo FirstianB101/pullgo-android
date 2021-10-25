@@ -14,6 +14,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
@@ -85,6 +86,7 @@ class TeacherManageClassroomFragment: Fragment() {
         }
 
         viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
+        LoadingDialog.dialog.show(childFragmentManager,LoadingDialog.loadingDialogStr)
     }
 
     private fun displayClassrooms(){
@@ -106,6 +108,7 @@ class TeacherManageClassroomFragment: Fragment() {
         hideLayout(data?.isEmpty() == true)
 
         binding.recyclerViewManageClassroom.adapter = classroomAdapter
+        LoadingDialog.dialog.dismiss()
     }
 
     private fun startManageClassroomActivity(){

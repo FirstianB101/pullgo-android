@@ -11,6 +11,7 @@ import com.harry.pullgo.data.adapter.AcademyAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClickListener
 import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -18,7 +19,6 @@ import com.harry.pullgo.ui.dialog.TwoButtonDialog
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
     private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository(applicationContext))}
-    private var selectedAcademy: Academy? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +41,19 @@ class FindAcademyActivity : AppCompatActivity() {
     private fun initViewModel(){
         viewModel.findAcademyRepositories.observe(this){
             displayAcademies()
+            LoadingDialog.dialog.dismiss()
         }
 
         viewModel.requestMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+            LoadingDialog.dialog.dismiss()
         }
     }
 
     private fun setListeners(){
         binding.buttonFindAcademySearch.setOnClickListener {
             viewModel.requestGetAcademies(binding.searchTextFindAcademy.text.toString())
+            LoadingDialog.dialog.show(supportFragmentManager, LoadingDialog.loadingDialogStr)
         }
 
         binding.floatingActionButtonMakeAcademy.setOnClickListener {
@@ -69,7 +72,6 @@ class FindAcademyActivity : AppCompatActivity() {
         if (academyAdapter != null) {
             academyAdapter.itemClickListener = object: OnAcademyClickListener {
                 override fun onAcademyClick(view: View,academy: Academy?) {
-                    selectedAcademy = academy
                     showApplyRequestDialog(academy)
                 }
             }
@@ -81,7 +83,7 @@ class FindAcademyActivity : AppCompatActivity() {
         val dialog = TwoButtonDialog(this)
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
             override fun onLeftClicked() {
-                sendAcceptRequest(selectedAcademy?.id)
+                sendAcceptRequest(academy?.id)
             }
         }
         dialog.start("${academy?.name}","${academy?.address}","가입 요청","취소")

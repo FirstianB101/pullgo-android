@@ -1,6 +1,7 @@
 package com.harry.pullgo.ui.manageAcademy
 
 import android.app.Dialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,12 +17,7 @@ import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.DialogKickPersonBinding
 
-
-class FragmentKickStudentDialog(
-    private val selectedStudent: Student,
-    private val academyName: String?,
-    private val academyId: Long
-    ): DialogFragment() {
+class FragmentKickStudentDialog(private val selectedStudent: Student, private val academyName: String?, val academyId: Long): DialogFragment() {
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
     private var dataChangedListener: OnDataChangedListener? = null
@@ -30,18 +26,9 @@ class FragmentKickStudentDialog(
         ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext()))
     }
 
-    override fun onStart() {
-        super.onStart()
-        dataChangedListener = requireActivity() as OnDataChangedListener
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataChangedListener = activity as OnDataChangedListener
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -53,7 +40,8 @@ class FragmentKickStudentDialog(
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
     }
@@ -77,7 +65,7 @@ class FragmentKickStudentDialog(
         viewModel.kickPersonMessage.observe(requireActivity()){
             Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
             if(it == "학생을 제외했습니다"){
-                dataChangedListener?.onChangeData(false,true)
+                dataChangedListener?.onChangeData(false)
                 dismiss()
             }
         }
@@ -88,11 +76,7 @@ class FragmentKickStudentDialog(
     }
 }
 
-class FragmentKickTeacherDialog(
-    private val selectedTeacher: Teacher,
-    private val academyName: String?,
-    private val academyId: Long
-    ): DialogFragment() {
+class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private val academyName: String?, private val academyId: Long): DialogFragment() {
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
     private var dataChangedListener: OnDataChangedListener? = null
@@ -101,18 +85,9 @@ class FragmentKickTeacherDialog(
         ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext()))
     }
 
-    override fun onStart() {
-        super.onStart()
-        dataChangedListener = requireActivity() as OnDataChangedListener
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataChangedListener = activity as OnDataChangedListener
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -124,7 +99,8 @@ class FragmentKickTeacherDialog(
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
     }
@@ -148,7 +124,7 @@ class FragmentKickTeacherDialog(
         viewModel.kickPersonMessage.observe(requireActivity()){
             Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
             if(it == "선생님을 제외했습니다"){
-                dataChangedListener?.onChangeData(true,true)
+                dataChangedListener?.onChangeData(true)
                 dismiss()
             }
         }

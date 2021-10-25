@@ -11,12 +11,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.models.Student
@@ -25,9 +23,6 @@ import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
@@ -126,7 +121,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
 
         if (adapter != null) {
-            adapter.studentClickListenerListener = object: OnStudentClickListener {
+            adapter.studentClickListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
                    FragmentShowStudentInfoDialog(student!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
@@ -153,7 +148,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         }
 
         if (adapter != null) {
-            adapter.teacherClickListenerListener = object: OnTeacherClickListener {
+            adapter.teacherClickListener = object: OnTeacherClickListener {
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
                     FragmentShowTeacherInfoDialog(teacher!!).show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }

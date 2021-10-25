@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnCalendarResetListener
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.ui.lesson.FragmentCreateNewLessonDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
@@ -33,6 +34,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     private fun setViewModel(){
         viewModel.allLessonsRepositories.observe(requireActivity()){
             makeDots()
+            LoadingDialog.dialog.dismiss()
         }
 
         if(LoginInfo.user?.teacher != null){
@@ -40,6 +42,8 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         }else if(LoginInfo.user?.student != null){
             viewModel.requestStudentLessons(LoginInfo.user?.student?.id!!)
         }
+
+        LoadingDialog.dialog.show(childFragmentManager, LoadingDialog.loadingDialogStr)
     }
 
     private fun setListeners(){
@@ -47,9 +51,8 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             FragmentCreateNewLessonDialog().show(childFragmentManager,FragmentCreateNewLessonDialog.TAG_CREATE_NEW_LESSON_DIALOG)
         }
 
-        if(LoginInfo.user?.teacher == null){
+        if(LoginInfo.user?.teacher == null)
             binding.floatingActionButtonCalendar.visibility = FloatingActionButton.GONE
-        }
     }
 
     private fun initializeCalendar(){
@@ -66,6 +69,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         setFragmentResultListener("isMadeNewLesson"){ _, bundle ->
             if(bundle.getString("isMade") == "yes"){
                 viewModel.requestTeacherLessons(LoginInfo.user?.teacher?.id!!)
+                LoadingDialog.dialog.show(childFragmentManager, LoadingDialog.loadingDialogStr)
             }
         }
     }

@@ -23,6 +23,9 @@ class ManageClassroomRepository(context: Context) {
     fun editClassroom(classroomId: Long, classroom: Classroom) = manageClassroomClient.editClassroom(classroomId, classroom)
     fun deleteClassroom(classroomId: Long) = manageClassroomClient.deleteClassroom(classroomId)
     fun createExam(exam: Exam) = manageClassroomClient.createExam(exam)
+    fun removeExam(examId: Long) = manageClassroomClient.removeExam(examId)
+    fun cancelExam(examId: Long) = manageClassroomClient.cancelExam(examId)
+    fun finishExam(examId: Long) = manageClassroomClient.finishExam(examId)
 
     fun acceptStudent(classroomId: Long, studentId: Long) = manageClassroomClient.acceptStudentApplyClassroom(classroomId, studentId)
     fun acceptTeacher(classroomId: Long, teacherId: Long) = manageClassroomClient.acceptTeacherApplyClassroom(classroomId, teacherId)

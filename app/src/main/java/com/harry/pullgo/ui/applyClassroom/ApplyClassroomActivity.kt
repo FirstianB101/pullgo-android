@@ -14,6 +14,7 @@ import com.harry.pullgo.data.adapter.ClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
 import com.harry.pullgo.databinding.ActivityRequestApplyClassroomBinding
@@ -41,14 +42,17 @@ class ApplyClassroomActivity : AppCompatActivity() {
     private fun initViewModel(){
         viewModel.appliedAcademiesRepository.observe(this){
             setSpinnerItems()
+            LoadingDialog.dialog.dismiss()
         }
 
         viewModel.applyClassroomsRepositories.observe(this){
             displayClassrooms()
+            LoadingDialog.dialog.dismiss()
         }
 
         viewModel.appliedClassroomsMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+            LoadingDialog.dialog.dismiss()
         }
 
         if(LoginInfo.user?.teacher != null) {
@@ -56,6 +60,8 @@ class ApplyClassroomActivity : AppCompatActivity() {
         }else if(LoginInfo.user?.student != null){
             viewModel.requestStudentAppliedAcademies(LoginInfo.user?.student?.id!!)
         }
+
+        LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
     }
 
     private fun initialize(){
@@ -65,6 +71,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
         binding.buttonApplyClassroomSearch.setOnClickListener {
             val searchName = binding.applyClassroomSearchText.text.toString()
             viewModel.requestGetClassrooms(selectedAcademy?.id!!,searchName)
+            LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
         }
     }
 

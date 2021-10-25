@@ -10,7 +10,7 @@ import com.harry.pullgo.databinding.LayoutManageAcademyPeopleItemBinding
 
 class TeacherManageAdapter(private val dataSet: List<Teacher>):
     RecyclerView.Adapter<TeacherManageAdapter.ViewHolder>(){
-    var teacherClickListenerListener: OnTeacherClickListener? = null
+    var teacherClickListener: OnTeacherClickListener? = null
 
     class ViewHolder(val binding: LayoutManageAcademyPeopleItemBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -23,10 +23,10 @@ class TeacherManageAdapter(private val dataSet: List<Teacher>):
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.teacher = dataSet[position]
         holder.itemView.setOnClickListener {
-            teacherClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
+            teacherClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
         holder.binding.buttonManagePeopleKick.setOnClickListener {
-            teacherClickListenerListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
+            teacherClickListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
         }
     }
 

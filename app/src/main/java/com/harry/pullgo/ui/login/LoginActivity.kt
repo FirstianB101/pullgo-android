@@ -68,6 +68,7 @@ class LoginActivity: AppCompatActivity(){
             if(studentAcademies?.isNotEmpty() == true)
                 mainIntent.putExtra("appliedAcademyExist",true)
 
+            LoadingDialog.dialog.dismiss()
             startActivity(mainIntent)
         }
 
@@ -79,6 +80,7 @@ class LoginActivity: AppCompatActivity(){
             if(teacherAcademies?.isNotEmpty() == true)
                 mainIntent.putExtra("appliedAcademyExist",true)
 
+            LoadingDialog.dialog.dismiss()
             startActivity(mainIntent)
         }
 
@@ -106,13 +108,13 @@ class LoginActivity: AppCompatActivity(){
 
     private fun setClickListeners(){
         binding.buttonSignUp.setOnClickListener {
-            val intent=Intent(applicationContext, SignUpActivity::class.java)
+            val intent = Intent(applicationContext, SignUpActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(intent)
         }
 
         binding.buttonFindAccount.setOnClickListener {
-            val intent=Intent(applicationContext, FindAccountActivity::class.java)
+            val intent = Intent(applicationContext, FindAccountActivity::class.java)
             startActivity(intent)
         }
 

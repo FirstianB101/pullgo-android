@@ -60,8 +60,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         changeInfoViewModel.changeStudent.observe(this){
             changeInfoViewModel.changeStudentInfo(it.id!!,it)
             LoginInfo.user?.student = it
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${it.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text="${it.account?.username}"
+            headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.account?.fullName}님"
+            headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.account?.username}"
             onFragmentSelected(CALENDAR)
         }
 
@@ -195,7 +195,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun startFindAcademyActivity(){
-        val intent= Intent(applicationContext, FindAcademyActivity::class.java)
+        val intent = Intent(applicationContext, FindAcademyActivity::class.java)
         intent.putExtra("calledByStudent",true)
         startActivity(intent)
     }

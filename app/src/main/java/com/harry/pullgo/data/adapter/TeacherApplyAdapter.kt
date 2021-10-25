@@ -11,7 +11,7 @@ import com.harry.pullgo.databinding.LayoutApplyItemBinding
 
 class TeacherApplyAdapter(private val dataSet: List<Teacher>, private val showRemoveButton: Boolean):
     RecyclerView.Adapter<TeacherApplyAdapter.ViewHolder>(){
-    var teacherClickListenerListener: OnTeacherClickListener? = null
+    var teacherClickListener: OnTeacherClickListener? = null
 
     class ViewHolder(val binding: LayoutApplyItemBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -24,16 +24,16 @@ class TeacherApplyAdapter(private val dataSet: List<Teacher>, private val showRe
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.teacher = dataSet[position]
         holder.itemView.setOnClickListener {
-            teacherClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
+            teacherClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
         holder.binding.buttonApplyItemApply.setOnClickListener {
-            teacherClickListenerListener?.onApplyButtonClick(holder.itemView,dataSet[position])
+            teacherClickListener?.onApplyButtonClick(holder.itemView,dataSet[position])
         }
 
         if(showRemoveButton){
             holder.binding.buttonApplyItemRemove.visibility = View.VISIBLE
             holder.binding.buttonApplyItemRemove.setOnClickListener {
-                teacherClickListenerListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
+                teacherClickListener?.onRemoveButtonClick(holder.itemView,dataSet[position])
             }
         }
     }

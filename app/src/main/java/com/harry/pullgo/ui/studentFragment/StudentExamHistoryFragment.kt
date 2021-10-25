@@ -71,9 +71,15 @@ class StudentExamHistoryFragment : Fragment(){
         }
 
         if (examsAdapter != null) {
-            examsAdapter.itemClickListenerListener = object: OnExamClickListener {
+            examsAdapter.itemClickListener = object: OnExamClickListener {
                 override fun onExamClick(view: View, exam: Exam?) {
                     selectedExam = exam
+                }
+
+                override fun onRemoveButtonClick(view: View, exam: Exam?) {
+                }
+
+                override fun onTakeExamStatusClick(view: View, exam: Exam?) {
                 }
             }
         }

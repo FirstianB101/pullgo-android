@@ -12,6 +12,8 @@ import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.objects.LoadingDialog
+import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
@@ -42,13 +44,6 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
             binding.textViewManageAcademyManagePeopleSwitch.text = if(isChecked) "선생님" else "학생"
             refreshAdapter(isChecked)
         }
-
-        supportFragmentManager.setFragmentResultListener("isKickedPerson",this){ _, bundle ->
-            if(bundle.getString("isKicked") == "yes"){
-                refreshAdapter(false)
-                refreshAdapter(true)
-            }
-        }
     }
 
     private fun initViewModel(){
@@ -71,7 +66,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
         }
 
         if (adapter != null) {
-            adapter.studentClickListenerListener = object: OnStudentClickListener {
+            adapter.studentClickListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
                     FragmentShowStudentInfoDialog(student!!)
                         .show(supportFragmentManager,FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
@@ -88,6 +83,8 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
         }
         binding.recyclerViewManageAcademyManagePeople.adapter = adapter
 
+        LoadingDialog.dialog.dismiss()
+
         showNoResultText(data?.isEmpty() == true)
     }
 
@@ -99,7 +96,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
         }
 
         if (adapter != null) {
-            adapter.teacherClickListenerListener = object: OnTeacherClickListener {
+            adapter.teacherClickListener = object: OnTeacherClickListener {
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
                     FragmentShowTeacherInfoDialog(teacher!!)
                         .show(supportFragmentManager,FragmentShowTeacherInfoDialog.TAG_TEACHER_INFO_DIALOG)
@@ -116,10 +113,13 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
         }
         binding.recyclerViewManageAcademyManagePeople.adapter = adapter
 
+        LoadingDialog.dialog.dismiss()
+
         showNoResultText(data?.isEmpty() == true)
     }
 
     private fun refreshAdapter(isTeacher: Boolean){
+        LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
         if(isTeacher)
             viewModel.getTeachersAtAcademy(selectedAcademyId)
         else
@@ -133,9 +133,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
             binding.textViewManagePeopleNoPeople.visibility = View.GONE
     }
 
-    override fun onChangeData(isTeacher: Boolean, isChanged: Boolean) {
-        if(isChanged){
-            refreshAdapter(isTeacher)
-        }
+    override fun onChangeData(isTeacher: Boolean) {
+        refreshAdapter(isTeacher)
     }
 }

@@ -13,6 +13,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Exam
+import com.harry.pullgo.data.objects.LoadingDialog
 import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.databinding.FragmentStudentExamListBinding
@@ -61,6 +62,7 @@ class StudentExamListFragment : Fragment(){
             1 -> viewModel.requestExamsByBeginDate(LoginInfo.user?.student?.id!!)
             2 -> viewModel.requestExamsByEndDate(LoginInfo.user?.student?.id!!)
         }
+        LoadingDialog.dialog.show(childFragmentManager,LoadingDialog.loadingDialogStr)
     }
 
     private fun displayExams(){
@@ -71,12 +73,19 @@ class StudentExamListFragment : Fragment(){
         }
 
         if (examsAdapter != null) {
-            examsAdapter.itemClickListenerListener = object: OnExamClickListener {
+            examsAdapter.itemClickListener = object: OnExamClickListener {
                 override fun onExamClick(view: View, exam: Exam?) {
                     selectedExam = exam
+                }
+
+                override fun onRemoveButtonClick(view: View, exam: Exam?) {
+                }
+
+                override fun onTakeExamStatusClick(view: View, exam: Exam?) {
                 }
             }
         }
         binding.recyclerViewExamList.adapter = examsAdapter
+        LoadingDialog.dialog.dismiss()
     }
 }

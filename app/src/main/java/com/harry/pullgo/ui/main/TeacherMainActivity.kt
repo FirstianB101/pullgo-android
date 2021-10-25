@@ -62,8 +62,8 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         changeInfoViewModel.changeTeacher.observe(this){
             changeInfoViewModel.changeTeacherInfo(it.id!!,it)
             LoginInfo.user?.teacher = it
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${it.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text="${it.account?.username}"
+            headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.account?.fullName}님"
+            headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.account?.username}"
             onFragmentSelected(CALENDAR)
         }
 

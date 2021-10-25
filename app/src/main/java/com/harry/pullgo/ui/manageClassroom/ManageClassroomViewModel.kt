@@ -33,6 +33,7 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
     private val _examsWithinClassroom = MutableLiveData<List<Exam>>()
     val examsWithinClassroom: LiveData<List<Exam>> = _examsWithinClassroom
 
+
     private val _createClassroomMessage = MutableLiveData<String>()
     val createClassroomMessage: LiveData<String> = _createClassroomMessage
 
@@ -45,8 +46,12 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
     private val _manageRequestMessage = MutableLiveData<String>()
     val manageRequestMessage: LiveData<String> = _manageRequestMessage
 
-    private val _createExamMessage = MutableLiveData<String>()
-    val createExamMessage: LiveData<String> = _createExamMessage
+    private val _manageExamMessage = MutableLiveData<String>()
+    val manageExamMessage: LiveData<String> = _manageExamMessage
+
+    private val _cancelOrFinishMessage = MutableLiveData<String>()
+    val cancelOrFinishMessage = _cancelOrFinishMessage
+
 
     fun requestGetStudentsAppliedClassroom(classroomId: Long){
         CoroutineScope(Dispatchers.IO).launch {
@@ -256,14 +261,62 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
         repository.createExam(exam).enqueue(object: Callback<Unit>{
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if(response.isSuccessful){
-                    _createExamMessage.postValue("시험이 생성되었습니다")
+                    _manageExamMessage.postValue("시험이 생성되었습니다")
                 }else{
-                    _createExamMessage.postValue("시험을 생성하지 못했습니다")
+                    _manageExamMessage.postValue("시험을 생성하지 못했습니다")
                 }
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _createExamMessage.postValue("서버와 연결에 실패했습니다")
+                _manageExamMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+
+    fun removeExam(examId: Long){
+        repository.removeExam(examId).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _manageExamMessage.postValue("시험이 삭제되었습니다")
+                }else{
+                    _manageExamMessage.postValue("시험을 삭제하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _manageExamMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+
+    fun cancelExam(examId: Long){
+        repository.cancelExam(examId).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _cancelOrFinishMessage.postValue("시험이 취소되었습니다")
+                }else{
+                    _cancelOrFinishMessage.postValue("시험을 취소하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _cancelOrFinishMessage.postValue("서버와 연결에 실패했습니다")
+            }
+        })
+    }
+    
+    fun finishExam(examId: Long){
+        repository.finishExam(examId).enqueue(object: Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if(response.isSuccessful){
+                    _cancelOrFinishMessage.postValue("시험이 종료되었습니다")
+                }else{
+                    _cancelOrFinishMessage.postValue("시험을 종료하지 못했습니다")
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _cancelOrFinishMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
     }

@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".TakeExamActivity"></activity>
+        <activity android:name=".TakeExamActivity" />
         <activity android:name=".AddressActivity" />
         <activity
             android:name=".ui.findAcademy.CreateAcademyActivity"
@@ -23,7 +23,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.manageClassroom.ManageClassroomActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.applyClassroom.ApplyClassroomActivity"
             android:windowSoftInputMode="adjustPan" />

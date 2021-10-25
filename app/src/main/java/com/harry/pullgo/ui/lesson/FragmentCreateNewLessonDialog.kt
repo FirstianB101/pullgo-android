@@ -38,7 +38,9 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var endMinute = -1
     private var selectedClassroom: Classroom? = null
 
-    private val viewModel: CreateNewLessonViewModel by viewModels{CreateNewLessonViewModelFactory(ClassroomsRepository(requireContext()))}
+    private val viewModel: CreateNewLessonViewModel by viewModels{
+        CreateNewLessonViewModelFactory(ClassroomsRepository(requireContext()))
+    }
 
     private var isLayoutVisible = false
 
@@ -110,7 +112,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         endTimePicker.addOnPositiveButtonClickListener {
             endHour = endTimePicker.hour
             endMinute = endTimePicker.minute
-            binding.spinnerTextViewSelectEndTime.setText("${endHour}시 ${endMinute}분 까지")
+            binding.spinnerTextViewSelectEndTime.setText("${endHour}시 ${endMinute}분")
             resetIfTimeNotAppropriate()
         }
 
@@ -127,23 +129,26 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         }
 
         binding.buttonCreateNewLesson.setOnClickListener {
-            if(isSelectedAllOptions()) {
-                val beginTime = String.format("%02d:%02d:00", startHour, startMinute)
-                val endTime = String.format("%02d:%02d:00", endHour, endMinute)
-                val date = MillToDate(selectedDate!!)
-                val schedule = Schedule(date, beginTime, endTime)
-                val newLesson = Lesson(
-                    binding.textNewLessonName.text.toString(),
-                    selectedClassroom?.id,
-                    schedule
-                )
-                viewModel.createNewLesson(newLesson)
-            }else{
+            if(isSelectedAllOptions())
+                createNewLesson()
+            else
                 Toast.makeText(requireContext(),"선택하지 않은 항목이 존재합니다",Toast.LENGTH_SHORT).show()
-            }
         }
 
         binding.buttonCancelCreateNewLesson.setOnClickListener { dismiss() }
+    }
+
+    private fun createNewLesson(){
+        val beginTime = String.format("%02d:%02d:00", startHour, startMinute)
+        val endTime = String.format("%02d:%02d:00", endHour, endMinute)
+        val date = MillToDate(selectedDate!!)
+        val schedule = Schedule(date, beginTime, endTime)
+        val newLesson = Lesson(
+            binding.textNewLessonName.text.toString(),
+            selectedClassroom?.id,
+            schedule
+        )
+        viewModel.createNewLesson(newLesson)
     }
 
     private fun setSpinnerItems(){

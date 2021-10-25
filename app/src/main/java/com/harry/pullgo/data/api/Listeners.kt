@@ -31,6 +31,8 @@ interface OnClassroomRequestListener{
 
 interface OnExamClickListener{
     fun onExamClick(view: View, exam: Exam?)
+    fun onTakeExamStatusClick(view: View, exam: Exam?)
+    fun onRemoveButtonClick(view: View, exam: Exam?)
 }
 
 interface OnStudentClickListener{
@@ -50,5 +52,5 @@ interface OnCalendarResetListener{
 }
 
 interface OnDataChangedListener{
-    fun onChangeData(isTeacher: Boolean, isChanged: Boolean)
+    fun onChangeData(isTeacher: Boolean)
 }

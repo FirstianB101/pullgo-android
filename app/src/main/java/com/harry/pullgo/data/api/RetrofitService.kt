@@ -215,4 +215,13 @@ interface RetrofitService {
 
     @POST("exams/")
     fun createExam(@Body exam: Exam): Call<Unit>
+
+    @DELETE("exams/{id}")
+    fun removeExam(@Path("id")examId: Long): Call<Unit>
+
+    @POST("exams/{id}/cancel")
+    fun cancelExam(@Path("id")examId: Long): Call<Unit>
+
+    @POST("exams/{id}/finish")
+    fun finishExam(@Path("id")examId: Long): Call<Unit>
 }

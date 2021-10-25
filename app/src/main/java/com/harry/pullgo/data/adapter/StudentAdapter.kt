@@ -10,7 +10,7 @@ import com.harry.pullgo.databinding.LayoutStudentItemNoButtonBinding
 
 class StudentAdapter (private val dataSet: List<Student>):
     RecyclerView.Adapter<StudentAdapter.ViewHolder>(){
-    var studentClickListenerListener: OnStudentClickListener? = null
+    var studentClickListener: OnStudentClickListener? = null
 
     class ViewHolder(val binding: LayoutStudentItemNoButtonBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -23,7 +23,7 @@ class StudentAdapter (private val dataSet: List<Student>):
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.student = dataSet[position]
         holder.itemView.setOnClickListener {
-            studentClickListenerListener?.onBackgroundClick(holder.itemView,dataSet[position])
+            studentClickListener?.onBackgroundClick(holder.itemView,dataSet[position])
         }
     }
 

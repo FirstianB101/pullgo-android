@@ -253,21 +253,37 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonCreateNewExam"
+            android:id="@+id/buttonEditExam"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="@dimen/success_button_text"
+            android:textStyle="bold"
+            app:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutExamStandardScore" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonFinishExam"
             style="?android:attr/borderlessButtonStyle"
             app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonCancelCreateExam"
+            app:layout_constraintEnd_toStartOf="@+id/buttonCancelExam"
             app:layout_constraintTop_toBottomOf="@+id/layoutExamStandardScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/create_exam"
+            android:text="@string/finish_exam"
             android:textSize="@dimen/success_button_text"
+            android:textColor="@android:color/holo_orange_dark"
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonCancelCreateExam"
+            android:id="@+id/buttonCancelExam"
             style="?android:attr/borderlessButtonStyle"
             app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -276,8 +292,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/cancel"
+            android:text="@string/cancel_exam"
             android:textSize="@dimen/success_button_text"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/material_700_red"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

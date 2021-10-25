@@ -3,7 +3,6 @@ package com.harry.pullgo.data.models
 import java.io.Serializable
 
 class Exam (
-    var id: Long?,
     var classroomId: Long?,
     var creatorId: Long?,
     var name: String?,
@@ -14,5 +13,5 @@ class Exam (
     var cancelled: Boolean?,
     var finished: Boolean?
 ): Serializable{
-
+    var id: Long? = null
 }
