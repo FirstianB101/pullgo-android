@@ -12,4 +12,7 @@ class SignUpRepository(context: Context) {
 
     fun createStudent(student: Student) = signUpClient.createStudent(student)
     fun createTeacher(teacher: Teacher) = signUpClient.createTeacher(teacher)
+
+    suspend fun studentUsernameExists(username: String) = signUpClient.studentUsernameExists(username)
+    suspend fun teacherUsernameExists(username: String) = signUpClient.teacherUsernameExists(username)
 }

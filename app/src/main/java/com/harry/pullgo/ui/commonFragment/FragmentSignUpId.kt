@@ -11,20 +11,27 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
+import com.harry.pullgo.data.repository.SignUpRepository
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
 import com.harry.pullgo.ui.signUp.SignUpViewModel
+import com.harry.pullgo.ui.signUp.SignUpViewModelFactory
 import java.util.regex.Pattern
 
-class FragmentSignUpId(): Fragment() {
+class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
     private val binding by lazy{FragmentSignupIdBinding.inflate(layoutInflater)}
-    private val ID_TYPE_EXPRESSION="^[a-z0-9]{1}[a-z0-9-_]*$"
-    private val ID_MAX_LENGTH=16
-    private val ID_MIN_LENGTH=8
-    private var idFormatSuccess=false
+    private val ID_TYPE_EXPRESSION = "^[a-z0-9]{1}[a-z0-9-_]*$"
+    private val ID_MAX_LENGTH = 16
+    private val ID_MIN_LENGTH = 8
+    private var idFormatSuccess = false
 
-    private lateinit var viewModel: SignUpViewModel
+    private val viewModel: SignUpViewModel by activityViewModels{
+        SignUpViewModelFactory(
+            SignUpRepository(requireContext())
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -36,7 +43,17 @@ class FragmentSignUpId(): Fragment() {
     }
 
     private fun initViewModel(){
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+        viewModel.usernameExist.observe(requireActivity()){
+            if(!it.exists){
+                showNextButton()
+            }else{
+                binding.signUpIdLayout.error = "중복된 아이디입니다"
+            }
+        }
+
+        viewModel.existsMessage.observe(requireActivity()){
+            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setListeners(){
@@ -45,12 +62,11 @@ class FragmentSignUpId(): Fragment() {
         binding.buttonSignUpIdOverlap.setOnClickListener{
             if(!idFormatSuccess)
                 Toast.makeText(context,"사용할 수 없는 아이디입니다.",Toast.LENGTH_SHORT).show()
-            else if(checkIdUnique(binding.signUpId.text.toString())){
-                if(binding.buttonSignUpIdNext.visibility!=View.VISIBLE) {
-                    binding.buttonSignUpIdNext.visibility = View.VISIBLE
-                    val anim = AnimationUtils.loadAnimation(context, R.anim.alpha)
-                    binding.buttonSignUpIdNext.startAnimation(anim)
-                }
+            else {
+                val username = binding.signUpId.text.toString()
+
+                if(isTeacher) viewModel.teacherUsernameExists(username)
+                else viewModel.studentUsernameExists(username)
             }
         }
 
@@ -59,17 +75,12 @@ class FragmentSignUpId(): Fragment() {
         }
     }
 
-    private fun checkIdUnique(id: String):Boolean{
-        return if(teacherOverlap(id)){
-            Toast.makeText(context,"중복된 아이디입니다",Toast.LENGTH_SHORT).show()
-            false
-        }else{
-            true
+    private fun showNextButton(){
+        if(binding.buttonSignUpIdNext.visibility != View.VISIBLE) {
+            binding.buttonSignUpIdNext.visibility = View.VISIBLE
+            val anim = AnimationUtils.loadAnimation(context, R.anim.alpha)
+            binding.buttonSignUpIdNext.startAnimation(anim)
         }
-    }
-
-    private fun teacherOverlap(userId: String): Boolean {
-        return false
     }
 
     fun checkId(inputId: String):Boolean{

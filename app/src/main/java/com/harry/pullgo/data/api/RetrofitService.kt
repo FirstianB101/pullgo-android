@@ -32,6 +32,9 @@ interface RetrofitService {
     @POST("teachers/{id}/remove-applied-classroom/")
     fun removeTeacherClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Call<Unit>
 
+    @GET("teachers/{username}/exists")
+    suspend fun teacherUsernameExists(@Path("username")username: String): Response<Exist>
+
     @GET("teachers/")
     suspend fun getAcademiesByTeacherAppliedAcademyId(@Query("appliedAcademyId")academyId:Long): Response<List<Academy>>
 
@@ -122,6 +125,9 @@ interface RetrofitService {
     @POST("students/{id}/remove-applied-classroom/")
     fun removeStudentClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Call<Unit>
 
+
+    @GET("students/{username}/exists")
+    suspend fun studentUsernameExists(@Path("username")username: String): Response<Exist>
 
     @GET("students/")
     suspend fun getAcademiesByStudentAppliedAcademyId(@Query("appliedAcademyId")academyId: Long): Response<List<Academy>>

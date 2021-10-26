@@ -31,7 +31,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
 
     private val viewModel: SignUpViewModel by viewModels{SignUpViewModelFactory(SignUpRepository(applicationContext))}
 
-    var curPosition:Int = 0
+    var curPosition: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
     private fun initialize(){
         signUpInfoFragment = TeacherSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
-        signUpId = FragmentSignUpId()
+        signUpId = FragmentSignUpId(true)
         supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
     }
 
@@ -52,12 +52,15 @@ class TeacherSignUpActivity:AppCompatActivity(){
         viewModel.signUpId.observe(this){
             selectFragment(1)
         }
+
         viewModel.signUpPw.observe(this){
             selectFragment(2)
         }
+
         viewModel.signUpTeacher.observe(this){
             viewModel.createTeacher(it)
         }
+
         viewModel.createMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
             if(it == "계정이 생성되었습니다"){
@@ -67,7 +70,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
     }
 
     override fun onBackPressed() {
-        if(curPosition==0){
+        if(curPosition == 0){
             super.onBackPressed()
         }else{
             selectFragment(curPosition-1)

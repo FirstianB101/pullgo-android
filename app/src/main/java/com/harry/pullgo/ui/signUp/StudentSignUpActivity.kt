@@ -41,7 +41,7 @@ class StudentSignUpActivity:AppCompatActivity(){
     private fun initialize(){
         signUpSignUpInfoFragment = StudentSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
-        signUpId = FragmentSignUpId()
+        signUpId = FragmentSignUpId(false)
         supportFragmentManager.beginTransaction().replace(R.id.studentSignUpContainer,signUpId).commit()
     }
 
