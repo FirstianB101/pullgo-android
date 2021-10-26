@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Teacher
@@ -24,8 +25,10 @@ class FragmentManageClassroomTeacherDialog(
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext())
+        ManageClassroomRepository(requireContext(), app.loginUser.token)
     )}
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())

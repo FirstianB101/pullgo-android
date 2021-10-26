@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,8 +66,8 @@ class ApplyClassroomViewModel(private val applyClassroomRepository: ApplyClassro
         _applyClassroomsRepositories.postValue(null)
     }
 
-    fun requestStudentApplyClassroom(selectedClassroom: Classroom?){
-        applyClassroomRepository.studentApplyClassroom(LoginInfo.user?.student?.id!!, selectedClassroom?.id!!)
+    fun requestStudentApplyClassroom(studentId: Long,selectedClassroom: Classroom?){
+        applyClassroomRepository.studentApplyClassroom(studentId, selectedClassroom?.id!!)
             .enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {
@@ -83,8 +82,8 @@ class ApplyClassroomViewModel(private val applyClassroomRepository: ApplyClassro
             })
     }
 
-    fun requestTeacherApplyClassroom(selectedClassroom: Classroom?){
-        applyClassroomRepository.teacherApplyClassroom(LoginInfo.user?.teacher?.id!!, selectedClassroom?.id!!)
+    fun requestTeacherApplyClassroom(teacherId: Long, selectedClassroom: Classroom?){
+        applyClassroomRepository.teacherApplyClassroom(teacherId, selectedClassroom?.id!!)
             .enqueue(object : Callback<Unit> {
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful) {

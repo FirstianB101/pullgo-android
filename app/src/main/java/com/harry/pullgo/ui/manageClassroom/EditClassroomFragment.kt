@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageClassroomRepository
@@ -28,9 +29,10 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     private var isFormatGood = true
 
     private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext())
+        ManageClassroomRepository(requireContext(), app.loginUser.token)
     )}
 
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)

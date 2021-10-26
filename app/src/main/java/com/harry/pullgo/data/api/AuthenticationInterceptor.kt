@@ -3,6 +3,7 @@ package com.harry.pullgo.data.api
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.ui.login.LoginActivity
 import okhttp3.Interceptor
 import okhttp3.Response

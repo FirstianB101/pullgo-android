@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentManageAdapter
 import com.harry.pullgo.data.adapter.TeacherManageAdapter
 import com.harry.pullgo.data.api.OnDataChangedListener
@@ -12,8 +13,6 @@ import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
@@ -23,8 +22,10 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(applicationContext))
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(applicationContext, app.loginUser.token))
     }
+
+    private val app: PullgoApplication by lazy{application as PullgoApplication }
 
     private val selectedAcademyId by lazy{intent.getLongExtra("selectedAcademyId",-1L)}
     private val selectedAcademyName by lazy{intent.getStringExtra("selectedAcademyName")}
@@ -83,7 +84,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
         }
         binding.recyclerViewManageAcademyManagePeople.adapter = adapter
 
-        LoadingDialog.dialog.dismiss()
+        app.dismissLoadingDialog()
 
         showNoResultText(data?.isEmpty() == true)
     }
@@ -113,13 +114,13 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
         }
         binding.recyclerViewManageAcademyManagePeople.adapter = adapter
 
-        LoadingDialog.dialog.dismiss()
+        app.dismissLoadingDialog()
 
         showNoResultText(data?.isEmpty() == true)
     }
 
     private fun refreshAdapter(isTeacher: Boolean){
-        LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
+        app.showLoadingDialog(supportFragmentManager)
         if(isTeacher)
             viewModel.getTeachersAtAcademy(selectedAcademyId)
         else

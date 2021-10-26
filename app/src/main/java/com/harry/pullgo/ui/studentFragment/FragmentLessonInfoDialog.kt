@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoBinding
@@ -18,7 +19,11 @@ import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
 class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragment() {
     private val binding by lazy{DialogLessonInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by activityViewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
+    private val viewModel: LessonsViewModel by activityViewModels{
+        LessonsViewModelFactory(LessonsRepository(requireContext(), app.loginUser.token))
+    }
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onStart() {
         super.onStart()

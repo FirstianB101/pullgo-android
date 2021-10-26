@@ -7,18 +7,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.AcademyAdapter
 import com.harry.pullgo.databinding.ActivityFindAcademyBinding
 import com.harry.pullgo.data.api.OnAcademyClickListener
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
-    private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(FindAcademyRepository(applicationContext))}
+    private val viewModel: FindAcademyViewModel by viewModels{
+        FindAcademyViewModelFactory(FindAcademyRepository(applicationContext, app.loginUser.token))
+    }
+
+    private val app: PullgoApplication by lazy{application as PullgoApplication }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,19 +44,19 @@ class FindAcademyActivity : AppCompatActivity() {
     private fun initViewModel(){
         viewModel.findAcademyRepositories.observe(this){
             displayAcademies()
-            LoadingDialog.dialog.dismiss()
+           app.dismissLoadingDialog()
         }
 
         viewModel.requestMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
         }
     }
 
     private fun setListeners(){
         binding.buttonFindAcademySearch.setOnClickListener {
             viewModel.requestGetAcademies(binding.searchTextFindAcademy.text.toString())
-            LoadingDialog.dialog.show(supportFragmentManager, LoadingDialog.loadingDialogStr)
+            app.showLoadingDialog(supportFragmentManager)
         }
 
         binding.floatingActionButtonMakeAcademy.setOnClickListener {
@@ -91,12 +94,12 @@ class FindAcademyActivity : AppCompatActivity() {
 
     private fun sendAcceptRequest(academyId:Long?){
         if (academyId != null) {
-            val isStudent = (LoginInfo.user?.teacher == null)
+            val isStudent = (app.loginUser.teacher == null)
 
             if(isStudent)
-                viewModel.requestStudentApply(LoginInfo.user?.student?.id!!,academyId)
+                viewModel.requestStudentApply(app.loginUser.student?.id!!,academyId)
             else
-                viewModel.requestTeacherApply(LoginInfo.user?.teacher?.id!!,academyId)
+                viewModel.requestTeacherApply(app.loginUser.teacher?.id!!,academyId)
         }
     }
 }

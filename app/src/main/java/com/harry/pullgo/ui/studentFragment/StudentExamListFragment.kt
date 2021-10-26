@@ -10,20 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Exam
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.databinding.FragmentStudentExamListBinding
 
 class StudentExamListFragment : Fragment(){
     private val binding by lazy{FragmentStudentExamListBinding.inflate(layoutInflater)}
 
-    private val viewModel: StudentExamListViewModel by viewModels{StudentExamListViewModelFactory(ExamsRepository(requireContext()))}
+    private val viewModel: StudentExamListViewModel by viewModels{
+        StudentExamListViewModelFactory(ExamsRepository(requireContext(), app.loginUser.token))
+    }
 
     private var selectedExam: Exam? = null
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -58,11 +61,11 @@ class StudentExamListFragment : Fragment(){
 
     private fun filterExams(case: Int){
         when(case){
-            0 -> viewModel.requestExamsByName(LoginInfo.user?.student?.id!!)
-            1 -> viewModel.requestExamsByBeginDate(LoginInfo.user?.student?.id!!)
-            2 -> viewModel.requestExamsByEndDate(LoginInfo.user?.student?.id!!)
+            0 -> viewModel.requestExamsByName(app.loginUser.student?.id!!)
+            1 -> viewModel.requestExamsByBeginDate(app.loginUser.student?.id!!)
+            2 -> viewModel.requestExamsByEndDate(app.loginUser.student?.id!!)
         }
-        LoadingDialog.dialog.show(childFragmentManager,LoadingDialog.loadingDialogStr)
+        app.showLoadingDialog(childFragmentManager)
     }
 
     private fun displayExams(){
@@ -86,6 +89,6 @@ class StudentExamListFragment : Fragment(){
             }
         }
         binding.recyclerViewExamList.adapter = examsAdapter
-        LoadingDialog.dialog.dismiss()
+        app.dismissLoadingDialog()
     }
 }

@@ -1,6 +1,5 @@
 package com.harry.pullgo.ui.applyClassroom
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -8,14 +7,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
 import com.harry.pullgo.databinding.ActivityRequestApplyClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -24,12 +23,14 @@ class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
 
     private val viewModel: ApplyClassroomViewModel by viewModels{
-        ApplyClassroomViewModelFactory(ApplyClassroomRepository(applicationContext))
+        ApplyClassroomViewModelFactory(ApplyClassroomRepository(applicationContext, app.loginUser.token))
     }
 
     private var selectedAcademy: Academy? = null
     private var selectedClassroom: Classroom? = null
     private var isLayoutVisible = false
+
+    private val app: PullgoApplication by lazy{ application as PullgoApplication}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,26 +43,25 @@ class ApplyClassroomActivity : AppCompatActivity() {
     private fun initViewModel(){
         viewModel.appliedAcademiesRepository.observe(this){
             setSpinnerItems()
-            LoadingDialog.dialog.dismiss()
         }
 
         viewModel.applyClassroomsRepositories.observe(this){
             displayClassrooms()
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
         }
 
         viewModel.appliedClassroomsMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
         }
 
-        if(LoginInfo.user?.teacher != null) {
-            viewModel.requestTeacherAppliedAcademies(LoginInfo.user?.teacher?.id!!)
-        }else if(LoginInfo.user?.student != null){
-            viewModel.requestStudentAppliedAcademies(LoginInfo.user?.student?.id!!)
+        if(app.loginUser.teacher != null) {
+            viewModel.requestTeacherAppliedAcademies(app.loginUser.teacher?.id!!)
+        }else if(app.loginUser.student != null){
+            viewModel.requestStudentAppliedAcademies(app.loginUser.student?.id!!)
         }
 
-        LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
+        app.showLoadingDialog(supportFragmentManager)
     }
 
     private fun initialize(){
@@ -71,7 +71,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
         binding.buttonApplyClassroomSearch.setOnClickListener {
             val searchName = binding.applyClassroomSearchText.text.toString()
             viewModel.requestGetClassrooms(selectedAcademy?.id!!,searchName)
-            LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
+            app.showLoadingDialog(supportFragmentManager)
         }
     }
 
@@ -157,10 +157,10 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     fun requestClassroomApply(){
-        if(LoginInfo.user?.student != null) {
-            viewModel.requestStudentApplyClassroom(selectedClassroom)
-        }else if(LoginInfo.user?.teacher != null){
-            viewModel.requestTeacherApplyClassroom(selectedClassroom)
+        if(app.loginUser.student != null) {
+            viewModel.requestStudentApplyClassroom(app.loginUser.student?.id!!, selectedClassroom)
+        }else if(app.loginUser.teacher != null){
+            viewModel.requestTeacherApplyClassroom(app.loginUser.teacher?.id!!, selectedClassroom)
         }
     }
 }

@@ -1,16 +1,16 @@
 package com.harry.pullgo.ui.studentFragment
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.snackbar.Snackbar
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Account
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.databinding.FragmentStudentChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
@@ -22,6 +22,8 @@ class StudentChangePersonInfoFragment : Fragment() {
     private var isCertificated=false
 
     private val viewModel: ChangeInfoViewModel by activityViewModels()
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +39,11 @@ class StudentChangePersonInfoFragment : Fragment() {
     }
 
     private fun initialize(){
-        binding.changeStudentName.setText(LoginInfo.user?.student?.account?.fullName)
-        binding.changeStudentPhone.setText(LoginInfo.user?.student?.account?.phone)
-        binding.changeParentPhone.setText(LoginInfo.user?.student?.parentPhone)
-        binding.changeSchoolName.setText(LoginInfo.user?.student?.schoolName)
-        binding.changeGradeSwitchButton.selectedTab = LoginInfo.user?.student?.schoolYear!! - 1
+        binding.changeStudentName.setText(app.loginUser.student?.account?.fullName)
+        binding.changeStudentPhone.setText(app.loginUser.student?.account?.phone)
+        binding.changeParentPhone.setText(app.loginUser.student?.parentPhone)
+        binding.changeSchoolName.setText(app.loginUser.student?.schoolName)
+        binding.changeGradeSwitchButton.selectedTab = app.loginUser.student?.schoolYear!! - 1
     }
 
     private fun setListeners(){
@@ -70,12 +72,12 @@ class StudentChangePersonInfoFragment : Fragment() {
         val studentParentPhone = binding.changeParentPhone.text.toString()
         val studentSchoolName = binding.changeSchoolName.text.toString()
         val studentSchoolYear = binding.changeGradeSwitchButton.selectedTab+1
-        val userName = LoginInfo.user?.student?.account?.username
-        val password = LoginInfo.user?.student?.account?.password
+        val userName = app.loginUser.student?.account?.username
+        val password = app.loginUser.student?.account?.password
 
         val account = Account(userName,studentName,studentPhone,password)
         val student = Student(account,studentParentPhone,studentSchoolName,studentSchoolYear)
-        student.id = LoginInfo.user?.student?.id
+        student.id = app.loginUser.student?.id
 
         viewModel.changeStudent.postValue(student)
     }

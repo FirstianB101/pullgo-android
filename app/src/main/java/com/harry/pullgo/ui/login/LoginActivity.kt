@@ -6,21 +6,23 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Account
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.databinding.ActivityLoginBinding
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LoginRepository
-import com.harry.pullgo.ui.commonFragment.LoadingDialogFragment
+import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.ui.findAccount.FindAccountActivity
-import com.harry.pullgo.ui.signUp.SignUpActivity
 import com.harry.pullgo.ui.main.StudentMainActivity
 import com.harry.pullgo.ui.main.TeacherMainActivity
+import com.harry.pullgo.ui.signUp.SignUpActivity
 
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
 
-    private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory(LoginRepository(applicationContext))}
+    private val app: PullgoApplication by lazy{application as PullgoApplication}
+
+    private val viewModel: LoginViewModel by viewModels{
+        LoginViewModelFactory(LoginRepository(applicationContext, app.loginUser.token))
+    }
 
     var autoLoginToken: String? = null
 
@@ -38,7 +40,7 @@ class LoginActivity: AppCompatActivity(){
         autoLoginToken = pref.getString("token",null)
 
         if(autoLoginToken != null){
-            LoginInfo.user?.token = autoLoginToken
+            app.loginUser.token = autoLoginToken
 
             viewModel.requestAuthorize()
         }
@@ -46,7 +48,7 @@ class LoginActivity: AppCompatActivity(){
 
     private fun initViewModel(){
         viewModel.loginUserRepositories.observe(this){
-            LoginInfo.user = it
+            app.loginUser = it
 
             if(binding.checkBoxAutoLogin.isChecked){
                 saveAutoLoginInfo()
@@ -68,7 +70,7 @@ class LoginActivity: AppCompatActivity(){
             if(studentAcademies?.isNotEmpty() == true)
                 mainIntent.putExtra("appliedAcademyExist",true)
 
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
             startActivity(mainIntent)
         }
 
@@ -80,13 +82,13 @@ class LoginActivity: AppCompatActivity(){
             if(teacherAcademies?.isNotEmpty() == true)
                 mainIntent.putExtra("appliedAcademyExist",true)
 
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
             startActivity(mainIntent)
         }
 
         viewModel.loginMessage.observe(this){
             Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
         }
     }
 
@@ -94,7 +96,7 @@ class LoginActivity: AppCompatActivity(){
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
         val autoLogin = pref.edit()
 
-        autoLogin.putString("token",LoginInfo.user?.token)
+        autoLogin.putString("token",app.loginUser.token)
         autoLogin.apply()
     }
 
@@ -121,7 +123,7 @@ class LoginActivity: AppCompatActivity(){
         binding.buttonLogin.setOnClickListener {
             val account = Account(binding.loginId.text.toString(),null,null,binding.loginPw.text.toString())
             viewModel.requestLogin(account)
-            LoadingDialog.dialog.show(supportFragmentManager,LoadingDialog.loadingDialogStr)
+            app.showLoadingDialog(supportFragmentManager)
         }
     }
 

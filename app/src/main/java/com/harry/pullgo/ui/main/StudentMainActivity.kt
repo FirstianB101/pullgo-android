@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCheckPwListener
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
@@ -39,8 +39,10 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var manageRequestFragment: ManageRequestFragment
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository(applicationContext)
+        ChangeInfoRepository(applicationContext,app.loginUser.token)
     )}
+
+    private val app: PullgoApplication by lazy{application as PullgoApplication }
 
     private lateinit var headerView: View
     private var curPosition: Int? = null
@@ -59,7 +61,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private fun initViewModels(){
         changeInfoViewModel.changeStudent.observe(this){
             changeInfoViewModel.changeStudentInfo(it.id!!,it)
-            LoginInfo.user?.student = it
+            app.loginUser.student = it
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.account?.username}"
             onFragmentSelected(CALENDAR)
@@ -94,8 +96,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
-        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${LoginInfo.user?.student?.account?.fullName}님"
-        headerView.findViewById<TextView>(R.id.textViewNavId).text="${LoginInfo.user?.student?.account?.username}"
+        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${app.loginUser.student?.account?.fullName}님"
+        headerView.findViewById<TextView>(R.id.textViewNavId).text="${app.loginUser.student?.account?.username}"
     }
 
     private fun setListeners(){
@@ -116,9 +118,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         binding.textViewStudentLogout.setOnClickListener {
-            LoginInfo.user?.student = null
-            LoginInfo.user?.teacher = null
-            LoginInfo.user?.token = null
+            app.loginUser.student = null
+            app.loginUser.teacher = null
+            app.loginUser.token = null
             finish()
         }
 

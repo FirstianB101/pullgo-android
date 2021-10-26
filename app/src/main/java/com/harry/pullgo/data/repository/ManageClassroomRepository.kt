@@ -5,11 +5,9 @@ import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.api.RetrofitService
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Exam
-import com.harry.pullgo.data.models.Student
-import com.harry.pullgo.data.objects.LoginInfo
 
-class ManageClassroomRepository(context: Context) {
-    private val manageClassroomClient = RetrofitClient.getApiService(RetrofitService::class.java, LoginInfo.user?.token,context)
+class ManageClassroomRepository(context: Context, token: String?) {
+    private val manageClassroomClient = RetrofitClient.getApiService(RetrofitService::class.java, token,context)
 
     suspend fun getStudentsAppliedClassroom(classroomId: Long) = manageClassroomClient.getStudentsAppliedClassroom(classroomId)
     suspend fun getTeachersAppliedClassroom(classroomId: Long) = manageClassroomClient.getTeachersAppliedClassroom(classroomId)

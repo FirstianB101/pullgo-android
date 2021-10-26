@@ -16,8 +16,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Exam
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogCreateExamBinding
 import java.sql.Timestamp
@@ -33,8 +33,10 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
     private lateinit var endTimePicker: MaterialTimePicker
 
     private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext()))
+        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext(), app.loginUser.token))
     }
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -138,7 +140,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
         val timeLimit = Duration.ofMinutes(binding.textExamTimeLimit.text.toString().toLong()).toString()
         val passScore = binding.textExamStandardScore.text.toString().toInt()
 
-        val newExam = Exam(selectedClassroomId, LoginInfo.user?.teacher?.id, examName, beginDateTime, endDateTime,
+        val newExam = Exam(selectedClassroomId, app.loginUser.teacher?.id, examName, beginDateTime, endDateTime,
                             timeLimit,passScore,false,false)
         viewModel.createExam(newExam)
     }

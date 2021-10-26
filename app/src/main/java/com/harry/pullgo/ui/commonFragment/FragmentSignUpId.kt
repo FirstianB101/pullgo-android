@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.repository.SignUpRepository
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
 import com.harry.pullgo.ui.signUp.SignUpViewModel
@@ -27,9 +28,11 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
     private val ID_MIN_LENGTH = 8
     private var idFormatSuccess = false
 
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
+
     private val viewModel: SignUpViewModel by activityViewModels{
         SignUpViewModelFactory(
-            SignUpRepository(requireContext())
+            SignUpRepository(requireContext(), app.loginUser.token)
         )
     }
 

@@ -12,10 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
 import com.harry.pullgo.ui.manageClassroom.FragmentCreateClassroomDialog
@@ -25,13 +24,15 @@ class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels{
-        ManageClassroomViewModelFactory(ClassroomsRepository(requireContext()))
+        ManageClassroomViewModelFactory(ClassroomsRepository(requireContext(), app.loginUser.token))
     }
 
     private var selectedClassroom: Classroom? = null
     private var buttonPushed = false
 
     private lateinit var startForResult: ActivityResultLauncher<Intent>
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -47,25 +48,25 @@ class TeacherManageClassroomFragment: Fragment() {
 
         binding.buttonCreateNewClassroom.setOnClickListener {
             buttonPushed = true
-            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.user?.teacher?.id!!)
+            viewModel.requestGetAcademiesForNewClassroom(app.loginUser.teacher?.id!!)
         }
 
         binding.floatingActionButtonManageClassroom.setOnClickListener {
             buttonPushed = true
-            viewModel.requestGetAcademiesForNewClassroom(LoginInfo.user?.teacher?.id!!)
+            viewModel.requestGetAcademiesForNewClassroom(app.loginUser.teacher?.id!!)
         }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
                 if(it.data?.getStringExtra("finishedFragment") == "editClassroom"){
-                    viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
+                    viewModel.requestGetClassrooms(app.loginUser.teacher?.id!!)
                 }
             }
         }
 
         setFragmentResultListener("createNewClassroom"){ _, bundle ->
             if(bundle.getString("isCreated") == "yes"){
-                viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
+                viewModel.requestGetClassrooms(app.loginUser.teacher?.id!!)
             }
         }
     }
@@ -85,8 +86,8 @@ class TeacherManageClassroomFragment: Fragment() {
             buttonPushed = false
         }
 
-        viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
-        LoadingDialog.dialog.show(childFragmentManager,LoadingDialog.loadingDialogStr)
+        viewModel.requestGetClassrooms(app.loginUser.teacher?.id!!)
+        app.showLoadingDialog(childFragmentManager)
     }
 
     private fun displayClassrooms(){
@@ -108,7 +109,7 @@ class TeacherManageClassroomFragment: Fragment() {
         hideLayout(data?.isEmpty() == true)
 
         binding.recyclerViewManageClassroom.adapter = classroomAdapter
-        LoadingDialog.dialog.dismiss()
+        app.dismissLoadingDialog()
     }
 
     private fun startManageClassroomActivity(){

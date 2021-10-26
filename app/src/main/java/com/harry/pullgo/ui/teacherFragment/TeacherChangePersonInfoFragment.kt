@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.snackbar.Snackbar
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Account
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.FragmentTeacherChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
@@ -23,6 +23,8 @@ class TeacherChangePersonInfoFragment : Fragment() {
 
     private val viewModel: ChangeInfoViewModel by activityViewModels()
 
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
@@ -33,8 +35,8 @@ class TeacherChangePersonInfoFragment : Fragment() {
     }
 
     private fun initialize(){
-        binding.changeTeacherName.setText(LoginInfo.user?.teacher?.account?.fullName)
-        binding.changeTeacherPhone.setText(LoginInfo.user?.teacher?.account?.phone)
+        binding.changeTeacherName.setText(app.loginUser.teacher?.account?.fullName)
+        binding.changeTeacherPhone.setText(app.loginUser.teacher?.account?.phone)
     }
 
     private fun setListeners(){
@@ -58,12 +60,12 @@ class TeacherChangePersonInfoFragment : Fragment() {
     private fun changeTeacherInfo(){
         val teacherName = binding.changeTeacherName.text.toString()
         val teacherPhone = binding.changeTeacherPhone.text.toString()
-        val userName = LoginInfo.user?.teacher?.account?.username
-        val password = LoginInfo.user?.teacher?.account?.password
+        val userName = app.loginUser.teacher?.account?.username
+        val password = app.loginUser.teacher?.account?.password
 
         val account = Account(userName,teacherName,teacherPhone,password)
         val teacher = Teacher(account)
-        teacher.id = LoginInfo.user?.teacher?.id
+        teacher.id = app.loginUser.teacher?.id
 
         viewModel.changeTeacher.postValue(teacher)
     }

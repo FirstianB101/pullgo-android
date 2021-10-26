@@ -11,12 +11,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
@@ -27,9 +27,13 @@ import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
 
-    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository(requireContext()))}
+    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{
+        TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository(requireContext(), app.loginUser.token))
+    }
 
     private var selectedAcademy: Academy? = null
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -79,7 +83,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
             }
         }
 
-        viewModel.requestTeacherAcademies(LoginInfo.user?.teacher?.id!!)
+        viewModel.requestTeacherAcademies(app.loginUser.teacher?.id!!)
     }
 
     private fun setSpinnerItems(){

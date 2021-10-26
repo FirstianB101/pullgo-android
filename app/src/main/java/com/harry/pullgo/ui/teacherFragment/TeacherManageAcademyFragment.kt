@@ -12,8 +12,8 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.FragmentTeacherManageAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -25,13 +25,15 @@ class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: TeacherManageAcademyViewModel by activityViewModels{
-        TeacherManageAcademyViewModelFactory(ManageAcademyRepository(requireContext()))
+        TeacherManageAcademyViewModelFactory(ManageAcademyRepository(requireContext(), app.loginUser.token))
     }
 
     private var isLayoutVisible = false
     private var isEditMode = false
 
     private lateinit var selectedAcademy: Academy
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -57,12 +59,12 @@ class TeacherManageAcademyFragment: Fragment() {
             }
         }
 
-        viewModel.requestGetOwnedAcademies(LoginInfo.user?.teacher?.id!!)
+        viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
 
         viewModel.manageAcademyMessage.observe(requireActivity()){
             Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
             if(it == "학원이 삭제되었습니다"){
-                viewModel.requestGetOwnedAcademies(LoginInfo.user?.teacher?.id!!)
+                viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
                 makeLayoutInvisible()
             }
         }

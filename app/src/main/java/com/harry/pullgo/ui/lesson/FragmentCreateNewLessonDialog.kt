@@ -19,10 +19,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.DialogCreateNewLessonBinding
 import java.sql.Timestamp
@@ -39,8 +39,10 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var selectedClassroom: Classroom? = null
 
     private val viewModel: CreateNewLessonViewModel by viewModels{
-        CreateNewLessonViewModelFactory(ClassroomsRepository(requireContext()))
+        CreateNewLessonViewModelFactory(ClassroomsRepository(requireContext(),app.loginUser.token))
     }
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     private var isLayoutVisible = false
 
@@ -72,7 +74,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
             }
         }
 
-        viewModel.requestGetClassrooms(LoginInfo.user?.teacher?.id!!)
+        viewModel.requestGetClassrooms(app.loginUser.teacher?.id!!)
     }
 
     private fun initialize(){

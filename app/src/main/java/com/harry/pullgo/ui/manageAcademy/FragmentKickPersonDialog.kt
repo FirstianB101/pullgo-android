@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnDataChangedListener
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
@@ -23,8 +24,10 @@ class FragmentKickStudentDialog(private val selectedStudent: Student, private va
     private var dataChangedListener: OnDataChangedListener? = null
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext()))
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext(), app.loginUser.token))
     }
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -81,8 +84,10 @@ class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private va
 
     private var dataChangedListener: OnDataChangedListener? = null
 
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
+
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext()))
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext(), app.loginUser.token!!))
     }
 
     override fun onAttach(context: Context) {

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
@@ -20,9 +19,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogCreateClassroomBinding
 import java.util.*
@@ -38,8 +37,10 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
     private var isNameNotContainsSemicolon = true
 
     private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext())
+        ManageClassroomRepository(requireContext(), app.loginUser.token)
     )}
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -169,12 +170,12 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
 
     private fun makeClassroom(){
         val name = binding.textNewClassroomName.text.toString()
-        val teacher = LoginInfo.user?.teacher?.account?.fullName
+        val teacher = app.loginUser.teacher?.account?.fullName
         val days = makeSelectedDaysToString()
         val classroomName = "$name;$teacher;$days"
 
         val newClassroom = Classroom(selectedAcademy?.id!!,classroomName)
-        newClassroom.creatorId = LoginInfo.user?.teacher?.id!!
+        newClassroom.creatorId = app.loginUser.teacher?.id!!
 
         viewModel.createClassroom(newClassroom)
     }

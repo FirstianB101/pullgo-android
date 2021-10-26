@@ -6,21 +6,17 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Exam
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageClassroomRepository
-import com.harry.pullgo.databinding.DialogCreateExamBinding
 import com.harry.pullgo.databinding.DialogExamInfoBinding
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
@@ -35,8 +31,10 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
     private lateinit var endTimePicker: MaterialTimePicker
 
     private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext()))
+        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext(), app.loginUser.token))
     }
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

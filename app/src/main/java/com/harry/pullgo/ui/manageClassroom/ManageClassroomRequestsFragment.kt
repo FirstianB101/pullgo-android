@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
 import com.harry.pullgo.data.api.OnStudentClickListener
@@ -22,8 +23,10 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext())
+        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext(), app.loginUser.token)
     )}
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)

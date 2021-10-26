@@ -2,27 +2,25 @@ package com.harry.pullgo.ui.findAcademy
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.data.api.RetrofitClient
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.databinding.ActivityCreateAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CreateAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityCreateAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(
-        FindAcademyRepository(applicationContext)
+        FindAcademyRepository(applicationContext, app.loginUser.token)
     )}
+
+    private val app: PullgoApplication by lazy{application as PullgoApplication }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +86,7 @@ class CreateAcademyActivity : AppCompatActivity() {
         val address = "${binding.textCreateAcademyAddress.text.toString()} ${binding.textCreateAcademyDetailedAddress.text.toString()}"
         val phone = binding.textCreateAcademyPhone.text.toString()
 
-        val newAcademy = Academy(null,name,phone,address,LoginInfo.user?.teacher?.id)
+        val newAcademy = Academy(null,name,phone,address,app.loginUser.teacher?.id)
         
         viewModel.createAcademy(newAcademy)
     }

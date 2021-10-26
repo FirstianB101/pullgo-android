@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
@@ -37,9 +38,13 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     private var endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
     private var isEditModeOn = false
 
-    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
+    private val viewModel: LessonsViewModel by viewModels{
+        LessonsViewModelFactory(LessonsRepository(requireContext(), app.loginUser.token))
+    }
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())

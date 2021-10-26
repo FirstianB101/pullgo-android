@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.harry.pullgo.*
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.databinding.ActivitySignUpStudentBinding
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Student
@@ -26,9 +27,13 @@ class StudentSignUpActivity:AppCompatActivity(){
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpSignUpInfoFragment: StudentSignUpInfoFragment
 
-    private val viewModel: SignUpViewModel by viewModels{SignUpViewModelFactory(SignUpRepository(applicationContext))}
+    private val viewModel: SignUpViewModel by viewModels{
+        SignUpViewModelFactory(SignUpRepository(applicationContext, app.loginUser.token))
+    }
 
     var curPosition: Int = 0
+
+    private val app: PullgoApplication by lazy{application as PullgoApplication }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

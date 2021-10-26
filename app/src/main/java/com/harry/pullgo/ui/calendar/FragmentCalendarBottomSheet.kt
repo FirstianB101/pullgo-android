@@ -9,12 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.LessonAdapter
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.api.OnLessonClickListener
 import com.harry.pullgo.data.models.Lesson
-import com.harry.pullgo.data.objects.LoadingDialog
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBottomSheetBinding
 import com.harry.pullgo.ui.studentFragment.FragmentLessonInfoDialog
@@ -23,9 +22,13 @@ import com.harry.pullgo.ui.teacherFragment.FragmentLessonInfoManageDialog
 class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by viewModels{LessonsViewModelFactory(LessonsRepository(requireContext()))}
+    private val viewModel: LessonsViewModel by viewModels{
+        LessonsViewModelFactory(LessonsRepository(requireContext(), app.loginUser.token))
+    }
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
+
+    private val app: PullgoApplication by lazy { requireActivity().application as PullgoApplication }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,21 +53,21 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     private fun setViewModel(){
         viewModel.dayLessonsRepositories.observe(requireActivity()){
             showLessons()
-            LoadingDialog.dialog.dismiss()
+            app.dismissLoadingDialog()
         }
 
-        if(LoginInfo.user?.teacher != null){
-            viewModel.requestTeacherLessonOnDate(LoginInfo.user?.teacher?.id!!,selectedDate)
-        }else if(LoginInfo.user?.student != null){
-            viewModel.requestStudentLessonOnDate(LoginInfo.user?.student?.id!!,selectedDate)
+        if(app.loginUser.teacher != null){
+            viewModel.requestTeacherLessonOnDate(app.loginUser.teacher?.id!!,selectedDate)
+        }else if(app.loginUser.student != null){
+            viewModel.requestStudentLessonOnDate(app.loginUser.student?.id!!,selectedDate)
         }
 
-        LoadingDialog.dialog.show(childFragmentManager, LoadingDialog.loadingDialogStr)
+        app.showLoadingDialog(childFragmentManager)
 
         setFragmentResultListener("isLessonPatched"){ _, bundle ->
             if(bundle.getString("Patched") == "yes"){
-                viewModel.requestTeacherLessonOnDate(LoginInfo.user?.teacher?.id!!,selectedDate)
-                LoadingDialog.dialog.show(childFragmentManager, LoadingDialog.loadingDialogStr)
+                viewModel.requestTeacherLessonOnDate(app.loginUser.teacher?.id!!,selectedDate)
+                app.showLoadingDialog(childFragmentManager)
             }
         }
     }
@@ -73,13 +76,13 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
         val lessons = viewModel.dayLessonsRepositories.value
         val adapter = LessonAdapter(lessons!!)
 
-        if(LoginInfo.user?.student != null){ // student
+        if(app.loginUser?.student != null){ // student
             adapter.itemClickListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     FragmentLessonInfoDialog(lesson!!).show(childFragmentManager, FragmentLessonInfoDialog.TAG_LESSON_INFO_DIALOG)
                 }
             }
-        }else if(LoginInfo.user?.teacher != null){ // teacher
+        }else if(app.loginUser?.teacher != null){ // teacher
             adapter.itemClickListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     val dialog = FragmentLessonInfoManageDialog(lesson!!)

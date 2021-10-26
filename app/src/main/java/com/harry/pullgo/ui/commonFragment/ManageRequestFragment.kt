@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.AcademyRequestAdapter
 import com.harry.pullgo.data.adapter.ClassroomRequestAdapter
 import com.harry.pullgo.data.api.OnAcademyRequestListener
 import com.harry.pullgo.data.api.OnClassroomRequestListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.objects.LoginInfo
 import com.harry.pullgo.data.repository.ManageRequestRepository
 import com.harry.pullgo.databinding.FragmentManageRequestBinding
 
@@ -23,8 +21,10 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     private val binding by lazy { FragmentManageRequestBinding.inflate(layoutInflater) }
 
     private val viewModel: ManageRequestViewModel by viewModels {
-        ManageRequestViewModelFactory(ManageRequestRepository(requireContext()))
+        ManageRequestViewModelFactory(ManageRequestRepository(requireContext(), app.loginUser.token))
     }
+
+    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -45,14 +45,14 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     private fun refreshAdapter(isClassroom: Boolean) {
         if (isClassroom) {
             if (isTeacher)
-                viewModel.getTeacherApplyingClassroom(LoginInfo.user?.teacher?.id!!)
+                viewModel.getTeacherApplyingClassroom(app.loginUser.teacher?.id!!)
             else
-                viewModel.getStudentApplyingClassroom(LoginInfo.user?.student?.id!!)
+                viewModel.getStudentApplyingClassroom(app.loginUser.student?.id!!)
         } else {
             if (isTeacher)
-                viewModel.getTeacherApplyingAcademy(LoginInfo.user?.teacher?.id!!)
+                viewModel.getTeacherApplyingAcademy(app.loginUser.teacher?.id!!)
             else
-                viewModel.getStudentApplyingAcademy(LoginInfo.user?.student?.id!!)
+                viewModel.getStudentApplyingAcademy(app.loginUser.student?.id!!)
         }
     }
 
@@ -92,9 +92,9 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
 
                 override fun onRemoveRequest(view: View, academy: Academy?) {
                     if(isTeacher)
-                        viewModel.removeTeacherApplyingAcademy(LoginInfo.user?.teacher?.id!!,academy?.id!!)
+                        viewModel.removeTeacherApplyingAcademy(app.loginUser.teacher?.id!!,academy?.id!!)
                     else
-                        viewModel.removeStudentApplyingAcademy(LoginInfo.user?.student?.id!!,academy?.id!!)
+                        viewModel.removeStudentApplyingAcademy(app.loginUser.student?.id!!,academy?.id!!)
                 }
             }
         }
@@ -118,9 +118,9 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
 
                 override fun onRemoveRequest(view: View, classroom: Classroom?) {
                     if(isTeacher)
-                        viewModel.removeTeacherApplyingClassroom(LoginInfo.user?.teacher?.id!!,classroom?.id!!)
+                        viewModel.removeTeacherApplyingClassroom(app.loginUser.teacher?.id!!,classroom?.id!!)
                     else
-                        viewModel.removeStudentApplyingClassroom(LoginInfo.user?.student?.id!!,classroom?.id!!)
+                        viewModel.removeStudentApplyingClassroom(app.loginUser.student?.id!!,classroom?.id!!)
                 }
             }
         }
