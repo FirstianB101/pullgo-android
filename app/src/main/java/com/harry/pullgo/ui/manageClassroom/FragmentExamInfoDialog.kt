@@ -31,7 +31,7 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
     private lateinit var endTimePicker: MaterialTimePicker
 
     private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext(), app.loginUser.token))
+        ManageClassroomViewModelFactory(ManageClassroomRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

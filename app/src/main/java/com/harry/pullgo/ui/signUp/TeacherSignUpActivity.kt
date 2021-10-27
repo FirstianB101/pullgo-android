@@ -31,7 +31,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
     lateinit var signUpInfoFragment: TeacherSignUpInfoFragment
 
     private val viewModel: SignUpViewModel by viewModels{
-        SignUpViewModelFactory(SignUpRepository(applicationContext, app.loginUser.token))
+        SignUpViewModelFactory(SignUpRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }

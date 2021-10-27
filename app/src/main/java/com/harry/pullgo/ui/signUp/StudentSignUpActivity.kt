@@ -28,7 +28,7 @@ class StudentSignUpActivity:AppCompatActivity(){
     lateinit var signUpSignUpInfoFragment: StudentSignUpInfoFragment
 
     private val viewModel: SignUpViewModel by viewModels{
-        SignUpViewModelFactory(SignUpRepository(applicationContext, app.loginUser.token))
+        SignUpViewModelFactory(SignUpRepository(app.loginUser.token))
     }
 
     var curPosition: Int = 0

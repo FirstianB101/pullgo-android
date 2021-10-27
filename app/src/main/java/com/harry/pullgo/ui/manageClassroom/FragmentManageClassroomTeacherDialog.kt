@@ -25,7 +25,7 @@ class FragmentManageClassroomTeacherDialog(
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext(), app.loginUser.token)
+        ManageClassroomRepository(app.loginUser.token)
     )}
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

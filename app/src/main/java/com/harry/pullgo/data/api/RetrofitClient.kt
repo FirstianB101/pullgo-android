@@ -16,9 +16,9 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
     private var retrofit = builder.build()
 
-    fun <S> getApiService(serviceClass: Class<S>, authToken: String?, context: Context): S {
+    fun <S> getApiService(serviceClass: Class<S>, authToken: String?): S {
         if (!TextUtils.isEmpty(authToken)) {
-            val interceptor = AuthenticationInterceptor(authToken,context)
+            val interceptor = AuthenticationInterceptor(authToken)
 
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY

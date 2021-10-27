@@ -39,7 +39,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var selectedClassroom: Classroom? = null
 
     private val viewModel: CreateNewLessonViewModel by viewModels{
-        CreateNewLessonViewModelFactory(ClassroomsRepository(requireContext(),app.loginUser.token))
+        CreateNewLessonViewModelFactory(ClassroomsRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

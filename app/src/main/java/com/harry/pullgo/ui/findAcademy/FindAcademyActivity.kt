@@ -18,7 +18,7 @@ import com.harry.pullgo.ui.dialog.TwoButtonDialog
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
     private val viewModel: FindAcademyViewModel by viewModels{
-        FindAcademyViewModelFactory(FindAcademyRepository(applicationContext, app.loginUser.token))
+        FindAcademyViewModelFactory(FindAcademyRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }

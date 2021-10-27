@@ -28,7 +28,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{
-        TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository(requireContext(), app.loginUser.token))
+        TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository(app.loginUser.token))
     }
 
     private var selectedAcademy: Academy? = null

@@ -21,7 +21,7 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     private val binding by lazy { FragmentManageRequestBinding.inflate(layoutInflater) }
 
     private val viewModel: ManageRequestViewModel by viewModels {
-        ManageRequestViewModelFactory(ManageRequestRepository(requireContext(), app.loginUser.token))
+        ManageRequestViewModelFactory(ManageRequestRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

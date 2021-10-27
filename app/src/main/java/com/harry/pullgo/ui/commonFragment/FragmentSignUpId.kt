@@ -32,7 +32,7 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
 
     private val viewModel: SignUpViewModel by activityViewModels{
         SignUpViewModelFactory(
-            SignUpRepository(requireContext(), app.loginUser.token)
+            SignUpRepository(app.loginUser.token)
         )
     }
 

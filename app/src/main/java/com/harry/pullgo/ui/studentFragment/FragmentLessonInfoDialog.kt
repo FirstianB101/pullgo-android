@@ -20,7 +20,7 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
     private val binding by lazy{DialogLessonInfoBinding.inflate(layoutInflater)}
 
     private val viewModel: LessonsViewModel by activityViewModels{
-        LessonsViewModelFactory(LessonsRepository(requireContext(), app.loginUser.token))
+        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

@@ -24,7 +24,7 @@ class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels{
-        ManageClassroomViewModelFactory(ClassroomsRepository(requireContext(), app.loginUser.token))
+        ManageClassroomViewModelFactory(ClassroomsRepository(app.loginUser.token))
     }
 
     private var selectedClassroom: Classroom? = null

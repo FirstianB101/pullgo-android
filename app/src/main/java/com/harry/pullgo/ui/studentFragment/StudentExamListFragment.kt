@@ -21,7 +21,7 @@ class StudentExamListFragment : Fragment(){
     private val binding by lazy{FragmentStudentExamListBinding.inflate(layoutInflater)}
 
     private val viewModel: StudentExamListViewModel by viewModels{
-        StudentExamListViewModelFactory(ExamsRepository(requireContext(), app.loginUser.token))
+        StudentExamListViewModelFactory(ExamsRepository(app.loginUser.token))
     }
 
     private var selectedExam: Exam? = null

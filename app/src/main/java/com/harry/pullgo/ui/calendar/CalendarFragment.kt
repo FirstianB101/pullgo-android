@@ -20,7 +20,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     private val binding by lazy{FragmentCalendarBinding.inflate(layoutInflater)}
 
     private val viewModel: LessonsViewModel by viewModels{
-        LessonsViewModelFactory(LessonsRepository(requireContext(),app.loginUser.token))
+        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy { requireActivity().application as PullgoApplication }

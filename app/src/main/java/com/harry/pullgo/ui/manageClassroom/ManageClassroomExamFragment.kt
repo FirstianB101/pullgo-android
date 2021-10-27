@@ -22,7 +22,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
     private val binding by lazy{FragmentManageClassroomManageExamBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext(), app.loginUser.token))
+        ManageClassroomViewModelFactory(ManageClassroomRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

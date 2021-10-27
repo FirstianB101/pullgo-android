@@ -37,7 +37,7 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
     private var isNameNotContainsSemicolon = true
 
     private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext(), app.loginUser.token)
+        ManageClassroomRepository(app.loginUser.token)
     )}
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

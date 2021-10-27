@@ -42,7 +42,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var manageRequestFragment: ManageRequestFragment
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository(applicationContext, app.loginUser.token)
+        ChangeInfoRepository(app.loginUser.token)
     )}
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }
@@ -209,7 +209,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        RetrofitClient.getApiService(RetrofitService::class.java,app.loginUser.token,applicationContext).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
+        RetrofitClient.getApiService(RetrofitService::class.java,app.loginUser.token).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
             override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
                 if(response.isSuccessful){
                     response.body().let{

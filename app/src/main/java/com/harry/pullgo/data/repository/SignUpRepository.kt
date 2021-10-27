@@ -1,13 +1,12 @@
 package com.harry.pullgo.data.repository
 
-import android.content.Context
 import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.api.RetrofitService
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 
-class SignUpRepository(context: Context, token: String?) {
-    private val signUpClient = RetrofitClient.getApiService(RetrofitService::class.java, token,context)
+class SignUpRepository(token: String?) {
+    private val signUpClient = RetrofitClient.getApiService(RetrofitService::class.java, token)
 
     fun createStudent(student: Student) = signUpClient.createStudent(student)
     fun createTeacher(teacher: Teacher) = signUpClient.createTeacher(teacher)

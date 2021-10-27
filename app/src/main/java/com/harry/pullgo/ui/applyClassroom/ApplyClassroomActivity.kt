@@ -23,7 +23,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
 
     private val viewModel: ApplyClassroomViewModel by viewModels{
-        ApplyClassroomViewModelFactory(ApplyClassroomRepository(applicationContext, app.loginUser.token))
+        ApplyClassroomViewModelFactory(ApplyClassroomRepository(app.loginUser.token))
     }
 
     private var selectedAcademy: Academy? = null

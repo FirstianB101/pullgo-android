@@ -21,7 +21,7 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
     private val binding by lazy{FragmentManageClassroomManagePeopleBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(requireContext(), app.loginUser.token))
+        ManageClassroomViewModelFactory(ManageClassroomRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

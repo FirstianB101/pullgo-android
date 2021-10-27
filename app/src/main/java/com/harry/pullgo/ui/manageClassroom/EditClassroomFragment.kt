@@ -29,7 +29,7 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     private var isFormatGood = true
 
     private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(requireContext(), app.loginUser.token)
+        ManageClassroomRepository(app.loginUser.token)
     )}
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }

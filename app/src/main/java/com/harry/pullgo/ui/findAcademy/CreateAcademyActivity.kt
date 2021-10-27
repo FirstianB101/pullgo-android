@@ -17,7 +17,7 @@ class CreateAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityCreateAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: FindAcademyViewModel by viewModels{FindAcademyViewModelFactory(
-        FindAcademyRepository(applicationContext, app.loginUser.token)
+        FindAcademyRepository(app.loginUser.token)
     )}
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }

@@ -39,7 +39,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     private var isEditModeOn = false
 
     private val viewModel: LessonsViewModel by viewModels{
-        LessonsViewModelFactory(LessonsRepository(requireContext(), app.loginUser.token))
+        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
     }
 
     var calendarResetListenerListener: OnCalendarResetListener? = null

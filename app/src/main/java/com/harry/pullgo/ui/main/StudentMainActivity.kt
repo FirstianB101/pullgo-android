@@ -39,7 +39,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var manageRequestFragment: ManageRequestFragment
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository(applicationContext,app.loginUser.token)
+        ChangeInfoRepository(app.loginUser.token)
     )}
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }

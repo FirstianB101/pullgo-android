@@ -23,7 +23,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
     private val viewModel: LessonsViewModel by viewModels{
-        LessonsViewModelFactory(LessonsRepository(requireContext(), app.loginUser.token))
+        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
     }
 
     var calendarResetListenerListener: OnCalendarResetListener? = null

@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.login
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +13,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginRepository: LoginRepository): ViewModel() {
+class LoginViewModel @ViewModelInject constructor(
+    private val loginRepository: LoginRepository
+    ): ViewModel() {
     private val _loginUserRepositories = MutableLiveData<User>()
     val loginUserRepositories: LiveData<User> = _loginUserRepositories
 
@@ -73,11 +76,5 @@ class LoginViewModel(private val loginRepository: LoginRepository): ViewModel() 
                 }
             }
         }
-    }
-}
-
-class LoginViewModelFactory(private val loginRepository: LoginRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(LoginRepository::class.java).newInstance(loginRepository)
     }
 }

@@ -25,7 +25,7 @@ class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
 
     private val viewModel: TeacherManageAcademyViewModel by activityViewModels{
-        TeacherManageAcademyViewModelFactory(ManageAcademyRepository(requireContext(), app.loginUser.token))
+        TeacherManageAcademyViewModelFactory(ManageAcademyRepository(app.loginUser.token))
     }
 
     private var isLayoutVisible = false

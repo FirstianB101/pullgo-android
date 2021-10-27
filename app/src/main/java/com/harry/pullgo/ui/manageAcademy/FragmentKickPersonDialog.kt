@@ -24,7 +24,7 @@ class FragmentKickStudentDialog(private val selectedStudent: Student, private va
     private var dataChangedListener: OnDataChangedListener? = null
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext(), app.loginUser.token))
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(app.loginUser.token))
     }
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
@@ -87,7 +87,7 @@ class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private va
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(requireContext(), app.loginUser.token!!))
+        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(app.loginUser.token!!))
     }
 
     override fun onAttach(context: Context) {
