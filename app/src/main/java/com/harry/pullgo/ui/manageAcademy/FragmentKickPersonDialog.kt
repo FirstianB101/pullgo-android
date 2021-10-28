@@ -17,15 +17,15 @@ import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.DialogKickPersonBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentKickStudentDialog(private val selectedStudent: Student, private val academyName: String?, val academyId: Long): DialogFragment() {
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
     private var dataChangedListener: OnDataChangedListener? = null
 
-    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(app.loginUser.token))
-    }
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
@@ -79,6 +79,7 @@ class FragmentKickStudentDialog(private val selectedStudent: Student, private va
     }
 }
 
+@AndroidEntryPoint
 class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private val academyName: String?, private val academyId: Long): DialogFragment() {
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
@@ -86,9 +87,7 @@ class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private va
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
 
-    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(app.loginUser.token!!))
-    }
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

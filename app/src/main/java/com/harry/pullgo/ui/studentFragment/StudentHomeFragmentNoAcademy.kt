@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentStudentHomeNoAcademyBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudentHomeFragmentNoAcademy: Fragment() {
     private val binding by lazy{FragmentStudentHomeNoAcademyBinding.inflate(layoutInflater)}
 

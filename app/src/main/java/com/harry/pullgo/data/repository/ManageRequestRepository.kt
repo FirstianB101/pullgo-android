@@ -1,11 +1,13 @@
 package com.harry.pullgo.data.repository
 
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.api.RetrofitService
+import com.harry.pullgo.data.api.PullgoService
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ManageRequestRepository(token: String?) {
-    private val manageRequestClient = RetrofitClient.getApiService(RetrofitService::class.java, token)
-
+@Singleton
+class ManageRequestRepository @Inject constructor(
+    private val manageRequestClient: PullgoService
+) {
     suspend fun getTeacherApplyingAcademies(teacherId: Long) = manageRequestClient.getTeacherApplyingAcademies(teacherId)
     suspend fun getTeacherApplyingClassrooms(teacherId: Long) = manageRequestClient.getTeacherApplyingClassrooms(teacherId)
     suspend fun getStudentApplyingAcademies(studentId: Long) = manageRequestClient.getStudentApplyingAcademies(studentId)

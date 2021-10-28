@@ -17,7 +17,9 @@ import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.DialogManageAcademyDelegateBinding
 import com.harry.pullgo.ui.teacherFragment.TeacherManageAcademyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentManageAcademyDelegateDialog(private val selectedAcademy: Academy): DialogFragment() {
     private val binding by lazy{DialogManageAcademyDelegateBinding.inflate(layoutInflater)}
 

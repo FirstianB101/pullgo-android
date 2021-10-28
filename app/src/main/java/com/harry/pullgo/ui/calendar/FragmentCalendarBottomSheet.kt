@@ -18,13 +18,13 @@ import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBottomSheetBinding
 import com.harry.pullgo.ui.studentFragment.FragmentLessonInfoDialog
 import com.harry.pullgo.ui.teacherFragment.FragmentLessonInfoManageDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomSheetDialogFragment(){
     private val binding by lazy{FragmentCalendarBottomSheetBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by viewModels{
-        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
-    }
+    private val viewModel: LessonsViewModel by viewModels()
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
 

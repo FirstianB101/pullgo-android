@@ -14,12 +14,13 @@ import com.harry.pullgo.data.api.OnAcademyClickListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.repository.FindAcademyRepository
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FindAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityFindAcademyBinding.inflate(layoutInflater)}
-    private val viewModel: FindAcademyViewModel by viewModels{
-        FindAcademyViewModelFactory(FindAcademyRepository(app.loginUser.token))
-    }
+
+    private val viewModel: FindAcademyViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }
 

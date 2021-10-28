@@ -20,10 +20,12 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogCreateExamBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.time.Duration
 
+@AndroidEntryPoint
 class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFragment() {
     private val binding by lazy{DialogCreateExamBinding.inflate(layoutInflater)}
 
@@ -32,9 +34,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
     private lateinit var beginTimePicker: MaterialTimePicker
     private lateinit var endTimePicker: MaterialTimePicker
 
-    private val viewModel: ManageClassroomViewModel by viewModels{
-        ManageClassroomViewModelFactory(ManageClassroomRepository(app.loginUser.token))
-    }
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 

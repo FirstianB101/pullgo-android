@@ -15,12 +15,14 @@ import com.harry.pullgo.ui.main.StudentMainActivity
 import com.harry.pullgo.ui.main.TeacherMainActivity
 import com.harry.pullgo.ui.signUp.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity: AppCompatActivity(){
     private val binding by lazy{ActivityLoginBinding.inflate(layoutInflater)}
 
-    private val app: PullgoApplication by lazy{application as PullgoApplication}
+    @Inject
+    lateinit var app: PullgoApplication
 
     private val viewModel: LoginViewModel by viewModels()
 

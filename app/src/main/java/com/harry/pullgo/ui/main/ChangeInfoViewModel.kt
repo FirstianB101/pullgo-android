@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.main
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,7 +12,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChangeInfoViewModel(private val changeInfoRepository: ChangeInfoRepository): ViewModel() {
+class ChangeInfoViewModel @ViewModelInject constructor(
+    private val changeInfoRepository: ChangeInfoRepository
+    ): ViewModel() {
     private val _changeStudent = MutableLiveData<Student>()
     val changeStudent = _changeStudent
 
@@ -51,11 +54,5 @@ class ChangeInfoViewModel(private val changeInfoRepository: ChangeInfoRepository
                 _changeInfoMessage.postValue("서버와 연결에 실패하였습니다")
             }
         })
-    }
-}
-
-class ChangeInfoViewModelFactory(private val changeInfoRepository: ChangeInfoRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ChangeInfoRepository::class.java).newInstance(changeInfoRepository)
     }
 }

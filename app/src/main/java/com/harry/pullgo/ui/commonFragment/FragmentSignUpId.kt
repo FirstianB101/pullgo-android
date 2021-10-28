@@ -12,15 +12,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
-import com.harry.pullgo.data.repository.SignUpRepository
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
 import com.harry.pullgo.ui.signUp.SignUpViewModel
-import com.harry.pullgo.ui.signUp.SignUpViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
     private val binding by lazy{FragmentSignupIdBinding.inflate(layoutInflater)}
     private val ID_TYPE_EXPRESSION = "^[a-z0-9]{1}[a-z0-9-_]*$"
@@ -30,11 +29,7 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
 
-    private val viewModel: SignUpViewModel by activityViewModels{
-        SignUpViewModelFactory(
-            SignUpRepository(app.loginUser.token)
-        )
-    }
+    private val viewModel: SignUpViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)

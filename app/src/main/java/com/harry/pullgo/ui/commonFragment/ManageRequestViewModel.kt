@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.commonFragment
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ManageRequestViewModel(private val repository: ManageRequestRepository): ViewModel() {
+class ManageRequestViewModel @ViewModelInject constructor(
+    private val repository: ManageRequestRepository
+    ): ViewModel() {
     private val _applyingAcademyRepository = MutableLiveData<List<Academy>>()
     val applyingAcademyRepository: LiveData<List<Academy>> = _applyingAcademyRepository
 
@@ -135,12 +138,5 @@ class ManageRequestViewModel(private val repository: ManageRequestRepository): V
                 _removeRequestMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
-    }
-}
-
-
-class ManageRequestViewModelFactory(private val manageRequestRepository: ManageRequestRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ManageRequestRepository::class.java).newInstance(manageRequestRepository)
     }
 }

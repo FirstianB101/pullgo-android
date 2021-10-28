@@ -19,17 +19,16 @@ import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
 
-    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels{
-        TeacherAcceptApplyAcademyViewModelFactory(AcceptApplyAcademyRepository(app.loginUser.token))
-    }
+    private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels()
 
     private var selectedAcademy: Academy? = null
 

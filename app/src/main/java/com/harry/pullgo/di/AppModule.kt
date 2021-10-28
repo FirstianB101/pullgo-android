@@ -5,11 +5,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(ApplicationComponent::class)
-object tokenModule {
+object AppModule {
 
     @Provides
-    fun provideToken() = PullgoApplication.instance!!.loginUser.token
+    @Singleton
+    fun provideApp() = PullgoApplication.instance!!
 }

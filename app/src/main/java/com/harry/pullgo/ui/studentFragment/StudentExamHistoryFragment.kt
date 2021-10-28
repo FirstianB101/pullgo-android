@@ -16,13 +16,13 @@ import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.databinding.FragmentStudentExamHistoryBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudentExamHistoryFragment : Fragment(){
     private val binding by lazy{ FragmentStudentExamHistoryBinding.inflate(layoutInflater)}
 
-    private val viewModel: StudentExamListViewModel by viewModels{
-        StudentExamListViewModelFactory(ExamsRepository(app.loginUser.token))
-    }
+    private val viewModel: StudentExamListViewModel by viewModels()
 
     private var selectedExam: Exam? = null
 

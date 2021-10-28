@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.calendar
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewModel() {
+class LessonsViewModel @ViewModelInject constructor(
+    private val lessonsRepository: LessonsRepository
+    ): ViewModel() {
     private val _allLessonRepositories = MutableLiveData<List<Lesson>>()
     val allLessonsRepositories: LiveData<List<Lesson>> = _allLessonRepositories
 
@@ -135,11 +138,5 @@ class LessonsViewModel(private val lessonsRepository: LessonsRepository): ViewMo
                 _lessonMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
-    }
-}
-
-class LessonsViewModelFactory(private val lessonsRepository: LessonsRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(LessonsRepository::class.java).newInstance(lessonsRepository)
     }
 }

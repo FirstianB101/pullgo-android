@@ -6,7 +6,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.ActivitySignUpBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpActivity: AppCompatActivity(), View.OnClickListener{
     private val binding by lazy{ActivitySignUpBinding.inflate(layoutInflater)}
 

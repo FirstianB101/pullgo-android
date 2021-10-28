@@ -1,6 +1,7 @@
 package com.harry.pullgo.ui.manageClassroom
 
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +18,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ManageClassroomViewModel(private val repository: ManageClassroomRepository): ViewModel() {
+class ManageClassroomViewModel @ViewModelInject constructor(
+    private val repository: ManageClassroomRepository
+    ): ViewModel() {
     private val _studentsAppliedClassroom = MutableLiveData<List<Student>>()
     val studentsAppliedClassroom: LiveData<List<Student>> = _studentsAppliedClassroom
 
@@ -319,11 +322,5 @@ class ManageClassroomViewModel(private val repository: ManageClassroomRepository
                 _cancelOrFinishMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
-    }
-}
-
-class ManageClassroomViewModelFactory(private val repository: ManageClassroomRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ManageClassroomRepository::class.java).newInstance(repository)
     }
 }

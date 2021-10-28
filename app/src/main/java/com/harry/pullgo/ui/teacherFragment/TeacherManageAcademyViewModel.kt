@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.teacherFragment
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TeacherManageAcademyViewModel(private val manageAcademyRepository: ManageAcademyRepository): ViewModel() {
+class TeacherManageAcademyViewModel @ViewModelInject constructor(
+    private val manageAcademyRepository: ManageAcademyRepository
+    ): ViewModel() {
     private val _ownedAcademiesRepository = MutableLiveData<List<Academy>>()
     val ownedAcademiesRepository: LiveData<List<Academy>> = _ownedAcademiesRepository
 
@@ -78,12 +81,5 @@ class TeacherManageAcademyViewModel(private val manageAcademyRepository: ManageA
                 _manageAcademyMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
-    }
-}
-
-
-class TeacherManageAcademyViewModelFactory(private val manageAcademyRepository: ManageAcademyRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ManageAcademyRepository::class.java).newInstance(manageAcademyRepository)
     }
 }

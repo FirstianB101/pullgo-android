@@ -15,17 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
 import com.harry.pullgo.ui.manageClassroom.FragmentCreateClassroomDialog
 import com.harry.pullgo.ui.manageClassroom.ManageClassroomActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by activityViewModels{
-        ManageClassroomViewModelFactory(ClassroomsRepository(app.loginUser.token))
-    }
+    private val viewModel: ManageClassroomViewModel by activityViewModels()
 
     private var selectedClassroom: Classroom? = null
     private var buttonPushed = false

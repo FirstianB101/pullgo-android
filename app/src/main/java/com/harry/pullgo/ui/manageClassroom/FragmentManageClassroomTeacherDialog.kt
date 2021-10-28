@@ -4,29 +4,26 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.application.PullgoApplication
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogManageClassroomTeacherInfoBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentManageClassroomTeacherDialog(
     private val selectedTeacher: Teacher,
     private val selectedClassroom: Classroom
 ): DialogFragment() {
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by activityViewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(app.loginUser.token)
-    )}
+    private val viewModel: ManageClassroomViewModel by activityViewModels()
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 

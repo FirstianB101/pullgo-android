@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.signUp
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignUpViewModel(private val signUpRepository: SignUpRepository): ViewModel() {
+class SignUpViewModel @ViewModelInject constructor(
+    private val signUpRepository: SignUpRepository
+    ): ViewModel() {
     private val _signUpId = MutableLiveData<String>()
     val signUpId = _signUpId
 
@@ -91,12 +94,5 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository): ViewModel
                 }
             }
         }
-    }
-}
-
-
-class SignUpViewModelFactory(private val signUpRepository: SignUpRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(SignUpRepository::class.java).newInstance(signUpRepository)
     }
 }

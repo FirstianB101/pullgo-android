@@ -24,8 +24,10 @@ import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.DialogCreateClassroomBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
+@AndroidEntryPoint
 class FragmentCreateClassroomDialog(private val academies: List<Academy>): DialogFragment() {
     private val binding by lazy{ DialogCreateClassroomBinding.inflate(layoutInflater)}
 
@@ -36,9 +38,7 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
     private var isLayoutVisible = false
     private var isNameNotContainsSemicolon = true
 
-    private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(app.loginUser.token)
-    )}
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 

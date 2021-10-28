@@ -1,38 +1,29 @@
 package com.harry.pullgo.ui.signUp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent
-import android.os.Bundle;
-import android.util.Log
+import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.harry.pullgo.*
+import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
-
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.repository.SignUpRepository
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpId
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpPw
 import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeacherSignUpActivity:AppCompatActivity(){
     private val binding by lazy{ActivitySignUpTeacherBinding.inflate(layoutInflater)}
     lateinit var signUpId: FragmentSignUpId
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpInfoFragment: TeacherSignUpInfoFragment
 
-    private val viewModel: SignUpViewModel by viewModels{
-        SignUpViewModelFactory(SignUpRepository(app.loginUser.token))
-    }
+    private val viewModel: SignUpViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }
 

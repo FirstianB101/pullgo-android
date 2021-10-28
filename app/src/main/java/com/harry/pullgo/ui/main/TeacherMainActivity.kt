@@ -1,36 +1,36 @@
 package com.harry.pullgo.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.navigation.NavigationView
 import android.os.Bundle
-import android.view.View
-import androidx.core.view.GravityCompat
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
+import com.google.android.material.navigation.NavigationView
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCheckPwListener
-import com.harry.pullgo.ui.calendar.CalendarFragment
-import com.harry.pullgo.databinding.ActivityTeacherMainBinding
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.api.RetrofitService
+import com.harry.pullgo.data.api.PullgoService
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.repository.ChangeInfoRepository
+import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
+import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
 import com.harry.pullgo.ui.commonFragment.ManageRequestFragment
+import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.teacherFragment.*
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@AndroidEntryPoint
 class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy{ActivityTeacherMainBinding.inflate(layoutInflater)}
     lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
@@ -41,9 +41,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
     lateinit var manageRequestFragment: ManageRequestFragment
 
-    private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository(app.loginUser.token)
-    )}
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }
 
@@ -209,19 +207,19 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        RetrofitClient.getApiService(RetrofitService::class.java,app.loginUser.token).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
-            override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
-                if(response.isSuccessful){
-                    response.body().let{
-                        if(it?.isNotEmpty() == true)
-                            binding.navigationViewTeacher.menu.getItem(7).isVisible = true
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
-            }
-        })
+//        RetrofitClient.getApiService(PullgoService::class.java,app.loginUser.token).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
+//            override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
+//                if(response.isSuccessful){
+//                    response.body().let{
+//                        if(it?.isNotEmpty() == true)
+//                            binding.navigationViewTeacher.menu.getItem(7).isVisible = true
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
+//            }
+//        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

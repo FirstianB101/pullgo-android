@@ -37,9 +37,3 @@ class AppliedAcademyGroupViewModel(private val appliedAcademiesRepository: Appli
         }
     }
 }
-
-class AppliedAcademiesViewModelFactory(private val appliedAcademiesRepository: AppliedAcademyGroupRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(AppliedAcademyGroupRepository::class.java).newInstance(appliedAcademiesRepository)
-    }
-}

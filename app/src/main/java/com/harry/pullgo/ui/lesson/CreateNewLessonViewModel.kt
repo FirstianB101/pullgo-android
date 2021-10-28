@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.lesson
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,7 +15,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreateNewLessonViewModel(private val classroomsRepository: ClassroomsRepository):ViewModel() {
+class CreateNewLessonViewModel @ViewModelInject constructor(
+    private val classroomsRepository: ClassroomsRepository
+    ):ViewModel() {
     private val _createNewLessonClassroomRepository = MutableLiveData<List<Classroom>>()
     val createNewLessonClassroomRepository: LiveData<List<Classroom>> = _createNewLessonClassroomRepository
 
@@ -47,11 +50,5 @@ class CreateNewLessonViewModel(private val classroomsRepository: ClassroomsRepos
                 _createMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
-    }
-}
-
-class CreateNewLessonViewModelFactory(private val classroomsRepository: ClassroomsRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ClassroomsRepository::class.java).newInstance(classroomsRepository)
     }
 }

@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
-interface RetrofitService {
+interface PullgoService {
 
     @POST("auth/token/")
     suspend fun getToken(@Body account: Account): Response<User>

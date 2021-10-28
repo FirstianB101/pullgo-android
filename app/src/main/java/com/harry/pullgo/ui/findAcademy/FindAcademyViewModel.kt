@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.findAcademy
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FindAcademyViewModel(private val findAcademyRepository: FindAcademyRepository): ViewModel() {
+class FindAcademyViewModel @ViewModelInject constructor(
+    private val findAcademyRepository: FindAcademyRepository
+    ): ViewModel() {
     private val _findAcademyRepositories = MutableLiveData<List<Academy>>()
     val findAcademyRepositories: LiveData<List<Academy>> = _findAcademyRepositories
 
@@ -81,11 +84,5 @@ class FindAcademyViewModel(private val findAcademyRepository: FindAcademyReposit
                 _createMessage.postValue("서버와 연결에 실패했습니다")
             }
         })
-    }
-}
-
-class FindAcademyViewModelFactory(private val findAcademyRepository: FindAcademyRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(FindAcademyRepository::class.java).newInstance(findAcademyRepository)
     }
 }

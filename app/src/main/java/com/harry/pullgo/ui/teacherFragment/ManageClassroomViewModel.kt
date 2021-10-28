@@ -1,9 +1,9 @@
 package com.harry.pullgo.ui.teacherFragment
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ClassroomsRepository
@@ -11,7 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ManageClassroomViewModel(private val classroomsRepository: ClassroomsRepository): ViewModel() {
+class ManageClassroomViewModel @ViewModelInject constructor(
+    private val classroomsRepository: ClassroomsRepository
+    ): ViewModel() {
     private val _selectedClassroom = MutableLiveData<Classroom>()
     val selectedClassroom: LiveData<Classroom> = _selectedClassroom
 
@@ -55,11 +57,5 @@ class ManageClassroomViewModel(private val classroomsRepository: ClassroomsRepos
                 }
             }
         }
-    }
-}
-
-class ManageClassroomViewModelFactory(private val classroomsRepository: ClassroomsRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ClassroomsRepository::class.java).newInstance(classroomsRepository)
     }
 }

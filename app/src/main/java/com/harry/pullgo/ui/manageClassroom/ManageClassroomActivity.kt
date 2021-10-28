@@ -9,7 +9,9 @@ import com.harry.pullgo.R
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.ActivityManageClassroomBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ManageClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityManageClassroomBinding.inflate(layoutInflater)}
 

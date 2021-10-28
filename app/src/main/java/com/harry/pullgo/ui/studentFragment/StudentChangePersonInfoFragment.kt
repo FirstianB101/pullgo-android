@@ -14,8 +14,10 @@ import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.databinding.FragmentStudentChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class StudentChangePersonInfoFragment : Fragment() {
     val binding by lazy { FragmentStudentChangeInfoBinding.inflate(layoutInflater) }
     private val PHONE_TYPE_EXPRESSION="^[0-9]*$"

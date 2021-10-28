@@ -1,13 +1,12 @@
 package com.harry.pullgo.data.api
 
-import android.content.Context
 import android.text.TextUtils
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
+/*
 object RetrofitClient {
     private const val BASE_URL = "https://api.pullgo.kr/v1/"
 
@@ -35,3 +34,5 @@ object RetrofitClient {
         return retrofit.create(serviceClass)
     }
 }
+
+ */

@@ -18,13 +18,13 @@ import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
 import com.harry.pullgo.databinding.ActivityRequestApplyClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ApplyClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
 
-    private val viewModel: ApplyClassroomViewModel by viewModels{
-        ApplyClassroomViewModelFactory(ApplyClassroomRepository(app.loginUser.token))
-    }
+    private val viewModel: ApplyClassroomViewModel by viewModels()
 
     private var selectedAcademy: Academy? = null
     private var selectedClassroom: Classroom? = null

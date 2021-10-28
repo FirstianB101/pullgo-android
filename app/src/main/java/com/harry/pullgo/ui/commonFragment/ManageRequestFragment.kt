@@ -16,13 +16,13 @@ import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageRequestRepository
 import com.harry.pullgo.databinding.FragmentManageRequestBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     private val binding by lazy { FragmentManageRequestBinding.inflate(layoutInflater) }
 
-    private val viewModel: ManageRequestViewModel by viewModels {
-        ManageRequestViewModelFactory(ManageRequestRepository(app.loginUser.token))
-    }
+    private val viewModel: ManageRequestViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 

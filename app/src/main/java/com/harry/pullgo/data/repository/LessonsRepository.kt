@@ -1,15 +1,17 @@
 package com.harry.pullgo.data.repository
 
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.api.RetrofitService
+import com.harry.pullgo.data.api.PullgoService
 import com.harry.pullgo.data.models.Lesson
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LessonsRepository(token: String?) {
-    private val lessonClient = RetrofitClient.getApiService(RetrofitService::class.java, token)
-
+@Singleton
+class LessonsRepository @Inject constructor(
+    private val lessonClient: PullgoService
+) {
     val MAX_LESSONS = 100
 
     suspend fun getStudentLessonsOnDate(id: Long, date: String): Response<List<Lesson>> {

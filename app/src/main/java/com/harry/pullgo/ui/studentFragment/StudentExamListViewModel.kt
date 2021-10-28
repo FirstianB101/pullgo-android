@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.studentFragment
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +11,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class StudentExamListViewModel(private val examsRepository: ExamsRepository): ViewModel() {
+class StudentExamListViewModel @ViewModelInject constructor(
+    private val examsRepository: ExamsRepository
+    ): ViewModel() {
     private val _studentExamList = MutableLiveData<List<Exam>>()
     val studentExamList: LiveData<List<Exam>> = _studentExamList
 
@@ -60,11 +63,5 @@ class StudentExamListViewModel(private val examsRepository: ExamsRepository): Vi
                 }
             }
         }
-    }
-}
-
-class StudentExamListViewModelFactory(private val examsRepository: ExamsRepository): ViewModelProvider.Factory{
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(ExamsRepository::class.java).newInstance(examsRepository)
     }
 }

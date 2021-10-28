@@ -13,24 +13,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.application.PullgoApplication
-import com.harry.pullgo.data.api.RetrofitClient
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClasssroomEditClassroomBinding.inflate(layoutInflater)}
 
     private var isEditModeOn = false
     private var isFormatGood = true
 
-    private val viewModel: ManageClassroomViewModel by viewModels{ManageClassroomViewModelFactory(
-        ManageClassroomRepository(app.loginUser.token)
-    )}
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 

@@ -13,7 +13,9 @@ import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.databinding.FragmentTeacherHomeNoAcademyBinding
 import com.harry.pullgo.ui.findAcademy.CreateAcademyActivity
 import com.harry.pullgo.ui.main.TeacherMainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeacherHomeFragmentNoAcademy: Fragment() {
     private val binding by lazy{FragmentTeacherHomeNoAcademyBinding.inflate(layoutInflater)}
 

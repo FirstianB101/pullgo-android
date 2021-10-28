@@ -7,29 +7,23 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.harry.pullgo.*
+import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.databinding.ActivitySignUpStudentBinding
-import com.harry.pullgo.data.api.RetrofitClient
-import com.harry.pullgo.data.models.Student
-import com.harry.pullgo.data.repository.SignUpRepository
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpId
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpPw
 import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudentSignUpActivity:AppCompatActivity(){
     private val binding by lazy{ActivitySignUpStudentBinding.inflate(layoutInflater)}
     lateinit var signUpId: FragmentSignUpId
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpSignUpInfoFragment: StudentSignUpInfoFragment
 
-    private val viewModel: SignUpViewModel by viewModels{
-        SignUpViewModelFactory(SignUpRepository(app.loginUser.token))
-    }
+    private val viewModel: SignUpViewModel by viewModels()
 
     var curPosition: Int = 0
 

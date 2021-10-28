@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -20,15 +20,15 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
-import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
-import com.harry.pullgo.ui.calendar.LessonsViewModelFactory
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import dagger.hilt.android.AndroidEntryPoint
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
+@AndroidEntryPoint
 class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :DialogFragment(){
     private val binding by lazy{DialogLessonInfoManageBinding.inflate(layoutInflater)}
     private var selectedDate: Long? = null
@@ -38,9 +38,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
     private var endMinute = selectedLesson.schedule?.endTime!!.split(':')[1].toInt()
     private var isEditModeOn = false
 
-    private val viewModel: LessonsViewModel by viewModels{
-        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
-    }
+    private val viewModel: LessonsViewModel by viewModels()
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
 

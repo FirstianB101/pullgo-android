@@ -15,13 +15,13 @@ import com.harry.pullgo.ui.lesson.FragmentCreateNewLessonDialog
 import com.harry.pullgo.data.repository.LessonsRepository
 import com.harry.pullgo.databinding.FragmentCalendarBinding
 import com.prolificinteractive.materialcalendarview.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CalendarFragment : Fragment(), OnDateSelectedListener {
     private val binding by lazy{FragmentCalendarBinding.inflate(layoutInflater)}
 
-    private val viewModel: LessonsViewModel by viewModels{
-        LessonsViewModelFactory(LessonsRepository(app.loginUser.token))
-    }
+    private val viewModel: LessonsViewModel by viewModels()
 
     private val app: PullgoApplication by lazy { requireActivity().application as PullgoApplication }
 

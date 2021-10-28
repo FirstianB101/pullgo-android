@@ -12,8 +12,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.databinding.FragmentSignupTeacherInfoBinding
 import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.models.Teacher
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class TeacherSignUpInfoFragment: Fragment() {
     private val binding by lazy{FragmentSignupTeacherInfoBinding.inflate(layoutInflater)}
     private val PHONE_TYPE_EXPRESSION="^[0-9]*$"

@@ -27,7 +27,9 @@ import com.harry.pullgo.ui.studentFragment.StudentChangePersonInfoFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamListFragment
 import com.harry.pullgo.ui.studentFragment.StudentHomeFragmentNoAcademy
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private val binding by lazy{ActivityStudentMainBinding.inflate(layoutInflater)}
     lateinit var studentChangeInfoFragment: StudentChangePersonInfoFragment
@@ -38,9 +40,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
     lateinit var manageRequestFragment: ManageRequestFragment
 
-    private val changeInfoViewModel: ChangeInfoViewModel by viewModels{ChangeInfoViewModelFactory(
-        ChangeInfoRepository(app.loginUser.token)
-    )}
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }
 
@@ -64,7 +64,9 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             app.loginUser.student = it
             headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.account?.fullName}님"
             headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.account?.username}"
-            onFragmentSelected(CALENDAR)
+
+            if(intent.getBooleanExtra("appliedAcademyExist",false)) onFragmentSelected(CALENDAR)
+            else onFragmentSelected(HOME)
         }
 
         changeInfoViewModel.changeInfoMessage.observe(this){

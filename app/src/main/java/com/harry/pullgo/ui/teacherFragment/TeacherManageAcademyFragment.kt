@@ -14,19 +14,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.FragmentTeacherManageAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import com.harry.pullgo.ui.main.TeacherMainActivity
 import com.harry.pullgo.ui.manageAcademy.FragmentManageAcademyDelegateDialog
 import com.harry.pullgo.ui.manageAcademy.ManageAcademyManagePeopleActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
 
-    private val viewModel: TeacherManageAcademyViewModel by activityViewModels{
-        TeacherManageAcademyViewModelFactory(ManageAcademyRepository(app.loginUser.token))
-    }
+    private val viewModel: TeacherManageAcademyViewModel by activityViewModels()
 
     private var isLayoutVisible = false
     private var isEditMode = false

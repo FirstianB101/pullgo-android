@@ -17,13 +17,13 @@ import com.harry.pullgo.data.repository.ManageAcademyRepository
 import com.harry.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListener {
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels{
-        ManageAcademyManagePeopleViewModelFactory(ManageAcademyRepository(app.loginUser.token))
-    }
+    private val viewModel: ManageAcademyManagePeopleViewModel by viewModels()
 
     private val app: PullgoApplication by lazy{application as PullgoApplication }
 
