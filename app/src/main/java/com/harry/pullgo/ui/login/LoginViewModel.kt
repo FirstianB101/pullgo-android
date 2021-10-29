@@ -1,14 +1,12 @@
 package com.harry.pullgo.ui.login
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.models.User
 import com.harry.pullgo.data.repository.LoginRepository
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,38 +14,38 @@ import kotlinx.coroutines.launch
 class LoginViewModel @ViewModelInject constructor(
     private val loginRepository: LoginRepository
     ): ViewModel() {
-    private val _loginUserRepositories = MutableLiveData<User>()
-    val loginUserRepositories: LiveData<User> = _loginUserRepositories
+    private val _loginUserRepositories = MutableLiveData<Resource<User>>()
+    val loginUserRepositories: LiveData<Resource<User>> = _loginUserRepositories
 
-    private val _academyRepositoryStudentApplied = MutableLiveData<List<Academy>>()
-    val academyRepositoryStudentApplied: LiveData<List<Academy>> = _academyRepositoryStudentApplied
+    private val _academyRepositoryStudentApplied = MutableLiveData<Resource<List<Academy>>>()
+    val academyRepositoryStudentApplied: LiveData<Resource<List<Academy>>> = _academyRepositoryStudentApplied
 
-    private val _academyRepositoryTeacherApplied = MutableLiveData<List<Academy>>()
-    val academyRepositoryTeacherApplied: LiveData<List<Academy>> = _academyRepositoryTeacherApplied
+    private val _academyRepositoryTeacherApplied = MutableLiveData<Resource<List<Academy>>>()
+    val academyRepositoryTeacherApplied: LiveData<Resource<List<Academy>>> = _academyRepositoryTeacherApplied
 
-    private val _loginMessage = MutableLiveData<String>()
-    val loginMessage: LiveData<String> = _loginMessage
 
     fun requestLogin(account: Account){
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch{
+            _loginUserRepositories.postValue(Resource.loading(null))
+
             loginRepository.getLoginUser(account).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _loginUserRepositories.postValue(it)
-                    }
+                    _loginUserRepositories.postValue(Resource.success(response.body()))
                 }else{
-                    _loginMessage.postValue("아이디 또는 비밀번호가 잘못되었습니다")
+                    _loginUserRepositories.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestAuthorize(){
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch{
+            _loginUserRepositories.postValue(Resource.loading(null))
+
             loginRepository.getAutoLoginUser().let{ response ->
                 if(response.isSuccessful){
                     response.body().let{
-                        _loginUserRepositories.postValue(it)
+                        _loginUserRepositories.postValue(Resource.success(it))
                     }
                 }
             }
@@ -55,24 +53,28 @@ class LoginViewModel @ViewModelInject constructor(
     }
 
     fun requestStudentAcademies(id: Long){
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch{
+            _academyRepositoryStudentApplied.postValue(Resource.loading(null))
+
             loginRepository.getAcademiesByStudentId(id).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _academyRepositoryStudentApplied.postValue(it)
-                    }
+                    _academyRepositoryStudentApplied.postValue(Resource.success(response.body()))
+                }else{
+                    _academyRepositoryStudentApplied.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestTeacherAcademies(id: Long){
-        CoroutineScope(Dispatchers.IO).launch{
+        viewModelScope.launch{
+            _academyRepositoryTeacherApplied.postValue(Resource.loading(null))
+
             loginRepository.getAcademiesByTeacherId(id).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _academyRepositoryTeacherApplied.postValue(it)
-                    }
+                    _academyRepositoryTeacherApplied.postValue(Resource.success(response.body()))
+                }else{
+                    _academyRepositoryTeacherApplied.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }

@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.repository.LoginRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityLoginBinding
 import com.harry.pullgo.ui.findAccount.FindAccountActivity
 import com.harry.pullgo.ui.main.StudentMainActivity
@@ -50,47 +52,79 @@ class LoginActivity: AppCompatActivity(){
 
     private fun initViewModel(){
         viewModel.loginUserRepositories.observe(this){
-            app.loginUser = it
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
+                    app.loginUser = it.data!!
 
-            if(binding.checkBoxAutoLogin.isChecked){
-                saveAutoLoginInfo()
-            }else{
-                resetAutoLoginInfo()
+                    if(binding.checkBoxAutoLogin.isChecked){
+                        saveAutoLoginInfo()
+                    }else{
+                        resetAutoLoginInfo()
+                    }
+
+                    if(it.data.student != null)
+                        viewModel.requestStudentAcademies(it.data.student?.id!!)
+                    else if(it.data.teacher != null)
+                        viewModel.requestTeacherAcademies(it.data.teacher?.id!!)
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    app.dismissLoadingDialog()
+                    app.cancelAllToasts()
+                    Toast.makeText(this,"연결에 실패했습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
-
-            if(it.student != null)
-                viewModel.requestStudentAcademies(it.student?.id!!)
-            else if(it.teacher != null)
-                viewModel.requestTeacherAcademies(it.teacher?.id!!)
         }
 
         viewModel.academyRepositoryStudentApplied.observe(this){
-            val studentAcademies = viewModel.academyRepositoryStudentApplied.value
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
 
-            val mainIntent = Intent(applicationContext, StudentMainActivity::class.java)
+                    val studentAcademies = viewModel.academyRepositoryStudentApplied.value?.data
 
-            if(studentAcademies?.isNotEmpty() == true)
-                mainIntent.putExtra("appliedAcademyExist",true)
+                    val mainIntent = Intent(applicationContext, StudentMainActivity::class.java)
 
-            app.dismissLoadingDialog()
-            startActivity(mainIntent)
+                    if(studentAcademies?.isNotEmpty() == true)
+                        mainIntent.putExtra("appliedAcademyExist",true)
+
+                    app.dismissLoadingDialog()
+                    startActivity(mainIntent)
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    app.dismissLoadingDialog()
+                }
+            }
         }
 
         viewModel.academyRepositoryTeacherApplied.observe(this){
-            val teacherAcademies = viewModel.academyRepositoryTeacherApplied.value
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
 
-            val mainIntent = Intent(applicationContext, TeacherMainActivity::class.java)
+                    val teacherAcademies = viewModel.academyRepositoryTeacherApplied.value?.data
 
-            if(teacherAcademies?.isNotEmpty() == true)
-                mainIntent.putExtra("appliedAcademyExist",true)
+                    val mainIntent = Intent(applicationContext, TeacherMainActivity::class.java)
 
-            app.dismissLoadingDialog()
-            startActivity(mainIntent)
-        }
+                    if(teacherAcademies?.isNotEmpty() == true)
+                        mainIntent.putExtra("appliedAcademyExist",true)
 
-        viewModel.loginMessage.observe(this){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            app.dismissLoadingDialog()
+                    app.dismissLoadingDialog()
+                    startActivity(mainIntent)
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    app.dismissLoadingDialog()
+                }
+            }
         }
     }
 
@@ -125,7 +159,6 @@ class LoginActivity: AppCompatActivity(){
         binding.buttonLogin.setOnClickListener {
             val account = Account(binding.loginId.text.toString(),null,null,binding.loginPw.text.toString())
             viewModel.requestLogin(account)
-            app.showLoadingDialog(supportFragmentManager)
         }
     }
 
