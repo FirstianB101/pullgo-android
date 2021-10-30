@@ -40,5 +40,5 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providePullgoService(retrofit: Retrofit) = retrofit.create(PullgoService::class.java)
+    fun providePullgoService(retrofit: Retrofit): PullgoService = retrofit.create(PullgoService::class.java)
 }

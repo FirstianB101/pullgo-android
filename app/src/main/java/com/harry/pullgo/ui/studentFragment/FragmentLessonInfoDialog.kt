@@ -4,13 +4,12 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Lesson
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogLessonInfoBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,22 +20,6 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
 
     private val viewModel: LessonsViewModel by activityViewModels()
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
-
-    override fun onStart() {
-        super.onStart()
-
-        val dialog = dialog
-        if (dialog != null) {
-            dialog.window!!.setLayout(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
 
@@ -45,7 +28,11 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
         setListeners()
 
         builder.setView(binding.root)
-        return builder.create()
+        val _dialog = builder.create()
+        _dialog.setCanceledOnTouchOutside(false)
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        return _dialog
     }
 
     private fun setListeners(){
@@ -62,16 +49,17 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
     }
 
     private fun initViewModel(){
-        viewModel.classroomInfoRepository.observe(requireActivity()){
-            val classroom = it.name!!.split(';')
-            binding.textViewLessonInfoClassroomName.text = "${classroom[0]} (${classroom[1]})"
-        }
-
         viewModel.academyInfoRepository.observe(requireActivity()){
-            binding.textViewLessonInfoAcademyName.text = it.name
+            when(it.status){
+                Status.SUCCESS -> {
+                    binding.textViewLessonInfoAcademyName.text = it.data?.name
+                }
+                Status.ERROR -> {
+                    binding.textViewLessonInfoAcademyName.text = "정보를 불러올 수 없습니다"
+                }
+            }
         }
 
-        viewModel.getClassroomInfoOfLesson(selectedLesson)
         viewModel.getAcademyInfoOfLesson(selectedLesson)
     }
 

@@ -15,22 +15,24 @@ import com.harry.pullgo.data.adapter.ClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
-import com.harry.pullgo.data.repository.ApplyClassroomRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityRequestApplyClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ApplyClassroomActivity : AppCompatActivity() {
-    val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
+    private val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
+
+    @Inject
+    lateinit var app: PullgoApplication
 
     private val viewModel: ApplyClassroomViewModel by viewModels()
 
     private var selectedAcademy: Academy? = null
     private var selectedClassroom: Classroom? = null
     private var isLayoutVisible = false
-
-    private val app: PullgoApplication by lazy{ application as PullgoApplication}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +44,47 @@ class ApplyClassroomActivity : AppCompatActivity() {
 
     private fun initViewModel(){
         viewModel.appliedAcademiesRepository.observe(this){
-            setSpinnerItems()
+            when(it.status){
+                Status.SUCCESS -> {
+                    setSpinnerItems()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    binding.spinnerApplyClassroomSelectAcademy.errorText = "학원을 불러오지 못했습니다"
+                }
+            }
         }
 
         viewModel.applyClassroomsRepositories.observe(this){
-            displayClassrooms()
-            app.dismissLoadingDialog()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayClassrooms()
+                    app.dismissLoadingDialog()
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this,"반 정보를 불러오지 못했습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                    app.dismissLoadingDialog()
+                }
+            }
         }
 
         viewModel.appliedClassroomsMessage.observe(this){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            app.dismissLoadingDialog()
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
+                    Toast.makeText(this,it.data,Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    app.dismissLoadingDialog()
+                    Toast.makeText(this,"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         if(app.loginUser.teacher != null) {
@@ -60,8 +92,6 @@ class ApplyClassroomActivity : AppCompatActivity() {
         }else if(app.loginUser.student != null){
             viewModel.requestStudentAppliedAcademies(app.loginUser.student?.id!!)
         }
-
-        app.showLoadingDialog(supportFragmentManager)
     }
 
     private fun initialize(){
@@ -71,12 +101,11 @@ class ApplyClassroomActivity : AppCompatActivity() {
         binding.buttonApplyClassroomSearch.setOnClickListener {
             val searchName = binding.applyClassroomSearchText.text.toString()
             viewModel.requestGetClassrooms(selectedAcademy?.id!!,searchName)
-            app.showLoadingDialog(supportFragmentManager)
         }
     }
 
     private fun setSpinnerItems(){
-        val academies = viewModel.appliedAcademiesRepository.value!!
+        val academies = viewModel.appliedAcademiesRepository.value?.data!!
 
         val adapter: ArrayAdapter<Academy> = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,academies)
         binding.spinnerApplyClassroomSelectAcademy.adapter = adapter
@@ -111,7 +140,7 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     private fun displayClassrooms(){
-        val data = viewModel.applyClassroomsRepositories.value
+        val data = viewModel.applyClassroomsRepositories.value?.data
 
         val academyAdapter = data?.let {
             ClassroomAdapter(it)

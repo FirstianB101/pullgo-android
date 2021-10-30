@@ -57,11 +57,11 @@ class LoginActivity: AppCompatActivity(){
                     app.dismissLoadingDialog()
                     app.loginUser = it.data!!
 
-                    if(binding.checkBoxAutoLogin.isChecked){
-                        saveAutoLoginInfo()
-                    }else{
-                        resetAutoLoginInfo()
-                    }
+//                    if(binding.checkBoxAutoLogin.isChecked){
+//                        saveAutoLoginInfo()
+//                    }else{
+//                        resetAutoLoginInfo()
+//                    }
 
                     if(it.data.student != null)
                         viewModel.requestStudentAcademies(it.data.student?.id!!)

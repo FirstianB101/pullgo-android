@@ -23,12 +23,12 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
-import com.harry.pullgo.data.repository.ClassroomsRepository
 import com.harry.pullgo.databinding.DialogCreateNewLessonBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentCreateNewLessonDialog : DialogFragment() {
@@ -42,7 +42,8 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
 
     private val viewModel: CreateNewLessonViewModel by viewModels()
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    @Inject
+    lateinit var app: PullgoApplication
 
     private var isLayoutVisible = false
 
@@ -148,7 +149,8 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         val newLesson = Lesson(
             binding.textNewLessonName.text.toString(),
             selectedClassroom?.id,
-            schedule
+            schedule,
+            selectedClassroom?.academyId
         )
         viewModel.createNewLesson(newLesson)
     }

@@ -5,7 +5,8 @@ import java.io.Serializable
 class Lesson(
     var name: String?,
     var classroomId: Long?,
-    var schedule: Schedule?
+    var schedule: Schedule?,
+    var academyId: Long?
 ):Serializable {
     var id: Long? = null
 }

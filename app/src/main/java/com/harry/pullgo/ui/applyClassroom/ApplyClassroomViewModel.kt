@@ -4,61 +4,63 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ApplyClassroomRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ApplyClassroomViewModel @ViewModelInject constructor(
     private val applyClassroomRepository: ApplyClassroomRepository
     ): ViewModel() {
-    private val _appliedAcademiesRepository = MutableLiveData<List<Academy>>()
-    val appliedAcademiesRepository: LiveData<List<Academy>> = _appliedAcademiesRepository
+    private val _appliedAcademiesRepository = MutableLiveData<Resource<List<Academy>>>()
+    val appliedAcademiesRepository: LiveData<Resource<List<Academy>>> = _appliedAcademiesRepository
 
-    private val _applyClassroomsRepositories = MutableLiveData<List<Classroom>?>()
-    val applyClassroomsRepositories: LiveData<List<Classroom>?> = _applyClassroomsRepositories
+    private val _applyClassroomsRepositories = MutableLiveData<Resource<List<Classroom>>>()
+    val applyClassroomsRepositories: LiveData<Resource<List<Classroom>>> = _applyClassroomsRepositories
 
-    private val _appliedClassroomsMessage = MutableLiveData<String>()
-    val appliedClassroomsMessage: LiveData<String> = _appliedClassroomsMessage
+    private val _appliedClassroomsMessage = MutableLiveData<Resource<String>>()
+    val appliedClassroomsMessage: LiveData<Resource<String>> = _appliedClassroomsMessage
 
     fun requestStudentAppliedAcademies(id: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _appliedAcademiesRepository.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             applyClassroomRepository.getAcademiesStudentApplied(id).let { response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _appliedAcademiesRepository.postValue(it)
-                    }
+                    _appliedAcademiesRepository.postValue(Resource.success(response.body()))
+                }else{
+                    _appliedAcademiesRepository.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestTeacherAppliedAcademies(id: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _appliedAcademiesRepository.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             applyClassroomRepository.getAcademiesTeacherApplied(id).let { response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _appliedAcademiesRepository.postValue(it)
-                    }
+                    _appliedAcademiesRepository.postValue(Resource.success(response.body()))
+                }else{
+                    _appliedAcademiesRepository.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestGetClassrooms(academyId: Long, name: String){
-        CoroutineScope(Dispatchers.IO).launch {
+        _applyClassroomsRepositories.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             applyClassroomRepository.getClassroomsByNameAndAcademyID(academyId,name).let{ response ->
                 if(response.isSuccessful){
                     if(response.isSuccessful){
-                        response.body().let{
-                            _applyClassroomsRepositories.postValue(it)
-                        }
+                        _applyClassroomsRepositories.postValue(Resource.success(response.body()))
+                    }else{
+                        _applyClassroomsRepositories.postValue(Resource.error(response.code().toString(),null))
                     }
                 }
             }
@@ -66,38 +68,34 @@ class ApplyClassroomViewModel @ViewModelInject constructor(
     }
 
     fun resetClassroomSearchResult(){
-        _applyClassroomsRepositories.postValue(null)
+        _applyClassroomsRepositories.postValue(Resource.success(null))
     }
 
     fun requestStudentApplyClassroom(studentId: Long,selectedClassroom: Classroom?){
-        applyClassroomRepository.studentApplyClassroom(studentId, selectedClassroom?.id!!)
-            .enqueue(object : Callback<Unit> {
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    if (response.isSuccessful) {
-                        _appliedClassroomsMessage.postValue("가입 요청이 성공하였습니다")
-                    }else{
-                        _appliedClassroomsMessage.postValue("이미 가입된 반입니다")
-                    }
+        _appliedClassroomsMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            applyClassroomRepository.studentApplyClassroom(studentId, selectedClassroom?.id!!).let { response ->
+                if(response.isSuccessful){
+                    _appliedClassroomsMessage.postValue(Resource.success("가입 요청이 성공하였습니다"))
+                }else{
+                    _appliedClassroomsMessage.postValue(Resource.error(response.code().toString(),"가입 요청에 실패했습니다"))
                 }
-                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    _appliedClassroomsMessage.postValue("서버와 연결에 실패하였습니다")
-                }
-            })
+            }
+        }
     }
 
     fun requestTeacherApplyClassroom(teacherId: Long, selectedClassroom: Classroom?){
-        applyClassroomRepository.teacherApplyClassroom(teacherId, selectedClassroom?.id!!)
-            .enqueue(object : Callback<Unit> {
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    if (response.isSuccessful) {
-                        _appliedClassroomsMessage.postValue("가입 요청이 성공하였습니다")
-                    }else{
-                        _appliedClassroomsMessage.postValue("이미 가입된 반입니다")
-                    }
+        _appliedClassroomsMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            applyClassroomRepository.teacherApplyClassroom(teacherId, selectedClassroom?.id!!).let { response ->
+                if(response.isSuccessful){
+                    _appliedClassroomsMessage.postValue(Resource.success("가입 요청이 성공하였습니다"))
+                }else{
+                    _appliedClassroomsMessage.postValue(Resource.error(response.code().toString(),"가입 요청에 실패했습니다"))
                 }
-                override fun onFailure(call: Call<Unit>, t: Throwable) {
-                    _appliedClassroomsMessage.postValue("서버와 연결에 실패하였습니다")
-                }
-            })
+            }
+        }
     }
 }

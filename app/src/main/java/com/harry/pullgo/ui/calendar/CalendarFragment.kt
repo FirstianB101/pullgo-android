@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -11,11 +12,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCalendarResetListener
-import com.harry.pullgo.ui.lesson.FragmentCreateNewLessonDialog
-import com.harry.pullgo.data.repository.LessonsRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentCalendarBinding
-import com.prolificinteractive.materialcalendarview.*
+import com.harry.pullgo.ui.lesson.FragmentCreateNewLessonDialog
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CalendarFragment : Fragment(), OnDateSelectedListener {
@@ -23,7 +27,8 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
     private val viewModel: LessonsViewModel by viewModels()
 
-    private val app: PullgoApplication by lazy { requireActivity().application as PullgoApplication }
+    @Inject
+    lateinit var app: PullgoApplication
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -36,8 +41,19 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
     private fun setViewModel(){
         viewModel.allLessonsRepositories.observe(requireActivity()){
-            makeDots()
-            app.dismissLoadingDialog()
+            when(it.status){
+                Status.SUCCESS -> {
+                    makeDots()
+                    app.dismissLoadingDialog()
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(childFragmentManager)
+                }
+                Status.ERROR -> {
+                    app.dismissLoadingDialog()
+                    Toast.makeText(requireContext(),"수업 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         if(app.loginUser.teacher != null){
@@ -45,8 +61,6 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         }else if(app.loginUser.student != null){
             viewModel.requestStudentLessons(app.loginUser.student?.id!!)
         }
-
-        app.showLoadingDialog(childFragmentManager)
     }
 
     private fun setListeners(){
@@ -71,8 +85,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
 
         setFragmentResultListener("isMadeNewLesson"){ _, bundle ->
             if(bundle.getString("isMade") == "yes"){
-                viewModel.requestTeacherLessons(app.loginUser?.teacher?.id!!)
-                app.showLoadingDialog(childFragmentManager)
+                viewModel.requestTeacherLessons(app.loginUser.teacher?.id!!)
             }
         }
     }
@@ -82,14 +95,14 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
         val bottomSheet = FragmentCalendarBottomSheet(selectedDate)
         bottomSheet.calendarResetListenerListener = object: OnCalendarResetListener{
             override fun onResetCalendar() {
-                viewModel.requestTeacherLessons(app.loginUser?.teacher?.id!!)
+                viewModel.requestTeacherLessons(app.loginUser.teacher?.id!!)
             }
         }
         bottomSheet.show(childFragmentManager, "bottomSheetTestList")
     }
 
     private fun makeDots(){
-        val lessons = viewModel.allLessonsRepositories.value
+        val lessons = viewModel.allLessonsRepositories.value?.data
         val dates = ArrayList<String>()
         val calList = ArrayList<CalendarDay>()
 

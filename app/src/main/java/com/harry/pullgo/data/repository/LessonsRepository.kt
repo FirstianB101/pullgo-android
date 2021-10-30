@@ -58,6 +58,6 @@ class LessonsRepository @Inject constructor(
     suspend fun getClassroomSuchLesson(classroomId: Long) = lessonClient.getClassroomById(classroomId)
     suspend fun getAcademySuchClassroom(academyId: Long) = lessonClient.getAcademyById(academyId)
 
-    fun requestPatchLessonInfo(lessonId: Long, lesson: Lesson) = lessonClient.patchLessonInfo(lessonId,lesson)
-    fun requestDeleteLesson(lessonId: Long) = lessonClient.deleteLesson(lessonId)
+    suspend fun requestPatchLessonInfo(lessonId: Long, lesson: Lesson) = lessonClient.patchLessonInfo(lessonId,lesson)
+    suspend fun requestDeleteLesson(lessonId: Long) = lessonClient.deleteLesson(lessonId)
 }

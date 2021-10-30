@@ -185,12 +185,12 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     private fun initViewModel(){
         viewModel.classroomInfoRepository.observe(requireActivity()){
-            binding.textViewLessonInfoManageSelectClassroom.setText(it.name!!.split(';')[0])
+            binding.textViewLessonInfoManageSelectClassroom.setText(it.data?.name!!.split(';')[0])
         }
 
         viewModel.lessonMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            saveAndCloseDialog(it)
+            Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+            saveAndCloseDialog(it.data)
         }
 
         viewModel.getClassroomInfoOfLesson(selectedLesson)

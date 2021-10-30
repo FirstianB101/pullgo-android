@@ -4,139 +4,139 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.repository.LessonsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LessonsViewModel @ViewModelInject constructor(
     private val lessonsRepository: LessonsRepository
     ): ViewModel() {
-    private val _allLessonRepositories = MutableLiveData<List<Lesson>>()
-    val allLessonsRepositories: LiveData<List<Lesson>> = _allLessonRepositories
+    private val _allLessonRepositories = MutableLiveData<Resource<List<Lesson>>>()
+    val allLessonsRepositories: LiveData<Resource<List<Lesson>>> = _allLessonRepositories
 
-    private val _dayLessonsRepositories = MutableLiveData<List<Lesson>>()
-    val dayLessonsRepositories: LiveData<List<Lesson>> = _dayLessonsRepositories
+    private val _dayLessonsRepositories = MutableLiveData<Resource<List<Lesson>>>()
+    val dayLessonsRepositories: LiveData<Resource<List<Lesson>>> = _dayLessonsRepositories
 
-    private val _classroomInfoRepository = MutableLiveData<Classroom>()
-    val classroomInfoRepository: LiveData<Classroom> = _classroomInfoRepository
+    private val _classroomInfoRepository = MutableLiveData<Resource<Classroom>>()
+    val classroomInfoRepository: LiveData<Resource<Classroom>> = _classroomInfoRepository
 
-    private val _academyInfoRepository = MutableLiveData<Academy>()
-    val academyInfoRepository: LiveData<Academy> = _academyInfoRepository
+    private val _academyInfoRepository = MutableLiveData<Resource<Academy>>()
+    val academyInfoRepository: LiveData<Resource<Academy>> = _academyInfoRepository
 
-    private val _lessonMessage = MutableLiveData<String>()
-    val lessonMessage: LiveData<String> = _lessonMessage
+    private val _lessonMessage = MutableLiveData<Resource<String>>()
+    val lessonMessage: LiveData<Resource<String>> = _lessonMessage
 
     fun requestStudentLessons(id: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _allLessonRepositories.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             lessonsRepository.getStudentLessonsOnMonth(id).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _allLessonRepositories.postValue(it)
-                    }
+                    _allLessonRepositories.postValue(Resource.success(response.body()))
+                }else{
+                    _allLessonRepositories.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestTeacherLessons(id: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _allLessonRepositories.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             lessonsRepository.getTeacherLessonsOnMonth(id).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _allLessonRepositories.postValue(it)
-                    }
+                    _allLessonRepositories.postValue(Resource.success(response.body()))
+                }else{
+                    _allLessonRepositories.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestStudentLessonOnDate(id: Long, date: String){
-        CoroutineScope(Dispatchers.IO).launch {
+        _dayLessonsRepositories.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             lessonsRepository.getStudentLessonsOnDate(id,date).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _dayLessonsRepositories.postValue(it)
-                    }
+                    _dayLessonsRepositories.postValue(Resource.success(response.body()))
+                }else{
+                    _dayLessonsRepositories.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestTeacherLessonOnDate(id: Long, date: String){
-        CoroutineScope(Dispatchers.IO).launch {
+        _dayLessonsRepositories.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             lessonsRepository.getTeacherLessonsOnDate(id,date).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _dayLessonsRepositories.postValue(it)
-                    }
+                    _dayLessonsRepositories.postValue(Resource.success(response.body()))
+                }else{
+                    _dayLessonsRepositories.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun getClassroomInfoOfLesson(lesson: Lesson){
-        CoroutineScope(Dispatchers.IO).launch {
-            lessonsRepository.getClassroomSuchLesson(lesson.classroomId!!).let { response ->
+        viewModelScope.launch {
+            lessonsRepository.getClassroomSuchLesson(lesson?.classroomId!!).let { response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _classroomInfoRepository.postValue(it)
-                    }
+                    _classroomInfoRepository.postValue(Resource.success(response.body()))
+                }else{
+                    _classroomInfoRepository.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun getAcademyInfoOfLesson(lesson: Lesson){
-        CoroutineScope(Dispatchers.IO).launch {
-            val classroom = lessonsRepository.getClassroomSuchLesson(lesson.classroomId!!).body()
+        _academyInfoRepository.postValue(Resource.loading(null))
 
-            lessonsRepository.getAcademySuchClassroom(classroom?.academyId!!).let{ response ->
+        viewModelScope.launch {
+            lessonsRepository.getAcademySuchClassroom(lesson.academyId!!).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _academyInfoRepository.postValue(it)
-                    }
+                    _academyInfoRepository.postValue(Resource.success(response.body()))
+                }else{
+                    _academyInfoRepository.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun patchLessonInfo(lessonId: Long, lesson: Lesson){
-        lessonsRepository.requestPatchLessonInfo(lessonId,lesson).enqueue(object: Callback<Lesson> {
-            override fun onResponse(call: Call<Lesson>, response: Response<Lesson>) {
+        _lessonMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            lessonsRepository.requestPatchLessonInfo(lessonId, lesson).let { response ->
                 if(response.isSuccessful){
-                    _lessonMessage.postValue("수업 정보가 변경되었습니다")
+                    _lessonMessage.postValue(Resource.success("수업 정보가 변경되었습니다"))
                 }else{
-                    _lessonMessage.postValue("수업 정보가 변경에 실패했습니다")
+                    _lessonMessage.postValue(Resource.error(response.code().toString(),"수업 정보 변경에 실패했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Lesson>, t: Throwable) {
-                _lessonMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun deleteLesson(lessonId: Long){
-        lessonsRepository.requestDeleteLesson(lessonId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _lessonMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            lessonsRepository.requestDeleteLesson(lessonId).let { response ->
                 if(response.isSuccessful){
-                    _lessonMessage.postValue("수업이 삭제되었습니다")
+                    _lessonMessage.postValue(Resource.success("수업 정보가 변경되었습니다"))
                 }else{
-                    _lessonMessage.postValue("수업 삭제에 실패했습니다")
+                    _lessonMessage.postValue(Resource.error(response.code().toString(),"수업 정보 변경에 실패했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _lessonMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 }
