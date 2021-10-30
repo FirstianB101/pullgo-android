@@ -15,7 +15,7 @@ import com.harry.pullgo.databinding.FragmentSignupPwBinding
 import com.harry.pullgo.ui.signUp.SignUpViewModel
 import java.util.regex.Pattern
 
-class FragmentSignUpPw(): Fragment() {
+class FragmentSignUpPw: Fragment() {
     private val binding by lazy{FragmentSignupPwBinding.inflate(layoutInflater)}
     private val PW_MAX_LENGTH = 16
     private val PW_MIN_LENGTH = 8

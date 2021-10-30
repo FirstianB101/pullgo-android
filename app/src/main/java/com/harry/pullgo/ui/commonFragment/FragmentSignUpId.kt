@@ -14,10 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentSignupIdBinding
 import com.harry.pullgo.ui.signUp.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
@@ -27,7 +29,8 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
     private val ID_MIN_LENGTH = 8
     private var idFormatSuccess = false
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
+    @Inject
+    lateinit var app: PullgoApplication
 
     private val viewModel: SignUpViewModel by activityViewModels()
 
@@ -42,15 +45,20 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
 
     private fun initViewModel(){
         viewModel.usernameExist.observe(requireActivity()){
-            if(!it.exists){
-                showNextButton()
-            }else{
-                binding.signUpIdLayout.error = "중복된 아이디입니다"
+            when(it.status){
+                Status.SUCCESS -> {
+                    if(!it.data?.exists!!){
+                        showNextButton()
+                    }else{
+                        binding.signUpIdLayout.error = "중복된 아이디입니다"
+                    }
+                }
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"인터넷 연결을 확인해 주세요(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
-        }
-
-        viewModel.existsMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -85,7 +93,7 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
         if(inputId == "")
             return false
 
-        if(inputId[0]=='-' || inputId[0]=='_'){
+        if(inputId[0] == '-' || inputId[0] == '_'){
             binding.signUpIdLayout.error = "첫 글자는 특수문자를 사용할 수 없습니다";
             return false
         }
@@ -101,7 +109,7 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
         }
 
         if(inputId.length>ID_MAX_LENGTH){
-            binding.signUpIdLayout.error="아이디가 너무 길어요!"
+            binding.signUpIdLayout.error = "아이디가 너무 길어요!"
             return false
         }
 

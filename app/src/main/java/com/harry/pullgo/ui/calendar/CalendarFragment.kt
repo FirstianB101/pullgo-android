@@ -44,13 +44,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
             when(it.status){
                 Status.SUCCESS -> {
                     makeDots()
-                    app.dismissLoadingDialog()
                 }
                 Status.LOADING -> {
-                    app.showLoadingDialog(childFragmentManager)
                 }
                 Status.ERROR -> {
-                    app.dismissLoadingDialog()
                     Toast.makeText(requireContext(),"수업 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
                 }
             }

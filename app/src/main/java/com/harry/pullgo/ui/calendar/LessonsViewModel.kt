@@ -88,7 +88,7 @@ class LessonsViewModel @ViewModelInject constructor(
 
     fun getClassroomInfoOfLesson(lesson: Lesson){
         viewModelScope.launch {
-            lessonsRepository.getClassroomSuchLesson(lesson?.classroomId!!).let { response ->
+            lessonsRepository.getClassroomSuchLesson(lesson.classroomId!!).let { response ->
                 if(response.isSuccessful){
                     _classroomInfoRepository.postValue(Resource.success(response.body()))
                 }else{

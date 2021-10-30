@@ -9,18 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
-import com.harry.pullgo.data.repository.FindAcademyRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityCreateAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateAcademyActivity : AppCompatActivity() {
     private val binding by lazy{ActivityCreateAcademyBinding.inflate(layoutInflater)}
 
-    private val viewModel: FindAcademyViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{application as PullgoApplication }
+    private val viewModel: FindAcademyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +53,23 @@ class CreateAcademyActivity : AppCompatActivity() {
 
     private fun initViewModel(){
         viewModel.createMessage.observe(this){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            if(it == "학원을 생성하였습니다"){
-                val intent = Intent()
-                intent.putExtra("createAcademy","yes")
-                setResult(Activity.RESULT_OK,intent)
-                finish()
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
+                    Toast.makeText(this,it.data,Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent()
+                    intent.putExtra("createAcademy","yes")
+                    setResult(Activity.RESULT_OK,intent)
+                    finish()
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this,"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                    app.dismissLoadingDialog()
+                }
             }
         }
     }
@@ -86,7 +99,7 @@ class CreateAcademyActivity : AppCompatActivity() {
         val address = "${binding.textCreateAcademyAddress.text.toString()} ${binding.textCreateAcademyDetailedAddress.text.toString()}"
         val phone = binding.textCreateAcademyPhone.text.toString()
 
-        val newAcademy = Academy(null,name,phone,address,app.loginUser.teacher?.id)
+        val newAcademy = Academy(name,phone,address,app.loginUser.teacher?.id)
         
         viewModel.createAcademy(newAcademy)
     }

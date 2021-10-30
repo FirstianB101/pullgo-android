@@ -1,14 +1,12 @@
 package com.harry.pullgo.ui.signUp
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.harry.pullgo.data.models.Exist
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.SignUpRepository
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,65 +29,64 @@ class SignUpViewModel @ViewModelInject constructor(
     private val _signUpTeacher = MutableLiveData<Teacher>()
     val signUpTeacher = _signUpTeacher
 
-    private val _usernameExist = MutableLiveData<Exist>()
-    val usernameExist: LiveData<Exist> = _usernameExist
+    private val _usernameExist = MutableLiveData<Resource<Exist>>()
+    val usernameExist: LiveData<Resource<Exist>> = _usernameExist
 
-    private val _createMessage = MutableLiveData<String>()
-    val createMessage: LiveData<String> = _createMessage
-
-    private val _existsMessage = MutableLiveData<String>()
-    val existsMessage: LiveData<String> = _existsMessage
+    private val _createMessage = MutableLiveData<Resource<String>>()
+    val createMessage: LiveData<Resource<String>> = _createMessage
 
     fun createStudent(student: Student){
-        signUpRepository.createStudent(student).enqueue(object: Callback<Student> {
-            override fun onResponse(call: Call<Student>, response: Response<Student>) {
+        _createMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            signUpRepository.createStudent(student).let{response ->
                 if(response.isSuccessful){
-                    _createMessage.postValue("계정이 생성되었습니다")
+                    _createMessage.postValue(Resource.success("계정이 생성되었습니다"))
                 }else{
-                    _createMessage.postValue("계정을 생성하지 못했습니다")
+                    _createMessage.postValue(Resource.error(response.code().toString(),"계정을 생성하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Student>, t: Throwable) {
-                _createMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun createTeacher(teacher: Teacher){
-        signUpRepository.createTeacher(teacher).enqueue(object: Callback<Teacher> {
-            override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
+        _createMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            signUpRepository.createTeacher(teacher).let{response ->
                 if(response.isSuccessful){
-                    _createMessage.postValue("계정이 생성되었습니다")
+                    _createMessage.postValue(Resource.success("계정이 생성되었습니다"))
                 }else{
-                    _createMessage.postValue("계정을 생성하지 못했습니다")
+                    _createMessage.postValue(Resource.error(response.code().toString(),"계정을 생성하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Teacher>, t: Throwable) {
-                _createMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun studentUsernameExists(username: String){
-        CoroutineScope(Dispatchers.IO).launch {
+        _usernameExist.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             signUpRepository.studentUsernameExists(username).let { response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _usernameExist.postValue(it)
-                    }
+                    _usernameExist.postValue(Resource.success(response.body()))
+                }else{
+                    _usernameExist.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun teacherUsernameExists(username: String){
-        CoroutineScope(Dispatchers.IO).launch {
+        _usernameExist.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             signUpRepository.teacherUsernameExists(username).let { response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                       _usernameExist.postValue(it)
+                    if(response.isSuccessful){
+                        _usernameExist.postValue(Resource.success(response.body()))
+                    }else{
+                        _usernameExist.postValue(Resource.error(response.code().toString(),null))
                     }
                 }
             }

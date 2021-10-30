@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -41,9 +42,13 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
     lateinit var manageRequestFragment: ManageRequestFragment
 
-    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
+    @Inject
+    lateinit var service: PullgoService
 
-    private val app: PullgoApplication by lazy{application as PullgoApplication }
+    @Inject
+    lateinit var app: PullgoApplication
+
+    private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
 
     private lateinit var headerView: View
     private var curPosition: Int? = null
@@ -207,19 +212,19 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-//        RetrofitClient.getApiService(PullgoService::class.java,app.loginUser.token).getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
-//            override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
-//                if(response.isSuccessful){
-//                    response.body().let{
-//                        if(it?.isNotEmpty() == true)
-//                            binding.navigationViewTeacher.menu.getItem(7).isVisible = true
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
-//            }
-//        })
+        service.getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
+            override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
+                if(response.isSuccessful){
+                    response.body().let{
+                        if(it?.isNotEmpty() == true)
+                            binding.navigationViewTeacher.menu.getItem(7).isVisible = true
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
+            }
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

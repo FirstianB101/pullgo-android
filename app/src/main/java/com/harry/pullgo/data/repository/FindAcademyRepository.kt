@@ -11,7 +11,7 @@ class FindAcademyRepository @Inject constructor(
 ) {
     suspend fun getAcademies(name: String) = findAcademyClient.getAcademiesByName(name)
 
-    fun requestStudentApply(studentId: Long, academyId: Long) = findAcademyClient.sendStudentApplyAcademyRequest(studentId, academyId)
-    fun requestTeacherApply(teacherId: Long, academyId: Long) = findAcademyClient.sendTeacherApplyAcademyRequest(teacherId, academyId)
-    fun createAcademy(academy: Academy) = findAcademyClient.createAcademy(academy)
+    suspend fun requestStudentApply(studentId: Long, academyId: Long) = findAcademyClient.sendStudentApplyAcademyRequest(studentId, academyId)
+    suspend fun requestTeacherApply(teacherId: Long, academyId: Long) = findAcademyClient.sendTeacherApplyAcademyRequest(teacherId, academyId)
+    suspend fun createAcademy(academy: Academy) = findAcademyClient.createAcademy(academy)
 }

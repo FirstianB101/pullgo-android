@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivitySignUpTeacherBinding
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpId
 import com.harry.pullgo.ui.commonFragment.FragmentSignUpPw
 import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherSignUpActivity:AppCompatActivity(){
@@ -23,9 +25,10 @@ class TeacherSignUpActivity:AppCompatActivity(){
     lateinit var signUpPw: FragmentSignUpPw
     lateinit var signUpInfoFragment: TeacherSignUpInfoFragment
 
-    private val viewModel: SignUpViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{application as PullgoApplication }
+    private val viewModel: SignUpViewModel by viewModels()
 
     var curPosition: Int = 0
 
@@ -58,9 +61,20 @@ class TeacherSignUpActivity:AppCompatActivity(){
         }
 
         viewModel.createMessage.observe(this){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
-            if(it == "계정이 생성되었습니다"){
-                makePopup()
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(this,it.data,Toast.LENGTH_SHORT).show()
+                    app.dismissLoadingDialog()
+
+                    makePopup()
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this,"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                    app.dismissLoadingDialog()
+                }
             }
         }
     }

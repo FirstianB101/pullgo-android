@@ -10,8 +10,8 @@ import javax.inject.Singleton
 class SignUpRepository @Inject constructor(
     private val signUpClient: PullgoService
 ) {
-    fun createStudent(student: Student) = signUpClient.createStudent(student)
-    fun createTeacher(teacher: Teacher) = signUpClient.createTeacher(teacher)
+    suspend fun createStudent(student: Student) = signUpClient.createStudent(student)
+    suspend fun createTeacher(teacher: Teacher) = signUpClient.createTeacher(teacher)
 
     suspend fun studentUsernameExists(username: String) = signUpClient.studentUsernameExists(username)
     suspend fun teacherUsernameExists(username: String) = signUpClient.teacherUsernameExists(username)

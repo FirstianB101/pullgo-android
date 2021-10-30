@@ -15,13 +15,13 @@ interface PullgoService {
 
 
     @POST("teachers/")
-    fun createTeacher(@Body teacher: Teacher):Call<Teacher>
+    suspend fun createTeacher(@Body teacher: Teacher): Response<Teacher>
 
     @POST("teachers/{id}/apply-classroom/")
     suspend fun sendTeacherApplyClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Response<Unit>
 
     @POST("teachers/{id}/apply-academy/")
-    fun sendTeacherApplyAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Call<Unit>
+    suspend fun sendTeacherApplyAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Response<Unit>
 
     @PATCH("teachers/{id}/")
     fun changeTeacherInfo(@Path("id")teacherId:Long, @Body teacher: Teacher):Call<Teacher>
@@ -95,7 +95,7 @@ interface PullgoService {
     fun kickTeacher(@Path("id")academyId: Long, @Body teacherId: Long): Call<Unit>
 
     @POST("academies/")
-    fun createAcademy(@Body academy: Academy): Call<Academy>
+    suspend fun createAcademy(@Body academy: Academy): Response<Academy>
 
     @PATCH("academies/{id}/")
     fun editAcademy(@Path("id")academyId: Long, @Body academy: Academy): Call<Academy>
@@ -105,10 +105,10 @@ interface PullgoService {
 
 
     @POST("students/")
-    fun createStudent(@Body student: Student): Call<Student>
+    suspend fun createStudent(@Body student: Student): Response<Student>
 
     @POST("students/{id}/apply-academy/")
-    fun sendStudentApplyAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Call<Unit>
+    suspend fun sendStudentApplyAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Response<Unit>
 
     @POST("students/{id}/apply-classroom/")
     suspend fun sendStudentApplyClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Response<Unit>

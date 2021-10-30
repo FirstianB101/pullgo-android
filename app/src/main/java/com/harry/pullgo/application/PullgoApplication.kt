@@ -24,7 +24,9 @@ class PullgoApplication: Application() {
     }
 
     fun showLoadingDialog(fragmentManager: FragmentManager){
-        loadingDialog.show(fragmentManager,"Loading Dialog")
+        if(!loadingDialog.isAdded) {
+            loadingDialog.show(fragmentManager, "Loading Dialog")
+        }
     }
 
     fun dismissLoadingDialog(){

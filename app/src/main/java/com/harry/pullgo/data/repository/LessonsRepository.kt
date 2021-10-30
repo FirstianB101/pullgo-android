@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class LessonsRepository @Inject constructor(
     private val lessonClient: PullgoService
 ) {
-    val MAX_LESSONS = 100
+    private val MAX_LESSONS = 100
 
     suspend fun getStudentLessonsOnDate(id: Long, date: String): Response<List<Lesson>> {
         val cal = Calendar.getInstance()
