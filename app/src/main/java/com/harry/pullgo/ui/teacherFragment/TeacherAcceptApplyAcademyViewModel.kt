@@ -1,15 +1,13 @@
 package com.harry.pullgo.ui.teacherFragment
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.AcceptApplyAcademyRepository
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,116 +18,113 @@ import retrofit2.Response
 class TeacherAcceptApplyAcademyViewModel @ViewModelInject constructor(
     private val acceptApplyAcademyRepository: AcceptApplyAcademyRepository
     ):ViewModel() {
-    private val _studentsAppliedAcademy = MutableLiveData<List<Student>>()
-    val studentsAppliedAcademy: LiveData<List<Student>> = _studentsAppliedAcademy
+    private val _studentsAppliedAcademy = MutableLiveData<Resource<List<Student>>>()
+    val studentsAppliedAcademy: LiveData<Resource<List<Student>>> = _studentsAppliedAcademy
 
-    private val _teachersAppliedAcademy = MutableLiveData<List<Teacher>>()
-    val teacherAppliedAcademy: LiveData<List<Teacher>> = _teachersAppliedAcademy
+    private val _teachersAppliedAcademy = MutableLiveData<Resource<List<Teacher>>>()
+    val teacherAppliedAcademy: LiveData<Resource<List<Teacher>>> = _teachersAppliedAcademy
 
-    private val _academyRepositories = MutableLiveData<List<Academy>>()
-    val academyRepositories: LiveData<List<Academy>> = _academyRepositories
+    private val _academyRepositories = MutableLiveData<Resource<List<Academy>>>()
+    val academyRepositories: LiveData<Resource<List<Academy>>> = _academyRepositories
 
-    private val _acceptOrDenyMessage = MutableLiveData<String>()
-    val acceptOrDenyMessage: LiveData<String> = _acceptOrDenyMessage
+    private val _acceptOrDenyMessage = MutableLiveData<Resource<String>>()
+    val acceptOrDenyMessage: LiveData<Resource<String>> = _acceptOrDenyMessage
+
 
     fun requestGetStudents(academyId: Long){
-        CoroutineScope(Dispatchers.IO).launch{
+        _studentsAppliedAcademy.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
             acceptApplyAcademyRepository.getStudentsAppliedAcademy(academyId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentsAppliedAcademy.postValue(it)
-                    }
+                    _studentsAppliedAcademy.postValue(Resource.success(response.body()))
+                }else{
+                    _studentsAppliedAcademy.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestGetTeachers(academyId: Long){
-        CoroutineScope(Dispatchers.IO).launch{
+        _teachersAppliedAcademy.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
             acceptApplyAcademyRepository.getTeachersAppliedAcademy(academyId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _teachersAppliedAcademy.postValue(it)
-                    }
+                    _teachersAppliedAcademy.postValue(Resource.success(response.body()))
+                }else{
+                    _teachersAppliedAcademy.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestTeacherAcademies(teacherId: Long){
-        CoroutineScope(Dispatchers.IO).launch{
+        _academyRepositories.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
             acceptApplyAcademyRepository.getTeachersAcademies(teacherId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _academyRepositories.postValue(it)
-                    }
+                    _academyRepositories.postValue(Resource.success(response.body()))
+                }else{
+                    _academyRepositories.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun acceptStudentApplyAcademy(academyId: Long, studentId: Long){
-        acceptApplyAcademyRepository.acceptStudentApply(academyId, studentId).enqueue(object:
-            Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _acceptOrDenyMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
+            acceptApplyAcademyRepository.acceptStudentApply(academyId, studentId).let{ response ->
                 if(response.isSuccessful){
-                    _acceptOrDenyMessage.postValue("해당 학생의 요청을 승인하였습니다")
+                    _acceptOrDenyMessage.postValue(Resource.success("해당 학생의 요청을 승인하였습니다"))
                 }else{
-                    _acceptOrDenyMessage.postValue("해당 학생의 요청 승인에 실패하였습니다")
+                    _acceptOrDenyMessage.postValue(Resource.error(response.code().toString(),"해당 학생의 요청을 승인하였습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _acceptOrDenyMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun acceptTeacherApplyAcademy(academyId: Long, teacherId: Long){
-        acceptApplyAcademyRepository.acceptTeacherApply(academyId, teacherId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _acceptOrDenyMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
+            acceptApplyAcademyRepository.acceptTeacherApply(academyId, teacherId).let{ response ->
                 if(response.isSuccessful){
-                    _acceptOrDenyMessage.postValue("해당 선생님의 요청을 승인하였습니다")
+                    _acceptOrDenyMessage.postValue(Resource.success("해당 선생님의 요청을 승인하였습니다"))
                 }else{
-                    _acceptOrDenyMessage.postValue("해당 선생님의 요청 승인에 실패하였습니다")
+                    _acceptOrDenyMessage.postValue(Resource.error(response.code().toString(),"해당 선생님의 요청을 승인하였습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _acceptOrDenyMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun denyStudentApplyAcademy(academyId: Long, studentId: Long){
-        acceptApplyAcademyRepository.denyStudentApply(academyId, studentId).enqueue(object:
-            Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _acceptOrDenyMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
+            acceptApplyAcademyRepository.denyStudentApply(academyId, studentId).let{ response ->
                 if(response.isSuccessful){
-                    _acceptOrDenyMessage.postValue("해당 학생의 요청이 삭제되었습니다")
+                    _acceptOrDenyMessage.postValue(Resource.success("해당 학생의 요청이 삭제되었습니다"))
                 }else{
-                    _acceptOrDenyMessage.postValue("해당 학생의 요청을 삭제하지 못했습니다")
+                    _acceptOrDenyMessage.postValue(Resource.error(response.code().toString(),"해당 학생의 요청을 삭제하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _acceptOrDenyMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
     fun denyTeacherApplyAcademy(academyId: Long, teacherId: Long){
-        acceptApplyAcademyRepository.denyTeacherApply(academyId, teacherId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _acceptOrDenyMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch{
+            acceptApplyAcademyRepository.denyTeacherApply(academyId, teacherId).let{ response ->
                 if(response.isSuccessful){
-                    _acceptOrDenyMessage.postValue("해당 선생님의 요청이 삭제되었습니다")
+                    _acceptOrDenyMessage.postValue(Resource.success("해당 선생님의 요청이 삭제되었습니다"))
                 }else{
-                    _acceptOrDenyMessage.postValue("해당 선생님의 요청을 삭제하지 못했습니다")
+                    _acceptOrDenyMessage.postValue(Resource.error(response.code().toString(),"해당 선생님의 요청을 삭제하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _acceptOrDenyMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 }

@@ -60,7 +60,7 @@ class FragmentManageAcademyDelegateDialog(private val selectedAcademy: Academy):
     }
 
     private fun setSpinner(){
-        val teachers = viewModel.teachersAtAcademyRepository.value!!
+        val teachers = viewModel.teachersAtAcademyRepository.value?.data!!
 
         val adapter: ArrayAdapter<Teacher> = ArrayAdapter(requireContext(),
             R.layout.simple_spinner_dropdown_item,teachers)

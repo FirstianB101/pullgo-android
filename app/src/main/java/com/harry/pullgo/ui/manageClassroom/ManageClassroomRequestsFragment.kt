@@ -16,17 +16,20 @@ import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageRequestsBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -53,18 +56,52 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
 
     private fun initViewModel(){
         viewModel.studentsRequestApplyClassroom.observe(requireActivity()){
-            displayStudentRequests()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayStudentRequests()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.teachersRequestApplyClassroom.observe(requireActivity()){
-            displayTeacherRequests()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayTeacherRequests()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
-        viewModel.manageRequestMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            when(it){
-                "학생 반 등록이 승인되었습니다", "해당 학생의 요청이 삭제되었습니다" -> refreshAdapter(false)
-                "선생님 반 등록이 승인되었습니다", "해당 선생님의 요청이 삭제되었습니다" -> refreshAdapter(true)
+        viewModel.manageStudentRequestMessage.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    refreshAdapter(false)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.manageTeacherRequestMessage.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    refreshAdapter(true)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -72,7 +109,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     }
 
     private fun displayStudentRequests(){
-        val data = viewModel.studentsRequestApplyClassroom.value
+        val data = viewModel.studentsRequestApplyClassroom.value?.data
 
         val adapter = data?.let {
             StudentApplyAdapter(it,true)
@@ -100,7 +137,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     }
 
     private fun displayTeacherRequests(){
-        val data = viewModel.teachersRequestApplyClassroom.value
+        val data = viewModel.teachersRequestApplyClassroom.value?.data
 
         val adapter = data?.let {
             TeacherApplyAdapter(it,true)

@@ -1,9 +1,10 @@
 package com.harry.pullgo.ui.manageAcademy
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentManageAdapter
@@ -13,22 +14,24 @@ import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.repository.ManageAcademyRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListener {
     private val binding by lazy{ActivityManageAcademyManagePeopleBinding.inflate(layoutInflater)}
 
+    @Inject
+    lateinit var app: PullgoApplication
+
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels()
 
-    private val app: PullgoApplication by lazy{application as PullgoApplication }
-
-    private val selectedAcademyId by lazy{intent.getLongExtra("selectedAcademyId",-1L)}
-    private val selectedAcademyName by lazy{intent.getStringExtra("selectedAcademyName")}
+    private val selectedAcademyId by lazy{ intent.getLongExtra("selectedAcademyId",-1L) }
+    private val selectedAcademyName by lazy{ intent.getStringExtra("selectedAcademyName") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,18 +52,34 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
 
     private fun initViewModel(){
         viewModel.studentsAtAcademyRepository.observe(this){
-            displayStudents()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayStudents()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(this,"학원 정보를 불러오지 못했습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.teachersAtAcademyRepository.observe(this){
-            displayTeachers()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayTeachers()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(this,"학원 정보를 불러오지 못했습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.getStudentsAtAcademy(selectedAcademyId)
     }
 
     private fun displayStudents(){
-        val data = viewModel.studentsAtAcademyRepository.value
+        val data = viewModel.studentsAtAcademyRepository.value?.data
 
         val adapter = data?.let {
             StudentManageAdapter(it)
@@ -90,7 +109,7 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
     }
 
     private fun displayTeachers(){
-        val data = viewModel.teachersAtAcademyRepository.value
+        val data = viewModel.teachersAtAcademyRepository.value?.data
 
         val adapter = data?.let {
             TeacherManageAdapter(it)

@@ -15,16 +15,19 @@ import com.harry.pullgo.data.api.OnClassroomRequestListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageRequestRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageRequestBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     private val binding by lazy { FragmentManageRequestBinding.inflate(layoutInflater) }
 
-    private val viewModel: ManageRequestViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    private val viewModel: ManageRequestViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -58,18 +61,42 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
 
     private fun initViewModel() {
         viewModel.applyingAcademyRepository.observe(requireActivity()) {
-            displayAcademyRequests()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayAcademyRequests()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"학원 목록을 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.applyingClassroomRepository.observe(requireActivity()) {
-            displayClassroomRequests()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayClassroomRequests()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"반 목록을 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.removeRequestMessage.observe(requireActivity()) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            when (it) {
-                "학원 가입 요청을 제거했습니다" -> refreshAdapter(true)
-                "반 가입 요청을 제거했습니다" -> refreshAdapter(false)
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(), "${it.data}", Toast.LENGTH_SHORT).show()
+                    when (it.data) {
+                        "학원 가입 요청을 제거했습니다" -> refreshAdapter(false)
+                        "반 가입 요청을 제거했습니다" -> refreshAdapter(true)
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -77,7 +104,7 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     }
 
     private fun displayAcademyRequests() {
-        val data = viewModel.applyingAcademyRepository.value
+        val data = viewModel.applyingAcademyRepository.value?.data
 
         val adapter = data?.let {
             AcademyRequestAdapter(it)
@@ -104,7 +131,7 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     }
 
     private fun displayClassroomRequests() {
-        val data = viewModel.applyingClassroomRepository.value
+        val data = viewModel.applyingClassroomRepository.value?.data
 
         val adapter = data?.let {
             ClassroomRequestAdapter(it)

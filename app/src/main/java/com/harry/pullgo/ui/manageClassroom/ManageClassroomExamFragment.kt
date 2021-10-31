@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.harry.pullgo.application.PullgoApplication
@@ -15,17 +17,20 @@ import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManageExamBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManageExamBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -50,13 +55,29 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
 
     private fun initViewModel(){
         viewModel.examsWithinClassroom.observe(requireActivity()){
-            displayExams(it)
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayExams(it.data!!)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
-        viewModel.manageExamMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "시험이 삭제되었습니다"){
-                viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
+        viewModel.examMessage.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    if(it.data == "시험이 삭제되었습니다") {
+                        viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

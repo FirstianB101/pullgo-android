@@ -13,5 +13,5 @@ class ClassroomsRepository @Inject constructor(
     suspend fun getClassroomsByTeacherId(id: Long) = getClassroomsClient.getClassroomsByTeacherId(id)
     suspend fun getAcademiesByTeacherId(id: Long) = getClassroomsClient.getAcademiesTeacherApplied(id)
 
-    fun createNewLesson(lesson: Lesson) = getClassroomsClient.createLesson(lesson)
+    suspend fun createNewLesson(lesson: Lesson) = getClassroomsClient.createLesson(lesson)
 }

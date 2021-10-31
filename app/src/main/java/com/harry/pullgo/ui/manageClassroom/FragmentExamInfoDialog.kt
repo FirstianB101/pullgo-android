@@ -34,8 +34,6 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
 
     private val viewModel: ManageClassroomViewModel by viewModels()
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())

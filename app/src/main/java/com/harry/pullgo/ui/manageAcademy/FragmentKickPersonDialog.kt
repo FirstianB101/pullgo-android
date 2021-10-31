@@ -16,6 +16,7 @@ import com.harry.pullgo.data.api.OnDataChangedListener
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageAcademyRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogKickPersonBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,8 +27,6 @@ class FragmentKickStudentDialog(private val selectedStudent: Student, private va
     private var dataChangedListener: OnDataChangedListener? = null
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels()
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -43,7 +42,7 @@ class FragmentKickStudentDialog(private val selectedStudent: Student, private va
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
@@ -66,10 +65,17 @@ class FragmentKickStudentDialog(private val selectedStudent: Student, private va
 
     private fun initViewModel(){
         viewModel.kickPersonMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "학생을 제외했습니다"){
-                dataChangedListener?.onChangeData(false)
-                dismiss()
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    dataChangedListener?.onChangeData(false)
+                    dismiss()
+                }
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.message}(${it.data})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -84,8 +90,6 @@ class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private va
     private val binding by lazy{DialogKickPersonBinding.inflate(layoutInflater)}
 
     private var dataChangedListener: OnDataChangedListener? = null
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication}
 
     private val viewModel: ManageAcademyManagePeopleViewModel by viewModels()
 
@@ -126,10 +130,17 @@ class FragmentKickTeacherDialog(private val selectedTeacher: Teacher, private va
 
     private fun initViewModel(){
         viewModel.kickPersonMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "선생님을 제외했습니다"){
-                dataChangedListener?.onChangeData(true)
-                dismiss()
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    dataChangedListener?.onChangeData(true)
+                    dismiss()
+                }
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.message}(${it.data})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

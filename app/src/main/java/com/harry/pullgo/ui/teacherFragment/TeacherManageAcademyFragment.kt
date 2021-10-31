@@ -14,16 +14,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentTeacherManageAcademyBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import com.harry.pullgo.ui.main.TeacherMainActivity
 import com.harry.pullgo.ui.manageAcademy.FragmentManageAcademyDelegateDialog
 import com.harry.pullgo.ui.manageAcademy.ManageAcademyManagePeopleActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherManageAcademyFragment: Fragment() {
     private val binding by lazy{FragmentTeacherManageAcademyBinding.inflate(layoutInflater)}
+
+    @Inject
+    lateinit var app: PullgoApplication
 
     private val viewModel: TeacherManageAcademyViewModel by activityViewModels()
 
@@ -31,8 +36,6 @@ class TeacherManageAcademyFragment: Fragment() {
     private var isEditMode = false
 
     private lateinit var selectedAcademy: Academy
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -48,25 +51,35 @@ class TeacherManageAcademyFragment: Fragment() {
 
     private fun initViewModel(){
         viewModel.ownedAcademiesRepository.observe(requireActivity()){
-            setSpinnerItems()
+            when(it.status){
+                Status.SUCCESS -> {
+                    setSpinnerItems()
 
-            if(it.isEmpty()){
-                val mainIntent = Intent(requireContext(), TeacherMainActivity::class.java)
-                mainIntent.putExtra("appliedAcademyExist",false)
-                mainIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(mainIntent)
+                    if(it.data?.isEmpty() == true)
+                        resetActivityWhenDeleteLastAcademy()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"학원 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.manageAcademyMessage.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
+                    makeLayoutInvisible()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
-
-        viewModel.manageAcademyMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "학원이 삭제되었습니다"){
-                viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
-                makeLayoutInvisible()
-            }
-        }
     }
 
     private fun setListeners(){
@@ -91,6 +104,13 @@ class TeacherManageAcademyFragment: Fragment() {
             showDeleteAcademyDialog()
         }
     }
+
+    private fun resetActivityWhenDeleteLastAcademy(){
+        val mainIntent = Intent(requireContext(), TeacherMainActivity::class.java)
+        mainIntent.putExtra("appliedAcademyExist",false)
+        mainIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(mainIntent)
+    }
     
     private fun showDeleteAcademyDialog(){
         val dialog = TwoButtonDialog(requireContext())
@@ -103,7 +123,7 @@ class TeacherManageAcademyFragment: Fragment() {
     }
 
     private fun setSpinnerItems(){
-        val academies = viewModel.ownedAcademiesRepository.value!!
+        val academies = viewModel.ownedAcademiesRepository.value?.data!!
 
         val adapter: ArrayAdapter<Academy> = ArrayAdapter(requireContext(),R.layout.simple_spinner_dropdown_item,academies)
         binding.spinnerManageAcademySelect.adapter = adapter

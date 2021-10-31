@@ -65,14 +65,14 @@ class FindAcademyActivity : AppCompatActivity() {
             when(it.status){
                 Status.SUCCESS -> {
                     app.dismissLoadingDialog()
-                    Toast.makeText(this,"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"${it.data}",Toast.LENGTH_SHORT).show()
                 }
                 Status.LOADING -> {
                     app.showLoadingDialog(supportFragmentManager)
                 }
                 Status.ERROR -> {
                     app.dismissLoadingDialog()
-                    Toast.makeText(this,it.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
                 }
             }
         }

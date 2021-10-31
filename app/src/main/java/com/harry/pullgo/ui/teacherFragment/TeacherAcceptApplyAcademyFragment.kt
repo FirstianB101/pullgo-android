@@ -19,20 +19,23 @@ import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherAcceptApplyAcademyFragment: Fragment() {
     private val binding by lazy{FragmentAcceptApplyAcademyBinding.inflate(layoutInflater)}
 
+    @Inject
+    lateinit var app: PullgoApplication
+
     private val viewModel: TeacherAcceptApplyAcademyViewModel by viewModels()
 
     private var selectedAcademy: Academy? = null
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -61,24 +64,56 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
 
     private fun initViewModel(){
         viewModel.studentsAppliedAcademy.observe(requireActivity()){
-            displayStudents()
+            when(it.status){
+                Status.SUCCESS ->{
+                    displayStudents()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.teacherAppliedAcademy.observe(requireActivity()){
-            displayTeachers()
+            when(it.status){
+                Status.SUCCESS ->{
+                    displayTeachers()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.academyRepositories.observe(requireActivity()){
-            setSpinnerItems()
+            when(it.status){
+                Status.SUCCESS ->{
+                    setSpinnerItems()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.acceptOrDenyMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            when(it){
-                "해당 학생의 요청을 승인하였습니다" -> viewModel.requestGetStudents(selectedAcademy?.id!!)
-                "해당 선생님의 요청을 승인하였습니다" -> viewModel.requestGetTeachers(selectedAcademy?.id!!)
-                "해당 학생의 요청이 삭제되었습니다" -> refreshAdapter(false)
-                "해당 선생님의 요청이 삭제되었습니다" -> refreshAdapter(true)
+            when(it.status){
+                Status.SUCCESS ->{
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    when(it.data){
+                        "해당 학생의 요청을 승인하였습니다" -> viewModel.requestGetStudents(selectedAcademy?.id!!)
+                        "해당 선생님의 요청을 승인하였습니다" -> viewModel.requestGetTeachers(selectedAcademy?.id!!)
+                        "해당 학생의 요청이 삭제되었습니다" -> refreshAdapter(false)
+                        "해당 선생님의 요청이 삭제되었습니다" -> refreshAdapter(true)
+                    }
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -86,7 +121,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun setSpinnerItems(){
-        val academies = viewModel.academyRepositories.value!!
+        val academies = viewModel.academyRepositories.value?.data!!
 
         val adapter: ArrayAdapter<Academy> = ArrayAdapter(requireContext(),R.layout.simple_spinner_dropdown_item,academies)
         binding.spinnerAcceptApplyAcademy.adapter = adapter
@@ -117,7 +152,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun displayStudents(){
-        val data = viewModel.studentsAppliedAcademy.value
+        val data = viewModel.studentsAppliedAcademy.value?.data
 
         val adapter = data?.let {
             StudentApplyAdapter(it,true)
@@ -144,7 +179,7 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     }
 
     private fun displayTeachers(){
-        val data = viewModel.teacherAppliedAcademy.value
+        val data = viewModel.teacherAppliedAcademy.value?.data
 
         val adapter = data?.let {
             TeacherApplyAdapter(it,true)

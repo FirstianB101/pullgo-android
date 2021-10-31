@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentAdapter
@@ -15,16 +18,19 @@ import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManagePeopleBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClassroomManagePeopleBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -44,11 +50,27 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
 
     private fun initViewModel(){
         viewModel.studentsAppliedClassroom.observe(viewLifecycleOwner){
-            displayStudents(it)
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayStudents(it.data!!)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.teachersAppliedClassroom.observe(viewLifecycleOwner){
-            displayTeachers(it)
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayTeachers(it.data!!)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         refreshAdapter(false)

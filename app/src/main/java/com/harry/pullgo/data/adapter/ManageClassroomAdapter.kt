@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.teacherFragment
+package com.harry.pullgo.data.adapter
 
 import android.view.LayoutInflater
 import android.view.View

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,18 +15,21 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Exam
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentStudentExamListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class StudentExamListFragment : Fragment(){
     private val binding by lazy{FragmentStudentExamListBinding.inflate(layoutInflater)}
 
+    @Inject
+    lateinit var app: PullgoApplication
+
     private val viewModel: StudentExamListViewModel by viewModels()
 
     private var selectedExam: Exam? = null
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -54,7 +58,15 @@ class StudentExamListFragment : Fragment(){
 
     private fun initViewModel(){
         viewModel.studentExamList.observe(requireActivity()){
-            displayExams()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayExams()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -68,7 +80,7 @@ class StudentExamListFragment : Fragment(){
     }
 
     private fun displayExams(){
-        val data = viewModel.studentExamList.value
+        val data = viewModel.studentExamList.value?.data
 
         val examsAdapter = data?.let {
             ExamAdapter(it)

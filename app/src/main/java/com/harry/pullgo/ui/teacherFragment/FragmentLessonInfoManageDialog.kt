@@ -189,7 +189,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
         }
 
         viewModel.lessonMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it.data,Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
             saveAndCloseDialog(it.data)
         }
 

@@ -13,9 +13,9 @@ class ManageAcademyRepository @Inject constructor(
     suspend fun getTeachersSuchAcademy(academyId: Long) = client.getTeachersSuchAcademy(academyId)
     suspend fun getStudentsSuchAcademy(academyId: Long) = client.getStudentsSuchAcademy(academyId)
 
-    fun kickStudent(academyId: Long, studentId: Long) = client.kickStudent(academyId,studentId)
-    fun kickTeacher(academyId: Long, teacherId: Long) = client.kickTeacher(academyId,teacherId)
-    fun editAcademy(academyId: Long, academy: Academy) = client.editAcademy(academyId, academy)
-    fun deleteAcademy(academyId: Long) = client.deleteAcademy(academyId)
+    suspend fun kickStudent(academyId: Long, studentId: Long) = client.kickStudent(academyId,studentId)
+    suspend fun kickTeacher(academyId: Long, teacherId: Long) = client.kickTeacher(academyId,teacherId)
+    suspend fun editAcademy(academyId: Long, academy: Academy) = client.editAcademy(academyId, academy)
+    suspend fun deleteAcademy(academyId: Long) = client.deleteAcademy(academyId)
 
 }

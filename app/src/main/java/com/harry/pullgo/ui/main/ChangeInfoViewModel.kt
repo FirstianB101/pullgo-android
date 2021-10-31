@@ -1,13 +1,12 @@
 package com.harry.pullgo.ui.main
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ChangeInfoRepository
+import com.harry.pullgo.data.utils.Resource
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,44 +14,37 @@ import retrofit2.Response
 class ChangeInfoViewModel @ViewModelInject constructor(
     private val changeInfoRepository: ChangeInfoRepository
     ): ViewModel() {
-    private val _changeStudent = MutableLiveData<Student>()
-    val changeStudent = _changeStudent
+    private val _changeStudent = MutableLiveData<Resource<Student>>()
+    val changeStudent: LiveData<Resource<Student>> = _changeStudent
 
-    private val _changeTeacher = MutableLiveData<Teacher>()
-    val changeTeacher = _changeTeacher
-
-    private val _changeInfoMessage = MutableLiveData<String>()
-    val changeInfoMessage: LiveData<String> = _changeInfoMessage
+    private val _changeTeacher = MutableLiveData<Resource<Teacher>>()
+    val changeTeacher: LiveData<Resource<Teacher>> = _changeTeacher
 
     fun changeStudentInfo(studentId: Long, student: Student){
-        changeInfoRepository.changeStudentInfo(student.id!!,student).enqueue(object: Callback<Student> {
-            override fun onResponse(call: Call<Student>, response: Response<Student>) {
+        _changeStudent.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            changeInfoRepository.changeStudentInfo(studentId, student).let { response ->
                 if(response.isSuccessful){
-                    _changeInfoMessage.postValue("계정 정보가 수정되었습니다")
+                    _changeStudent.postValue(Resource.success(response.body()))
                 }else{
-                    _changeInfoMessage.postValue("계정 정보 수정에 실패했습니다")
+                    _changeStudent.postValue(Resource.error(response.code().toString(),null))
                 }
             }
-
-            override fun onFailure(call: Call<Student>, t: Throwable) {
-                _changeInfoMessage.postValue("서버와 연결에 실패하였습니다")
-            }
-        })
+        }
     }
 
     fun changeTeacherInfo(teacherId: Long, teacher: Teacher){
-        changeInfoRepository.changeTeacherInfo(teacher.id!!,teacher).enqueue(object: Callback<Teacher> {
-            override fun onResponse(call: Call<Teacher>, response: Response<Teacher>) {
-                if (response.isSuccessful) {
-                    _changeInfoMessage.postValue("계정 정보가 수정되었습니다")
-                } else {
-                    _changeInfoMessage.postValue("계정 정보 수정에 실패했습니다")
+        _changeTeacher.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            changeInfoRepository.changeTeacherInfo(teacherId, teacher).let { response ->
+                if(response.isSuccessful){
+                    _changeTeacher.postValue(Resource.success(response.body()))
+                }else{
+                    _changeTeacher.postValue(Resource.error(response.code().toString(),null))
                 }
             }
-
-            override fun onFailure(call: Call<Teacher>, t: Throwable) {
-                _changeInfoMessage.postValue("서버와 연결에 실패하였습니다")
-            }
-        })
+        }
     }
 }

@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.data.api.PullgoService
 import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
@@ -26,6 +28,9 @@ import com.harry.pullgo.ui.commonFragment.ManageRequestFragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.teacherFragment.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +45,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var acceptApplyAcademyFragment: TeacherAcceptApplyAcademyFragment
     lateinit var manageAcademyFragment: TeacherManageAcademyFragment
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
-    lateinit var manageRequestFragment: ManageRequestFragment
 
     @Inject
     lateinit var service: PullgoService
@@ -65,21 +69,26 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
  
     private fun initViewModels(){
         changeInfoViewModel.changeTeacher.observe(this){
-            changeInfoViewModel.changeTeacherInfo(it.id!!,it)
-            app.loginUser.teacher = it
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.account?.username}"
-            onFragmentSelected(CALENDAR)
-        }
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.loginUser.teacher = it.data
+                    headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.data?.account?.fullName}님"
+                    headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.data?.account?.username}"
 
-        changeInfoViewModel.changeInfoMessage.observe(this){
-            Toast.makeText(this,it, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"회원정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
+                    onFragmentSelected(CALENDAR)
+                }
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this,"정보를 수정하지 못했습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
     private fun initialize(){
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
-        manageRequestFragment = ManageRequestFragment(true)
 
         if(intent.getBooleanExtra("appliedAcademyExist",false)){
             calendarFragment = CalendarFragment()
@@ -191,7 +200,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = teacherHomeFragment
             }
             MANAGE_REQUEST -> {
-                curFragment = manageRequestFragment
+                curFragment = ManageRequestFragment(true)
             }
             else -> {}
         }
@@ -212,19 +221,16 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun changeMenuIfOwner(teacherId: Long){
-        service.getOwnedAcademyByCall(teacherId).enqueue(object: Callback<List<Academy>>{
-            override fun onResponse(call: Call<List<Academy>>, response: Response<List<Academy>>) {
+        lifecycleScope.launch {
+            service.getOwnedAcademyByResponse(teacherId).let{response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        if(it?.isNotEmpty() == true)
-                            binding.navigationViewTeacher.menu.getItem(7).isVisible = true
-                    }
+                    if(response.body()?.isNotEmpty() == true)
+                        binding.navigationViewTeacher.menu.getItem(7).isVisible = true
+                }else{
+                    Toast.makeText(applicationContext,"소유 학원 정보를 확인할 수 없습니다",Toast.LENGTH_SHORT).show()
                 }
             }
-
-            override fun onFailure(call: Call<List<Academy>>, t: Throwable) {
-            }
-        })
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

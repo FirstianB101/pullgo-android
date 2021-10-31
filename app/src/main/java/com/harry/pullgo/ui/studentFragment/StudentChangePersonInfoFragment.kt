@@ -16,6 +16,7 @@ import com.harry.pullgo.databinding.FragmentStudentChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class StudentChangePersonInfoFragment : Fragment() {
@@ -23,9 +24,10 @@ class StudentChangePersonInfoFragment : Fragment() {
     private val PHONE_TYPE_EXPRESSION="^[0-9]*$"
     private var isCertificated=false
 
-    private val viewModel: ChangeInfoViewModel by activityViewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    private val viewModel: ChangeInfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,7 +83,7 @@ class StudentChangePersonInfoFragment : Fragment() {
         val student = Student(account,studentParentPhone,studentSchoolName,studentSchoolYear)
         student.id = app.loginUser.student?.id
 
-        viewModel.changeStudent.postValue(student)
+        viewModel.changeStudentInfo(student.id!!,student)
     }
 
     private fun checkEmptyExist():Boolean{

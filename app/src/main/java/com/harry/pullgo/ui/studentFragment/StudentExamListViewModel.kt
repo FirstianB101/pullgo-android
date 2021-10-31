@@ -1,12 +1,10 @@
 package com.harry.pullgo.ui.studentFragment
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.repository.ExamsRepository
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,52 +12,60 @@ import kotlinx.coroutines.launch
 class StudentExamListViewModel @ViewModelInject constructor(
     private val examsRepository: ExamsRepository
     ): ViewModel() {
-    private val _studentExamList = MutableLiveData<List<Exam>>()
-    val studentExamList: LiveData<List<Exam>> = _studentExamList
+    private val _studentExamList = MutableLiveData<Resource<List<Exam>>>()
+    val studentExamList: LiveData<Resource<List<Exam>>> = _studentExamList
 
     fun requestExamsByName(studentId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _studentExamList.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             examsRepository.getExamsByName(studentId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentExamList.postValue(it)
-                    }
+                    _studentExamList.postValue(Resource.success(response.body()))
+                }else{
+                    _studentExamList.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestExamsByBeginDate(studentId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _studentExamList.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             examsRepository.getExamsByBeginDate(studentId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentExamList.postValue(it)
-                    }
+                    _studentExamList.postValue(Resource.success(response.body()))
+                }else{
+                    _studentExamList.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestExamsByEndDate(studentId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _studentExamList.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             examsRepository.getExamsByEndDate(studentId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentExamList.postValue(it)
-                    }
+                    _studentExamList.postValue(Resource.success(response.body()))
+                }else{
+                    _studentExamList.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestExamsByEndDateDesc(studentId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _studentExamList.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             examsRepository.getExamsByEndDateDesc(studentId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentExamList.postValue(it)
-                    }
+                    _studentExamList.postValue(Resource.success(response.body()))
+                }else{
+                    _studentExamList.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }

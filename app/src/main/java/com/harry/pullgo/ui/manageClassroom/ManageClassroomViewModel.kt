@@ -2,15 +2,13 @@ package com.harry.pullgo.ui.manageClassroom
 
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,306 +19,292 @@ import retrofit2.Response
 class ManageClassroomViewModel @ViewModelInject constructor(
     private val repository: ManageClassroomRepository
     ): ViewModel() {
-    private val _studentsAppliedClassroom = MutableLiveData<List<Student>>()
-    val studentsAppliedClassroom: LiveData<List<Student>> = _studentsAppliedClassroom
+    private val _studentsAppliedClassroom = MutableLiveData<Resource<List<Student>>>()
+    val studentsAppliedClassroom: LiveData<Resource<List<Student>>> = _studentsAppliedClassroom
 
-    private val _teachersAppliedClassroom = MutableLiveData<List<Teacher>>()
-    val teachersAppliedClassroom: LiveData<List<Teacher>> = _teachersAppliedClassroom
+    private val _teachersAppliedClassroom = MutableLiveData<Resource<List<Teacher>>>()
+    val teachersAppliedClassroom: LiveData<Resource<List<Teacher>>> = _teachersAppliedClassroom
 
-    private val _studentsRequestApplyClassroom = MutableLiveData<List<Student>>()
-    val studentsRequestApplyClassroom: LiveData<List<Student>> = _studentsRequestApplyClassroom
+    private val _studentsRequestApplyClassroom = MutableLiveData<Resource<List<Student>>>()
+    val studentsRequestApplyClassroom: LiveData<Resource<List<Student>>> = _studentsRequestApplyClassroom
 
-    private val _teachersRequestApplyClassroom = MutableLiveData<List<Teacher>>()
-    val teachersRequestApplyClassroom: LiveData<List<Teacher>> = _teachersRequestApplyClassroom
+    private val _teachersRequestApplyClassroom = MutableLiveData<Resource<List<Teacher>>>()
+    val teachersRequestApplyClassroom: LiveData<Resource<List<Teacher>>> = _teachersRequestApplyClassroom
 
-    private val _examsWithinClassroom = MutableLiveData<List<Exam>>()
-    val examsWithinClassroom: LiveData<List<Exam>> = _examsWithinClassroom
+    private val _examsWithinClassroom = MutableLiveData<Resource<List<Exam>>>()
+    val examsWithinClassroom: LiveData<Resource<List<Exam>>> = _examsWithinClassroom
 
 
-    private val _createClassroomMessage = MutableLiveData<String>()
-    val createClassroomMessage: LiveData<String> = _createClassroomMessage
+    private val _manageStudentRequestMessage = MutableLiveData<Resource<String>>()
+    val manageStudentRequestMessage: LiveData<Resource<String>> = _manageStudentRequestMessage
 
-    private val _kickMessage = MutableLiveData<String>()
-    val kickMessage: LiveData<String> = _kickMessage
+    private val _manageTeacherRequestMessage = MutableLiveData<Resource<String>>()
+    val manageTeacherRequestMessage: LiveData<Resource<String>> = _manageTeacherRequestMessage
 
-    private val _editClassroomMessage = MutableLiveData<String>()
-    val editClassroomMessage: LiveData<String> = _editClassroomMessage
+    private val _editClassroomMessage = MutableLiveData<Resource<String>>()
+    val editClassroomMessage: LiveData<Resource<String>> = _editClassroomMessage
 
-    private val _manageRequestMessage = MutableLiveData<String>()
-    val manageRequestMessage: LiveData<String> = _manageRequestMessage
+    private val _deleteClassroomMessage = MutableLiveData<Resource<String>>()
+    val deleteClassroomMessage: LiveData<Resource<String>> = _deleteClassroomMessage
 
-    private val _manageExamMessage = MutableLiveData<String>()
-    val manageExamMessage: LiveData<String> = _manageExamMessage
+    private val _createClassroomMessage = MutableLiveData<Resource<String>>()
+    val createClassroomMessage: LiveData<Resource<String>> = _createClassroomMessage
 
-    private val _cancelOrFinishMessage = MutableLiveData<String>()
-    val cancelOrFinishMessage = _cancelOrFinishMessage
+    private val _kickMessage = MutableLiveData<Resource<String>>()
+    val kickMessage: LiveData<Resource<String>> = _kickMessage
 
+    private val _examMessage = MutableLiveData<Resource<String>>()
+    val examMessage: LiveData<Resource<String>> = _examMessage
 
     fun requestGetStudentsAppliedClassroom(classroomId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _studentsAppliedClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             repository.getStudentsAppliedClassroom(classroomId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentsAppliedClassroom.postValue(it)
-                    }
+                    _studentsAppliedClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _studentsAppliedClassroom.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestGetTeachersAppliedClassroom(classroomId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _teachersAppliedClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             repository.getTeachersAppliedClassroom(classroomId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _teachersAppliedClassroom.postValue(it)
-                    }
+                    _teachersAppliedClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _teachersAppliedClassroom.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestGetTeachersRequestApplyClassroom(classroomId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _teachersRequestApplyClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             repository.getTeachersRequestApplyClassroom(classroomId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _teachersRequestApplyClassroom.postValue(it)
-                    }
+                    _teachersRequestApplyClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _teachersRequestApplyClassroom.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestGetStudentsRequestApplyClassroom(classroomId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
+        _studentsRequestApplyClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
             repository.getStudentsRequestApplyClassroom(classroomId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _studentsRequestApplyClassroom.postValue(it)
-                    }
+                    _studentsRequestApplyClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _studentsRequestApplyClassroom.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun requestGetExamsWithinClassroom(classroomId: Long){
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.getExamsWithinClassroom(classroomId).let{response ->
+        _examsWithinClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.getExamsWithinClassroom(classroomId).let{ response ->
                 if(response.isSuccessful){
-                    response.body().let{
-                        _examsWithinClassroom.postValue(it)
-                    }
+                    _examsWithinClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _examsWithinClassroom.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
     }
 
     fun createClassroom(classroom: Classroom){
-        repository.createClassroom(classroom).enqueue(object: Callback<Classroom> {
-            override fun onResponse(call: Call<Classroom>, response: Response<Classroom>) {
+        _createClassroomMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.createClassroom(classroom).let { response ->
                 if(response.isSuccessful){
-                    _createClassroomMessage.postValue("반이 생성되었습니다")
+                    _createClassroomMessage.postValue(Resource.success("반이 생성되었습니다"))
                 }else{
-                    _createClassroomMessage.postValue("반을 생성하지 못했습니다")
+                    _createClassroomMessage.postValue(Resource.error(response.code().toString(),"반을 생성하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Classroom>, t: Throwable) {
-                _createClassroomMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun kickStudentFromClassroom(classroomId: Long, studentId: Long){
-        repository.kickStudentFromClassroom(classroomId, studentId).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _kickMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.kickStudentFromClassroom(classroomId, studentId).let { response ->
                 if(response.isSuccessful){
-                    _kickMessage.postValue("해당 학생을 반에서 제외시켰습니다")
+                    _kickMessage.postValue(Resource.success("해당 학생을 반에서 제외시켰습니다"))
                 }else{
-                    _kickMessage.postValue("해당 반에 존재하지 않는 학생입니다")
+                    _kickMessage.postValue(Resource.error(response.code().toString(),"제외 과정에서 오류가 발생했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _kickMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
     
     fun kickTeacherFromClassroom(classroomId: Long, teacherId: Long){
-        repository.kickTeacherFromClassroom(classroomId, teacherId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _kickMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.kickTeacherFromClassroom(classroomId, teacherId).let { response ->
                 if(response.isSuccessful){
-                    _kickMessage.postValue("해당 선생님을 반에서 제외시켰습니다")
+                    _kickMessage.postValue(Resource.success("해당 선생님을 반에서 제외시켰습니다"))
                 }else{
-                    _kickMessage.postValue("해당 반에 존재하지 않는 선생님입니다")
+                    _kickMessage.postValue(Resource.error(response.code().toString(),"제외 과정에서 오류가 발생했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _kickMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun editClassroom(classroomId: Long, classroom: Classroom){
-        repository.editClassroom(classroomId, classroom).enqueue(object: Callback<Classroom> {
-            override fun onResponse(call: Call<Classroom>, response: Response<Classroom>) {
+        _editClassroomMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.editClassroom(classroomId, classroom).let { response ->
                 if(response.isSuccessful){
-                    _editClassroomMessage.postValue("수정이 완료되었습니다")
+                    _editClassroomMessage.postValue(Resource.success("반 정보가 수정되었습니다"))
                 }else{
-                    _editClassroomMessage.postValue("수정하지 못했습니다")
+                    _editClassroomMessage.postValue(Resource.error(response.code().toString(),"반 정보 수정에 실패했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Classroom>, t: Throwable) {
-                _editClassroomMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun deleteClassroom(classroomId: Long){
-        repository.deleteClassroom(classroomId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _deleteClassroomMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.deleteClassroom(classroomId).let { response ->
                 if(response.isSuccessful){
-                    _editClassroomMessage.postValue("반이 삭제되었습니다")
+                    _deleteClassroomMessage.postValue(Resource.success("반이 삭제되었습니다"))
                 }else{
-                    _editClassroomMessage.postValue("반을 삭제하지 못했습니다")
+                    _deleteClassroomMessage.postValue(Resource.error(response.code().toString(),"반 삭제에 실패했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _editClassroomMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun acceptStudent(classroomId: Long, studentId: Long){
-        repository.acceptStudent(classroomId,studentId).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _manageStudentRequestMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.acceptStudent(classroomId,studentId).let { response ->
                 if(response.isSuccessful){
-                    _manageRequestMessage.postValue("학생 반 등록이 승인되었습니다")
+                    _manageStudentRequestMessage.postValue(Resource.success("해당 학생을 반에 등록하였습니다"))
                 }else{
-                    _manageRequestMessage.postValue("학생 반 등록에 실패했습니다")
+                    _manageStudentRequestMessage.postValue(Resource.error(response.code().toString(),"학생 반 등록에 실패했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _manageRequestMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun acceptTeacher(classroomId: Long, teacherId: Long){
-        repository.acceptTeacher(classroomId,teacherId).enqueue(object: Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _manageTeacherRequestMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.acceptTeacher(classroomId,teacherId).let { response ->
                 if(response.isSuccessful){
-                    _manageRequestMessage.postValue("선생님 반 등록이 승인되었습니다")
+                    _manageTeacherRequestMessage.postValue(Resource.success("해당 선생님을 반에 등록하였습니다"))
                 }else{
-                    _manageRequestMessage.postValue("선생님 반 등록에 실패했습니다")
+                    _manageTeacherRequestMessage.postValue(Resource.error(response.code().toString(),"선생님 반 등록에 실패했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _manageRequestMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun denyStudent(studentId: Long, classroomId: Long){
-        repository.denyStudent(studentId,classroomId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _manageStudentRequestMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.denyStudent(studentId,classroomId).let { response ->
                 if(response.isSuccessful){
-                    _manageRequestMessage.postValue("해당 학생의 요청이 삭제되었습니다")
+                    _manageStudentRequestMessage.postValue(Resource.success("해당 학생의 요청이 삭제되었습니다"))
                 }else{
-                    _manageRequestMessage.postValue("해당 학생의 요청을 삭제하지 못했습니다")
+                    _manageStudentRequestMessage.postValue(Resource.error(response.code().toString(),"해당 학생의 요청을 삭제하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _manageRequestMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun denyTeacher(teacherId: Long, classroomId: Long){
-       repository.denyTeacher(teacherId, classroomId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _manageTeacherRequestMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.denyTeacher(teacherId, classroomId).let { response ->
                 if(response.isSuccessful){
-                    _manageRequestMessage.postValue("해당 선생님의 요청이 삭제되었습니다")
+                    _manageTeacherRequestMessage.postValue(Resource.success("해당 선생님의 요청이 삭제되었습니다"))
                 }else{
-                    _manageRequestMessage.postValue("해당 선생님의 요청을 삭제하지 못했습니다")
+                    _manageTeacherRequestMessage.postValue(Resource.error(response.code().toString(),"해당 선생님의 요청을 삭제하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _manageRequestMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun createExam(exam: Exam){
-        repository.createExam(exam).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _examMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.createExam(exam).let { response ->
                 if(response.isSuccessful){
-                    _manageExamMessage.postValue("시험이 생성되었습니다")
+                    _examMessage.postValue(Resource.success("시험이 생성되었습니다"))
                 }else{
-                    _manageExamMessage.postValue("시험을 생성하지 못했습니다")
+                    _examMessage.postValue(Resource.error(response.code().toString(),"시험을 생성하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _manageExamMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun removeExam(examId: Long){
-        repository.removeExam(examId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _examMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.removeExam(examId).let { response ->
                 if(response.isSuccessful){
-                    _manageExamMessage.postValue("시험이 삭제되었습니다")
+                    _examMessage.postValue(Resource.success("시험이 삭제되었습니다"))
                 }else{
-                    _manageExamMessage.postValue("시험을 삭제하지 못했습니다")
+                    _examMessage.postValue(Resource.error(response.code().toString(),"시험을 삭제하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _manageExamMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 
     fun cancelExam(examId: Long){
-        repository.cancelExam(examId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _examMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.cancelExam(examId).let { response ->
                 if(response.isSuccessful){
-                    _cancelOrFinishMessage.postValue("시험이 취소되었습니다")
+                    _examMessage.postValue(Resource.success("시험이 취소되었습니다"))
                 }else{
-                    _cancelOrFinishMessage.postValue("시험을 취소하지 못했습니다")
+                    _examMessage.postValue(Resource.error(response.code().toString(),"시험을 취소하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _cancelOrFinishMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
     
     fun finishExam(examId: Long){
-        repository.finishExam(examId).enqueue(object: Callback<Unit>{
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        _examMessage.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.finishExam(examId).let { response ->
                 if(response.isSuccessful){
-                    _cancelOrFinishMessage.postValue("시험이 종료되었습니다")
+                    _examMessage.postValue(Resource.success("시험이 종료되었습니다"))
                 }else{
-                    _cancelOrFinishMessage.postValue("시험을 종료하지 못했습니다")
+                    _examMessage.postValue(Resource.error(response.code().toString(),"시험을 종료하지 못했습니다"))
                 }
             }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                _cancelOrFinishMessage.postValue("서버와 연결에 실패했습니다")
-            }
-        })
+        }
     }
 }

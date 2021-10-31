@@ -17,6 +17,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.data.repository.ChangeInfoRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
@@ -28,6 +29,7 @@ import com.harry.pullgo.ui.studentFragment.StudentExamHistoryFragment
 import com.harry.pullgo.ui.studentFragment.StudentExamListFragment
 import com.harry.pullgo.ui.studentFragment.StudentHomeFragmentNoAcademy
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
@@ -38,11 +40,11 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var studentExamListFragment: StudentExamListFragment
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
     lateinit var studentHomeFragment: StudentHomeFragmentNoAcademy
-    lateinit var manageRequestFragment: ManageRequestFragment
+
+    @Inject
+    lateinit var app: PullgoApplication
 
     private val changeInfoViewModel: ChangeInfoViewModel by viewModels()
-
-    private val app: PullgoApplication by lazy{application as PullgoApplication }
 
     private lateinit var headerView: View
     private var curPosition: Int? = null
@@ -60,24 +62,28 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun initViewModels(){
         changeInfoViewModel.changeStudent.observe(this){
-            changeInfoViewModel.changeStudentInfo(it.id!!,it)
-            app.loginUser.student = it
-            headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.account?.fullName}님"
-            headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.account?.username}"
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.loginUser.student = it.data
+                    headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${it.data?.account?.fullName}님"
+                    headerView.findViewById<TextView>(R.id.textViewNavId).text = "${it.data?.account?.username}"
 
-            if(intent.getBooleanExtra("appliedAcademyExist",false)) onFragmentSelected(CALENDAR)
-            else onFragmentSelected(HOME)
-        }
-
-        changeInfoViewModel.changeInfoMessage.observe(this){
-            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"회원정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
+                    if(intent.getBooleanExtra("appliedAcademyExist",false)) onFragmentSelected(CALENDAR)
+                    else onFragmentSelected(HOME)
+                }
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this,"정보를 수정하지 못했습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
     private fun initialize(){
         studentChangeInfoFragment = StudentChangePersonInfoFragment()
         changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
-        manageRequestFragment = ManageRequestFragment(false)
 
         if(intent.getBooleanExtra("appliedAcademyExist",false)){
             calendarFragment = CalendarFragment()
@@ -183,7 +189,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = studentHomeFragment
             }
             MANAGE_REQUEST -> {
-                curFragment = manageRequestFragment
+                curFragment = ManageRequestFragment(false)
             }
             else -> {}
         }

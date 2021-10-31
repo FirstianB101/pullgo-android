@@ -16,16 +16,18 @@ import com.harry.pullgo.databinding.FragmentTeacherChangeInfoBinding
 import com.harry.pullgo.ui.main.ChangeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherChangePersonInfoFragment : Fragment() {
     private val binding by lazy{ FragmentTeacherChangeInfoBinding.inflate(layoutInflater)}
-    private val PHONE_TYPE_EXPRESSION="^[0-9]*$"
-    private var isCertificated=false
+    private val PHONE_TYPE_EXPRESSION = "^[0-9]*$"
+    private var isCertificated = false
+
+    @Inject
+    lateinit var app: PullgoApplication
 
     private val viewModel: ChangeInfoViewModel by activityViewModels()
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -69,12 +71,12 @@ class TeacherChangePersonInfoFragment : Fragment() {
         val teacher = Teacher(account)
         teacher.id = app.loginUser.teacher?.id
 
-        viewModel.changeTeacher.postValue(teacher)
+        viewModel.changeTeacherInfo(teacher.id!!,teacher)
     }
 
     private fun checkEmptyExist():Boolean{
-        return (binding.changeTeacherName.text.toString()!="")&&
-                (binding.changeTeacherPhone.text.toString()!="")&&
+        return (binding.changeTeacherName.text.toString() != "")&&
+                (binding.changeTeacherPhone.text.toString() != "")&&
                 (isCertificated)
     }
 
@@ -86,9 +88,9 @@ class TeacherChangePersonInfoFragment : Fragment() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            binding.changeTeacherPhoneLayout.error=null
+            binding.changeTeacherPhoneLayout.error = null
             if(!Pattern.matches(PHONE_TYPE_EXPRESSION,s.toString())){
-                binding.changeTeacherPhoneLayout.error="숫자만 입력해 주세요"
+                binding.changeTeacherPhoneLayout.error = "숫자만 입력해 주세요"
             }
         }
 

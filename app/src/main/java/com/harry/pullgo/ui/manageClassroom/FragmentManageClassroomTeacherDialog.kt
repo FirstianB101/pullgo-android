@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Teacher
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogManageClassroomTeacherInfoBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,8 +25,6 @@ class FragmentManageClassroomTeacherDialog(
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels()
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -56,10 +55,16 @@ class FragmentManageClassroomTeacherDialog(
 
     private fun initViewModel(){
         viewModel.kickMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it, Toast.LENGTH_SHORT).show()
-            if(it == "해당 선생님을 반에서 제외시켰습니다"){
-                viewModel.requestGetTeachersAppliedClassroom(selectedClassroom.id!!)
-                dismiss()
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    viewModel.requestGetTeachersAppliedClassroom(selectedClassroom.id!!)
+                    dismiss()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

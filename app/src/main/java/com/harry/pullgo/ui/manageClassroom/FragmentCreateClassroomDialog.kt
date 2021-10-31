@@ -1,7 +1,9 @@
 package com.harry.pullgo.ui.manageClassroom
 
 import android.R
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -23,9 +25,11 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogCreateClassroomBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentCreateClassroomDialog(private val academies: List<Academy>): DialogFragment() {
@@ -38,9 +42,10 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
     private var isLayoutVisible = false
     private var isNameNotContainsSemicolon = true
 
-    private val viewModel: ManageClassroomViewModel by viewModels()
+    @Inject
+    lateinit var app: PullgoApplication
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
+    private val viewModel: ManageClassroomViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -69,11 +74,17 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
 
     private fun initViewModel(){
         viewModel.createClassroomMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "반이 생성되었습니다"){
-                parentFragment?.setFragmentResult("createNewClassroom", bundleOf("isCreated" to "yes"))
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    parentFragment?.setFragmentResult("createNewClassroom", bundleOf("isCreated" to "yes"))
+                    dismiss()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
-            dismiss()
         }
     }
 

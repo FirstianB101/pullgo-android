@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,8 +27,6 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     private var isFormatGood = true
 
     private val viewModel: ManageClassroomViewModel by viewModels()
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -77,14 +76,30 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
 
     private fun initViewModel(){
         viewModel.editClassroomMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "수정이 완료되었습니다"){
-                val intent = Intent()
-                intent.putExtra("finishedFragment","editClassroom")
-                requireActivity().setResult(Activity.RESULT_OK,intent)
-            }else if(it == "반이 삭제되었습니다"){
-                Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-                finishActivity()
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    val intent = Intent()
+                    intent.putExtra("finishedFragment","editClassroom")
+                    requireActivity().setResult(Activity.RESULT_OK,intent)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.deleteClassroomMessage.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    finishActivity()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

@@ -23,6 +23,7 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogCreateNewLessonBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.sql.Timestamp
@@ -40,10 +41,10 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     private var endMinute = -1
     private var selectedClassroom: Classroom? = null
 
-    private val viewModel: CreateNewLessonViewModel by viewModels()
-
     @Inject
     lateinit var app: PullgoApplication
+
+    private val viewModel: CreateNewLessonViewModel by viewModels()
 
     private var isLayoutVisible = false
 
@@ -64,14 +65,33 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
 
     private fun initViewModel(){
         viewModel.createNewLessonClassroomRepository.observe(this){
-            setSpinnerItems()
+            when(it.status){
+                Status.SUCCESS -> {
+                    setSpinnerItems()
+                }
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"반 목록을 불러올 수 없습니다",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.createMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "수업을 생성하였습니다"){
-                parentFragment?.setFragmentResult("isMadeNewLesson", bundleOf("isMade" to "yes"))
-                dismiss()
+            when(it.status){
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    parentFragment?.setFragmentResult("isMadeNewLesson", bundleOf("isMade" to "yes"))
+                    dismiss()
+                }
+                Status.LOADING -> {
+                    app.showLoadingDialog(childFragmentManager)
+                }
+                Status.ERROR -> {
+                    app.dismissLoadingDialog()
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -156,7 +176,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
     }
 
     private fun setSpinnerItems(){
-        val classrooms = viewModel.createNewLessonClassroomRepository.value!!
+        val classrooms = viewModel.createNewLessonClassroomRepository.value?.data!!
         val adapter: ArrayAdapter<Classroom> = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_dropdown_item,classrooms)
         binding.spinnerSelectClassroom.adapter = adapter
 

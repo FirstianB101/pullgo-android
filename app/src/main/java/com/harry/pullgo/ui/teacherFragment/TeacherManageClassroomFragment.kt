@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -13,25 +14,29 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.application.PullgoApplication
+import com.harry.pullgo.data.adapter.ManageClassroomAdapter
 import com.harry.pullgo.data.api.OnClassroomClickListener
 import com.harry.pullgo.data.models.Classroom
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomBinding
 import com.harry.pullgo.ui.manageClassroom.FragmentCreateClassroomDialog
 import com.harry.pullgo.ui.manageClassroom.ManageClassroomActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TeacherManageClassroomFragment: Fragment() {
     private val binding by lazy{FragmentManageClassroomBinding.inflate(layoutInflater)}
 
-    private val viewModel: ManageClassroomViewModel by activityViewModels()
+    @Inject
+    lateinit var app: PullgoApplication
+
+    private val viewModel: TeacherManageClassroomViewModel by activityViewModels()
 
     private var selectedClassroom: Classroom? = null
     private var buttonPushed = false
 
     private lateinit var startForResult: ActivityResultLauncher<Intent>
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -72,25 +77,48 @@ class TeacherManageClassroomFragment: Fragment() {
 
     private fun setViewModel(){
         viewModel.selectedClassroom.observe(requireActivity()){
-            startManageClassroomActivity()
+            when(it.status){
+                Status.SUCCESS -> {
+                    startManageClassroomActivity()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"해당 반 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.getClassroomRepositories.observe(requireActivity()){
-            displayClassrooms()
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayClassrooms()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"반 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.academiesForSpinnerRepository.observe(requireActivity()){
-            if(buttonPushed)
-                makeClassroom()
-            buttonPushed = false
+            when(it.status){
+                Status.SUCCESS -> {
+                    if(buttonPushed)
+                        makeClassroom()
+                    buttonPushed = false
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"학원 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.requestGetClassrooms(app.loginUser.teacher?.id!!)
-        app.showLoadingDialog(childFragmentManager)
     }
 
     private fun displayClassrooms(){
-        val data = viewModel.getClassroomRepositories.value
+        val data = viewModel.getClassroomRepositories.value?.data
 
         val classroomAdapter = data?.let {
             ManageClassroomAdapter(it)
@@ -108,13 +136,12 @@ class TeacherManageClassroomFragment: Fragment() {
         hideLayout(data?.isEmpty() == true)
 
         binding.recyclerViewManageClassroom.adapter = classroomAdapter
-        app.dismissLoadingDialog()
     }
 
     private fun startManageClassroomActivity(){
         val intent = Intent(requireContext(),ManageClassroomActivity::class.java)
 
-        val classroom = viewModel.selectedClassroom.value
+        val classroom = viewModel.selectedClassroom.value?.data
 
         intent.putExtra("selectedClassroomId",classroom?.id)
         intent.putExtra("selectedClassroomAcademyId",classroom?.academyId)
@@ -132,7 +159,7 @@ class TeacherManageClassroomFragment: Fragment() {
     }
 
     private fun makeClassroom(){
-        val academies = viewModel.academiesForSpinnerRepository.value
+        val academies = viewModel.academiesForSpinnerRepository.value?.data
         FragmentCreateClassroomDialog(academies!!).show(childFragmentManager,
             FragmentCreateClassroomDialog.TAG_LESSON_INFO_DIALOG)
     }

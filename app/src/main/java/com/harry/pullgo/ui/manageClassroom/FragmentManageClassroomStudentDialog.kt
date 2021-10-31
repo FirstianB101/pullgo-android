@@ -7,13 +7,16 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.repository.ManageClassroomRepository
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,8 +29,6 @@ class FragmentManageClassroomStudentDialog(
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
     private val viewModel: ManageClassroomViewModel by activityViewModels()
-
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -60,10 +61,16 @@ class FragmentManageClassroomStudentDialog(
 
     private fun initViewModel(){
         viewModel.kickMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),it,Toast.LENGTH_SHORT).show()
-            if(it == "해당 학생을 반에서 제외시켰습니다"){
-                viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
-                dismiss()
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
+                    dismiss()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
