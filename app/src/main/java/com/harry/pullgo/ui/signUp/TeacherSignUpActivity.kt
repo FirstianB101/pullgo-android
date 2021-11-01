@@ -44,7 +44,7 @@ class TeacherSignUpActivity:AppCompatActivity(){
         signUpInfoFragment = TeacherSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId(true)
-        supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.teacherSignUpContainer,signUpId).addToBackStack(null).commit()
     }
 
     private fun initViewModel(){

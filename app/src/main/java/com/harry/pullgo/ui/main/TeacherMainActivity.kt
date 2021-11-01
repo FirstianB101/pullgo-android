@@ -96,7 +96,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             acceptApplyAcademyFragment = TeacherAcceptApplyAcademyFragment()
             manageAcademyFragment = TeacherManageAcademyFragment()
 
-            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).addToBackStack(null).commit()
             curPosition = CALENDAR
 
             binding.navigationViewTeacher.menu.clear()
@@ -106,7 +106,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }else{
             teacherHomeFragment = TeacherHomeFragmentNoAcademy()
 
-            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).addToBackStack(null).commit()
             curPosition = HOME
         }
 

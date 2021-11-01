@@ -54,3 +54,7 @@ interface OnCalendarResetListener{
 interface OnDataChangedListener{
     fun onChangeData(isTeacher: Boolean)
 }
+
+interface OnKickPersonListener{
+    fun noticeKicked()
+}

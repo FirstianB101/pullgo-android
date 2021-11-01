@@ -143,9 +143,7 @@ class TeacherManageClassroomFragment: Fragment() {
 
         val classroom = viewModel.selectedClassroom.value?.data
 
-        intent.putExtra("selectedClassroomId",classroom?.id)
-        intent.putExtra("selectedClassroomAcademyId",classroom?.academyId)
-        intent.putExtra("selectedClassroomName",classroom?.name)
+        intent.putExtra("selectedClassroom",classroom)
 
         startForResult.launch(intent)
     }

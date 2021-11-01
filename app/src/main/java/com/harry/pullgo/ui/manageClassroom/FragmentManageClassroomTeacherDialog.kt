@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.application.PullgoApplication
+import com.harry.pullgo.data.api.OnKickPersonListener
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.data.utils.Status
@@ -20,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FragmentManageClassroomTeacherDialog(
     private val selectedTeacher: Teacher,
-    private val selectedClassroom: Classroom
+    private val selectedClassroom: Classroom,
+    private val kickPersonListener: OnKickPersonListener?
 ): DialogFragment() {
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 
@@ -59,6 +60,7 @@ class FragmentManageClassroomTeacherDialog(
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
                     viewModel.requestGetTeachersAppliedClassroom(selectedClassroom.id!!)
+                    kickPersonListener?.noticeKicked()
                     dismiss()
                 }
                 Status.LOADING -> {}

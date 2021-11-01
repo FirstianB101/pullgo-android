@@ -19,6 +19,8 @@ import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
+import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,6 +32,9 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     lateinit var app: PullgoApplication
 
     private val viewModel: ManageClassroomViewModel by viewModels()
+
+    private var selectedStudent: Student? = null
+    private var selectedTeacher: Teacher? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -47,6 +52,12 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
         }
     }
 
+    override fun onResume() {
+        binding.switchManageClassroomRequest.isChecked = false
+        refreshAdapter(false)
+        super.onResume()
+    }
+
     private fun refreshAdapter(isTeacher: Boolean){
         if(isTeacher)
             viewModel.requestGetTeachersRequestApplyClassroom(selectedClassroom.id!!)
@@ -55,7 +66,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     }
 
     private fun initViewModel(){
-        viewModel.studentsRequestApplyClassroom.observe(requireActivity()){
+        viewModel.studentsRequestApplyClassroom.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     displayStudentRequests()
@@ -67,7 +78,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
             }
         }
 
-        viewModel.teachersRequestApplyClassroom.observe(requireActivity()){
+        viewModel.teachersRequestApplyClassroom.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     displayTeacherRequests()
@@ -79,7 +90,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
             }
         }
 
-        viewModel.manageStudentRequestMessage.observe(requireActivity()){
+        viewModel.manageStudentRequestMessage.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
@@ -92,7 +103,7 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
             }
         }
 
-        viewModel.manageTeacherRequestMessage.observe(requireActivity()){
+        viewModel.manageTeacherRequestMessage.observe(viewLifecycleOwner){
             when(it.status){
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
@@ -104,8 +115,6 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
                 }
             }
         }
-
-        refreshAdapter(false)
     }
 
     private fun displayStudentRequests(){
@@ -118,22 +127,46 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
         if (adapter != null) {
             adapter.studentClickListener = object: OnStudentClickListener {
                 override fun onBackgroundClick(view: View, student: Student?) {
-                    val dialog = FragmentShowStudentInfoDialog(student!!)
-                    dialog.show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
+                    FragmentShowStudentInfoDialog(student!!)
+                        .show(childFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {
-                    viewModel.acceptStudent(selectedClassroom.id!!,student?.id!!)
+                    selectedStudent = student
+                    showAcceptStudentDialog()
                 }
 
                 override fun onRemoveButtonClick(view: View, student: Student?) {
-                    viewModel.denyStudent(student?.id!!,selectedClassroom.id!!)
+                    selectedStudent = student
+                    showDenyStudentDialog()
                 }
             }
         }
         binding.recyclerViewManageClassroomRequest.adapter = adapter
 
         showNoResultText(data?.isEmpty() == true)
+    }
+
+    private fun showAcceptStudentDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                viewModel.acceptStudent(selectedClassroom.id!!,selectedStudent?.id!!)
+            }
+        }
+        dialog.start("학생 등록","${selectedStudent?.account?.fullName}(${selectedStudent?.account?.username}) 학생을 반에 등록하시겠습니까?",
+            "등록하기","취소")
+    }
+
+    private fun showDenyStudentDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                viewModel.denyStudent(selectedStudent?.id!!,selectedClassroom.id!!)
+            }
+        }
+        dialog.start("등록 거절","${selectedStudent?.account?.fullName}(${selectedStudent?.account?.username}) 학생의 등록 요청을 거절하시겠습니까?",
+            "거절하기","취소")
     }
 
     private fun displayTeacherRequests(){
@@ -146,20 +179,46 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
         if (adapter != null) {
             adapter.teacherClickListener = object: OnTeacherClickListener{
                 override fun onBackgroundClick(view: View, teacher: Teacher?) {
+                    FragmentShowTeacherInfoDialog(teacher!!)
+                        .show(childFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
                 }
 
                 override fun onApplyButtonClick(view: View, teacher: Teacher?) {
-                    viewModel.acceptTeacher(selectedClassroom.id!!,teacher?.id!!)
+                    selectedTeacher = teacher
+                    showAcceptTeacherDialog()
                 }
 
                 override fun onRemoveButtonClick(view: View, teacher: Teacher?) {
-                    viewModel.denyTeacher(selectedClassroom.id!!,teacher?.id!!)
+                    selectedTeacher = teacher
+                    showDenyTeacherDialog()
                 }
             }
         }
         binding.recyclerViewManageClassroomRequest.adapter = adapter
 
         showNoResultText(data?.isEmpty() == true)
+    }
+
+    private fun showAcceptTeacherDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                viewModel.acceptTeacher(selectedClassroom.id!!,selectedTeacher?.id!!)
+            }
+        }
+        dialog.start("선생님 등록","${selectedTeacher?.account?.fullName}(${selectedTeacher?.account?.username}) 선생님을 반에 등록하시겠습니까?",
+            "등록하기","취소")
+    }
+
+    private fun showDenyTeacherDialog(){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                viewModel.denyTeacher(selectedTeacher?.id!!,selectedClassroom.id!!)
+            }
+        }
+        dialog.start("등록 거절","${selectedTeacher?.account?.fullName}(${selectedTeacher?.account?.username}) 선생님의 등록 요청을 거절하시겠습니까?",
+            "거절하기","취소")
     }
 
     private fun showNoResultText(isEmpty: Boolean){

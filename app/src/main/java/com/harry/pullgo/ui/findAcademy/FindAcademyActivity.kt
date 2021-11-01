@@ -110,20 +110,18 @@ class FindAcademyActivity : AppCompatActivity() {
         val dialog = TwoButtonDialog(this)
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
             override fun onLeftClicked() {
-                sendAcceptRequest(academy?.id)
+                sendAcceptRequest(academy?.id!!)
             }
         }
         dialog.start("${academy?.name}","${academy?.address}","가입 요청","취소")
     }
 
-    private fun sendAcceptRequest(academyId:Long?){
-        if (academyId != null) {
-            val isStudent = (app.loginUser.teacher == null)
+    private fun sendAcceptRequest(academyId:Long){
+        val isStudent = (app.loginUser.teacher == null)
 
-            if(isStudent)
-                viewModel.requestStudentApply(app.loginUser.student?.id!!,academyId)
-            else
-                viewModel.requestTeacherApply(app.loginUser.teacher?.id!!,academyId)
-        }
+        if(isStudent)
+            viewModel.requestStudentApply(app.loginUser.student?.id!!,academyId)
+        else
+            viewModel.requestTeacherApply(app.loginUser.teacher?.id!!,academyId)
     }
 }

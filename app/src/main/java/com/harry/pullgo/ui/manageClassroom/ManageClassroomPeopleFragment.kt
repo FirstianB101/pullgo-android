@@ -5,19 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentAdapter
 import com.harry.pullgo.data.adapter.TeacherAdapter
+import com.harry.pullgo.data.api.OnKickPersonListener
 import com.harry.pullgo.data.api.OnStudentClickListener
 import com.harry.pullgo.data.api.OnTeacherClickListener
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.data.models.Teacher
-import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManagePeopleBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,8 +70,12 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
                 }
             }
         }
+    }
 
+    override fun onResume() {
+        binding.switchManageClassroomPeople.isChecked = false
         refreshAdapter(false)
+        super.onResume()
     }
 
     private fun refreshAdapter(isTeacher: Boolean){
@@ -88,8 +90,11 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
 
         studentAdapter.studentClickListener = object: OnStudentClickListener {
             override fun onBackgroundClick(view: View, student: Student?) {
-                FragmentManageClassroomStudentDialog(student!!,selectedClassroom)
-                    .show(parentFragmentManager, FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
+                FragmentManageClassroomStudentDialog(student!!,selectedClassroom,object: OnKickPersonListener {
+                    override fun noticeKicked() {
+                        refreshAdapter(false)
+                    }
+                }).show(childFragmentManager, FragmentManageClassroomStudentDialog.TAG_MANAGE_STUDENT_DIALOG)
             }
 
             override fun onApplyButtonClick(view: View, student: Student?) {
@@ -109,8 +114,11 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
 
         teacherAdapter.teacherClickListener = object: OnTeacherClickListener {
             override fun onBackgroundClick(view: View, teacher: Teacher?) {
-                FragmentManageClassroomTeacherDialog(teacher!!,selectedClassroom)
-                    .show(parentFragmentManager, FragmentManageClassroomTeacherDialog.TAG_MANAGE_TEACHER_DIALOG)
+                FragmentManageClassroomTeacherDialog(teacher!!,selectedClassroom,object: OnKickPersonListener{
+                    override fun noticeKicked() {
+                        refreshAdapter(true)
+                    }
+                }).show(childFragmentManager, FragmentManageClassroomTeacherDialog.TAG_MANAGE_TEACHER_DIALOG)
             }
 
             override fun onApplyButtonClick(view: View, teacher: Teacher?) {

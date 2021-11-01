@@ -20,6 +20,7 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
+import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogLessonInfoManageBinding
 import com.harry.pullgo.ui.calendar.LessonsViewModel
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -42,8 +43,6 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     var calendarResetListenerListener: OnCalendarResetListener? = null
 
-    private val app: PullgoApplication by lazy{requireActivity().application as PullgoApplication }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
 
@@ -55,7 +54,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         _dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         return _dialog
@@ -185,12 +184,28 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     private fun initViewModel(){
         viewModel.classroomInfoRepository.observe(requireActivity()){
-            binding.textViewLessonInfoManageSelectClassroom.setText(it.data?.name!!.split(';')[0])
+            when(it.status){
+                Status.SUCCESS -> {
+                    binding.textViewLessonInfoManageSelectClassroom.setText(it.data?.name!!.split(';')[0])
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"해당 수업의 반 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.lessonMessage.observe(requireActivity()){
-            Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
-            saveAndCloseDialog(it.data)
+            when(it.status){
+                Status.SUCCESS -> {
+                    Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
+                    saveAndCloseDialog(it.data)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.getClassroomInfoOfLesson(selectedLesson)

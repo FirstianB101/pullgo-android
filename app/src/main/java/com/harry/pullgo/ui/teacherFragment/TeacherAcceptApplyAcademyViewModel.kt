@@ -105,7 +105,7 @@ class TeacherAcceptApplyAcademyViewModel @ViewModelInject constructor(
         _acceptOrDenyMessage.postValue(Resource.loading(null))
 
         viewModelScope.launch{
-            acceptApplyAcademyRepository.denyStudentApply(academyId, studentId).let{ response ->
+            acceptApplyAcademyRepository.denyStudentApply(studentId, academyId).let{ response ->
                 if(response.isSuccessful){
                     _acceptOrDenyMessage.postValue(Resource.success("해당 학생의 요청이 삭제되었습니다"))
                 }else{
@@ -118,7 +118,7 @@ class TeacherAcceptApplyAcademyViewModel @ViewModelInject constructor(
         _acceptOrDenyMessage.postValue(Resource.loading(null))
 
         viewModelScope.launch{
-            acceptApplyAcademyRepository.denyTeacherApply(academyId, teacherId).let{ response ->
+            acceptApplyAcademyRepository.denyTeacherApply(teacherId, academyId).let{ response ->
                 if(response.isSuccessful){
                     _acceptOrDenyMessage.postValue(Resource.success("해당 선생님의 요청이 삭제되었습니다"))
                 }else{

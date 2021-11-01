@@ -90,7 +90,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             studentExamListFragment = StudentExamListFragment()
             studentExamHistoryFragment = StudentExamHistoryFragment()
 
-            supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, calendarFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, calendarFragment).addToBackStack(null).commit()
             curPosition = CALENDAR
 
             binding.navigationViewStudent.menu.clear()
@@ -99,7 +99,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }else{
             studentHomeFragment = StudentHomeFragmentNoAcademy()
 
-            supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, studentHomeFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.studentMainFragment, studentHomeFragment).addToBackStack(null).commit()
             curPosition = HOME
         }
 

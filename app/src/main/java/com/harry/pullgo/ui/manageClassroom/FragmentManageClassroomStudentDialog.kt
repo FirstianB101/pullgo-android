@@ -4,18 +4,14 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.harry.pullgo.application.PullgoApplication
+import com.harry.pullgo.data.api.OnKickPersonListener
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Student
-import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
@@ -24,7 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FragmentManageClassroomStudentDialog(
     private val selectedStudent: Student,
-    private val selectedClassroom: Classroom
+    private val selectedClassroom: Classroom,
+    private val kickPersonListener: OnKickPersonListener?
 ): DialogFragment() {
     private val binding by lazy{DialogManageClassroomStudentInfoBinding.inflate(layoutInflater)}
 
@@ -65,6 +62,7 @@ class FragmentManageClassroomStudentDialog(
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
                     viewModel.requestGetStudentsAppliedClassroom(selectedClassroom.id!!)
+                    kickPersonListener?.noticeKicked()
                     dismiss()
                 }
                 Status.LOADING -> {}
