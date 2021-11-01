@@ -46,14 +46,14 @@ class FragmentSignUpId(private val isTeacher: Boolean): Fragment() {
     private fun initViewModel(){
         viewModel.usernameExist.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     if(!it.data?.exists!!){
                         showNextButton()
                     }else{
                         binding.signUpIdLayout.error = "중복된 아이디입니다"
                     }
-                }
-                Status.LOADING -> {
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"인터넷 연결을 확인해 주세요(${it.message})",Toast.LENGTH_SHORT).show()

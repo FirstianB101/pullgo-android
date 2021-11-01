@@ -56,10 +56,11 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
     private fun initViewModel(){
         viewModel.examsWithinClassroom.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     displayExams(it.data!!)
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
                 }
@@ -68,13 +69,13 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
 
         viewModel.examMessage.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
-                    if(it.data == "시험이 삭제되었습니다") {
+                    if(it.data == "시험이 삭제되었습니다")
                         viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
-                    }
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
                 }

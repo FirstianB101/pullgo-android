@@ -45,10 +45,11 @@ class ApplyClassroomActivity : AppCompatActivity() {
     private fun initViewModel(){
         viewModel.appliedAcademiesRepository.observe(this){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     setSpinnerItems()
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     binding.spinnerApplyClassroomSelectAcademy.errorText = "학원을 불러오지 못했습니다"
                 }
@@ -57,12 +58,12 @@ class ApplyClassroomActivity : AppCompatActivity() {
 
         viewModel.applyClassroomsRepositories.observe(this){
             when(it.status){
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
                 Status.SUCCESS -> {
                     displayClassrooms()
                     app.dismissLoadingDialog()
-                }
-                Status.LOADING -> {
-                    app.showLoadingDialog(supportFragmentManager)
                 }
                 Status.ERROR -> {
                     Toast.makeText(this,"반 정보를 불러오지 못했습니다(${it.message})",Toast.LENGTH_SHORT).show()
@@ -73,12 +74,12 @@ class ApplyClassroomActivity : AppCompatActivity() {
 
         viewModel.appliedClassroomsMessage.observe(this){
             when(it.status){
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
                 Status.SUCCESS -> {
                     app.dismissLoadingDialog()
                     Toast.makeText(this,"${it.data}",Toast.LENGTH_SHORT).show()
-                }
-                Status.LOADING -> {
-                    app.showLoadingDialog(supportFragmentManager)
                 }
                 Status.ERROR -> {
                     app.dismissLoadingDialog()

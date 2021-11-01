@@ -78,10 +78,11 @@ class TeacherManageClassroomFragment: Fragment() {
     private fun setViewModel(){
         viewModel.selectedClassroom.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     startManageClassroomActivity()
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"해당 반 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
                 }
@@ -90,10 +91,11 @@ class TeacherManageClassroomFragment: Fragment() {
 
         viewModel.getClassroomRepositories.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     displayClassrooms()
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"반 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
                 }
@@ -102,12 +104,13 @@ class TeacherManageClassroomFragment: Fragment() {
 
         viewModel.academiesForSpinnerRepository.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     if(buttonPushed)
                         makeClassroom()
                     buttonPushed = false
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"학원 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()
                 }

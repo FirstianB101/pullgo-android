@@ -56,12 +56,12 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
     private fun setViewModel(){
         viewModel.dayLessonsRepositories.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                    app.showLoadingDialog(childFragmentManager)
+                }
                 Status.SUCCESS -> {
                     showLessons()
                     app.dismissLoadingDialog()
-                }
-                Status.LOADING -> {
-                    app.showLoadingDialog(childFragmentManager)
                 }
                 Status.ERROR -> {
                     app.dismissLoadingDialog()

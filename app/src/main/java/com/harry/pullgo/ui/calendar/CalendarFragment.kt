@@ -42,10 +42,10 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     private fun setViewModel(){
         viewModel.allLessonsRepositories.observe(requireActivity()){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     makeDots()
-                }
-                Status.LOADING -> {
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"수업 정보를 불러올 수 없습니다(${it.message})",Toast.LENGTH_SHORT).show()

@@ -68,10 +68,11 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
     private fun initViewModel(){
         viewModel.studentsRequestApplyClassroom.observe(viewLifecycleOwner){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     displayStudentRequests()
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
                 }
@@ -80,10 +81,11 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
 
         viewModel.teachersRequestApplyClassroom.observe(viewLifecycleOwner){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     displayTeacherRequests()
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
                 }
@@ -92,11 +94,12 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
 
         viewModel.manageStudentRequestMessage.observe(viewLifecycleOwner){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
                     refreshAdapter(false)
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
                 }
@@ -105,11 +108,12 @@ class ManageClassroomRequestsFragment(private val selectedClassroom: Classroom):
 
         viewModel.manageTeacherRequestMessage.observe(viewLifecycleOwner){
             when(it.status){
+                Status.LOADING -> {
+                }
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
                     refreshAdapter(true)
                 }
-                Status.LOADING -> {}
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
                 }
