@@ -229,4 +229,20 @@ interface PullgoService {
 
     @POST("exams/{id}/finish")
     suspend fun finishExam(@Path("id")examId: Long): Response<Unit>
+
+
+    @GET("exam/questions/{id}")
+    suspend fun getOneQuestion(@Path("id")questionId: Long): Response<Question>
+
+    @GET("exam/questions")
+    suspend fun getQuestionsSuchExam(@Query("examId")examId: Long): Response<List<Question>>
+
+    @POST("exam/questions")
+    suspend fun createQuestion(@Body question: Question): Response<Question>
+
+    @PATCH("exam/questions/{id}")
+    suspend fun editQuestion(@Path("id")questionId: Long, @Body question: Question): Response<Question>
+
+    @DELETE("exam/questions/{id}")
+    suspend fun deleteQuestion(@Path("id")questionId: Long): Response<Unit>
 }

@@ -128,7 +128,7 @@ class TeacherManageClassroomFragment: Fragment() {
         }
 
         if(classroomAdapter != null){
-            classroomAdapter.itemClickListenerListener = object: OnClassroomClickListener{
+            classroomAdapter.itemClickListener = object: OnClassroomClickListener{
                 override fun onClassroomClick(view: View, classroom: Classroom?) {
                     selectedClassroom = classroom
                     viewModel.requestGetClassroomById(classroom?.id!!)

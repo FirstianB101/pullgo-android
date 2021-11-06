@@ -16,7 +16,6 @@ import com.google.android.material.navigation.NavigationView
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCheckPwListener
-import com.harry.pullgo.data.repository.ChangeInfoRepository
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityStudentMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
@@ -132,7 +131,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             finish()
         }
 
-        changeInfoCheckPwFragment.pwCheckListenerListener = object: OnCheckPwListener{
+        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPwListener{
             override fun onPasswordCheck() {
                 onFragmentSelected(CHANGE_INFO)
             }

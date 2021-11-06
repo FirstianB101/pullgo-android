@@ -33,6 +33,7 @@ interface OnExamClickListener{
     fun onExamClick(view: View, exam: Exam?)
     fun onTakeExamStatusClick(view: View, exam: Exam?)
     fun onRemoveButtonClick(view: View, exam: Exam?)
+    fun onManageQuestionClick(view: View, exam: Exam?)
 }
 
 interface OnStudentClickListener{
@@ -57,4 +58,12 @@ interface OnDataChangedListener{
 
 interface OnKickPersonListener{
     fun noticeKicked()
+}
+
+interface OnChoiceListener{
+    fun onChoice(choice: Int)
+}
+
+interface OnEditMultipleChoiceListener{
+    fun onEditMultipleChoice(choice: Map<String,String>, answer: List<Int>)
 }

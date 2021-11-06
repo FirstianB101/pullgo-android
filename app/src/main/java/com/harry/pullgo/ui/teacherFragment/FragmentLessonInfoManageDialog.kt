@@ -16,7 +16,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
-import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCalendarResetListener
 import com.harry.pullgo.data.models.Lesson
 import com.harry.pullgo.data.models.Schedule
@@ -41,7 +40,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     private val viewModel: LessonsViewModel by viewModels()
 
-    var calendarResetListenerListener: OnCalendarResetListener? = null
+    var calendarResetListener: OnCalendarResetListener? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
@@ -213,7 +212,7 @@ class FragmentLessonInfoManageDialog(private val selectedLesson: Lesson) :Dialog
 
     private fun saveAndCloseDialog(msg: String?){
         if(msg == "수업 정보가 변경되었습니다" || msg == "수업이 삭제되었습니다"){
-            calendarResetListenerListener?.onResetCalendar()
+            calendarResetListener?.onResetCalendar()
             parentFragment?.setFragmentResult("isLessonPatched", bundleOf("Patched" to "yes"))
             dismiss()
         }

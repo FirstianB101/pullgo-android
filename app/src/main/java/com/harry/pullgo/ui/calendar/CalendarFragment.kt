@@ -90,7 +90,7 @@ class CalendarFragment : Fragment(), OnDateSelectedListener {
     override fun onDateSelected(widget: MaterialCalendarView, date: CalendarDay, selected: Boolean) {
         val selectedDate = String.format("%04d-%02d-%02d", date.year, date.month + 1, date.day)
         val bottomSheet = FragmentCalendarBottomSheet(selectedDate)
-        bottomSheet.calendarResetListenerListener = object: OnCalendarResetListener{
+        bottomSheet.calendarResetListener = object: OnCalendarResetListener{
             override fun onResetCalendar() {
                 viewModel.requestTeacherLessons(app.loginUser.teacher?.id!!)
             }

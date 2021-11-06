@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.manageClassroom
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -98,6 +99,12 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             }
 
             override fun onTakeExamStatusClick(view: View, exam: Exam?) {
+            }
+
+            override fun onManageQuestionClick(view: View, exam: Exam?) {
+                val intent = Intent(requireContext(),ManageQuestionActivity::class.java)
+                intent.putExtra("selectedExam",exam)
+                startActivity(intent)
             }
         }
 

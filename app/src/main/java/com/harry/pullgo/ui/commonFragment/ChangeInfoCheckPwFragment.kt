@@ -11,7 +11,7 @@ import com.harry.pullgo.databinding.FragmentChangeInfoCheckPwBinding
 class ChangeInfoCheckPwFragment: Fragment() {
     private val binding by lazy{FragmentChangeInfoCheckPwBinding.inflate(layoutInflater)}
 
-    var pwCheckListenerListener: OnCheckPwListener? = null
+    var pwCheckListener: OnCheckPwListener? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setListeners()
@@ -21,7 +21,7 @@ class ChangeInfoCheckPwFragment: Fragment() {
 
     private fun setListeners(){
         binding.buttonInfoCheckPw.setOnClickListener {
-            pwCheckListenerListener?.onPasswordCheck()
+            pwCheckListener?.onPasswordCheck()
         }
     }
 }

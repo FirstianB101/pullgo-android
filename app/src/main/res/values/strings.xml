@@ -154,6 +154,7 @@
     <string name="attender_state">응시 현황</string>
     <string name="finish_exam">시험 종료</string>
     <string name="cancel_exam">시험 취소</string>
+    <string name="manage_question">문제 관리</string>
 
     <string name="classroomTeacherNameFormat" formatted="false">%s 선생님</string>
     <string name="examPassScoreFormat" formatted="false">기준: %d점</string>
@@ -161,4 +162,6 @@
     <string name="personIdParenthesis" formatted="false">(%s)</string>
 
     <string name="end_exam">시험 종료</string>
+    <string name="delete_question">문제 삭제</string>
+    <string name="add_question">문제 추가</string>
 </resources>

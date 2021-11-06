@@ -13,7 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-        <activity android:name=".TakeExamActivity" />
+        <activity
+            android:name=".ui.manageClassroom.AddQuestionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.manageClassroom.ManageQuestionActivity"
+            android:exported="false" />
+        <activity android:name=".ui.takeExam.TakeExamActivity" />
         <activity android:name=".AddressActivity" />
         <activity
             android:name=".ui.findAcademy.CreateAcademyActivity"

@@ -18,7 +18,6 @@ import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.data.api.PullgoService
-import com.harry.pullgo.data.models.Academy
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
@@ -28,12 +27,7 @@ import com.harry.pullgo.ui.commonFragment.ManageRequestFragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.teacherFragment.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -139,7 +133,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             finish()
         }
 
-        changeInfoCheckPwFragment.pwCheckListenerListener = object: OnCheckPwListener{
+        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPwListener{
             override fun onPasswordCheck() {
                 onFragmentSelected(CHANGE_INFO)
             }

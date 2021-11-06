@@ -99,6 +99,9 @@ class StudentExamHistoryFragment : Fragment(){
 
                 override fun onTakeExamStatusClick(view: View, exam: Exam?) {
                 }
+
+                override fun onManageQuestionClick(view: View, exam: Exam?) {
+                }
             }
         }
         binding.recyclerViewExamHistory.adapter = examsAdapter

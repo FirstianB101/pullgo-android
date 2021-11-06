@@ -58,6 +58,16 @@
                         android:layout_weight="1"
                         android:maxLines="1"/>
 
+                    <Button
+                        android:id="@+id/buttonManageQuestions"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="문제 관리하기"
+                        android:textStyle="bold"
+                        android:textColor="@color/warning_color"
+                        app:backgroundTint="@color/white"/>
+
                     <ImageButton
                         android:id="@+id/buttonRemoveExam"
                         android:layout_width="12dp"

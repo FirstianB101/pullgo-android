@@ -48,6 +48,10 @@ class ManageExamAdapter(private val dataSet: List<Exam>):
         holder.binding.buttonExamManageAttenderStatus.setOnClickListener {
             examClickListener?.onTakeExamStatusClick(it,dataSet[position])
         }
+
+        holder.binding.buttonManageQuestions.setOnClickListener {
+            examClickListener?.onManageQuestionClick(it,dataSet[position])
+        }
     }
 
     override fun getItemCount() = dataSet.size

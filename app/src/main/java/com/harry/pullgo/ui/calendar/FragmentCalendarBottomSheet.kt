@@ -28,7 +28,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
 
     private val viewModel: LessonsViewModel by viewModels()
 
-    var calendarResetListenerListener: OnCalendarResetListener? = null
+    var calendarResetListener: OnCalendarResetListener? = null
 
     @Inject
     lateinit var app: PullgoApplication
@@ -97,7 +97,7 @@ class FragmentCalendarBottomSheet(private val selectedDate: String) : BottomShee
             adapter.itemClickListener = object: OnLessonClickListener{
                 override fun onLessonClick(view: View, lesson: Lesson?) {
                     val dialog = FragmentLessonInfoManageDialog(lesson!!)
-                    dialog.calendarResetListenerListener = calendarResetListenerListener
+                    dialog.calendarResetListener = calendarResetListener
                     dialog.show(childFragmentManager, FragmentLessonInfoManageDialog.TAG_LESSON_INFO_MANAGE_DIALOG)
                 }
             }
