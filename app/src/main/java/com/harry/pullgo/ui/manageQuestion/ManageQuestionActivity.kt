@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.manageClassroom;
+package com.harry.pullgo.ui.manageQuestion;
 
 import android.app.Activity
 import android.content.Intent
@@ -11,15 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
-import com.harry.pullgo.data.api.OnChoiceListener
 import com.harry.pullgo.data.api.OnEditMultipleChoiceListener
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.models.Question
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityManageQuestionBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
-import com.harry.pullgo.ui.takeExam.FragmentMultipleChoiceBottomSheet
-import com.harry.pullgo.ui.takeExam.FragmentQuestion
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -158,7 +155,7 @@ class ManageQuestionActivity: AppCompatActivity() {
     }
 
     private fun startAddQuestionActivity(){
-        val intent = Intent(this,AddQuestionActivity::class.java)
+        val intent = Intent(this, AddQuestionActivity::class.java)
         intent.putExtra("selectedExam",selectedExam)
         startForResult.launch(intent)
     }
@@ -208,7 +205,7 @@ class ManageQuestionActivity: AppCompatActivity() {
 
     private fun showNoQuestionFragment(){
         supportFragmentManager.beginTransaction()
-            .replace(R.id.mainFragmentManageQuestion,FragmentNoQuestion()).commit()
+            .replace(R.id.mainFragmentManageQuestion, FragmentNoQuestion()).commit()
     }
 
     private fun replaceQuestionFragment(direction: Int){

@@ -14,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
         <activity
-            android:name=".ui.manageClassroom.AddQuestionActivity"
+            android:name=".ui.manageQuestion.AddQuestionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.manageClassroom.ManageQuestionActivity"
+            android:name=".ui.manageQuestion.ManageQuestionActivity"
             android:exported="false" />
         <activity android:name=".ui.takeExam.TakeExamActivity" />
         <activity android:name=".AddressActivity" />

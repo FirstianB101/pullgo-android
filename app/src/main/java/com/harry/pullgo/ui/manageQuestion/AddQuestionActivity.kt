@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.manageClassroom;
+package com.harry.pullgo.ui.manageQuestion;
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity;

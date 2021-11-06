@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.manageClassroom
+package com.harry.pullgo.ui.manageQuestion
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -2,14 +2,11 @@ package com.harry.pullgo.ui.manageClassroom
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.harry.pullgo.application.PullgoApplication
@@ -17,10 +14,10 @@ import com.harry.pullgo.data.adapter.ManageExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.models.Exam
-import com.harry.pullgo.data.repository.ManageClassroomRepository
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManageExamBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import com.harry.pullgo.ui.manageQuestion.ManageQuestionActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -102,7 +99,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             }
 
             override fun onManageQuestionClick(view: View, exam: Exam?) {
-                val intent = Intent(requireContext(),ManageQuestionActivity::class.java)
+                val intent = Intent(requireContext(), ManageQuestionActivity::class.java)
                 intent.putExtra("selectedExam",exam)
                 startActivity(intent)
             }
