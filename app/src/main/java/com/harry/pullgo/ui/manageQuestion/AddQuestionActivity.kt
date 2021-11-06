@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
+import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnEditMultipleChoiceListener
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.models.Question
@@ -41,6 +42,10 @@ class AddQuestionActivity: AppCompatActivity() {
         initViewModel()
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
+
     private fun setListeners(){
         binding.imageViewAddQuestion.setOnClickListener {
             val intent = Intent()
@@ -64,7 +69,7 @@ class AddQuestionActivity: AppCompatActivity() {
                 curImageUri = "https://avatars.githubusercontent.com/u/77564110?s=200&v=4"
                 Glide.with(this)
                     .load(curImageUri)
-                    .override(250,400)
+                    .error(R.drawable.image_load_error)
                     .fitCenter()
                     .into(binding.imageViewAddQuestion)
             }

@@ -41,6 +41,7 @@ class FragmentManageQuestion(
         Glide.with(this)
             .load(question.pictureUrl)
             .error(R.drawable.image_load_error)
+            .fitCenter()
             .into(binding.imageViewManageQuestion)
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
@@ -49,6 +50,8 @@ class FragmentManageQuestion(
                 curImageUri = "https://i.imgur.com/JOKsNeT.jpg"
                 Glide.with(this)
                     .load(curImageUri)
+                    .error(R.drawable.image_load_error)
+                    .fitCenter()
                     .into(binding.imageViewManageQuestion)
             }
         }

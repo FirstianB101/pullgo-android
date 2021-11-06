@@ -78,9 +78,11 @@ class ManageQuestionActivity: AppCompatActivity() {
         }
 
         binding.buttonSaveQuestion.setOnClickListener {
-            questions[curPos].pictureUrl = curQuestionFragment?.getCurImageUrl()
-            questions[curPos].content = curQuestionFragment?.getCurrentContent()
-            viewModel.editQuestion(questions[curPos].id!!,questions[curPos])
+            if(questions.isNotEmpty()){
+                questions[curPos].pictureUrl = curQuestionFragment?.getCurImageUrl()
+                questions[curPos].content = curQuestionFragment?.getCurrentContent()
+                viewModel.editQuestion(questions[curPos].id!!,questions[curPos])
+            }
         }
 
         binding.topAppBar.setOnMenuItemClickListener {
@@ -233,4 +235,7 @@ class ManageQuestionActivity: AppCompatActivity() {
         transaction.replace(R.id.mainFragmentManageQuestion, curQuestionFragment!!).addToBackStack(null).commit()
     }
 
+    override fun onBackPressed() {
+        finish()
+    }
 }
