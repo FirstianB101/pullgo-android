@@ -52,7 +52,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
     }
 
     private fun initViewModel(){
-        viewModel.examsWithinClassroom.observe(requireActivity()){
+        viewModel.examsWithinClassroom.observe(viewLifecycleOwner){
             when(it.status){
                 Status.LOADING -> {
                 }
@@ -65,7 +65,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             }
         }
 
-        viewModel.examMessage.observe(requireActivity()){
+        viewModel.examMessage.observe(viewLifecycleOwner){
             when(it.status){
                 Status.LOADING -> {
                 }

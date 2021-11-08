@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentApplyAdapter
 import com.harry.pullgo.data.adapter.TeacherApplyAdapter
@@ -49,10 +51,27 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
     private fun initialize(){
         binding.recyclerViewAcceptApplyAcademy.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.switchAcceptApplyAcademy.setOnCheckedChangeListener { _, isChecked ->
-            binding.textViewAcceptApplyAcademySwitch.text = if(isChecked) "선생님" else "학생"
-            refreshAdapter(isChecked)
-        }
+        binding.tabLayoutAcceptApplyAcademy.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    when(tab.position){
+                        0 -> {
+                            refreshAdapter(false)
+                        }
+                        1 -> {
+                            refreshAdapter(true)
+                        }
+                    }
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                onTabSelected(tab)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     private fun refreshAdapter(isTeacher: Boolean){
@@ -116,8 +135,16 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                 }
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.requestTeacherAcademies(app.loginUser.teacher?.id!!)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        changeLayoutVisibility(false)
     }
 
     private fun setSpinnerItems(){
@@ -128,13 +155,10 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
 
         binding.spinnerAcceptApplyAcademy.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(!binding.switchAcceptApplyAcademy.isEnabled)
-                    binding.switchAcceptApplyAcademy.isEnabled = true
+                changeLayoutVisibility(true)
 
                 selectedAcademy = academies[position]
                 viewModel.requestGetStudents(academies[position].id!!)
-
-                initializeSwitch()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -143,12 +167,6 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
 
         if(academies.isEmpty())
             binding.textViewAcceptApplyAcademyNoAcademy.visibility = View.VISIBLE
-    }
-
-    private fun initializeSwitch(){
-        binding.switchAcceptApplyAcademy.isChecked = false
-        binding.textViewAcceptApplyAcademySwitch.text = "학생"
-        refreshAdapter(false)
     }
 
     private fun displayStudents(){
@@ -203,6 +221,20 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
         binding.recyclerViewAcceptApplyAcademy.adapter = adapter
 
         showNoResultText(data?.isEmpty() == true)
+    }
+
+    private fun changeLayoutVisibility(isLayoutVisible: Boolean){
+        if(isLayoutVisible){
+            val anim = AnimationUtils.loadAnimation(requireContext(), com.harry.pullgo.R.anim.alpha)
+            binding.tabLayoutAcceptApplyAcademy.visibility = View.VISIBLE
+            binding.frameLayoutAcceptApplyAcademy.visibility = View.VISIBLE
+
+            binding.tabLayoutAcceptApplyAcademy.startAnimation(anim)
+            binding.frameLayoutAcceptApplyAcademy.startAnimation(anim)
+        }else{
+            binding.tabLayoutAcceptApplyAcademy.visibility = View.GONE
+            binding.frameLayoutAcceptApplyAcademy.visibility = View.GONE
+        }
     }
 
     private fun showNoResultText(isEmpty: Boolean){

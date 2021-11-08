@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.tabs.TabLayout
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentAdapter
 import com.harry.pullgo.data.adapter.TeacherAdapter
@@ -40,10 +41,27 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
     }
 
     private fun initialize(){
-        binding.switchManageClassroomPeople.setOnCheckedChangeListener { _, isChecked ->
-            binding.textViewManageClassroomPeopleSwitch.text = if(isChecked) "선생님" else "학생"
-            refreshAdapter(isChecked)
-        }
+        binding.tabLayoutManageClassroomManagePeople.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    when(tab.position){
+                        0 -> {
+                            refreshAdapter(false)
+                        }
+                        1 -> {
+                            refreshAdapter(true)
+                        }
+                    }
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                onTabSelected(tab)
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     private fun initViewModel(){
@@ -73,7 +91,8 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
     }
 
     override fun onResume() {
-        binding.switchManageClassroomPeople.isChecked = false
+        val tab = binding.tabLayoutManageClassroomManagePeople.getTabAt(0)
+        tab?.select()
         refreshAdapter(false)
         super.onResume()
     }
@@ -106,7 +125,7 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
 
         changeVisibilityIfNoResult(students.isEmpty())
 
-        binding.recyclerViewManageStudent.adapter = studentAdapter
+        binding.recyclerViewManagePeople.adapter = studentAdapter
     }
 
     private fun displayTeachers(teachers: List<Teacher>){
@@ -130,14 +149,14 @@ class ManageClassroomPeopleFragment(private val selectedClassroom: Classroom): F
 
         changeVisibilityIfNoResult(teachers.isEmpty())
 
-        binding.recyclerViewManageStudent.adapter = teacherAdapter
+        binding.recyclerViewManagePeople.adapter = teacherAdapter
     }
 
     private fun changeVisibilityIfNoResult(isEmpty: Boolean){
-        val isChecked = binding.switchManageClassroomPeople.isChecked
-        if(isEmpty && isChecked){
+        val tabPosition = binding.tabLayoutManageClassroomManagePeople.selectedTabPosition
+        if(isEmpty && tabPosition == 1){
             binding.textViewManagePeopleNoTeacher.visibility = View.VISIBLE
-        }else if(isEmpty && !isChecked){
+        }else if(isEmpty && tabPosition == 0){
             binding.textViewManagePeopleNoStudent.visibility = View.VISIBLE
         }else{
             binding.textViewManagePeopleNoStudent.visibility = View.GONE

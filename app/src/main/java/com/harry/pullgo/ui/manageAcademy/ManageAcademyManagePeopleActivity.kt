@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.StudentManageAdapter
 import com.harry.pullgo.data.adapter.TeacherManageAdapter
@@ -44,10 +45,26 @@ class ManageAcademyManagePeopleActivity: AppCompatActivity(), OnDataChangedListe
     private fun initialize(){
         binding.recyclerViewManageAcademyManagePeople.layoutManager = LinearLayoutManager(this)
 
-        binding.switchManageAcademyManagePeople.setOnCheckedChangeListener { _, isChecked ->
-            binding.textViewManageAcademyManagePeopleSwitch.text = if(isChecked) "선생님" else "학생"
-            refreshAdapter(isChecked)
-        }
+        binding.tabLayoutManageAcademyManagePeople.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    when(tab.position){
+                        0 -> {
+                            refreshAdapter(false)
+                        }
+                        1 -> {
+                            refreshAdapter(true)
+                        }
+                    }
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     private fun initViewModel(){

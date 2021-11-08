@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.tabs.TabLayout
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.AcademyRequestAdapter
 import com.harry.pullgo.data.adapter.ClassroomRequestAdapter
@@ -42,10 +43,26 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
     }
 
     private fun initialize() {
-        binding.switchManageRequest.setOnCheckedChangeListener { _, isChecked ->
-            binding.textViewManageRequestSwitch.text = if (isChecked) "반 요청" else "학원 요청"
-            refreshAdapter(isChecked)
-        }
+        binding.tabLayoutManageRequest.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    when(tab.position){
+                        0 -> {
+                            refreshAdapter(false)
+                        }
+                        1 -> {
+                            refreshAdapter(true)
+                        }
+                    }
+                }
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+        })
     }
 
     private fun refreshAdapter(isClassroom: Boolean) {

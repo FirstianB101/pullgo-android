@@ -51,7 +51,6 @@ class FragmentManageQuestion(
                 Glide.with(this)
                     .load(curImageUri)
                     .error(R.drawable.image_load_error)
-                    .fitCenter()
                     .into(binding.imageViewManageQuestion)
             }
         }

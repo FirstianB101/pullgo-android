@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayoutManageRequest"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textViewManageRequestSwitch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="right"
-            android:textColor="@color/secondary_color"
-            android:textStyle="bold"
-            android:padding="10dp"
-            android:textSize="18sp"
-            android:text="학원 요청"/>
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/switchManageRequest"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:padding="10dp"/>
+            android:text="@string/academy_request" />
 
-    </LinearLayout>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/classroom_request" />
+
+    </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -39,18 +30,18 @@
             android:id="@+id/recyclerViewManageRequest"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <TextView
             android:id="@+id/textViewManageRequestNoResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:text="@string/no_apply_request"
+            android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            android:text="@string/no_apply_request"
-            android:visibility="gone"
-            android:layout_gravity="center_vertical|center_horizontal"/>
+            android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>
