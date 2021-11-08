@@ -58,7 +58,8 @@
         <CheckBox
             android:id="@+id/checkboxMultipleChoice1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
 
     <LinearLayout
@@ -91,7 +92,8 @@
         <CheckBox
             android:id="@+id/checkboxMultipleChoice2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,7 +125,8 @@
         <CheckBox
             android:id="@+id/checkboxMultipleChoice3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -155,7 +158,8 @@
         <CheckBox
             android:id="@+id/checkboxMultipleChoice4"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -187,6 +191,7 @@
         <CheckBox
             android:id="@+id/checkboxMultipleChoice5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
 </LinearLayout>

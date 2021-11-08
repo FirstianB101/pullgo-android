@@ -19,6 +19,7 @@ import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageRequestBinding
 import com.harry.pullgo.ui.dialog.FragmentShowAcademyInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowClassroomInfoDialog
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -120,10 +121,7 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
                 }
 
                 override fun onRemoveRequest(view: View, academy: Academy?) {
-                    if(isTeacher)
-                        viewModel.removeTeacherApplyingAcademy(app.loginUser.teacher?.id!!,academy?.id!!)
-                    else
-                        viewModel.removeStudentApplyingAcademy(app.loginUser.student?.id!!,academy?.id!!)
+                    showDeleteAcademyRequestDialog(academy)
                 }
             }
         }
@@ -147,16 +145,41 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
                 }
 
                 override fun onRemoveRequest(view: View, classroom: Classroom?) {
-                    if(isTeacher)
-                        viewModel.removeTeacherApplyingClassroom(app.loginUser.teacher?.id!!,classroom?.id!!)
-                    else
-                        viewModel.removeStudentApplyingClassroom(app.loginUser.student?.id!!,classroom?.id!!)
+                    showDeleteClassroomRequestDialog(classroom)
                 }
             }
         }
         binding.recyclerViewManageRequest.adapter = adapter
 
         showNoResultText(data?.isEmpty() == true)
+    }
+
+    private fun showDeleteAcademyRequestDialog(academy: Academy?){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+            override fun onLeftClicked() {
+                if(isTeacher)
+                    viewModel.removeTeacherApplyingAcademy(app.loginUser.teacher?.id!!,academy?.id!!)
+                else
+                    viewModel.removeStudentApplyingAcademy(app.loginUser.student?.id!!,academy?.id!!)
+            }
+        }
+        dialog.start("요청 삭제","${academy?.name} 학원 요청을 삭제하시겠습니까?",
+            "삭제하기","취소")
+    }
+
+    private fun showDeleteClassroomRequestDialog(classroom: Classroom?){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+            override fun onLeftClicked() {
+                if(isTeacher)
+                    viewModel.removeTeacherApplyingClassroom(app.loginUser.teacher?.id!!,classroom?.id!!)
+                else
+                    viewModel.removeStudentApplyingClassroom(app.loginUser.student?.id!!,classroom?.id!!)
+            }
+        }
+        dialog.start("요청 삭제","${classroom?.name?.split(';')?.get(0)} 반 요청을 삭제하시겠습니까?",
+            "삭제하기","취소")
     }
 
     private fun showNoResultText(isEmpty: Boolean) {
