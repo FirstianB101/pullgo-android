@@ -31,6 +31,9 @@ interface PullgoService {
     @POST("teachers/{id}/remove-applied-classroom/")
     suspend fun removeTeacherClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Response<Unit>
 
+    @GET("teachers/{id}")
+    suspend fun getOneTeacher(@Path("id")teacherId: Long): Response<Teacher>
+
     @GET("teachers/{username}/exists")
     suspend fun teacherUsernameExists(@Path("username")username: String): Response<Exist>
 
@@ -55,6 +58,9 @@ interface PullgoService {
     @GET("academy/classroom/lessons/")
     suspend fun getLessonsByTeacherId(@Query("teacherId")teacherId:Long): Response<List<Lesson>>
 
+
+    @GET("academies/{id}")
+    suspend fun getOneAcademy(@Path("id")academyId: Long): Response<Academy>
 
     @GET("academies/")
     suspend fun getAcademiesByName(@Query("nameLike")name: String): Response<List<Academy>>

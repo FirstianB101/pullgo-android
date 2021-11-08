@@ -23,6 +23,7 @@ class ClassroomRequestAdapter(private val dataSet: List<Classroom>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.classroomInfo = dataSet[position].name.toString().split(';')
+        holder.binding.creator = dataSet[position].creator
 
         holder.itemView.setOnClickListener {
             itemClickListener?.onClassroomClick(holder.itemView, dataSet[position])

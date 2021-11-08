@@ -69,8 +69,10 @@ class TeacherManageAcademyFragment: Fragment() {
             when(it.status){
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
-                    viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
-                    makeLayoutInvisible()
+                    if(it.data == "학원이 삭제되었습니다") {
+                        viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
+                        makeLayoutInvisible()
+                    }
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.harry.pullgo.R
 import com.harry.pullgo.data.api.OnEditMultipleChoiceListener
 import com.harry.pullgo.data.models.Question
 import com.harry.pullgo.databinding.FragmentManageQuestionBottomSheetBinding

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="24dp"
+    android:padding="24dp"
+    android:background="@drawable/rounded"
+    tools:context=".ui.studentFragment.FragmentLessonInfoDialog">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@color/white"
+            android:src="@drawable/outline_info_24"
+            android:layout_gravity="center"
+            app:tint="@color/main_color_dark" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:textColor="@color/main_color_dark"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/classroom_info"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/classroom_name"/>
+
+        <TextView
+            android:id="@+id/textViewClassroomInfoClassroomName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="-"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/classroom_creator"/>
+
+        <TextView
+            android:id="@+id/textViewClassroomInfoClassroomCreator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="-"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="5dp">
+
+        <TextView
+            android:layout_width="@dimen/manage_classroom_student_dialog_textview_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/classroom_academy"/>
+
+        <TextView
+            android:id="@+id/textViewClassroomInfoClassroomAcademy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textSize="@dimen/calendar_lesson_dialog_text_size"
+            android:text="정보를 불러올 수 없습니다"/>
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonClassroomInfo"
+        android:text="@string/confirm"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/white"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>

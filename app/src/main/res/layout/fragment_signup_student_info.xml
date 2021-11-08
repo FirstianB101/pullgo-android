@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/comment_input_phone"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
                         android:textColorHint="@color/light_gray" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/comment_input_parent_phone"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:textColorHint="@color/light_gray" />
             </com.google.android.material.textfield.TextInputLayout>
 

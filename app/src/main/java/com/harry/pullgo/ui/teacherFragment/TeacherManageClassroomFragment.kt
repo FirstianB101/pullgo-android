@@ -10,8 +10,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ManageClassroomAdapter
@@ -31,7 +31,7 @@ class TeacherManageClassroomFragment: Fragment() {
     @Inject
     lateinit var app: PullgoApplication
 
-    private val viewModel: TeacherManageClassroomViewModel by activityViewModels()
+    private val viewModel: TeacherManageClassroomViewModel by viewModels()
 
     private var selectedClassroom: Classroom? = null
     private var buttonPushed = false
@@ -108,7 +108,7 @@ class TeacherManageClassroomFragment: Fragment() {
                 }
                 Status.SUCCESS -> {
                     if(buttonPushed)
-                        makeClassroom()
+                        createClassroom()
                     buttonPushed = false
                 }
                 Status.ERROR -> {
@@ -159,7 +159,7 @@ class TeacherManageClassroomFragment: Fragment() {
         }
     }
 
-    private fun makeClassroom(){
+    private fun createClassroom(){
         val academies = viewModel.academiesForSpinnerRepository.value?.data
         FragmentCreateClassroomDialog(academies!!).show(childFragmentManager,
             FragmentCreateClassroomDialog.TAG_LESSON_INFO_DIALOG)

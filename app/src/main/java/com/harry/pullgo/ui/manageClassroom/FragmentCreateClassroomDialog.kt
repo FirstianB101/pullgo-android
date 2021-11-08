@@ -181,12 +181,11 @@ class FragmentCreateClassroomDialog(private val academies: List<Academy>): Dialo
 
     private fun makeClassroom(){
         val name = binding.textNewClassroomName.text.toString()
-        val teacher = app.loginUser.teacher?.account?.fullName
+        val creatorId = app.loginUser.teacher?.id!!
         val days = makeSelectedDaysToString()
-        val classroomName = "$name;$teacher;$days"
+        val classroomName = "$name;$days"
 
-        val newClassroom = Classroom(selectedAcademy?.id!!,classroomName)
-        newClassroom.creatorId = app.loginUser.teacher?.id!!
+        val newClassroom = Classroom(selectedAcademy?.id!!,classroomName,creatorId)
 
         viewModel.createClassroom(newClassroom)
     }

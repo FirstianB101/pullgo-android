@@ -17,6 +17,8 @@ import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.repository.ManageRequestRepository
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageRequestBinding
+import com.harry.pullgo.ui.dialog.FragmentShowAcademyInfoDialog
+import com.harry.pullgo.ui.dialog.FragmentShowClassroomInfoDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -113,8 +115,8 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
         if (adapter != null) {
             adapter.itemClickListener = object: OnAcademyRequestListener{
                 override fun onAcademyClick(view: View, academy: Academy?) {
-                   // val dialog = FragmentShowStudentInfoDialog(student!!)
-                    //dialog.show(parentFragmentManager, FragmentShowStudentInfoDialog.TAG_STUDENT_INFO_DIALOG)
+                    FragmentShowAcademyInfoDialog(academy!!)
+                        .show(childFragmentManager,FragmentShowAcademyInfoDialog.TAG_ACADEMY_INFO_DIALOG)
                 }
 
                 override fun onRemoveRequest(view: View, academy: Academy?) {
@@ -140,7 +142,8 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
         if(adapter != null){
             adapter.itemClickListener = object: OnClassroomRequestListener{
                 override fun onClassroomClick(view: View, classroom: Classroom?) {
-
+                    FragmentShowClassroomInfoDialog(classroom!!)
+                        .show(childFragmentManager,FragmentShowClassroomInfoDialog.TAG_CLASSROOM_INFO_DIALOG)
                 }
 
                 override fun onRemoveRequest(view: View, classroom: Classroom?) {

@@ -37,8 +37,8 @@ class ManageClassroomActivity : AppCompatActivity() {
 
         editClassroomFragment = EditClassroomFragment(selectedClassroom)
         manageClassroomPeopleFragment = ManageClassroomPeopleFragment(selectedClassroom)
-        manageClassroomRequestsFragment = ManageClassroomRequestsFragment(selectedClassroom)
-       // manageClassroomExamFragment = ManageClassroomExamFragment(selectedClassroom)
+        // manageClassroomRequestsFragment = ManageClassroomRequestsFragment(selectedClassroom)
+        // manageClassroomExamFragment = ManageClassroomExamFragment(selectedClassroom)
 
         onFragmentSelected(0)
     }
@@ -68,7 +68,7 @@ class ManageClassroomActivity : AppCompatActivity() {
                 binding.toolbarManageClassroom.title = "구성원 관리"
             }
             2 -> {
-                curFragment = manageClassroomRequestsFragment
+                curFragment = ManageClassroomRequestsFragment(selectedClassroom)
                 binding.toolbarManageClassroom.title = "가입 요청 관리"
             }
             3 -> {

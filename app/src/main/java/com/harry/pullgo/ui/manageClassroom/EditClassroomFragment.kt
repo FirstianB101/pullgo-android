@@ -40,14 +40,16 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
 
     private fun initialize(){
         val info = selectedClassroom.name?.split(';')
+        val creator = selectedClassroom.creator
 
         binding.textEditClassroomName.setText(info?.get(0))
-        binding.textEditClassroomTeacherName.setText(info?.get(1))
-        binding.textEditClassroomDate.setText(info?.get(2))
+        binding.textEditClassroomTeacherName.setText(creator?.account?.fullName)
+        binding.textEditClassroomDate.setText(info?.get(1))
 
         binding.textEditClassroomName.addTextChangedListener(watcher)
         binding.textEditClassroomDate.addTextChangedListener(watcher)
-        binding.textEditClassroomTeacherName.addTextChangedListener(watcher)
+        binding.textEditClassroomTeacherName.isFocusable = false
+        binding.textEditClassroomTeacherName.isClickable = false
     }
 
     private fun setListeners(){
@@ -121,15 +123,15 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
     private fun requestEditClassroom(){
         val name = binding.textEditClassroomName.text.toString()
         val date = binding.textEditClassroomDate.text.toString()
-        val teacherName = binding.textEditClassroomTeacherName.text.toString()
         
-        selectedClassroom.name = "$name;$teacherName;$date"
+        selectedClassroom.name = "$name;$date"
 
         viewModel.editClassroom(selectedClassroom.id!!,selectedClassroom)
     }
 
     private fun makeRemovePopup(){
         val info = selectedClassroom.name?.split(';')
+        val creatorName = selectedClassroom.creator?.account?.fullName
 
         val dialog = TwoButtonDialog(requireContext())
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
@@ -138,7 +140,7 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
             }
         }
 
-        dialog.start("다음 수업을 삭제하시겠습니까?","${info?.get(0)} - ${info?.get(1)} - ${info?.get(2)}","확인","취소")
+        dialog.start("다음 수업을 삭제하시겠습니까?","${info?.get(0)} - $creatorName - ${info?.get(1)}","확인","취소")
     }
 
     private fun finishActivity(){
@@ -175,12 +177,6 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
             isFormatGood = false
         }else
             binding.layoutEditClassroomDate.error = null
-
-        if(binding.textEditClassroomTeacherName.text?.contains(';') == true) {
-            binding.layoutEditClassroomTeacherName.error = ";문자는 사용할 수 없습니다"
-            isFormatGood = false
-        }else
-            binding.layoutEditClassroomTeacherName.error = null
 
     }
 }

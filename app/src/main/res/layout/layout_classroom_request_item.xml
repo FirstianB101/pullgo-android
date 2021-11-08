@@ -6,6 +6,9 @@
         <variable
             name="classroomInfo"
             type="java.util.List&lt;String>" />
+        <variable
+            name="creator"
+            type="com.harry.pullgo.data.models.Teacher" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,7 +36,7 @@
                     android:id="@+id/textViewTeacherName"
                     android:padding="5dp"
                     android:textSize="17sp"
-                    android:text="@{@string/classroomTeacherNameFormat(classroomInfo[1])}"
+                    android:text="@{creator.account.fullName}"
                     android:textColor="@color/secondary_color"
                     android:textStyle="bold"
                     android:layout_weight="1"
@@ -57,7 +60,7 @@
                 android:id="@+id/textViewTeacherClassroomDate"
                 android:padding="5dp"
                 android:textSize="14sp"
-                android:text="@{classroomInfo[2]}"
+                android:text="@{classroomInfo[1]}"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

@@ -28,12 +28,12 @@ class ManageClassroomAdapter(private val dataSet: List<Classroom>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val name = dataSet[position].name.toString()
-
+        val creator = dataSet[position].creator
         val information = name.split(';')
 
         holder.textViewName.text = information[0]
-        holder.textViewTeacherName.text = "${information[1]} 선생님"
-        holder.textViewDate.text = information[2]
+        holder.textViewTeacherName.text = "${creator?.account?.fullName} 선생님"
+        holder.textViewDate.text = information[1]
         holder.itemView.setOnClickListener {
             itemClickListener?.onClassroomClick(holder.itemView, dataSet[position])
         }

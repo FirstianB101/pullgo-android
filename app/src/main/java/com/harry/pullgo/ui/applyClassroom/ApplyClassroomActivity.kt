@@ -169,7 +169,8 @@ class ApplyClassroomActivity : AppCompatActivity() {
             }
         }
         val information = classroom?.name?.split(';')
-        dialog.start("${information?.get(0)} (${information?.get(2)})","${information?.get(1)} 선생님","가입 요청","취소")
+        val creator = classroom?.creator
+        dialog.start("${information?.get(0)} (${information?.get(1)})","${creator?.account?.fullName} 선생님","가입 요청","취소")
     }
 
     private fun changeVisibilityRecyclerAndTextview(isEmpty: Boolean){
