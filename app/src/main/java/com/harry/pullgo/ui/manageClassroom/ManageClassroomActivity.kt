@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.harry.pullgo.R
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.databinding.ActivityManageClassroomBinding
@@ -40,16 +42,37 @@ class ManageClassroomActivity : AppCompatActivity() {
         manageClassroomRequestsFragment = ManageClassroomRequestsFragment(selectedClassroom)
         manageClassroomExamFragment = ManageClassroomExamFragment(selectedClassroom)
 
-        onFragmentSelected(0)
+        binding.viewPagerManageClassroom.adapter = ManageClassroomPagerAdapter(this,
+        listOf(editClassroomFragment,manageClassroomPeopleFragment,manageClassroomRequestsFragment,manageClassroomExamFragment)
+        )
     }
 
     private fun setListeners(){
+        binding.viewPagerManageClassroom.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                binding.bottomNavManageClassroom.menu.getItem(position).isChecked = true
+            }
+        })
+
         binding.bottomNavManageClassroom.setOnItemSelectedListener {
             when(it.itemId){
-                R.id.nav_edit_classroom -> onFragmentSelected(0)
-                R.id.nav_manage_student -> onFragmentSelected(1)
-                R.id.nav_manage_request -> onFragmentSelected(2)
-                R.id.nav_manage_exam -> onFragmentSelected(3)
+                R.id.nav_edit_classroom -> {
+                    binding.viewPagerManageClassroom.currentItem = 0
+                    true
+                }
+                R.id.nav_manage_student -> {
+                    binding.viewPagerManageClassroom.currentItem = 1
+                    true
+                }
+                R.id.nav_manage_request -> {
+                    binding.viewPagerManageClassroom.currentItem = 2
+                    true
+                }
+                R.id.nav_manage_exam -> {
+                    binding.viewPagerManageClassroom.currentItem = 3
+                    true
+                }
                 else -> false
             }
         }
@@ -84,8 +107,14 @@ class ManageClassroomActivity : AppCompatActivity() {
             R.anim.enter_from_left,
             R.anim.exit_to_right
         )
-        transaction.replace(R.id.mainFragmentManageClassroom, curFragment!!).addToBackStack(null).commit()
+        transaction.replace(R.id.viewPagerManageClassroom, curFragment!!).addToBackStack(null).commit()
 
         return true
+    }
+
+    class ManageClassroomPagerAdapter(activity: AppCompatActivity, private val fragments: List<Fragment>) :FragmentStateAdapter(activity){
+        override fun getItemCount(): Int = fragments.size
+
+        override fun createFragment(position: Int): Fragment = fragments[position]
     }
 }

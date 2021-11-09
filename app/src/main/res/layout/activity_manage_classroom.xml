@@ -16,8 +16,8 @@
         app:title="Pullgo"
         app:popupTheme="@style/Theme.Pullgo.PopupOverlay"/>
 
-    <FrameLayout
-        android:id="@+id/mainFragmentManageClassroom"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPagerManageClassroom"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"/>
