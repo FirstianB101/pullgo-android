@@ -15,11 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class ManageClassroomActivity : AppCompatActivity() {
     val binding by lazy{ActivityManageClassroomBinding.inflate(layoutInflater)}
 
-    private lateinit var editClassroomFragment: EditClassroomFragment
-    private lateinit var manageClassroomPeopleFragment: ManageClassroomPeopleFragment
-    private lateinit var manageClassroomRequestsFragment: ManageClassroomRequestsFragment
-    private lateinit var manageClassroomExamFragment: ManageClassroomExamFragment
-
     private lateinit var selectedClassroom: Classroom
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,20 +25,16 @@ class ManageClassroomActivity : AppCompatActivity() {
         setListeners()
     }
 
-    override fun onBackPressed() {
-        finish()
-    }
-
     private fun initialize(){
         selectedClassroom = intent?.getSerializableExtra("selectedClassroom") as Classroom
 
-        editClassroomFragment = EditClassroomFragment(selectedClassroom)
-        manageClassroomPeopleFragment = ManageClassroomPeopleFragment(selectedClassroom)
-        manageClassroomRequestsFragment = ManageClassroomRequestsFragment(selectedClassroom)
-        manageClassroomExamFragment = ManageClassroomExamFragment(selectedClassroom)
+        val editClassroomFragment = EditClassroomFragment(selectedClassroom)
+        val manageClassroomPeopleFragment = ManageClassroomPeopleFragment(selectedClassroom)
+        val manageClassroomRequestsFragment = ManageClassroomRequestsFragment(selectedClassroom)
+        val manageClassroomExamFragment = ManageClassroomExamFragment(selectedClassroom)
 
         binding.viewPagerManageClassroom.adapter = ManageClassroomPagerAdapter(this,
-        listOf(editClassroomFragment,manageClassroomPeopleFragment,manageClassroomRequestsFragment,manageClassroomExamFragment)
+            listOf(editClassroomFragment,manageClassroomPeopleFragment,manageClassroomRequestsFragment,manageClassroomExamFragment)
         )
     }
 
@@ -78,41 +69,8 @@ class ManageClassroomActivity : AppCompatActivity() {
         }
     }
 
-    private fun onFragmentSelected(position: Int): Boolean{
-        var curFragment: Fragment? = null
-
-        when(position){
-            0 -> {
-                curFragment = editClassroomFragment
-                binding.toolbarManageClassroom.title = "반 정보 관리"
-            }
-            1 -> {
-                curFragment = manageClassroomPeopleFragment
-                binding.toolbarManageClassroom.title = "구성원 관리"
-            }
-            2 -> {
-                curFragment = manageClassroomRequestsFragment
-                binding.toolbarManageClassroom.title = "가입 요청 관리"
-            }
-            3 -> {
-                curFragment = manageClassroomExamFragment
-                binding.toolbarManageClassroom.title = "시험 관리"
-            }
-        }
-
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.setCustomAnimations(
-            R.anim.enter_from_right,
-            R.anim.exit_to_left,
-            R.anim.enter_from_left,
-            R.anim.exit_to_right
-        )
-        transaction.replace(R.id.viewPagerManageClassroom, curFragment!!).addToBackStack(null).commit()
-
-        return true
-    }
-
-    class ManageClassroomPagerAdapter(activity: AppCompatActivity, private val fragments: List<Fragment>) :FragmentStateAdapter(activity){
+    class ManageClassroomPagerAdapter(activity: AppCompatActivity, private val fragments: List<Fragment>)
+        :FragmentStateAdapter(activity){
         override fun getItemCount(): Int = fragments.size
 
         override fun createFragment(position: Int): Fragment = fragments[position]
