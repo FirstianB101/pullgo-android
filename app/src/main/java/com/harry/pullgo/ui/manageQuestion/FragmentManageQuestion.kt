@@ -40,7 +40,7 @@ class FragmentManageQuestion(
 
         Glide.with(this)
             .load(question.pictureUrl)
-            .error(R.drawable.image_load_error)
+            .error(R.drawable.add_picture)
             .fitCenter()
             .into(binding.imageViewManageQuestion)
 
@@ -50,7 +50,7 @@ class FragmentManageQuestion(
                 curImageUri = "https://i.imgur.com/JOKsNeT.jpg"
                 Glide.with(this)
                     .load(curImageUri)
-                    .error(R.drawable.image_load_error)
+                    .error(R.drawable.add_picture)
                     .into(binding.imageViewManageQuestion)
             }
         }

@@ -8,7 +8,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnEditMultipleChoiceListener
@@ -34,12 +36,9 @@ class ManageQuestionActivity: AppCompatActivity() {
     private lateinit var questions: List<Question>
     private var curPos = 0
 
-    private val LEFT = 100
-    private val RIGHT = 101
-
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
-    private var curQuestionFragment: FragmentManageQuestion? = null
+    private lateinit var questionFragments: MutableList<FragmentManageQuestion>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,8 +78,8 @@ class ManageQuestionActivity: AppCompatActivity() {
 
         binding.buttonSaveQuestion.setOnClickListener {
             if(questions.isNotEmpty()){
-                questions[curPos].pictureUrl = curQuestionFragment?.getCurImageUrl()
-                questions[curPos].content = curQuestionFragment?.getCurrentContent()
+                questions[curPos].pictureUrl = questionFragments[curPos].getCurImageUrl()
+                questions[curPos].content = questionFragments[curPos].getCurrentContent()
                 viewModel.editQuestion(questions[curPos].id!!,questions[curPos])
             }
         }
@@ -102,6 +101,14 @@ class ManageQuestionActivity: AppCompatActivity() {
                 else -> false
             }
         }
+
+        binding.pagerManageQuestion.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                curPos = position
+                binding.topAppBar.title = "문제 ${curPos + 1}"
+            }
+        })
     }
 
     private fun initViewModel(){
@@ -113,9 +120,9 @@ class ManageQuestionActivity: AppCompatActivity() {
                     app.dismissLoadingDialog()
 
                     if(questions.isEmpty())
-                        showNoQuestionFragment()
+                        initNoQuestionFragment()
                     else
-                        replaceQuestionFragment(LEFT)
+                        initQuestionFragmentsPager(questions.size)
                 }
                 Status.LOADING -> {
                     app.showLoadingDialog(supportFragmentManager)
@@ -182,15 +189,13 @@ class ManageQuestionActivity: AppCompatActivity() {
 
     private fun showPreviousQuestion(){
         if(questions.isNotEmpty() && curPos > 0){
-            curPos--
-            replaceQuestionFragment(LEFT)
+            binding.pagerManageQuestion.currentItem = curPos - 1
         }
     }
 
     private fun showNextQuestion(){
         if(questions.isNotEmpty() && curPos < questions.size - 1){
-            curPos++
-            replaceQuestionFragment(RIGHT)
+            binding.pagerManageQuestion.currentItem = curPos + 1
         }
     }
 
@@ -205,37 +210,27 @@ class ManageQuestionActivity: AppCompatActivity() {
         }
     }
 
-    private fun showNoQuestionFragment(){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.mainFragmentManageQuestion, FragmentNoQuestion()).commit()
+    private fun initNoQuestionFragment(){
+        binding.pagerManageQuestion.adapter = ManageQuestionPagerAdapter(this, listOf(FragmentNoQuestion()))
     }
 
-    private fun replaceQuestionFragment(direction: Int){
-        binding.topAppBar.title = "문제 ${curPos+1}"
-
-        curQuestionFragment = FragmentManageQuestion(questions[curPos])
-
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-
-        if(direction == RIGHT) {
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-                R.anim.enter_from_left,
-                R.anim.exit_to_right
-            )
-        }else if(direction == LEFT){
-            transaction.setCustomAnimations(
-                R.anim.enter_from_left,
-                R.anim.exit_to_right,
-                R.anim.enter_from_right,
-                R.anim.exit_to_left
-            )
+    private fun initQuestionFragmentsPager(size: Int){
+        questionFragments = mutableListOf()
+        for(i in 0 until size){
+            questionFragments.add(FragmentManageQuestion(questions[i]))
         }
-        transaction.replace(R.id.mainFragmentManageQuestion, curQuestionFragment!!).addToBackStack(null).commit()
+        binding.pagerManageQuestion.adapter = ManageQuestionPagerAdapter(this,questionFragments)
+        binding.topAppBar.title = "문제 ${curPos+1}"
     }
 
     override fun onBackPressed() {
         finish()
+    }
+
+    class ManageQuestionPagerAdapter(activity: AppCompatActivity, private val fragments: List<Fragment>)
+        : FragmentStateAdapter(activity){
+        override fun getItemCount(): Int = fragments.size
+
+        override fun createFragment(position: Int): Fragment = fragments[position]
     }
 }

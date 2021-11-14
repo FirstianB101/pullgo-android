@@ -27,8 +27,8 @@
         android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/mainFragmentManageQuestion"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pagerManageQuestion"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
