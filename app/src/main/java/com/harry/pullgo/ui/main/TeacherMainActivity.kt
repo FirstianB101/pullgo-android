@@ -219,7 +219,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             service.getOwnedAcademyByResponse(teacherId).let{response ->
                 if(response.isSuccessful){
                     if(response.body()?.isNotEmpty() == true)
-                        binding.navigationViewTeacher.menu.getItem(7).isVisible = true
+                        binding.navigationViewTeacher.menu.getItem(6).isVisible = true
                 }else{
                     Toast.makeText(applicationContext,"소유 학원 정보를 확인할 수 없습니다",Toast.LENGTH_SHORT).show()
                 }

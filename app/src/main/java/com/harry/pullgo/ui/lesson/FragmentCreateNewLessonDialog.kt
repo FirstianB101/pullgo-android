@@ -128,7 +128,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
         startTimePicker.addOnPositiveButtonClickListener {
             startHour = startTimePicker.hour
             startMinute = startTimePicker.minute
-            binding.spinnerTextViewSelectStartTime.setText("${startHour}시 ${startMinute}분 ~")
+            binding.spinnerTextViewSelectBeginTime.setText("${startHour}시 ${startMinute}분 ~")
             resetIfTimeNotAppropriate()
         }
 
@@ -143,7 +143,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
             datePicker.show(childFragmentManager,"date")
         }
 
-        binding.spinnerTextViewSelectStartTime.setOnClickListener {
+        binding.spinnerTextViewSelectBeginTime.setOnClickListener {
             startTimePicker.show(childFragmentManager,"startTime")
         }
 
@@ -213,7 +213,7 @@ class FragmentCreateNewLessonDialog : DialogFragment() {
             startMinute = -1
             endHour = -1
             endMinute = -1
-            binding.spinnerTextViewSelectStartTime.setText("")
+            binding.spinnerTextViewSelectBeginTime.setText("")
             binding.spinnerTextViewSelectEndTime.setText("")
             Snackbar.make(binding.root,"잘못된 시간 정보입니다",Snackbar.LENGTH_SHORT).show()
         }

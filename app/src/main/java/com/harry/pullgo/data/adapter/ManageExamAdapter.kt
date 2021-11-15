@@ -68,4 +68,6 @@ class ManageExamAdapter(private val dataSet: List<Exam>):
         val duration = Duration.parse(time)
         return duration.toMinutes().toString()
     }
+
+    fun isEmptyList() = dataSet.isEmpty()
 }

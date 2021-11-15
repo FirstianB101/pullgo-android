@@ -46,7 +46,6 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
 
         val _dialog = builder.create()
         _dialog.setCanceledOnTouchOutside(false)
-        _dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         _dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         return _dialog
@@ -73,7 +72,7 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
             .build()
 
         beginDatePicker.addOnPositiveButtonClickListener {
-            binding.spinnerTextViewSelectStartDate.setText(MillToDate(it).toString())
+            binding.spinnerTextViewSelectBeginDate.setText(MillToDate(it).toString())
         }
 
         endDatePicker.addOnPositiveButtonClickListener {
@@ -81,7 +80,7 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
         }
 
         beginTimePicker.addOnPositiveButtonClickListener {
-            binding.spinnerTextViewSelectStartTime.setText("${beginTimePicker.hour}:${beginTimePicker.minute}")
+            binding.spinnerTextViewSelectBeginTime.setText("${beginTimePicker.hour}:${beginTimePicker.minute}")
         }
 
         endTimePicker.addOnPositiveButtonClickListener {
@@ -91,12 +90,18 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
         binding.textExamName.setText(selectedExam.name)
         binding.textExamStandardScore.setText(selectedExam.passScore.toString())
         binding.textExamTimeLimit.setText(translatePTFormat(selectedExam.timeLimit!!))
+
         val beginDateTime = selectedExam.beginDateTime?.split('T')
-        binding.spinnerTextViewSelectStartDate.setText(beginDateTime?.get(0))
-        binding.spinnerTextViewSelectStartTime.setText(beginDateTime?.get(1))
+        binding.spinnerTextViewSelectBeginDate.setText(beginDateTime?.get(0))
+
+        val beginTimeSplit = beginDateTime?.get(1)?.split(':')
+        binding.spinnerTextViewSelectBeginTime.setText("${beginTimeSplit?.get(0)}:${beginTimeSplit?.get(1)}")
+
         val endDateTime = selectedExam.endDateTime?.split('T')
         binding.spinnerTextViewSelectEndDate.setText(endDateTime?.get(0))
-        binding.spinnerTextViewSelectEndTime.setText(endDateTime?.get(1))
+
+        val endTimeSplit = endDateTime?.get(1)?.split(':')
+        binding.spinnerTextViewSelectEndTime.setText("${endTimeSplit?.get(0)}:${endTimeSplit?.get(1)}")
     }
 
     private fun setListeners(){
@@ -106,15 +111,11 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
             }
         }
 
-        binding.buttonFinishExam.setOnClickListener {
+        binding.buttonDetailedManageExam.setOnClickListener {
 
         }
 
-        binding.buttonCancelExam.setOnClickListener {
-
-        }
-
-        binding.spinnerTextViewSelectStartDate.setOnClickListener {
+        binding.spinnerTextViewSelectBeginDate.setOnClickListener {
             beginDatePicker.show(childFragmentManager,"beginDate")
         }
 
@@ -122,7 +123,7 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
             endDatePicker.show(childFragmentManager,"endDate")
         }
 
-        binding.spinnerTextViewSelectStartTime.setOnClickListener {
+        binding.spinnerTextViewSelectBeginTime.setOnClickListener {
             beginTimePicker.show(childFragmentManager,"beginTime")
         }
 
@@ -142,7 +143,7 @@ class FragmentExamInfoDialog(private val selectedExam: Exam): DialogFragment() {
     private fun isAllTextWritten() = binding.textExamName.text!!.isNotEmpty() &&
             binding.textExamStandardScore.text!!.isNotEmpty() &&
             binding.textExamTimeLimit.text!!.isNotEmpty() &&
-            binding.spinnerTextViewSelectStartDate.text.isNotEmpty() &&
+            binding.spinnerTextViewSelectBeginDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndTime.text.isNotEmpty()

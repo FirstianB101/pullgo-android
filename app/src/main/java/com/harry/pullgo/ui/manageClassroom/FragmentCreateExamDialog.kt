@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
@@ -78,7 +79,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
             .build()
 
         beginDatePicker.addOnPositiveButtonClickListener {
-            binding.spinnerTextViewSelectStartDate.setText(MillToDate(it).toString())
+            binding.spinnerTextViewSelectBeginDate.setText(MillToDate(it).toString())
         }
 
         endDatePicker.addOnPositiveButtonClickListener {
@@ -86,7 +87,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
         }
 
         beginTimePicker.addOnPositiveButtonClickListener {
-            binding.spinnerTextViewSelectStartTime.setText(String.format("%02d:%02d",beginTimePicker.hour,beginTimePicker.minute))
+            binding.spinnerTextViewSelectBeginTime.setText(String.format("%02d:%02d",beginTimePicker.hour,beginTimePicker.minute))
         }
 
         endTimePicker.addOnPositiveButtonClickListener {
@@ -106,7 +107,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
             dismiss()
         }
 
-        binding.spinnerTextViewSelectStartDate.setOnClickListener {
+        binding.spinnerTextViewSelectBeginDate.setOnClickListener {
             beginDatePicker.show(childFragmentManager,"beginDate")
         }
 
@@ -114,7 +115,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
             endDatePicker.show(childFragmentManager,"endDate")
         }
 
-        binding.spinnerTextViewSelectStartTime.setOnClickListener {
+        binding.spinnerTextViewSelectBeginTime.setOnClickListener {
             beginTimePicker.show(childFragmentManager,"beginTime")
         }
 
@@ -144,7 +145,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createExam(){
         val examName = binding.textExamName.text.toString()
-        val beginDateTime = binding.spinnerTextViewSelectStartDate.text.toString() + 'T' +
+        val beginDateTime = binding.spinnerTextViewSelectBeginDate.text.toString() + 'T' +
                 String.format("%02d:%02d:00",beginTimePicker.hour,beginTimePicker.minute)
         val endDateTime = binding.spinnerTextViewSelectEndDate.text.toString() + 'T' +
                 String.format("%02d:%02d:00",endTimePicker.hour,endTimePicker.minute)
@@ -159,7 +160,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
     private fun isAllTextWritten() = binding.textExamName.text!!.isNotEmpty() &&
             binding.textExamStandardScore.text!!.isNotEmpty() &&
             binding.textExamTimeLimit.text!!.isNotEmpty() &&
-            binding.spinnerTextViewSelectStartDate.text.isNotEmpty() &&
+            binding.spinnerTextViewSelectBeginDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndTime.text.isNotEmpty()

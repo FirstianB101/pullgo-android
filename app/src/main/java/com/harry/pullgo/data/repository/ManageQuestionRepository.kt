@@ -10,5 +10,5 @@ class ManageQuestionRepository @Inject constructor(
     suspend fun createQuestion(question: Question) = client.createQuestion(question)
     suspend fun editQuestion(questionId: Long, question: Question) = client.editQuestion(questionId, question)
     suspend fun deleteQuestion(questionId: Long) = client.deleteQuestion(questionId)
-    suspend fun getQuestionsSuchExam(examId: Long) = client.getQuestionsSuchExam(examId)
+    suspend fun getQuestionsSuchExam(examId: Long) = client.getQuestionsSuchExam(examId,100)
 }

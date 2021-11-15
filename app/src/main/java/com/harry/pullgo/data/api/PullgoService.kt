@@ -215,13 +215,13 @@ interface PullgoService {
 
 
     @GET("exams/")
-    suspend fun getSortedStudentExams(@Query("studentId")studentId: Long, @Query("sort")sort: String): Response<List<Exam>>
+    suspend fun getSortedStudentExams(@Query("studentId")studentId: Long, @Query("sort")sort: String, @Query("size")size: Int): Response<List<Exam>>
 
     @GET("exams/")
-    suspend fun getStudentExamsDesc(@Query("id,desc")studentId: Long, @Query("sort")sort: String): Response<List<Exam>>
+    suspend fun getStudentExamsDesc(@Query("id,desc")studentId: Long, @Query("sort")sort: String, @Query("size")size: Int): Response<List<Exam>>
 
     @GET("exams")
-    suspend fun getClassroomExams(@Query("classroomId")classroomId: Long): Response<List<Exam>>
+    suspend fun getClassroomExams(@Query("classroomId")classroomId: Long, @Query("size")size: Int): Response<List<Exam>>
 
 
     @POST("exams/")
@@ -241,7 +241,7 @@ interface PullgoService {
     suspend fun getOneQuestion(@Path("id")questionId: Long): Response<Question>
 
     @GET("exam/questions")
-    suspend fun getQuestionsSuchExam(@Query("examId")examId: Long): Response<List<Question>>
+    suspend fun getQuestionsSuchExam(@Query("examId")examId: Long, @Query("size")size: Int): Response<List<Question>>
 
     @POST("exam/questions")
     suspend fun createQuestion(@Body question: Question): Response<Question>

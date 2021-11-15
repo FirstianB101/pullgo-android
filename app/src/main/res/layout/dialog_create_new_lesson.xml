@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/layoutCreateLessonSelectClassroom">
 
         <TextView
-            android:id="@+id/textViewSelectDate"
+            android:id="@+id/textViewSelectBeginTime"
             android:layout_width="@dimen/date_pick_text_view_width"
             android:layout_height="wrap_content"
             android:text="@string/select_date"
@@ -73,7 +73,7 @@
             android:hint="@string/comment_select_date"
             app:endIconMode="none"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewSelectDate"
+            app:layout_constraintStart_toEndOf="@+id/textViewSelectBeginTime"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
@@ -87,7 +87,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/textViewSelectTime"
+            android:id="@+id/textViewSelectEndTime"
             android:layout_width="@dimen/date_pick_text_view_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
@@ -96,21 +96,21 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSelectDate" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSelectBeginTime" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/spinnerLayoutSelectStartTime"
+            android:id="@+id/spinnerLayoutSelectBeginTime"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="@dimen/date_pick_spinner_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:hint="@string/comment_select_begin_time"
             app:endIconMode="none"
-            app:layout_constraintStart_toEndOf="@+id/textViewSelectTime"
+            app:layout_constraintStart_toEndOf="@+id/textViewSelectEndTime"
             app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectDate">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/spinnerTextViewSelectStartTime"
+                android:id="@+id/spinnerTextViewSelectBeginTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -127,8 +127,8 @@
             android:layout_marginTop="15dp"
             android:hint="@string/comment_select_end_time"
             app:endIconMode="none"
-            app:layout_constraintStart_toEndOf="@+id/textViewSelectTime"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectStartTime">
+            app:layout_constraintStart_toEndOf="@+id/textViewSelectEndTime"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectBeginTime">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/spinnerTextViewSelectEndTime"
@@ -150,7 +150,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSelectTime" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewSelectEndTime" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutNewLessonName"

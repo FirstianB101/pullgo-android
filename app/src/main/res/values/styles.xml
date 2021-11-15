@@ -33,4 +33,5 @@
     <style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
         <item name="buttonTint">@color/main_color</item>
     </style>
+
 </resources>

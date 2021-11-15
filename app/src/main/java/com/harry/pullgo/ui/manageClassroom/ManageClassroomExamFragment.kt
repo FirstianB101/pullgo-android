@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ManageExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
@@ -33,10 +36,28 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        initialize()
         setListeners()
         initViewModel()
 
         return binding.root
+    }
+
+    private fun initialize(){
+        ArrayAdapter.createFromResource(requireContext(), R.array.manage_exam_filter,android.R.layout.simple_spinner_item)
+            .also { adapter->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                binding.spinnerManageExam.adapter = adapter
+            }
+
+        binding.spinnerManageExam.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
 
     private fun setListeners(){
@@ -57,7 +78,11 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
                 Status.LOADING -> {
                 }
                 Status.SUCCESS -> {
-                    displayExams(it.data!!)
+                    when(binding.spinnerManageExam.selectedItemPosition){
+                        0 -> displayExams(it.data!!,NO_FILTER)
+                        1 -> displayExams(it.data!!,FINISHED)
+                        2 -> displayExams(it.data!!,CANCELLED)
+                    }
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
@@ -79,14 +104,17 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
                 }
             }
         }
-
-        viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
     }
 
-    private fun displayExams(exams: List<Exam>){
-        val examsAdapter = ManageExamAdapter(exams)
+    private fun displayExams(exams: List<Exam>, filter: Int){
+        var examsAdapter: ManageExamAdapter? = null
+        when(filter){
+            NO_FILTER -> examsAdapter = ManageExamAdapter(exams)
+            FINISHED -> examsAdapter = ManageExamAdapter(filterFinishedExams(exams))
+            CANCELLED -> examsAdapter = ManageExamAdapter(filterCancelledExams(exams))
+        }
 
-        examsAdapter.examClickListener = object: OnExamClickListener{
+        examsAdapter?.examClickListener = object: OnExamClickListener{
             override fun onExamClick(view: View, exam: Exam?) {
                 FragmentExamInfoDialog(exam!!).show(childFragmentManager,"examInfo")
             }
@@ -105,9 +133,25 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             }
         }
 
-        changeVisibilityIfNoExam(exams.isEmpty())
+        changeVisibilityIfNoExam(examsAdapter?.isEmptyList() == true)
 
         binding.recyclerViewManageClassroomExams.adapter = examsAdapter
+    }
+
+    private fun filterFinishedExams(exams: List<Exam>): List<Exam>{
+        val filteredList = mutableListOf<Exam>()
+        for(exam in exams){
+            if(exam.finished == true)filteredList.add(exam)
+        }
+        return filteredList
+    }
+
+    private fun filterCancelledExams(exams: List<Exam>): List<Exam>{
+        val filteredList = mutableListOf<Exam>()
+        for(exam in exams){
+            if(exam.cancelled == true)filteredList.add(exam)
+        }
+        return filteredList
     }
 
     private fun showRemoveExamDialog(exam: Exam){
@@ -128,4 +172,8 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             binding.textViewManageClassroomNoExam.visibility = View.GONE
         }
     }
+
+    private val NO_FILTER = 100
+    private val FINISHED = 101
+    private val CANCELLED = 102
 }

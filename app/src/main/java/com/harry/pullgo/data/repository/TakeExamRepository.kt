@@ -10,5 +10,5 @@ class TakeExamRepository @Inject constructor(
     private val client: PullgoService
 ) {
     suspend fun getOneQuestion(questionId: Long) = client.getOneQuestion(questionId)
-    suspend fun getQuestionsSuchExam(examId: Long) = client.getQuestionsSuchExam(examId)
+    suspend fun getQuestionsSuchExam(examId: Long) = client.getQuestionsSuchExam(examId,100)
 }

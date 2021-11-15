@@ -14,7 +14,7 @@ class ManageClassroomRepository @Inject constructor(
     suspend fun getTeachersAppliedClassroom(classroomId: Long) = manageClassroomClient.getTeachersAppliedClassroom(classroomId)
     suspend fun getStudentsRequestApplyClassroom(classroomId: Long) = manageClassroomClient.getStudentsRequestApplyClassroom(classroomId)
     suspend fun getTeachersRequestApplyClassroom(classroomId: Long) = manageClassroomClient.getTeachersRequestApplyClassroom(classroomId)
-    suspend fun getExamsWithinClassroom(classroomId: Long) = manageClassroomClient.getClassroomExams(classroomId)
+    suspend fun getExamsWithinClassroom(classroomId: Long) = manageClassroomClient.getClassroomExams(classroomId,100)
 
     suspend fun createClassroom(classroom: Classroom) = manageClassroomClient.createClassroom(classroom)
     suspend fun kickStudentFromClassroom(classroomId: Long, studentId: Long) = manageClassroomClient.kickStudentFromClassroom(classroomId, studentId)

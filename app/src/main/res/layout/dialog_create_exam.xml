@@ -62,17 +62,17 @@
             app:layout_constraintTop_toBottomOf="@+id/layoutExamName">
 
             <TextView
-                android:id="@+id/textViewSelectDate"
+                android:id="@+id/textViewSelectBeginTime"
                 android:layout_width="@dimen/date_pick_text_view_width"
                 android:layout_height="wrap_content"
-                android:text="@string/select_date"
+                android:text="@string/exam_begin_time"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/spinnerInputLayoutSelectStartDate"
+                android:id="@+id/spinnerInputLayoutSelectBeginDate"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="@dimen/date_pick_spinner_width"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 app:endIconMode="none">
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/spinnerTextViewSelectStartDate"
+                    android:id="@+id/spinnerTextViewSelectBeginDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -90,20 +90,20 @@
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/spinnerLayoutSelectEndDate"
+            android:id="@+id/spinnerLayoutSelectBeginTime"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="@dimen/date_pick_spinner_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginLeft="@dimen/date_pick_text_view_width"
-            android:hint="@string/comment_select_end_date"
+            android:hint="@string/comment_select_begin_time"
             app:endIconMode="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutSelectStartDate">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/spinnerTextViewSelectEndDate"
+                android:id="@+id/spinnerTextViewSelectBeginTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="false"
@@ -119,28 +119,28 @@
             android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectEndDate">
+            app:layout_constraintTop_toBottomOf="@+id/spinnerLayoutSelectBeginTime">
 
             <TextView
-                android:id="@+id/textViewSelectTime"
+                android:id="@+id/textViewSelectEndTime"
                 android:layout_width="@dimen/date_pick_text_view_width"
                 android:layout_height="wrap_content"
-                android:text="@string/time"
+                android:text="@string/exam_end_time"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/spinnerLayoutSelectStartTime"
+                android:id="@+id/spinnerLayoutSelectEndDate"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="@dimen/date_pick_spinner_width"
                 android:layout_height="wrap_content"
-                android:hint="@string/comment_select_begin_time"
+                android:hint="@string/comment_select_end_date"
                 app:endIconMode="none">
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/spinnerTextViewSelectStartTime"
+                    android:id="@+id/spinnerTextViewSelectEndDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"

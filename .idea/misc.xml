@@ -19,6 +19,7 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_academy_info.xml" value="0.21422101449275363" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_classroom_info.xml" value="0.21422101449275363" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_create_classroom.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_create_exam.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_exam_info.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_kick_person.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_lesson_info.xml" value="0.12335359675785208" />
@@ -27,9 +28,10 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_manage_classroom_teacher_info.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_accept_apply_academy.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_calendar.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_detailed_manage_exam.xml" value="1.0" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_exam_result.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom.xml" value="0.12335359675785208" />
-        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom_manage_exam.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom_manage_exam.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom_manage_people.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom_manage_requests.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classsroom_edit_classroom.xml" value="0.2" />
@@ -45,6 +47,7 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_signup_student_info.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_signup_teacher_info.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_student_change_info.xml" value="0.264" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_student_exam_history.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_teacher_change_info.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_teacher_manage_academy.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/framgnet_manage_question_bottom_sheet.xml" value="0.23324275362318841" />
