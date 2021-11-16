@@ -19,13 +19,13 @@ class AuthenticationInterceptor: Interceptor {
         val request = builder.build()
         val response = chain.proceed(request)
 
-        if(response.code() == 401){
-            val context = PullgoApplication.instance
-            val intent = Intent(context,LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            context?.showToast("로그인 정보가 만료되었습니다")
-            context?.startActivity(intent)
-        }
+//        if(response.code() == 401){
+//            val context = PullgoApplication.instance
+//            val intent = Intent(context,LoginActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+//            context?.showToast("로그인 정보가 만료되었습니다")
+//            context?.startActivity(intent)
+//        }
         return response
     }
 }

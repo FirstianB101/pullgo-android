@@ -44,7 +44,7 @@ class StudentSignUpActivity:AppCompatActivity(){
         signUpSignUpInfoFragment = StudentSignUpInfoFragment()
         signUpPw = FragmentSignUpPw()
         signUpId = FragmentSignUpId(false)
-        supportFragmentManager.beginTransaction().replace(R.id.studentSignUpContainer,signUpId).addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.studentSignUpContainer,signUpId).commit()
     }
 
     private fun initViewModel(){
@@ -108,7 +108,7 @@ class StudentSignUpActivity:AppCompatActivity(){
             R.anim.enter_from_left,
             R.anim.exit_to_right
         )
-        transaction.replace(R.id.studentSignUpContainer, curFragment!!).addToBackStack(null).commit()
+        transaction.replace(R.id.studentSignUpContainer, curFragment!!).commit()
     }
 
     private fun makePopup(){

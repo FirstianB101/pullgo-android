@@ -35,6 +35,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
+        app:errorEnabled="true"
         app:endIconMode="clear_text"
         app:layout_constraintVertical_bias="0.2"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +49,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/comment_input_password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
 

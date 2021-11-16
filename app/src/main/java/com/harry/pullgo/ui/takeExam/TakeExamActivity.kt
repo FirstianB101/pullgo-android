@@ -148,7 +148,7 @@ class TakeExamActivity : AppCompatActivity(){
                 R.anim.exit_to_left
             )
         }
-        transaction.replace(R.id.mainFragmentTakeExam, questionFragment).addToBackStack(null).commit()
+        transaction.replace(R.id.mainFragmentTakeExam, questionFragment).commit()
     }
 
 }

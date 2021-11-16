@@ -13,7 +13,7 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.FragmentTeacherChangeInfoBinding
-import com.harry.pullgo.ui.main.ChangeInfoViewModel
+import com.harry.pullgo.ui.commonFragment.ChangeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -36,6 +36,11 @@ class TeacherChangePersonInfoFragment : Fragment() {
         setListeners()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initialize()
     }
 
     private fun initialize(){

@@ -13,7 +13,7 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Account
 import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.databinding.FragmentStudentChangeInfoBinding
-import com.harry.pullgo.ui.main.ChangeInfoViewModel
+import com.harry.pullgo.ui.commonFragment.ChangeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -29,17 +29,18 @@ class StudentChangePersonInfoFragment : Fragment() {
 
     private val viewModel: ChangeInfoViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
         initialize()
         setListeners()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initialize()
     }
 
     private fun initialize(){

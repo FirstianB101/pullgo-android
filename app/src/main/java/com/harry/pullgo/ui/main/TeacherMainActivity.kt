@@ -23,6 +23,7 @@ import com.harry.pullgo.databinding.ActivityTeacherMainBinding
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
+import com.harry.pullgo.ui.commonFragment.ChangeInfoViewModel
 import com.harry.pullgo.ui.commonFragment.ManageRequestFragment
 import com.harry.pullgo.ui.findAcademy.FindAcademyActivity
 import com.harry.pullgo.ui.teacherFragment.*
@@ -33,7 +34,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val binding by lazy{ActivityTeacherMainBinding.inflate(layoutInflater)}
-    lateinit var changeInfoCheckPwFragment: ChangeInfoCheckPwFragment
+    lateinit var changeInfoFragment: TeacherChangePersonInfoFragment
+    lateinit var checkPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
     lateinit var manageClassroomFragment: TeacherManageClassroomFragment
     lateinit var acceptApplyAcademyFragment: TeacherAcceptApplyAcademyFragment
@@ -82,7 +84,12 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     }
 
     private fun initialize(){
-        changeInfoCheckPwFragment = ChangeInfoCheckPwFragment()
+        changeInfoFragment = TeacherChangePersonInfoFragment()
+        checkPwFragment = ChangeInfoCheckPwFragment(object: OnCheckPwListener{
+            override fun onPasswordChecked() {
+                onFragmentSelected(CHANGE_INFO)
+            }
+        })
 
         if(intent.getBooleanExtra("appliedAcademyExist",false)){
             calendarFragment = CalendarFragment()
@@ -90,7 +97,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             acceptApplyAcademyFragment = TeacherAcceptApplyAcademyFragment()
             manageAcademyFragment = TeacherManageAcademyFragment()
 
-            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, calendarFragment).commit()
             curPosition = CALENDAR
 
             binding.navigationViewTeacher.menu.clear()
@@ -100,7 +107,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }else{
             teacherHomeFragment = TeacherHomeFragmentNoAcademy()
 
-            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).addToBackStack(null).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.teacherMainFragment, teacherHomeFragment).commit()
             curPosition = HOME
         }
 
@@ -131,12 +138,6 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             app.loginUser.teacher = null
             app.loginUser.token = null
             finish()
-        }
-
-        changeInfoCheckPwFragment.pwCheckListener = object: OnCheckPwListener{
-            override fun onPasswordCheck() {
-                onFragmentSelected(CHANGE_INFO)
-            }
         }
     }
 
@@ -173,13 +174,13 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         curPosition = position
         when(curPosition){
             CHANGE_INFO -> {
-                curFragment = TeacherChangePersonInfoFragment()
+                curFragment = changeInfoFragment
             }
             CALENDAR -> {
                 curFragment = calendarFragment
             }
             CHANGE_INFO_CHECK_PW -> {
-                curFragment = changeInfoCheckPwFragment
+                curFragment = checkPwFragment
             }
             MANAGE_CLASSROOM -> {
                 curFragment = manageClassroomFragment

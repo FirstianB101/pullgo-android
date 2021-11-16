@@ -13,7 +13,7 @@ interface OnAcademyRequestListener{
 }
 
 interface OnCheckPwListener {
-    fun onPasswordCheck()
+    fun onPasswordChecked()
 }
 
 interface OnLessonClickListener {
