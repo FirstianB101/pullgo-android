@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="exam"
             type="com.harry.pullgo.data.models.Exam" />
@@ -17,27 +16,27 @@
             type="String" />
     </data>
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardViewExamItem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="110dp"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:contentPadding="7dp">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardViewExamItem"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:checkable="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp"
-            app:contentPadding="7dp">
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -50,13 +49,13 @@
                         android:id="@+id/textViewExamName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:maxLines="1"
                         android:padding="3dp"
                         android:text="@{exam.name}"
                         android:textColor="@color/black"
                         android:textSize="19sp"
-                        android:textStyle="bold"
-                        android:layout_weight="1"
-                        android:maxLines="1"/>
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/buttonManageQuestions"
@@ -64,20 +63,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:text="문제 관리하기"
-                        android:textStyle="bold"
                         android:textColor="@color/warning_color"
-                        app:backgroundTint="@color/white"/>
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/white" />
 
                     <ImageButton
                         android:id="@+id/buttonRemoveExam"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_marginRight="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
                         android:backgroundTint="@color/white"
                         android:src="@android:drawable/ic_menu_close_clear_cancel"
-                        app:tint="@color/main_color_dark">
-                    </ImageButton>
+                        app:tint="@color/main_color_dark" />
 
                 </LinearLayout>
 
@@ -85,11 +83,11 @@
                     android:id="@+id/textViewExamDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:padding="3dp"
                     android:text="@{examDate}"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:maxLines="1"/>
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -123,17 +121,17 @@
                 </LinearLayout>
             </LinearLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <Button
-            android:id="@+id/buttonExamManageAttenderStatus"
-            android:layout_width="65dp"
-            android:layout_height="110dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="5dp"
-            android:text="@string/attender_state"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonExamManageAttenderStatus"
+                android:layout_width="65dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/rounded"
+                android:text="@string/attender_state"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:backgroundTint="@color/main_color" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>
