@@ -36,6 +36,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private val binding by lazy{ActivityStudentMainBinding.inflate(layoutInflater)}
     lateinit var studentChangeInfoFragment: StudentChangePersonInfoFragment
     lateinit var checkPwFragment: ChangeInfoCheckPwFragment
+    lateinit var manageRequestFragment: ManageRequestFragment
     lateinit var calendarFragment: CalendarFragment
     lateinit var studentExamListFragment: StudentExamListFragment
     lateinit var studentExamHistoryFragment: StudentExamHistoryFragment
@@ -83,6 +84,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun initialize(){
         studentChangeInfoFragment = StudentChangePersonInfoFragment()
+        manageRequestFragment = ManageRequestFragment(false)
         checkPwFragment = ChangeInfoCheckPwFragment(object: OnCheckPwListener{
             override fun onPasswordChecked() {
                 onFragmentSelected(CHANGE_INFO)
@@ -108,8 +110,8 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         }
 
         headerView = binding.navigationViewStudent.getHeaderView(0)
-        headerView.findViewById<TextView>(R.id.textViewNavFullName).text="${app.loginUser.student?.account?.fullName}님"
-        headerView.findViewById<TextView>(R.id.textViewNavId).text="${app.loginUser.student?.account?.username}"
+        headerView.findViewById<TextView>(R.id.textViewNavFullName).text = "${app.loginUser.student?.account?.fullName}님"
+        headerView.findViewById<TextView>(R.id.textViewNavId).text = "${app.loginUser.student?.account?.username}"
     }
 
     private fun setListeners(){
@@ -187,7 +189,7 @@ class StudentMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = studentHomeFragment
             }
             MANAGE_REQUEST -> {
-                curFragment = ManageRequestFragment(false)
+                curFragment = manageRequestFragment
             }
             else -> {}
         }

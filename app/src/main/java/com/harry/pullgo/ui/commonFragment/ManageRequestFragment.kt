@@ -33,11 +33,15 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
 
     private val viewModel: ManageRequestViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initViewModel()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
         initialize()
-        initViewModel()
 
         return binding.root
     }
@@ -63,6 +67,11 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab?) {
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        refreshAdapter(false)
     }
 
     private fun refreshAdapter(isClassroom: Boolean) {
@@ -119,8 +128,6 @@ class ManageRequestFragment(private val isTeacher: Boolean): Fragment() {
                 }
             }
         }
-
-        refreshAdapter(false)
     }
 
     private fun displayAcademyRequests() {

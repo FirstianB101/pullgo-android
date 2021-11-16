@@ -37,6 +37,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var changeInfoFragment: TeacherChangePersonInfoFragment
     lateinit var checkPwFragment: ChangeInfoCheckPwFragment
     lateinit var calendarFragment: CalendarFragment
+    lateinit var manageRequestFragment: ManageRequestFragment
     lateinit var manageClassroomFragment: TeacherManageClassroomFragment
     lateinit var acceptApplyAcademyFragment: TeacherAcceptApplyAcademyFragment
     lateinit var manageAcademyFragment: TeacherManageAcademyFragment
@@ -85,6 +86,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun initialize(){
         changeInfoFragment = TeacherChangePersonInfoFragment()
+        manageRequestFragment = ManageRequestFragment(true)
         checkPwFragment = ChangeInfoCheckPwFragment(object: OnCheckPwListener{
             override fun onPasswordChecked() {
                 onFragmentSelected(CHANGE_INFO)
@@ -189,13 +191,13 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 curFragment = acceptApplyAcademyFragment
             }
             MANAGE_ACADEMY -> {
-                curFragment = TeacherManageAcademyFragment()
+                curFragment = manageAcademyFragment
             }
             HOME -> {
                 curFragment = teacherHomeFragment
             }
             MANAGE_REQUEST -> {
-                curFragment = ManageRequestFragment(true)
+                curFragment = manageRequestFragment
             }
             else -> {}
         }

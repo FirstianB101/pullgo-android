@@ -37,9 +37,13 @@ class TeacherManageAcademyFragment: Fragment() {
 
     private lateinit var selectedAcademy: Academy
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initViewModel()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
-        initViewModel()
         setListeners()
 
         return binding.root
@@ -47,6 +51,11 @@ class TeacherManageAcademyFragment: Fragment() {
 
     private fun initialize(){
         makeLayoutInvisible()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
     }
 
     private fun initViewModel(){
@@ -80,8 +89,6 @@ class TeacherManageAcademyFragment: Fragment() {
                 }
             }
         }
-
-        viewModel.requestGetOwnedAcademies(app.loginUser.teacher?.id!!)
     }
 
     private fun setListeners(){

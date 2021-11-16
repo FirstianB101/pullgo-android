@@ -28,24 +28,27 @@ class LoginActivity: AppCompatActivity(){
 
     private val viewModel: LoginViewModel by viewModels()
 
-    var autoLoginToken: String? = null
+    private var isAutoLogin = false
+    private var autoLoginToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //autoLogin()
+        autoLogin()
         setClickListeners()
         initViewModel()
     }
 
     private fun autoLogin(){
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
-        autoLoginToken = pref.getString("token",null)
+        val authToken = pref.getString("authToken",null)
+        autoLoginToken = authToken
 
-        if(autoLoginToken != null){
-            app.loginUser.token = autoLoginToken
-
+        if(authToken != null){
+            binding.checkBoxAutoLogin.isChecked = true
+            app.loginUser.token = authToken
+            isAutoLogin = true
             viewModel.requestAuthorize()
         }
     }
@@ -57,11 +60,15 @@ class LoginActivity: AppCompatActivity(){
                     app.dismissLoadingDialog()
                     app.loginUser = it.data!!
 
-//                    if(binding.checkBoxAutoLogin.isChecked){
-//                        saveAutoLoginInfo()
-//                    }else{
-//                        resetAutoLoginInfo()
-//                    }
+                    if(isAutoLogin) {
+                        app.loginUser.token = autoLoginToken
+                        isAutoLogin = false
+                    }
+
+                    if(binding.checkBoxAutoLogin.isChecked)
+                        saveAutoLoginInfo()
+                    else
+                        resetAutoLoginInfo()
 
                     if(it.data.student != null)
                         viewModel.requestStudentAcademies(it.data.student?.id!!)
@@ -73,7 +80,6 @@ class LoginActivity: AppCompatActivity(){
                 }
                 Status.ERROR -> {
                     app.dismissLoadingDialog()
-                    app.cancelAllToasts()
                     Toast.makeText(this,"연결에 실패했습니다(${it.message})",Toast.LENGTH_SHORT).show()
                 }
             }
@@ -132,7 +138,7 @@ class LoginActivity: AppCompatActivity(){
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
         val autoLogin = pref.edit()
 
-        autoLogin.putString("token",app.loginUser.token)
+        autoLogin.putString("authToken",app.loginUser.token)
         autoLogin.apply()
     }
 
@@ -140,7 +146,7 @@ class LoginActivity: AppCompatActivity(){
         val pref = getSharedPreferences("autoLogin", Activity.MODE_PRIVATE)
         val autoLogin = pref.edit()
 
-        autoLogin.putString("token",null)
+        autoLogin.putString("authToken",null)
         autoLogin.apply()
     }
 
