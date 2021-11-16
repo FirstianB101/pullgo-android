@@ -65,8 +65,8 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             FragmentCreateExamDialog(selectedClassroom.id!!).show(childFragmentManager,"createExam")
         }
 
-        setFragmentResultListener("isExamChanged"){ _, bundle ->
-            if(bundle.getString("isChanged") == "yes"){
+        setFragmentResultListener("isExamEdited"){ _, bundle ->
+            if(bundle.getString("isEdited") == "yes"){
                 viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
             }
         }

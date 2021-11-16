@@ -29,6 +29,7 @@ class FragmentEditExamInfo(private val selectedExam: Exam): Fragment() {
 
     interface ManageExamButtonClickListener{
         fun onButtonClicked()
+        fun onExamEdited()
     }
     var manageExamButtonClickListener: ManageExamButtonClickListener? = null
 
@@ -137,6 +138,7 @@ class FragmentEditExamInfo(private val selectedExam: Exam): Fragment() {
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"시험 정보가 수정되었습니다", Toast.LENGTH_SHORT).show()
                     refreshExamInfo(it.data!!)
+                    manageExamButtonClickListener?.onExamEdited()
                 }
                 Status.ERROR -> {
                     Toast.makeText(requireContext(),"시험 정보를 수정하지 못했습니다 ${it.message}", Toast.LENGTH_SHORT).show()

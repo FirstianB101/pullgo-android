@@ -130,7 +130,7 @@ class FragmentCreateExamDialog(private val selectedClassroomId: Long): DialogFra
                 Status.SUCCESS -> {
                     Toast.makeText(requireContext(),"${it.data}",Toast.LENGTH_SHORT).show()
                     if(it.data == "시험이 생성되었습니다") {
-                        parentFragment?.setFragmentResult("isExamChanged", bundleOf("isChanged" to "yes"))
+                        parentFragment?.setFragmentResult("isExamEdited", bundleOf("isEdited" to "yes"))
                         dismiss()
                     }
                 }

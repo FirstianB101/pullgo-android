@@ -47,8 +47,12 @@ class FragmentExamInfoDialog(private val selectedExam: Exam)
         ).replace(R.id.containerExamInfo, detailedFragment).commit()
     }
 
+    override fun onExamEdited() {
+       parentFragment?.setFragmentResult("isExamEdited", bundleOf("isEdited" to "yes"))
+    }
+
     override fun onExamChange() {
-        parentFragment?.setFragmentResult("isExamChanged", bundleOf("isChanged" to "yes"))
+        parentFragment?.setFragmentResult("isExamEdited", bundleOf("isEdited" to "yes"))
         dismiss()
     }
 }
