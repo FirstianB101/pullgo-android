@@ -1,9 +1,12 @@
 package com.harry.pullgo.ui.findAcademy
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +29,8 @@ class FindAcademyActivity : AppCompatActivity() {
 
     private val viewModel: FindAcademyViewModel by viewModels()
 
+    private lateinit var startForResult: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -41,7 +46,13 @@ class FindAcademyActivity : AppCompatActivity() {
 
         binding.toolbarFindAcademy.title = "학원 찾기"
 
-        binding.recyclerViewFindAcademy.layoutManager = LinearLayoutManager(this)
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            if(it.resultCode == Activity.RESULT_OK){
+                if(it.data?.getStringExtra("createAcademy") == "yes"){
+                    viewModel.requestGetAcademies(binding.searchTextFindAcademy.text.toString())
+                }
+            }
+        }
     }
 
     private fun initViewModel(){
@@ -84,8 +95,7 @@ class FindAcademyActivity : AppCompatActivity() {
         }
 
         binding.floatingActionButtonMakeAcademy.setOnClickListener {
-            val intent = Intent(this,CreateAcademyActivity::class.java)
-            startActivity(intent)
+            startForResult.launch(Intent(this,CreateAcademyActivity::class.java))
         }
     }
 

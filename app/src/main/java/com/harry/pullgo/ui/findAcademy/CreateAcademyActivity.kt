@@ -50,7 +50,7 @@ class CreateAcademyActivity : AppCompatActivity() {
             finish()
         }
     }
-
+    
     private fun initViewModel(){
         viewModel.createMessage.observe(this){
             when(it.status){

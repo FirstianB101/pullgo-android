@@ -38,11 +38,15 @@ class TeacherManageClassroomFragment: Fragment() {
 
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setViewModel()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
         initialize()
-        setViewModel()
 
         return binding.root
     }
