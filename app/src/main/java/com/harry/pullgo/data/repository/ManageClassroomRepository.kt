@@ -23,8 +23,10 @@ class ManageClassroomRepository @Inject constructor(
     suspend fun deleteClassroom(classroomId: Long) = manageClassroomClient.deleteClassroom(classroomId)
     suspend fun createExam(exam: Exam) = manageClassroomClient.createExam(exam)
     suspend fun removeExam(examId: Long) = manageClassroomClient.removeExam(examId)
+    suspend fun editExam(examId: Long, exam: Exam) = manageClassroomClient.editExam(examId, exam)
     suspend fun cancelExam(examId: Long) = manageClassroomClient.cancelExam(examId)
     suspend fun finishExam(examId: Long) = manageClassroomClient.finishExam(examId)
+    suspend fun getOneExam(examId: Long) = manageClassroomClient.getOneExam(examId)
 
     suspend fun acceptStudent(classroomId: Long, studentId: Long) = manageClassroomClient.acceptStudentApplyClassroom(classroomId, studentId)
     suspend fun acceptTeacher(classroomId: Long, teacherId: Long) = manageClassroomClient.acceptTeacherApplyClassroom(classroomId, teacherId)

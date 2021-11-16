@@ -214,6 +214,9 @@ interface PullgoService {
     suspend fun deleteLesson(@Path("id")lessonId: Long): Response<Unit>
 
 
+    @GET("exams/{id}")
+    suspend fun getOneExam(@Path("id")examId: Long): Response<Exam>
+
     @GET("exams/")
     suspend fun getSortedStudentExams(@Query("studentId")studentId: Long, @Query("sort")sort: String, @Query("size")size: Int): Response<List<Exam>>
 
@@ -229,6 +232,9 @@ interface PullgoService {
 
     @DELETE("exams/{id}")
     suspend fun removeExam(@Path("id")examId: Long): Response<Unit>
+
+    @PATCH("exams/{id}")
+    suspend fun editExam(@Path("id")examId: Long, @Body exam: Exam): Response<Exam>
 
     @POST("exams/{id}/cancel")
     suspend fun cancelExam(@Path("id")examId: Long): Response<Unit>

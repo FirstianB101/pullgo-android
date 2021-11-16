@@ -34,6 +34,12 @@ class ManageClassroomViewModel @ViewModelInject constructor(
     private val _examsWithinClassroom = MutableLiveData<Resource<List<Exam>>>()
     val examsWithinClassroom: LiveData<Resource<List<Exam>>> = _examsWithinClassroom
 
+    private val _editExam = MutableLiveData<Resource<Exam>>()
+    val editExam: LiveData<Resource<Exam>> = _editExam
+
+    private val _oneExamInfo = MutableLiveData<Resource<Exam>>()
+    val oneExamInfo: LiveData<Resource<Exam>> = _oneExamInfo
+
 
     private val _manageStudentRequestMessage = MutableLiveData<Resource<String>>()
     val manageStudentRequestMessage: LiveData<Resource<String>> = _manageStudentRequestMessage
@@ -275,6 +281,34 @@ class ManageClassroomViewModel @ViewModelInject constructor(
                     _examMessage.postValue(Resource.success("시험이 삭제되었습니다"))
                 }else{
                     _examMessage.postValue(Resource.error(response.code().toString(),"시험을 삭제하지 못했습니다"))
+                }
+            }
+        }
+    }
+
+    fun getOneExam(examId: Long){
+        _oneExamInfo.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.getOneExam(examId).let{response ->
+                if(response.isSuccessful){
+                    _oneExamInfo.postValue(Resource.success(response.body()))
+                }else{
+                    _oneExamInfo.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun editExam(examId: Long, exam: Exam){
+        _editExam.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.editExam(examId,exam).let{response ->
+                if(response.isSuccessful){
+                    _editExam.postValue(Resource.success(response.body()))
+                }else{
+                    _editExam.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }

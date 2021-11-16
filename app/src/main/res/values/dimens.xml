@@ -34,4 +34,7 @@
     <dimen name="calendar_lesson_dialog_text_size">18sp</dimen>
     <dimen name="manage_classroom_student_dialog_textview_width">140dp</dimen>
     <dimen name="multiple_choice_bottom_sheet_height">450dp</dimen>
+    <dimen name="manage_exam_dialog_width">380dp</dimen>
+    <dimen name="manage_exam_dialog_height">640dp</dimen>
+    <dimen name="manage_exam_dialog_button_width">300dp</dimen>
 </resources>

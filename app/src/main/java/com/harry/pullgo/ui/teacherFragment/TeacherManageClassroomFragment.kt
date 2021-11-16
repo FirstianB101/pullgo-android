@@ -116,7 +116,10 @@ class TeacherManageClassroomFragment: Fragment() {
                 }
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         viewModel.requestGetClassrooms(app.loginUser.teacher?.id!!)
     }
 

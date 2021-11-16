@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
-import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Classroom
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
@@ -23,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment() {
     private val binding by lazy{FragmentManageClasssroomEditClassroomBinding.inflate(layoutInflater)}
 
-    private var isEditModeOn = false
+    private var isEditMode = false
     private var isFormatGood = true
 
     private val viewModel: ManageClassroomViewModel by viewModels()
@@ -54,12 +53,12 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
 
     private fun setListeners(){
         binding.buttonEditClassroomEdit.setOnClickListener {
-            if(isEditModeOn){
+            if(isEditMode){
                 if(isFormatGood) {
                     setLayoutsDisabled()
                     requestEditClassroom()
                     binding.buttonEditClassroomEdit.text = "수정하기"
-                    isEditModeOn = false
+                    isEditMode = false
                 }else{
                     Snackbar.make(binding.root,"사용할 수 없는 문자가 포함되어 있습니다",Snackbar.LENGTH_SHORT).show()
                 }
@@ -67,7 +66,7 @@ class EditClassroomFragment(private val selectedClassroom: Classroom): Fragment(
                 setLayoutsEnabled()
                 binding.textEditClassroomName.requestFocus()
                 binding.buttonEditClassroomEdit.text = "수정 완료"
-                isEditModeOn = true
+                isEditMode = true
             }
         }
 

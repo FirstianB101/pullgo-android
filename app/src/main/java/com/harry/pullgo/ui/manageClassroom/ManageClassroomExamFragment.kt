@@ -65,8 +65,8 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             FragmentCreateExamDialog(selectedClassroom.id!!).show(childFragmentManager,"createExam")
         }
 
-        setFragmentResultListener("isCreatedExam"){ _, bundle ->
-            if(bundle.getString("isCreated") == "yes"){
+        setFragmentResultListener("isExamChanged"){ _, bundle ->
+            if(bundle.getString("isChanged") == "yes"){
                 viewModel.requestGetExamsWithinClassroom(selectedClassroom.id!!)
             }
         }
@@ -104,6 +104,19 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
                 }
             }
         }
+
+        viewModel.oneExamInfo.observe(viewLifecycleOwner){
+            when(it.status){
+                Status.LOADING -> {
+                }
+                Status.SUCCESS -> {
+                    FragmentExamInfoDialog(it.data!!).show(childFragmentManager,"examInfo")
+                }
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun displayExams(exams: List<Exam>, filter: Int){
@@ -116,7 +129,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
 
         examsAdapter?.examClickListener = object: OnExamClickListener{
             override fun onExamClick(view: View, exam: Exam?) {
-                FragmentExamInfoDialog(exam!!).show(childFragmentManager,"examInfo")
+                viewModel.getOneExam(exam?.id!!)
             }
 
             override fun onRemoveButtonClick(view: View, exam: Exam?) {
