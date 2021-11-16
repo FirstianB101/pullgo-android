@@ -180,7 +180,7 @@
     <string name="comment_click_under_image_for_register">아래 이미지를 클릭하여 등록 / 수정할 수 있습니다</string>
 
     <string name="comment_finish_exam">시험을 종료합니다</string>
-    <string name="comment_finish_exam_detail">선택한 시험을 종료합니다. \n 이때까지 응시한 학생 정보가 저장되며 \n 응시하지 않은 학생은 미응시로 처리됩니다.</string>
+    <string name="comment_finish_exam_detail">선택한 시험을 종료합니다. \n이때까지 응시한 학생 정보가 저장되며 \n응시하지 않은 학생은 미응시로 처리됩니다.</string>
     <string name="comment_cancel_exam">시험을 취소합니다</string>
     <string name="comment_cancel_exam_detail">선택한 시험을 취소합니다.</string>
 </resources>
