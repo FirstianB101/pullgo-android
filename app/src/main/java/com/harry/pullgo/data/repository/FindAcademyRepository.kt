@@ -2,12 +2,13 @@ package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.PullgoService
 import com.harry.pullgo.data.models.Academy
+import com.harry.pullgo.di.PullgoRetrofitService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FindAcademyRepository @Inject constructor(
-    private val findAcademyClient: PullgoService
+    @PullgoRetrofitService private val findAcademyClient: PullgoService
 ) {
     suspend fun getAcademies(name: String) = findAcademyClient.getAcademiesByName(name)
 

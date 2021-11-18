@@ -2,7 +2,9 @@ package com.harry.pullgo.ui.manageQuestion;
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,10 +18,13 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnEditMultipleChoiceListener
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.models.Question
+import com.harry.pullgo.data.utils.ImageUtil
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityManageQuestionBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,11 +39,10 @@ class ManageQuestionActivity: AppCompatActivity() {
     private lateinit var selectedExam: Exam
 
     private lateinit var questions: List<Question>
+    private lateinit var questionFragments: MutableList<FragmentManageQuestion>
     private var curPos = 0
 
     private lateinit var startForResult: ActivityResultLauncher<Intent>
-
-    private lateinit var questionFragments: MutableList<FragmentManageQuestion>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,9 +82,12 @@ class ManageQuestionActivity: AppCompatActivity() {
 
         binding.buttonSaveQuestion.setOnClickListener {
             if(questions.isNotEmpty()){
-                questions[curPos].pictureUrl = questionFragments[curPos].getCurImageUrl()
                 questions[curPos].content = questionFragments[curPos].getCurrentContent()
-                viewModel.editQuestion(questions[curPos].id!!,questions[curPos])
+                if(questionFragments[curPos].isImageChanged) {
+                    uploadImage(questionFragments[curPos].getCurImageUrl())
+                }else{
+                    viewModel.editQuestion(questions[curPos].id!!, questions[curPos])
+                }
             }
         }
 
@@ -161,6 +168,25 @@ class ManageQuestionActivity: AppCompatActivity() {
                 }
             }
         }
+
+        viewModel.imageUploadRepository.observe(this){
+            when(it.status){
+                Status.LOADING -> {
+                    app.showLoadingDialog(supportFragmentManager)
+                }
+                Status.SUCCESS -> {
+                    app.dismissLoadingDialog()
+                    questions[curPos].pictureUrl = it.data?.data?.url
+                    viewModel.editQuestion(questions[curPos].id!!, questions[curPos])
+
+                    questionFragments[curPos].isImageChanged = false
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this,"이미지를 업로드하지 못하였습니다 (${it.message})",Toast.LENGTH_SHORT).show()
+                    app.dismissLoadingDialog()
+                }
+            }
+        }
     }
 
     private fun startAddQuestionActivity(){
@@ -232,5 +258,13 @@ class ManageQuestionActivity: AppCompatActivity() {
         override fun getItemCount(): Int = fragments.size
 
         override fun createFragment(position: Int): Fragment = fragments[position]
+    }
+
+    private fun uploadImage(imageUri: Uri?){
+        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+        val requestBody =
+            RequestBody.create(MediaType.parse("text/plain"), ImageUtil.BitmapToString(bitmap))
+
+        viewModel.requestUploadImage(requestBody)
     }
 }

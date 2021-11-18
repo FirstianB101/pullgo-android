@@ -20,6 +20,7 @@ import com.harry.pullgo.data.api.OnCheckPwListener
 import com.harry.pullgo.data.api.PullgoService
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityTeacherMainBinding
+import com.harry.pullgo.di.PullgoRetrofitService
 import com.harry.pullgo.ui.applyClassroom.ApplyClassroomActivity
 import com.harry.pullgo.ui.calendar.CalendarFragment
 import com.harry.pullgo.ui.commonFragment.ChangeInfoCheckPwFragment
@@ -44,6 +45,7 @@ class TeacherMainActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     lateinit var teacherHomeFragment: TeacherHomeFragmentNoAcademy
 
     @Inject
+    @PullgoRetrofitService
     lateinit var service: PullgoService
 
     @Inject

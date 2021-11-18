@@ -2,6 +2,7 @@ package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.PullgoService
 import com.harry.pullgo.data.models.Lesson
+import com.harry.pullgo.di.PullgoRetrofitService
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,7 +11,7 @@ import javax.inject.Singleton
 
 @Singleton
 class LessonsRepository @Inject constructor(
-    private val lessonClient: PullgoService
+    @PullgoRetrofitService private val lessonClient: PullgoService
 ) {
     private val MAX_LESSONS = 100
 

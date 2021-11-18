@@ -1,12 +1,13 @@
 package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.PullgoService
+import com.harry.pullgo.di.PullgoRetrofitService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class ExamsRepository @Inject constructor(
-    private val examClient: PullgoService
+    @PullgoRetrofitService private val examClient: PullgoService
 ) {
     suspend fun getExamsByBeginDate(studentId: Long) = examClient.getSortedStudentExams(studentId,"beginDateTime",100)
     suspend fun getExamsByEndDate(studentId: Long) = examClient.getSortedStudentExams(studentId,"endDateTime",100)

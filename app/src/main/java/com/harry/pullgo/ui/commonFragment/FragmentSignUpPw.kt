@@ -13,8 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.harry.pullgo.R
 import com.harry.pullgo.databinding.FragmentSignupPwBinding
 import com.harry.pullgo.ui.signUp.SignUpViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class FragmentSignUpPw: Fragment() {
     private val binding by lazy{FragmentSignupPwBinding.inflate(layoutInflater)}
     private val PW_MAX_LENGTH = 16

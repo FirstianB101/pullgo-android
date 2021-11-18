@@ -16,6 +16,7 @@ import com.harry.pullgo.data.models.Student
 import com.harry.pullgo.databinding.DialogAcademyInfoBinding
 import com.harry.pullgo.databinding.DialogClassroomInfoBinding
 import com.harry.pullgo.databinding.DialogManageClassroomStudentInfoBinding
+import com.harry.pullgo.di.PullgoRetrofitService
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,6 +28,7 @@ class FragmentShowClassroomInfoDialog(private val selectedClassroom: Classroom):
     private val binding by lazy{DialogClassroomInfoBinding.inflate(layoutInflater)}
 
     @Inject
+    @PullgoRetrofitService
     lateinit var service: PullgoService
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

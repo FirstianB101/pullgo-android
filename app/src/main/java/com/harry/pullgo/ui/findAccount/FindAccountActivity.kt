@@ -10,9 +10,11 @@ import com.harry.pullgo.databinding.ActivityFindAccountBinding
 import com.harry.pullgo.ui.dialog.OneButtonDialog
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import com.harry.pullgo.ui.login.LoginActivity
+import dagger.hilt.android.AndroidEntryPoint
 import lib.kingja.switchbutton.SwitchMultiButton.OnSwitchListener
 import java.util.regex.Pattern
 
+@AndroidEntryPoint
 class FindAccountActivity : AppCompatActivity(), OnSwitchListener{
     private val binding by lazy{ActivityFindAccountBinding.inflate(layoutInflater)}
     private val FIND_ID=0

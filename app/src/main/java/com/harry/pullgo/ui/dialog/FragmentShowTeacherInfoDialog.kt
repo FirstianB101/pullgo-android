@@ -11,7 +11,9 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.harry.pullgo.data.models.Teacher
 import com.harry.pullgo.databinding.DialogManageClassroomTeacherInfoBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FragmentShowTeacherInfoDialog(private val selectedTeacher: Teacher): DialogFragment() {
     private val binding by lazy{ DialogManageClassroomTeacherInfoBinding.inflate(layoutInflater)}
 

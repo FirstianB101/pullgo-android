@@ -2,6 +2,7 @@ package com.harry.pullgo.ui.manageQuestion
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.harry.pullgo.R
+import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Question
 import com.harry.pullgo.databinding.FragmentManageQuestionBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FragmentManageQuestion(
@@ -21,7 +24,11 @@ class FragmentManageQuestion(
 ) : Fragment() {
     private val binding by lazy{FragmentManageQuestionBinding.inflate(layoutInflater)}
 
-    private var curImageUri: String? = null
+    @Inject
+    lateinit var app: PullgoApplication
+
+    private var curImageUri: Uri? = null
+    var isImageChanged = false
 
     private lateinit var startForResult: ActivityResultLauncher<Intent>
 
@@ -36,7 +43,7 @@ class FragmentManageQuestion(
 
     private fun initialize(){
         binding.editTextManageQuestion.setText(question.content)
-        curImageUri = question.pictureUrl
+        curImageUri = Uri.parse(question.pictureUrl)
 
         Glide.with(this)
             .load(question.pictureUrl)
@@ -46,8 +53,8 @@ class FragmentManageQuestion(
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){
-                //curImageUri = it.data?.dataString
-                curImageUri = "https://i.imgur.com/JOKsNeT.jpg"
+                curImageUri = it.data?.data
+                isImageChanged = true
                 Glide.with(this)
                     .load(curImageUri)
                     .error(R.drawable.add_picture)

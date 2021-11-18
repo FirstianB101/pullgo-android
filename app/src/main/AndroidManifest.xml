@@ -58,7 +58,8 @@
         <activity
             android:name=".ui.signUp.SignUpActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.SplashActivity">
+        <activity android:name=".ui.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

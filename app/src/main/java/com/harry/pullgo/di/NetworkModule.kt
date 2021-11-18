@@ -1,6 +1,7 @@
 package com.harry.pullgo.di
 
 import com.harry.pullgo.data.api.AuthenticationInterceptor
+import com.harry.pullgo.data.api.ImageUploadService
 import com.harry.pullgo.data.api.PullgoService
 import dagger.Module
 import dagger.Provides
@@ -16,11 +17,14 @@ import javax.inject.Singleton
 @InstallIn(ApplicationComponent::class)
 object NetworkModule {
     const val BASE_URL = "https://api.pullgo.kr/v1/"
+    const val IMAGE_UPLOAD_URL = "https://api.imgbb.com"
+    const val IMAGE_UPLOAD_API_KEY = "0f390b97fdf589fbe52076e9bdb756a0"
 
     @Provides
     fun provideAuthInterceptor() = AuthenticationInterceptor()
 
     @Provides
+    @PullgoOkHttpClient
     fun provideAuthInterceptorOkHttpClient(
         authInterceptor: AuthenticationInterceptor
     ): OkHttpClient {
@@ -30,15 +34,37 @@ object NetworkModule {
             .build()
     }
 
+    @Provides
+    @ImagebbOkHttpClient
+    fun provideImagebbOkHttpClient(): OkHttpClient{
+        return OkHttpClient.Builder().build()
+    }
+
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+    @PullgoRetrofit
+    fun providePullgoRetrofit(@PullgoOkHttpClient okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
         .client(okHttpClient)
         .build()
 
+    @Singleton
+    @Provides
+    @ImagebbRetrofit
+    fun provideImagebbRetrofit(@ImagebbOkHttpClient okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(IMAGE_UPLOAD_URL)
+        .client(okHttpClient)
+        .build()
+
     @Provides
     @Singleton
-    fun providePullgoService(retrofit: Retrofit): PullgoService = retrofit.create(PullgoService::class.java)
+    @PullgoRetrofitService
+    fun providePullgoService(@PullgoRetrofit retrofit: Retrofit): PullgoService = retrofit.create(PullgoService::class.java)
+
+    @Provides
+    @Singleton
+    @ImagebbRetrofitService
+    fun provideImagebbService(@ImagebbRetrofit retrofit: Retrofit): ImageUploadService = retrofit.create(ImageUploadService::class.java)
 }

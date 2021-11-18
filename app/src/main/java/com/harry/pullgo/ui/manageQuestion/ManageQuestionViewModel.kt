@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.harry.pullgo.data.models.ImageUploadResponse
 import com.harry.pullgo.data.models.Question
 import com.harry.pullgo.data.repository.ManageQuestionRepository
 import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.launch
+import okhttp3.RequestBody
 
 class ManageQuestionViewModel @ViewModelInject constructor(
     private val manageQuestionRepository: ManageQuestionRepository
@@ -24,6 +26,10 @@ class ManageQuestionViewModel @ViewModelInject constructor(
 
     private val _deleteQuestionRepository = MutableLiveData<Resource<String>>()
     val deleteQuestionMessage: LiveData<Resource<String>> = _deleteQuestionRepository
+
+
+    private val _imageUploadRepository = MutableLiveData<Resource<ImageUploadResponse>>()
+    val imageUploadRepository: LiveData<Resource<ImageUploadResponse>> = _imageUploadRepository
 
     fun getQuestionsSuchExam(examId: Long){
         _questionsSuchExamRepository.postValue(Resource.loading(null))
@@ -76,6 +82,20 @@ class ManageQuestionViewModel @ViewModelInject constructor(
                     _deleteQuestionRepository.postValue(Resource.success("문제가 삭제되었습니다"))
                 }else{
                     _deleteQuestionRepository.postValue(Resource.error(response.code().toString(),"문제를 삭제하지 못했습니다"))
+                }
+            }
+        }
+    }
+
+    fun requestUploadImage(image: RequestBody){
+        _imageUploadRepository.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            manageQuestionRepository.requestUploadImage(image).let{response ->
+                if(response.isSuccessful){
+                    _imageUploadRepository.postValue(Resource.success(response.body()))
+                }else{
+                    _imageUploadRepository.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
