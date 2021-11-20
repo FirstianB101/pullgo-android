@@ -21,33 +21,47 @@ class FragmentMultipleChoiceBottomSheet(
     ): BottomSheetDialogFragment() {
     private val binding by lazy{FragmentMultipleChoiceBottomSheetBinding.inflate(layoutInflater)}
 
-    private val viewModel: TakeExamViewModel by viewModels()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        dialog?.setCanceledOnTouchOutside(false)
+
+        initialize()
         setListeners()
-        initViewModel()
 
         return binding.root
     }
 
-    private fun setListeners(){
-        binding.checkboxMultipleChoice1.setOnCheckedChangeListener{ buttonView, isChecked -> onChoiceListener.onChoice(1) }
-        binding.checkboxMultipleChoice2.setOnCheckedChangeListener{ buttonView, isChecked -> onChoiceListener.onChoice(2) }
-        binding.checkboxMultipleChoice3.setOnCheckedChangeListener{ buttonView, isChecked -> onChoiceListener.onChoice(3) }
-        binding.checkboxMultipleChoice4.setOnCheckedChangeListener{ buttonView, isChecked -> onChoiceListener.onChoice(4) }
-        binding.checkboxMultipleChoice5.setOnCheckedChangeListener{ buttonView, isChecked -> onChoiceListener.onChoice(5) }
+    private fun initialize(){
+        val choices = selectedQuestion.choice!!
+        binding.apply {
+            textViewMultipleChoice1.text = choices["1"]
+            textViewMultipleChoice2.text = choices["2"]
+            textViewMultipleChoice3.text = choices["3"]
+            textViewMultipleChoice4.text = choices["4"]
+            textViewMultipleChoice5.text = choices["5"]
+        }
+    }
 
+    private fun setListeners(){
         binding.buttonMultipleChoiceDone.setOnClickListener {
+            saveAnswer()
             dismiss()
         }
     }
 
-    private fun initViewModel(){
-
+    private fun saveAnswer(){
+        val answers = mutableListOf<Int>()
+        binding.apply {
+            if(checkboxMultipleChoice1.isChecked) answers.add(1)
+            if(checkboxMultipleChoice2.isChecked) answers.add(2)
+            if(checkboxMultipleChoice3.isChecked) answers.add(3)
+            if(checkboxMultipleChoice4.isChecked) answers.add(4)
+            if(checkboxMultipleChoice5.isChecked) answers.add(5)
+        }
+        onChoiceListener.onChoice(answers)
     }
 }

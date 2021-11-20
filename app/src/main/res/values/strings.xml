@@ -68,6 +68,7 @@
     <string name="comment_input_exam_time_limit">제한 시간을 입력하세요(분)</string>
     <string name="comment_input_exam_standard_score">기준 점수를 입력하세요 (0~100)</string>
     <string name="comment_no_exam">시험이 존재하지 않습니다</string>
+    <string name="comment_no_exam_history">응시 완료한 시험이 없습니다</string>
 
     <string name="create_academy">학원 개설</string>
     <string name="academy_name">학원 이름</string>

@@ -1,5 +1,7 @@
 package com.harry.pullgo.data.models
 
+import java.io.Serializable
+
 class AttenderState(
     var attenderId: Long?,
     var examId: Long?,
@@ -8,3 +10,8 @@ class AttenderState(
 ){
     var id: Long? = null
 }
+
+class CreateAttender(
+    var attenderId: Long?,
+    var examId: Long?
+): Serializable

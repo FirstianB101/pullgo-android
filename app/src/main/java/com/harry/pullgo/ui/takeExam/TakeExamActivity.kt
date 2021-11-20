@@ -1,19 +1,29 @@
 package com.harry.pullgo.ui.takeExam
 
+import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.api.OnChoiceListener
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.models.Question
+import com.harry.pullgo.data.utils.DurationUtil
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.ActivityTakeExamBinding
 import com.harry.pullgo.ui.dialog.OneButtonDialog
+import com.harry.pullgo.ui.manageQuestion.FragmentManageQuestion
+import com.harry.pullgo.ui.manageQuestion.ManageQuestionActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,19 +38,21 @@ class TakeExamActivity : AppCompatActivity(){
     private lateinit var selectedExam: Exam
 
     private lateinit var questions: List<Question>
+    private lateinit var questionFragments: MutableList<FragmentTakeExamQuestion>
     private var curPos = 0
 
-    private val LEFT = 100
-    private val RIGHT = 101
+    private var timer = 0L
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         initialize()
         setListeners()
         initViewModel()
+
+        startCountDown(DurationUtil.translateDurToMillis(selectedExam.timeLimit!!))
     }
 
     private fun initialize(){
@@ -62,6 +74,10 @@ class TakeExamActivity : AppCompatActivity(){
             showMultipleChoiceFragment()
         }
 
+        binding.buttonSaveAnswer.setOnClickListener {
+
+        }
+
         binding.topAppBar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.end_exam ->{
@@ -71,6 +87,13 @@ class TakeExamActivity : AppCompatActivity(){
                 else -> false
             }
         }
+
+        binding.pagerTakeExam.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                curPos = position
+            }
+        })
     }
 
     private fun initViewModel(){
@@ -78,12 +101,11 @@ class TakeExamActivity : AppCompatActivity(){
             when(it.status){
                 Status.SUCCESS -> {
                     questions = it.data!!
+                    curPos = 0
                     app.dismissLoadingDialog()
 
-                    if(questions.isEmpty())
-                        showNoQuestion()
-                    else
-                        replaceFragment(LEFT)
+                    if(questions.isNotEmpty())
+                        initQuestionFragmentsPager(questions.size)
                 }
                 Status.LOADING -> {
                     app.showLoadingDialog(supportFragmentManager)
@@ -97,58 +119,55 @@ class TakeExamActivity : AppCompatActivity(){
     }
 
     private fun showPreviousQuestion(){
-        if(curPos > 0){
-            curPos--
-            replaceFragment(LEFT)
+        if(questions.isNotEmpty() && curPos > 0){
+            binding.pagerTakeExam.currentItem = curPos - 1
         }
     }
 
     private fun showNextQuestion(){
-        if(curPos < questions.size){
-            curPos++
-            replaceFragment(RIGHT)
+        if(questions.isNotEmpty() && curPos < questions.size - 1){
+            binding.pagerTakeExam.currentItem = curPos + 1
         }
     }
 
     private fun showMultipleChoiceFragment(){
         FragmentMultipleChoiceBottomSheet(questions[curPos], object: OnChoiceListener{
-            override fun onChoice(choice: Int) {
-                Toast.makeText(this@TakeExamActivity,"선택한 보기: $choice",Toast.LENGTH_SHORT).show()
+            override fun onChoice(choices: List<Int>) {
+                Toast.makeText(this@TakeExamActivity,"선택한 보기: $choices",Toast.LENGTH_SHORT).show()
             }
-        })
+        }).show(supportFragmentManager,"multiple_choice_answer")
     }
-    
-    private fun showNoQuestion(){
-        val dialog = OneButtonDialog(this)
-        dialog.centerClickListener = object: OneButtonDialog.OneButtonDialogClickListener{
-            override fun onCenterClicked() {
-                finish()
+
+    private fun initQuestionFragmentsPager(size: Int){
+        questionFragments = mutableListOf()
+        for(i in 0 until size){
+            questionFragments.add(FragmentTakeExamQuestion(questions[i],i+1))
+        }
+        binding.pagerTakeExam.adapter = TakeExamPagerAdapter(this, questionFragments)
+    }
+
+    class TakeExamPagerAdapter(activity: AppCompatActivity, private val fragments: List<Fragment>)
+        : FragmentStateAdapter(activity){
+        override fun getItemCount(): Int = fragments.size
+
+        override fun createFragment(position: Int): Fragment = fragments[position]
+    }
+
+    private fun startCountDown(startTime: Long){
+        object: CountDownTimer(startTime,1000){
+            override fun onTick(millis: Long) {
+                val hour = TimeUnit.MILLISECONDS.toHours(millis)
+                val minutes = (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))
+                val seconds = (TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)))
+
+                binding.topAppBar.title = String.format("%02d:%02d:%02d",hour,minutes,seconds)
+                timer = millis
             }
-        }
-        dialog.start("시험 종료","시험에 등록된 문제가 없습니다","돌아가기")
+
+            override fun onFinish() {
+                // save answers and inform server to finish exam
+                Toast.makeText(applicationContext,"시험시간 종료",Toast.LENGTH_SHORT).show()
+            }
+        }.start()
     }
-
-    private fun replaceFragment(direction: Int){
-        val questionFragment = FragmentQuestion(questions[curPos],curPos+1)
-
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-
-        if(direction == LEFT) {
-            transaction.setCustomAnimations(
-                R.anim.enter_from_right,
-                R.anim.exit_to_left,
-                R.anim.enter_from_left,
-                R.anim.exit_to_right
-            )
-        }else if(direction == RIGHT){
-            transaction.setCustomAnimations(
-                R.anim.enter_from_left,
-                R.anim.exit_to_right,
-                R.anim.enter_from_right,
-                R.anim.exit_to_left
-            )
-        }
-        transaction.replace(R.id.mainFragmentTakeExam, questionFragment).commit()
-    }
-
 }

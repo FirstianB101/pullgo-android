@@ -15,11 +15,11 @@ import com.google.android.material.timepicker.TimeFormat
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.models.Exam
+import com.harry.pullgo.data.utils.DurationUtil.Companion.MillToDate
+import com.harry.pullgo.data.utils.DurationUtil.Companion.translateDurToMinute
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentEditExamInfoBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
 import java.time.Duration
 import javax.inject.Inject
 
@@ -167,7 +167,7 @@ class FragmentEditExamInfo(private val selectedExam: Exam): Fragment() {
     private fun refreshExamInfo(exam: Exam){
         binding.textExamName.setText(exam.name)
         binding.textExamStandardScore.setText(exam.passScore.toString())
-        binding.textExamTimeLimit.setText(translatePTFormat(exam.timeLimit!!))
+        binding.textExamTimeLimit.setText(translateDurToMinute(exam.timeLimit!!))
 
         val beginDateTime = exam.beginDateTime?.split('T')
         binding.spinnerTextViewSelectBeginDate.setText(beginDateTime?.get(0))
@@ -218,16 +218,4 @@ class FragmentEditExamInfo(private val selectedExam: Exam): Fragment() {
             binding.spinnerTextViewSelectEndDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndDate.text.isNotEmpty() &&
             binding.spinnerTextViewSelectEndTime.text.isNotEmpty()
-
-    private fun MillToDate(mills: Long): String? {
-        val pattern = "yyyy-MM-dd"
-        val formatter = SimpleDateFormat(pattern)
-        return formatter.format(Timestamp(mills))
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun translatePTFormat(time: String): String{
-        val duration = Duration.parse(time)
-        return duration.toMinutes().toString()
-    }
 }

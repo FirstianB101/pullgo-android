@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.studentFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,8 @@ import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentStudentExamListBinding
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import com.harry.pullgo.ui.takeExam.TakeExamActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -29,11 +32,13 @@ class StudentExamListFragment : Fragment(){
 
     private val viewModel: StudentExamListViewModel by viewModels()
 
-    private var selectedExam: Exam? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initViewModel()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
-        initViewModel()
         return binding.root
     }
 
@@ -52,8 +57,6 @@ class StudentExamListFragment : Fragment(){
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-
-        binding.recyclerViewExamList.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun initViewModel(){
@@ -76,33 +79,57 @@ class StudentExamListFragment : Fragment(){
             1 -> viewModel.requestExamsByBeginDate(app.loginUser.student?.id!!)
             2 -> viewModel.requestExamsByEndDate(app.loginUser.student?.id!!)
         }
-        app.showLoadingDialog(childFragmentManager)
     }
 
     private fun displayExams(){
-        val data = viewModel.studentExamList.value?.data
+        val data = viewModel.studentExamList.value?.data!!
 
-        val examsAdapter = data?.let {
-            ExamAdapter(it)
+        val filteredData = mutableListOf<Exam>()
+
+        for(exam in data){
+            if(!exam.finished && !exam.cancelled){
+                filteredData.add(exam)
+            }
         }
 
-        if (examsAdapter != null) {
-            examsAdapter.itemClickListener = object: OnExamClickListener {
-                override fun onExamClick(view: View, exam: Exam?) {
-                    selectedExam = exam
-                }
+        val examsAdapter = ExamAdapter(filteredData)
 
-                override fun onRemoveButtonClick(view: View, exam: Exam?) {
-                }
+        examsAdapter.itemClickListener = object: OnExamClickListener {
+            override fun onExamClick(view: View, exam: Exam?) {
+                showTakeExamDialog(exam)
+            }
 
-                override fun onTakeExamStatusClick(view: View, exam: Exam?) {
-                }
+            override fun onRemoveButtonClick(view: View, exam: Exam?) {
+            }
 
-                override fun onManageQuestionClick(view: View, exam: Exam?) {
-                }
+            override fun onTakeExamStatusClick(view: View, exam: Exam?) {
+            }
+
+            override fun onManageQuestionClick(view: View, exam: Exam?) {
             }
         }
         binding.recyclerViewExamList.adapter = examsAdapter
-        app.dismissLoadingDialog()
+
+        showNoResultText(filteredData.isEmpty())
+    }
+
+    private fun showNoResultText(isEmpty: Boolean){
+        if(isEmpty)
+            binding.textViewStudentNoExam.visibility = View.VISIBLE
+        else
+            binding.textViewStudentNoExam.visibility = View.GONE
+    }
+
+    private fun showTakeExamDialog(exam: Exam?){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                val intent = Intent(requireContext(),TakeExamActivity::class.java)
+                intent.putExtra("selectedExam",exam)
+                startActivity(intent)
+            }
+        }
+        dialog.start("시험 응시","${exam?.name}시험을 응시하시겠습니까?",
+            "응시하기","취소")
     }
 }

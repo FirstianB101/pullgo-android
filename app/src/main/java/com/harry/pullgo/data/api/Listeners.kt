@@ -61,7 +61,7 @@ interface OnKickPersonListener{
 }
 
 interface OnChoiceListener{
-    fun onChoice(choice: Int)
+    fun onChoice(choices: List<Int>)
 }
 
 interface OnEditMultipleChoiceListener{

@@ -8,15 +8,15 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.harry.pullgo.R
 import com.harry.pullgo.data.models.Question
-import com.harry.pullgo.databinding.FragmentQuestionBinding
+import com.harry.pullgo.databinding.FragmentTakeExamQuestionBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentQuestion(
+class FragmentTakeExamQuestion(
     private val selectedQuestion: Question,
     private val questionNum: Int,
     ): Fragment() {
-    private val binding by lazy{FragmentQuestionBinding.inflate(layoutInflater)}
+    private val binding by lazy{FragmentTakeExamQuestionBinding.inflate(layoutInflater)}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -29,7 +29,7 @@ class FragmentQuestion(
 
         Glide.with(this)
             .load(selectedQuestion.pictureUrl)
-            .error(R.drawable.image_load_error)
+            .fitCenter()
             .into(binding.imageViewQuiz)
     }
 }

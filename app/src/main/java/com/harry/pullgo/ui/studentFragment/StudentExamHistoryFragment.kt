@@ -15,7 +15,7 @@ import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
 import com.harry.pullgo.data.models.Exam
-import com.harry.pullgo.data.repository.ExamsRepository
+import com.harry.pullgo.data.utils.ExamProgress
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentStudentExamHistoryBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,11 +30,13 @@ class StudentExamHistoryFragment : Fragment(){
 
     private val viewModel: StudentExamListViewModel by viewModels()
 
-    private var selectedExam: Exam? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initViewModel()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
-        initViewModel()
         return binding.root
     }
 
@@ -53,21 +55,29 @@ class StudentExamHistoryFragment : Fragment(){
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-
-        binding.recyclerViewExamHistory.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun initViewModel(){
         viewModel.studentExamList.observe(requireActivity()){
-            viewModel.studentExamList.observe(requireActivity()){
-                when(it.status){
-                    Status.SUCCESS -> {
-                        displayExams()
-                    }
-                    Status.LOADING -> {}
-                    Status.ERROR -> {
-                        Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
-                    }
+            when(it.status){
+                Status.SUCCESS -> {
+                    viewModel.getStudentAttenderStates(app.loginUser.student?.id!!)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        viewModel.studentAttenderStates.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayTakenExams()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"${it.data}(${it.message})", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -81,29 +91,45 @@ class StudentExamHistoryFragment : Fragment(){
         }
     }
 
-    private fun displayExams(){
-        val data = viewModel.studentExamList.value?.data
+    private fun displayTakenExams(){
+        val allExams = viewModel.studentExamList.value?.data!!
 
-        val examsAdapter = data?.let {
-            ExamAdapter(it)
-        }
+        val attenderStates = viewModel.studentAttenderStates.value?.data!!
 
-        if (examsAdapter != null) {
-            examsAdapter.itemClickListener = object: OnExamClickListener {
-                override fun onExamClick(view: View, exam: Exam?) {
-                    selectedExam = exam
-                }
+        val takenExams = mutableListOf<Exam>()
 
-                override fun onRemoveButtonClick(view: View, exam: Exam?) {
-                }
-
-                override fun onTakeExamStatusClick(view: View, exam: Exam?) {
-                }
-
-                override fun onManageQuestionClick(view: View, exam: Exam?) {
+        for(state in attenderStates) {
+            for (exam in allExams) {
+                if (state.progress == ExamProgress.COMPLETE && state.examId == exam.id) {
+                    takenExams.add(exam)
                 }
             }
         }
+
+        val examsAdapter = ExamAdapter(takenExams)
+
+        examsAdapter.itemClickListener = object: OnExamClickListener {
+            override fun onExamClick(view: View, exam: Exam?) {
+            }
+
+            override fun onRemoveButtonClick(view: View, exam: Exam?) {
+            }
+
+            override fun onTakeExamStatusClick(view: View, exam: Exam?) {
+            }
+
+            override fun onManageQuestionClick(view: View, exam: Exam?) {
+            }
+        }
         binding.recyclerViewExamHistory.adapter = examsAdapter
+
+        showNoResultText(takenExams.isEmpty())
+    }
+
+    private fun showNoResultText(isEmpty: Boolean){
+        if(isEmpty)
+            binding.textViewStudentNoExamHistory.visibility = View.VISIBLE
+        else
+            binding.textViewStudentNoExamHistory.visibility = View.GONE
     }
 }

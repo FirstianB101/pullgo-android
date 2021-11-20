@@ -33,11 +33,13 @@ class FragmentManageQuestionBottomSheet(
 
     private fun initialize(){
         val choice = selectedQuestion.choice
-        binding.editTextManageMultipleChoice1.setText(choice?.get("1"))
-        binding.editTextManageMultipleChoice2.setText(choice?.get("2"))
-        binding.editTextManageMultipleChoice3.setText(choice?.get("3"))
-        binding.editTextManageMultipleChoice4.setText(choice?.get("4"))
-        binding.editTextManageMultipleChoice5.setText(choice?.get("5"))
+        binding.apply {
+            editTextManageMultipleChoice1.setText(choice?.get("1"))
+            editTextManageMultipleChoice2.setText(choice?.get("2"))
+            editTextManageMultipleChoice3.setText(choice?.get("3"))
+            editTextManageMultipleChoice4.setText(choice?.get("4"))
+            editTextManageMultipleChoice5.setText(choice?.get("5"))
+        }
 
         val answer = selectedQuestion.answer
         if(answer != null){
@@ -57,19 +59,22 @@ class FragmentManageQuestionBottomSheet(
     }
 
     private fun saveChoices(){
-        val choice = HashMap<String,String>()
-        choice["1"] = binding.editTextManageMultipleChoice1.text.toString()
-        choice["2"] = binding.editTextManageMultipleChoice2.text.toString()
-        choice["3"] = binding.editTextManageMultipleChoice3.text.toString()
-        choice["4"] = binding.editTextManageMultipleChoice4.text.toString()
-        choice["5"] = binding.editTextManageMultipleChoice5.text.toString()
-
+        val choice = HashMap<String, String>()
         val answer = mutableListOf<Int>()
-        if(binding.checkboxManageMultipleChoice1.isChecked) answer.add(1)
-        if(binding.checkboxManageMultipleChoice2.isChecked) answer.add(2)
-        if(binding.checkboxManageMultipleChoice3.isChecked) answer.add(3)
-        if(binding.checkboxManageMultipleChoice4.isChecked) answer.add(4)
-        if(binding.checkboxManageMultipleChoice5.isChecked) answer.add(5)
+
+        binding.apply {
+            choice["1"] = editTextManageMultipleChoice1.text.toString()
+            choice["2"] = editTextManageMultipleChoice2.text.toString()
+            choice["3"] = editTextManageMultipleChoice3.text.toString()
+            choice["4"] = editTextManageMultipleChoice4.text.toString()
+            choice["5"] = editTextManageMultipleChoice5.text.toString()
+
+            if (checkboxManageMultipleChoice1.isChecked) answer.add(1)
+            if (checkboxManageMultipleChoice2.isChecked) answer.add(2)
+            if (checkboxManageMultipleChoice3.isChecked) answer.add(3)
+            if (checkboxManageMultipleChoice4.isChecked) answer.add(4)
+            if (checkboxManageMultipleChoice5.isChecked) answer.add(5)
+        }
 
         editMultipleChoiceListener.onEditMultipleChoice(choice,answer)
     }

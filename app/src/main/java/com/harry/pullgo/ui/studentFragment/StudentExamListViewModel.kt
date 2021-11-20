@@ -2,6 +2,7 @@ package com.harry.pullgo.ui.studentFragment
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
+import com.harry.pullgo.data.models.AttenderState
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.data.utils.Resource
@@ -14,6 +15,9 @@ class StudentExamListViewModel @ViewModelInject constructor(
     ): ViewModel() {
     private val _studentExamList = MutableLiveData<Resource<List<Exam>>>()
     val studentExamList: LiveData<Resource<List<Exam>>> = _studentExamList
+
+    private val _studentAttenderStates = MutableLiveData<Resource<List<AttenderState>>>()
+    val studentAttenderStates: LiveData<Resource<List<AttenderState>>> = _studentAttenderStates
 
     fun requestExamsByName(studentId: Long){
         _studentExamList.postValue(Resource.loading(null))
@@ -66,6 +70,20 @@ class StudentExamListViewModel @ViewModelInject constructor(
                     _studentExamList.postValue(Resource.success(response.body()))
                 }else{
                     _studentExamList.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun getStudentAttenderStates(studentId: Long){
+        _studentAttenderStates.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            examsRepository.getStatesByStudentId(studentId).let{ response ->
+                if(response.isSuccessful){
+                    _studentAttenderStates.postValue(Resource.success(response.body()))
+                }else{
+                    _studentAttenderStates.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }

@@ -257,4 +257,17 @@ interface PullgoService {
 
     @DELETE("exam/questions/{id}")
     suspend fun deleteQuestion(@Path("id")questionId: Long): Response<Unit>
+
+
+    @GET("exam/attender-states")
+    suspend fun getStudentAttenderStates(@Query("studentId")studentId: Long, @Query("size")size: Int): Response<List<AttenderState>>
+
+    @GET("exam/attender-states")
+    suspend fun getExamAttenderStates(@Query("examId")examId: Long, @Query("size")size: Int): Response<List<AttenderState>>
+
+    @POST("exam/attender-states")
+    suspend fun createAttenderState(@Body state: CreateAttender): Response<AttenderState>
+
+    @POST("exam/attender-states/{id}/submit")
+    suspend fun submitAttenderState(@Path("id")stateId: Long): Response<Unit>
 }

@@ -15,8 +15,9 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:titleCentered="true"
             app:menu="@menu/take_exam_app_bar"
-            app:title="OO 시험"
+            app:title="남은 시간"
             app:titleTextColor="@color/white"/>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -24,13 +25,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
         android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/mainFragmentTakeExam"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pagerTakeExam"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/buttonSaveAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_button_main_color"
+            android:text="저장"
+            android:textColor="@color/white"
+            android:textSize="@dimen/success_button_text"/>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -10,8 +10,8 @@ class Exam (
     var endDateTime: String?,
     var timeLimit: String?,
     var passScore: Int?,
-    var cancelled: Boolean?,
-    var finished: Boolean?
+    var cancelled: Boolean,
+    var finished: Boolean
 ): Serializable{
     var id: Long? = null
 }
