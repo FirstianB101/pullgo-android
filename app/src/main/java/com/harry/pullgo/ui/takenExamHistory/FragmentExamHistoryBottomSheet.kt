@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.takeExam
+package com.harry.pullgo.ui.takenExamHistory
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,7 @@ import com.harry.pullgo.databinding.FragmentMultipleChoiceBottomSheetBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FragmentMultipleChoiceBottomSheet(
+class FragmentExamHistoryBottomSheet(
     private val selectedQuestion: Question,
     private val currentAnswer: List<Int>?,
     private val onChoiceListener: OnChoiceListener

@@ -261,10 +261,12 @@ class ManageQuestionActivity: AppCompatActivity() {
     }
 
     private fun uploadImage(imageUri: Uri?){
-        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
-        val requestBody =
-            RequestBody.create(MediaType.parse("text/plain"), ImageUtil.BitmapToString(bitmap))
+        if(imageUri != null) {
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+            val requestBody =
+                RequestBody.create(MediaType.parse("text/plain"), ImageUtil.BitmapToString(bitmap))
 
-        viewModel.requestUploadImage(requestBody)
+            viewModel.requestUploadImage(requestBody)
+        }
     }
 }

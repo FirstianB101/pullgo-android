@@ -3,6 +3,7 @@ package com.harry.pullgo.ui.studentFragment
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.harry.pullgo.data.models.AttenderState
+import com.harry.pullgo.data.models.CreateAttender
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.repository.ExamsRepository
 import com.harry.pullgo.data.utils.Resource
@@ -15,6 +16,9 @@ class StudentExamListViewModel @ViewModelInject constructor(
     ): ViewModel() {
     private val _studentExamList = MutableLiveData<Resource<List<Exam>>>()
     val studentExamList: LiveData<Resource<List<Exam>>> = _studentExamList
+
+    private val _startExamAttenderState = MutableLiveData<Resource<AttenderState>>()
+    val startExamAttenderState: LiveData<Resource<AttenderState>> = _startExamAttenderState
 
     private val _studentAttenderStates = MutableLiveData<Resource<List<AttenderState>>>()
     val studentAttenderStates: LiveData<Resource<List<AttenderState>>> = _studentAttenderStates
@@ -70,6 +74,20 @@ class StudentExamListViewModel @ViewModelInject constructor(
                     _studentExamList.postValue(Resource.success(response.body()))
                 }else{
                     _studentExamList.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun startExamByMakingState(attender: CreateAttender){
+        _startExamAttenderState.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            examsRepository.startTakingExam(attender).let { response ->
+                if(response.isSuccessful){
+                    _startExamAttenderState.postValue(Resource.success(response.body()))
+                }else{
+                    _startExamAttenderState.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }

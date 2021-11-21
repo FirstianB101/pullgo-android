@@ -1,6 +1,7 @@
 package com.harry.pullgo.data.repository
 
 import com.harry.pullgo.data.api.PullgoService
+import com.harry.pullgo.data.models.Answer
 import com.harry.pullgo.data.models.Question
 import com.harry.pullgo.di.PullgoRetrofitService
 import javax.inject.Inject
@@ -12,4 +13,9 @@ class TakeExamRepository @Inject constructor(
 ) {
     suspend fun getOneQuestion(questionId: Long) = client.getOneQuestion(questionId)
     suspend fun getQuestionsSuchExam(examId: Long) = client.getQuestionsSuchExam(examId,100)
+
+    suspend fun submitAttenderState(attenderStateId: Long) = client.submitAttenderState(attenderStateId)
+
+    suspend fun saveAttenderAnswer(attenderStateId: Long, questionId: Long, answer: Answer)
+                                = client.saveAttenderAnswer(attenderStateId, questionId, answer)
 }

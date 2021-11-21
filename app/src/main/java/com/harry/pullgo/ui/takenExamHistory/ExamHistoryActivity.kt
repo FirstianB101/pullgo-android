@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.takeExam
+package com.harry.pullgo.ui.takenExamHistory
 
 import android.os.Build
 import android.os.Bundle
@@ -25,19 +25,19 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TakeExamActivity : AppCompatActivity(){
+class ExamHistoryActivity : AppCompatActivity(){
     private val binding by lazy{ActivityTakeExamBinding.inflate(layoutInflater)}
 
     @Inject
     lateinit var app: PullgoApplication
 
-    private val viewModel: TakeExamViewModel by viewModels()
+    private val historyViewModel: ExamHistoryViewModel by viewModels()
 
     private lateinit var selectedExam: Exam
     private var attenderStateId: Long? = null
 
     private lateinit var questions: List<Question>
-    private lateinit var questionFragments: MutableList<FragmentTakeExamQuestion>
+    private lateinit var questionFragmentQuestions: MutableList<FragmentQuestionExamHistory>
     private lateinit var answers: MutableList<MutableList<Int>>
 
     private var curPos = 0
@@ -63,7 +63,7 @@ class TakeExamActivity : AppCompatActivity(){
         selectedExam = intent.getSerializableExtra("selectedExam") as Exam
         attenderStateId = intent.getLongExtra("attenderStateId",0L)
 
-        viewModel.getQuestionsSuchExam(selectedExam.id!!)
+        historyViewModel.getQuestionsSuchExam(selectedExam.id!!)
     }
 
     private fun setListeners(){
@@ -106,7 +106,7 @@ class TakeExamActivity : AppCompatActivity(){
     }
 
     private fun initViewModel(){
-        viewModel.questionsSuchExamRepository.observe(this){
+        historyViewModel.questionsSuchExamRepository.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
                     questions = it.data!!
@@ -127,7 +127,7 @@ class TakeExamActivity : AppCompatActivity(){
             }
         }
 
-        viewModel.attenderAnswerRepository.observe(this){
+        historyViewModel.attenderAnswerRepository.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
                     Toast.makeText(this,"${savedPos}번 답안을 저장했습니다",Toast.LENGTH_SHORT).show()
@@ -140,7 +140,7 @@ class TakeExamActivity : AppCompatActivity(){
             }
         }
 
-        viewModel.takeExamMessage.observe(this){
+        historyViewModel.takeExamMessage.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
                     Toast.makeText(applicationContext,"시험 응시가 완료되었습니다",Toast.LENGTH_SHORT).show()
@@ -168,7 +168,7 @@ class TakeExamActivity : AppCompatActivity(){
 
     private fun showMultipleChoiceFragment(){
         if(questions.isNotEmpty()) {
-            FragmentMultipleChoiceBottomSheet(questions[curPos] ,answers[curPos] ,object : OnChoiceListener {
+            FragmentExamHistoryBottomSheet(questions[curPos] ,answers[curPos] ,object : OnChoiceListener {
                 override fun onChoice(choices: List<Int>) {
                     answers[curPos] = choices.toMutableList()
                 }
@@ -179,23 +179,23 @@ class TakeExamActivity : AppCompatActivity(){
     private fun saveCurrentAnswer(answer: List<Int>){
         if(answer.isNotEmpty()) {
             savedPos = curPos + 1
-            viewModel.saveAttenderAnswer(attenderStateId!!, questions[curPos].id!!, Answer(answer))
+            historyViewModel.saveAttenderAnswer(attenderStateId!!, questions[curPos].id!!, Answer(answer))
         }
     }
 
     private fun initQuestionFragmentsPager(size: Int){
-        questionFragments = mutableListOf()
+        questionFragmentQuestions = mutableListOf()
         for(i in 0 until size){
-            questionFragments.add(FragmentTakeExamQuestion(questions[i],i+1))
+            questionFragmentQuestions.add(FragmentQuestionExamHistory(questions[i],i+1))
         }
-        binding.pagerTakeExam.adapter = TakeExamPagerAdapter(this, questionFragments)
+        binding.pagerTakeExam.adapter = TakeExamPagerAdapter(this, questionFragmentQuestions)
     }
 
     private fun showFinishExamDialog(){
         val dialog = TwoButtonDialog(this)
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
             override fun onLeftClicked() {
-                viewModel.submitAttenderState(attenderStateId!!)
+                historyViewModel.submitAttenderState(attenderStateId!!)
             }
         }
         dialog.start("응시 완료","답안들을 제출하고 종료하시겠습니까?","응시 완료","취소")
@@ -221,7 +221,7 @@ class TakeExamActivity : AppCompatActivity(){
 
             override fun onFinish() {
                 Toast.makeText(applicationContext,"시험시간 종료",Toast.LENGTH_SHORT).show()
-                viewModel.submitAttenderState(attenderStateId!!)
+                historyViewModel.submitAttenderState(attenderStateId!!)
             }
         }.start()
     }

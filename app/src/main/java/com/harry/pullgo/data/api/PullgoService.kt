@@ -270,4 +270,9 @@ interface PullgoService {
 
     @POST("exam/attender-states/{id}/submit")
     suspend fun submitAttenderState(@Path("id")stateId: Long): Response<Unit>
+
+
+    @PUT("exam/attender-state/{attenderStateId}/answers/{questionId}")
+    suspend fun saveAttenderAnswer(@Path("attenderStateId")attenderStateId: Long, @Path("questionId")questionId: Long
+                                    ,@Body answer: Answer): Response<AttenderAnswer>
 }

@@ -43,13 +43,15 @@ class FragmentManageQuestion(
 
     private fun initialize(){
         binding.editTextManageQuestion.setText(question.content)
-        curImageUri = Uri.parse(question.pictureUrl)
+        if(question.pictureUrl != null){
+            curImageUri = Uri.parse(question.pictureUrl)
 
-        Glide.with(this)
-            .load(question.pictureUrl)
-            .error(R.drawable.add_picture)
-            .fitCenter()
-            .into(binding.imageViewManageQuestion)
+            Glide.with(this)
+                .load(question.pictureUrl)
+                .error(R.drawable.add_picture)
+                .fitCenter()
+                .into(binding.imageViewManageQuestion)
+        }
 
         startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             if(it.resultCode == Activity.RESULT_OK){

@@ -15,6 +15,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
+import com.harry.pullgo.data.models.CreateAttender
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentStudentExamListBinding
@@ -31,6 +32,8 @@ class StudentExamListFragment : Fragment(){
     lateinit var app: PullgoApplication
 
     private val viewModel: StudentExamListViewModel by viewModels()
+
+    private var selectedExam: Exam? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +74,18 @@ class StudentExamListFragment : Fragment(){
                 }
             }
         }
+
+        viewModel.startExamAttenderState.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    startTakingExam(selectedExam,it.data?.id!!)
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(),"시험을 응시할 수 없습니다. (${it.message})",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun filterExams(case: Int){
@@ -96,6 +111,7 @@ class StudentExamListFragment : Fragment(){
 
         examsAdapter.itemClickListener = object: OnExamClickListener {
             override fun onExamClick(view: View, exam: Exam?) {
+                selectedExam = exam
                 showTakeExamDialog(exam)
             }
 
@@ -124,12 +140,19 @@ class StudentExamListFragment : Fragment(){
         val dialog = TwoButtonDialog(requireContext())
         dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
             override fun onLeftClicked() {
-                val intent = Intent(requireContext(),TakeExamActivity::class.java)
-                intent.putExtra("selectedExam",exam)
-                startActivity(intent)
+                val attenderId = app.loginUser.student?.id
+
+                viewModel.startExamByMakingState(CreateAttender(attenderId,exam?.id))
             }
         }
         dialog.start("시험 응시","${exam?.name}시험을 응시하시겠습니까?",
             "응시하기","취소")
+    }
+
+    private fun startTakingExam(exam: Exam?, attenderStateId: Long){
+        val intent = Intent(requireContext(),TakeExamActivity::class.java)
+        intent.putExtra("selectedExam",exam)
+        intent.putExtra("attenderStateId",attenderStateId)
+        startActivity(intent)
     }
 }

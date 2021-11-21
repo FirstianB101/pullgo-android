@@ -1,4 +1,4 @@
-package com.harry.pullgo.ui.takeExam
+package com.harry.pullgo.ui.takenExamHistory
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
@@ -12,7 +12,7 @@ import com.harry.pullgo.data.repository.TakeExamRepository
 import com.harry.pullgo.data.utils.Resource
 import kotlinx.coroutines.launch
 
-class TakeExamViewModel @ViewModelInject constructor(
+class ExamHistoryViewModel @ViewModelInject constructor(
     private val repository: TakeExamRepository
 ): ViewModel() {
     private val _oneQuestionRepository = MutableLiveData<Resource<Question>>()
