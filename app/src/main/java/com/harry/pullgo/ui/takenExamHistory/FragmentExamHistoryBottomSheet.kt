@@ -61,6 +61,10 @@ class FragmentExamHistoryBottomSheet(
             if(studentAnswers.contains(5)) checkboxMultipleChoice5.isChecked = true
         }
 
+        binding.buttonMultipleChoiceDone.setOnClickListener {
+            dismiss()
+        }
+
         return binding.root
     }
 

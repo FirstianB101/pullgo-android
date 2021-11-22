@@ -14,6 +14,7 @@ import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
 import com.harry.pullgo.data.api.OnExamClickListener
+import com.harry.pullgo.data.models.AttenderState
 import com.harry.pullgo.data.models.CreateAttender
 import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.utils.Status
@@ -77,7 +78,8 @@ class StudentExamListFragment : Fragment(){
         viewModel.startExamAttenderState.observe(requireActivity()){
             when(it.status){
                 Status.SUCCESS -> {
-                    startTakingExam(selectedExam,it.data?.id!!)
+                    startTakingExam(selectedExam,it.data!!)
+                    filterExams(0)
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {
@@ -169,10 +171,10 @@ class StudentExamListFragment : Fragment(){
             "응시하기","취소")
     }
 
-    private fun startTakingExam(exam: Exam?, attenderStateId: Long){
+    private fun startTakingExam(exam: Exam?, attenderState: AttenderState){
         val intent = Intent(requireContext(),TakeExamActivity::class.java)
         intent.putExtra("selectedExam",exam)
-        intent.putExtra("attenderStateId",attenderStateId)
+        intent.putExtra("selectedState",attenderState)
         startActivity(intent)
     }
 }

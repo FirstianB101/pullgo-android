@@ -31,7 +31,7 @@ class ExamStatusAdapter(
         holder.binding.textViewSchoolNameExamStatus.text = studentInfos[position].schoolName.toString()
         holder.binding.textViewGradeExamStatus.text = "${studentInfos[position].schoolYear?.plus(1).toString()}학년"
 
-        holder.binding.textViewStudentScoreExamStatus.text = "${dataSet[position].score}점 / 100점"
+        holder.binding.textViewStudentScoreExamStatus.text = "${dataSet[position].score ?: 0}점 / 100점"
         holder.binding.textViewStatusExamStatus.text =
             when(dataSet[position].progress){
                 ExamProgress.ABSENCE -> {

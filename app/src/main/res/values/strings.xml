@@ -185,4 +185,5 @@
     <string name="comment_cancel_exam">시험을 취소합니다</string>
     <string name="comment_cancel_exam_detail">선택한 시험을 취소합니다.</string>
     <string name="comment_no_students_took_exam">시험에 응시하는 학생이 존재하지 않습니다</string>
+    <string name="comment_exam_result_check">자세한 결과는 오답노트에서 확인하실 수 있습니다</string>
 </resources>

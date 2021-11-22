@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harry.pullgo.data.models.Answer
 import com.harry.pullgo.data.models.AttenderAnswer
+import com.harry.pullgo.data.models.AttenderState
 import com.harry.pullgo.data.models.Question
 import com.harry.pullgo.data.repository.TakeExamRepository
 import com.harry.pullgo.data.utils.Resource
@@ -24,22 +25,14 @@ class TakeExamViewModel @ViewModelInject constructor(
     private val _attenderAnswerRepository = MutableLiveData<Resource<AttenderAnswer>>()
     val attenderAnswerRepository: LiveData<Resource<AttenderAnswer>> = _attenderAnswerRepository
 
+    private val _attenderAnswersInState = MutableLiveData<Resource<List<AttenderAnswer>>>()
+    val attenderAnswersInState: LiveData<Resource<List<AttenderAnswer>>> = _attenderAnswersInState
+
+    private val _oneAttenderStateForResult = MutableLiveData<Resource<AttenderState>>()
+    val oneAttenderStateForResult: LiveData<Resource<AttenderState>> = _oneAttenderStateForResult
+
     private val _takeExamMessage = MutableLiveData<Resource<String>>()
     val takeExamMessage = _takeExamMessage
-
-    fun getOneQuestion(questionId: Long){
-        _oneQuestionRepository.postValue(Resource.loading(null))
-
-        viewModelScope.launch {
-            repository.getOneQuestion(questionId).let{ response ->
-                if(response.isSuccessful){
-                    _oneQuestionRepository.postValue(Resource.success(response.body()))
-                }else{
-                    _oneQuestionRepository.postValue(Resource.error(response.code().toString(),null))
-                }
-            }
-        }
-    }
 
     fun getQuestionsSuchExam(examId: Long){
         _questionsSuchExamRepository.postValue(Resource.loading(null))
@@ -76,6 +69,32 @@ class TakeExamViewModel @ViewModelInject constructor(
                     _takeExamMessage.postValue(Resource.success("응시가 완료되었습니다"))
                 }else{
                     _takeExamMessage.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun requestAttenderAnswersInState(attenderStateId: Long){
+        _attenderAnswersInState.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.getAttenderAnswers(attenderStateId).let{response ->
+                if(response.isSuccessful){
+                    _attenderAnswersInState.postValue(Resource.success(response.body()))
+                }else{
+                    _attenderAnswersInState.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun getOneAttenderState(attenderStateId: Long){
+        viewModelScope.launch {
+            repository.getOneAttenderState(attenderStateId).let{response ->
+                if(response.isSuccessful){
+                    _oneAttenderStateForResult.postValue(Resource.success(response.body()))
+                }else{
+                    _oneAttenderStateForResult.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }
