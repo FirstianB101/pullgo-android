@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
@@ -66,7 +65,7 @@ class StudentExamListFragment : Fragment(){
         viewModel.studentExamList.observe(requireActivity()){
             when(it.status){
                 Status.SUCCESS -> {
-                    displayExams()
+                    viewModel.getStudentAttenderStates(app.loginUser.student?.id!!)
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {
@@ -86,6 +85,16 @@ class StudentExamListFragment : Fragment(){
                 }
             }
         }
+
+        viewModel.studentAttenderStates.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    displayExams()
+                }
+                Status.LOADING -> {}
+                Status.ERROR -> {}
+            }
+        }
     }
 
     private fun filterExams(case: Int){
@@ -97,13 +106,24 @@ class StudentExamListFragment : Fragment(){
     }
 
     private fun displayExams(){
-        val data = viewModel.studentExamList.value?.data!!
+        val exams = viewModel.studentExamList.value?.data!!
+
+        val attenderStates = viewModel.studentAttenderStates.value?.data!!
 
         val filteredData = mutableListOf<Exam>()
 
-        for(exam in data){
-            if(!exam.finished && !exam.cancelled){
-                filteredData.add(exam)
+        for(exam in exams){
+            if(exam.finished || exam.cancelled)
+                continue
+            else{
+                var exist = false
+                for(state in attenderStates){
+                    if(exam.id == state.examId) {
+                        exist = true
+                        break
+                    }
+                }
+                if(!exist)filteredData.add(exam)
             }
         }
 
