@@ -10,6 +10,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/textViewMultipleChoiceMent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="정답 선택"
@@ -29,19 +30,33 @@
     </FrameLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutMultipleChoice1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <TextView
+        <FrameLayout
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="1"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/circleMultipleChoice1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/checkImageMultipleChoice1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_check"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textViewMultipleChoice1"
@@ -63,19 +78,33 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayoutMultipleChoice2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <TextView
+        <FrameLayout
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="2"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/circleMultipleChoice2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/checkImageMultipleChoice2"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_check"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textViewMultipleChoice2"
@@ -96,19 +125,33 @@
             style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/linearLayoutMultipleChoice3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <TextView
+        <FrameLayout
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="3"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/circleMultipleChoice3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/checkImageMultipleChoice3"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_check"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textViewMultipleChoice3"
@@ -129,19 +172,33 @@
             style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/linearLayoutMultipleChoice4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <TextView
+        <FrameLayout
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="4"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/circleMultipleChoice4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/checkImageMultipleChoice4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_check"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textViewMultipleChoice4"
@@ -162,19 +219,33 @@
             style="@style/Widget.App.CheckBox"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/linearLayoutMultipleChoice5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-        <TextView
+        <FrameLayout
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/circle"
-            android:gravity="center"
-            android:text="5"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/circleMultipleChoice5"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/checkImageMultipleChoice5"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|top"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_check"/>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textViewMultipleChoice5"

@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/answer_correct.xml" value="1.2392857142857143" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/answer_wrong.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/circle.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/ic_baseline_check.xml" value="0.20234375" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/rounded.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/select_button.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/stroke_colored.xml" value="0.26979166666666665" />
@@ -33,6 +36,7 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_change_info_check_pw.xml" value="0.1" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_detailed_manage_exam.xml" value="0.2" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_edit_exam_info.xml" value="0.16734972677595628" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_exam_history_question.xml" value="0.15061475409836064" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_exam_result.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_manage_classroom_manage_exam.xml" value="0.264" />
@@ -66,6 +70,7 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_manage_academy_people_item.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_manage_classroom_exam_item.xml" value="0.2" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_student_item_no_button.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/menu/activity_manage_classroom.xml" value="0.190234375" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/menu/activity_manage_question.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/menu/manage_exam_app_bar.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/menu/take_exam_app_bar.xml" value="0.24444444444444444" />

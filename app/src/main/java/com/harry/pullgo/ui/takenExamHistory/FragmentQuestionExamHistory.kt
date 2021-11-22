@@ -8,15 +8,16 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.harry.pullgo.R
 import com.harry.pullgo.data.models.Question
-import com.harry.pullgo.databinding.FragmentTakeExamQuestionBinding
+import com.harry.pullgo.databinding.FragmentExamHistoryQuestionBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FragmentQuestionExamHistory(
     private val selectedQuestion: Question,
     private val questionNum: Int,
+    private val isCorrect: Boolean
     ): Fragment() {
-    private val binding by lazy{FragmentTakeExamQuestionBinding.inflate(layoutInflater)}
+    private val binding by lazy{FragmentExamHistoryQuestionBinding.inflate(layoutInflater)}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize()
@@ -31,5 +32,10 @@ class FragmentQuestionExamHistory(
             .load(selectedQuestion.pictureUrl)
             .fitCenter()
             .into(binding.imageViewQuiz)
+
+        if(isCorrect)
+            binding.imageViewCheckAnswer.setImageResource(R.drawable.ic_outline_circle_24)
+        else
+            binding.imageViewCheckAnswer.setImageResource(R.drawable.wrong)
     }
 }

@@ -20,6 +20,7 @@
             android:name=".ui.manageQuestion.ManageQuestionActivity"
             android:exported="false" />
         <activity android:name=".ui.takeExam.TakeExamActivity" />
+        <activity android:name=".ui.takenExamHistory.ExamHistoryActivity"/>
         <activity android:name=".AddressActivity" />
         <activity
             android:name=".ui.findAcademy.CreateAcademyActivity"

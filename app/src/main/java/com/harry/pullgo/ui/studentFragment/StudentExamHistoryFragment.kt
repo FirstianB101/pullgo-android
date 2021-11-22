@@ -1,5 +1,6 @@
 package com.harry.pullgo.ui.studentFragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.harry.pullgo.R
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamAdapter
@@ -18,6 +18,8 @@ import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.utils.ExamProgress
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentStudentExamHistoryBinding
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import com.harry.pullgo.ui.takenExamHistory.ExamHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -27,6 +29,8 @@ class StudentExamHistoryFragment : Fragment(){
 
     @Inject
     lateinit var app: PullgoApplication
+
+    private var selectedExam: Exam? = null
 
     private val viewModel: StudentExamListViewModel by viewModels()
 
@@ -110,6 +114,8 @@ class StudentExamHistoryFragment : Fragment(){
 
         examsAdapter.itemClickListener = object: OnExamClickListener {
             override fun onExamClick(view: View, exam: Exam?) {
+                selectedExam = exam
+                showExamHistoryDialog(exam)
             }
 
             override fun onRemoveButtonClick(view: View, exam: Exam?) {
@@ -124,6 +130,35 @@ class StudentExamHistoryFragment : Fragment(){
         binding.recyclerViewExamHistory.adapter = examsAdapter
 
         showNoResultText(takenExams.isEmpty())
+    }
+
+    private fun showExamHistoryDialog(exam: Exam?){
+        val dialog = TwoButtonDialog(requireContext())
+        dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener {
+            override fun onLeftClicked() {
+                showSelectedExamHistory(exam)
+            }
+        }
+        dialog.start("응시한 시험","${exam?.name}시험을 확인하시겠습니까?",
+            "확인하기","취소")
+    }
+
+    private fun showSelectedExamHistory(exam: Exam?){
+        val attenderStates = viewModel.studentAttenderStates.value?.data!!
+
+        for(state in attenderStates){
+            if(exam?.id == state.examId){
+                startExamHistory(exam,state.id!!)
+                break
+            }
+        }
+    }
+
+    private fun startExamHistory(exam: Exam?, attenderStateId: Long){
+        val intent = Intent(requireContext(),ExamHistoryActivity::class.java)
+        intent.putExtra("selectedExam",exam)
+        intent.putExtra("attenderStateId",attenderStateId)
+        startActivity(intent)
     }
 
     private fun showNoResultText(isEmpty: Boolean){

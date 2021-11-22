@@ -275,4 +275,7 @@ interface PullgoService {
     @PUT("exam/attender-state/{attenderStateId}/answers/{questionId}")
     suspend fun saveAttenderAnswer(@Path("attenderStateId")attenderStateId: Long, @Path("questionId")questionId: Long
                                     ,@Body answer: Answer): Response<AttenderAnswer>
+
+    @GET("exam/attender-state/answers")
+    suspend fun getAttenderAnswers(@Query("attenderStateId")attenderStateId: Long, @Query("size")size: Int, @Query("sort")param: String?): Response<List<AttenderAnswer>>
 }
