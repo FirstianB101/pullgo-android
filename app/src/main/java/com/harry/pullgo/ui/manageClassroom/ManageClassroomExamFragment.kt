@@ -20,6 +20,7 @@ import com.harry.pullgo.data.models.Exam
 import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentManageClassroomManageExamBinding
 import com.harry.pullgo.ui.dialog.TwoButtonDialog
+import com.harry.pullgo.ui.examStatus.ManageExamStatusActivity
 import com.harry.pullgo.ui.manageQuestion.ManageQuestionActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -120,7 +121,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
     }
 
     private fun displayExams(exams: List<Exam>){
-        val examsAdapter: ManageExamAdapter = ManageExamAdapter(exams)
+        val examsAdapter = ManageExamAdapter(exams)
 
         examsAdapter.examClickListener = object: OnExamClickListener{
             override fun onExamClick(view: View, exam: Exam?) {
@@ -132,6 +133,9 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             }
 
             override fun onTakeExamStatusClick(view: View, exam: Exam?) {
+                val intent = Intent(requireContext(), ManageExamStatusActivity::class.java)
+                intent.putExtra("selectedExam",exam)
+                startActivity(intent)
             }
 
             override fun onManageQuestionClick(view: View, exam: Exam?) {

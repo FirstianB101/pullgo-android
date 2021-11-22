@@ -131,6 +131,9 @@ interface PullgoService {
     suspend fun removeStudentClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Response<Unit>
 
 
+    @GET("students/{id}")
+    suspend fun getOneStudent(@Path("id")studentId: Long): Response<Student>
+
     @GET("students/{username}/exists")
     suspend fun studentUsernameExists(@Path("username")username: String): Response<Exist>
 
