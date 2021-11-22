@@ -223,8 +223,16 @@ interface PullgoService {
     @GET("exams/")
     suspend fun getStudentExamsDesc(@Query("id,desc")studentId: Long, @Query("sort")sort: String, @Query("size")size: Int): Response<List<Exam>>
 
-    @GET("exams")
+    @GET("exams/")
     suspend fun getClassroomExams(@Query("classroomId")classroomId: Long, @Query("size")size: Int): Response<List<Exam>>
+
+    @GET("exams/")
+    suspend fun getClassroomFinishedExams(@Query("classroomId")classroomId: Long,
+                                          @Query("finished")fin: String, @Query("size")size: Int): Response<List<Exam>>
+
+    @GET("exams/")
+    suspend fun getClassroomCancelledExams(@Query("classroomId")classroomId: Long,
+                                          @Query("cancelled")can: String, @Query("size")size: Int): Response<List<Exam>>
 
 
     @POST("exams/")
@@ -277,5 +285,5 @@ interface PullgoService {
                                     ,@Body answer: Answer): Response<AttenderAnswer>
 
     @GET("exam/attender-state/answers")
-    suspend fun getAttenderAnswers(@Query("attenderStateId")attenderStateId: Long, @Query("size")size: Int, @Query("sort")param: String?): Response<List<AttenderAnswer>>
+    suspend fun getAttenderAnswers(@Query("attenderStateId")attenderStateId: Long, @Query("size")size: Int, @Query("sort")param: String?    ): Response<List<AttenderAnswer>>
 }

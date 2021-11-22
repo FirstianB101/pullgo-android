@@ -16,7 +16,5 @@ class ExamsRepository @Inject constructor(
     suspend fun getExamsByEndDateDesc(studentId: Long) = examClient.getStudentExamsDesc(studentId,"endDateTime",100)
 
     suspend fun getStatesByStudentId(studentId: Long) = examClient.getStudentAttenderStates(studentId,100)
-    suspend fun getStatesByExamId(examId: Long) = examClient.getExamAttenderStates(examId,100)
     suspend fun startTakingExam(attender: CreateAttender) = examClient.createAttenderState(attender)
-    suspend fun submitExam(stateId: Long) = examClient.submitAttenderState(stateId)
 }

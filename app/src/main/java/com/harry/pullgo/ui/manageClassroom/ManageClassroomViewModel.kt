@@ -132,6 +132,34 @@ class ManageClassroomViewModel @ViewModelInject constructor(
         }
     }
 
+    fun requestGetFinishedExams(classroomId: Long){
+        _examsWithinClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.getFinishedExams(classroomId).let{ response ->
+                if(response.isSuccessful){
+                    _examsWithinClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _examsWithinClassroom.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun requestGetCancelledExams(classroomId: Long){
+        _examsWithinClassroom.postValue(Resource.loading(null))
+
+        viewModelScope.launch {
+            repository.getCancelledExams(classroomId).let{ response ->
+                if(response.isSuccessful){
+                    _examsWithinClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _examsWithinClassroom.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
     fun createClassroom(classroom: Classroom){
         _createClassroomMessage.postValue(Resource.loading(null))
 
