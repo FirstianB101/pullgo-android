@@ -11,4 +11,6 @@ class ExamStatusRepository @Inject constructor(
 ) {
     suspend fun getAttenderStatesInExam(examId: Long) = client.getExamAttenderStates(examId,100)
     suspend fun getOneStudent(studentId: Long) = client.getOneStudent(studentId)
+
+    suspend fun getStudentsInClassroom(classroomId: Long) = client.getStudentsAppliedClassroom(classroomId)
 }

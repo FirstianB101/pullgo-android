@@ -12,8 +12,8 @@ import com.harry.pullgo.data.utils.ExamProgress
 import com.harry.pullgo.databinding.LayoutExamStatusItemBinding
 
 class ExamStatusAdapter(
-    private val dataSet: List<AttenderState>,
-    private val studentInfoMap: Map<Long,Student>,
+    private val students: List<Student>,
+    private val statesMap: Map<Long,AttenderState>,
     private val context: Context
     ):
     RecyclerView.Adapter<ExamStatusAdapter.ViewHolder>() {
@@ -27,28 +27,29 @@ class ExamStatusAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.textViewStudentNameExamStatus.text = studentInfoMap[dataSet[position].attenderId]?.account?.fullName.toString()
-        holder.binding.textViewSchoolNameExamStatus.text = studentInfoMap[dataSet[position].attenderId]?.schoolName.toString()
-        holder.binding.textViewGradeExamStatus.text = "${studentInfoMap[dataSet[position].attenderId]?.schoolYear?.plus(1).toString()}학년"
+        holder.binding.textViewStudentNameExamStatus.text = students[position].account?.fullName.toString()
+        holder.binding.textViewSchoolNameExamStatus.text = students[position].schoolName.toString()
+        holder.binding.textViewGradeExamStatus.text = "${students[position].schoolYear?.plus(1).toString()}학년"
 
+        val state = statesMap[students[position].id]
         holder.binding.textViewStatusExamStatus.text =
-            when(dataSet[position].progress){
-                ExamProgress.ABSENCE -> {
-                    holder.binding.textViewStatusExamStatus.setTextColor(ContextCompat.getColor(context,R.color.material_700_red))
-                    "미응시"
-                }
+            when(state?.progress){
                 ExamProgress.COMPLETE -> {
                     holder.binding.textViewStatusExamStatus.setTextColor(ContextCompat.getColor(context,R.color.material_700_green))
-                    holder.binding.textViewStudentScoreExamStatus.text = "${dataSet[position].score ?: 0}점 / 100점"
+                    holder.binding.textViewStudentScoreExamStatus.text = "${state.score ?: 0}점 / 100점"
                     "응시 완료"
                 }
                 ExamProgress.ONGOING -> {
                     holder.binding.textViewStatusExamStatus.setTextColor(ContextCompat.getColor(context,android.R.color.holo_orange_dark))
                     "응시중"
                 }
-                else -> "오류"
+                else ->{
+                    holder.binding.textViewStatusExamStatus.setTextColor(ContextCompat.getColor(context,R.color.material_700_red))
+                    "미응시"
+                }
             }
+
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = students.size
 }

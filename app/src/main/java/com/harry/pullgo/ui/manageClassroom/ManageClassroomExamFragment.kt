@@ -135,6 +135,7 @@ class ManageClassroomExamFragment(private val selectedClassroom: Classroom): Fra
             override fun onTakeExamStatusClick(view: View, exam: Exam?) {
                 val intent = Intent(requireContext(), ManageExamStatusActivity::class.java)
                 intent.putExtra("selectedExam",exam)
+                intent.putExtra("selectedClassroomId",selectedClassroom.id!!)
                 startActivity(intent)
             }
 
