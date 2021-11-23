@@ -13,7 +13,7 @@ import com.harry.pullgo.databinding.LayoutExamStatusItemBinding
 
 class ExamStatusAdapter(
     private val dataSet: List<AttenderState>,
-    private val studentInfos: List<Student>,
+    private val studentInfoMap: Map<Long,Student>,
     private val context: Context
     ):
     RecyclerView.Adapter<ExamStatusAdapter.ViewHolder>() {
@@ -27,11 +27,10 @@ class ExamStatusAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.textViewStudentNameExamStatus.text = studentInfos[position].account?.fullName.toString()
-        holder.binding.textViewSchoolNameExamStatus.text = studentInfos[position].schoolName.toString()
-        holder.binding.textViewGradeExamStatus.text = "${studentInfos[position].schoolYear?.plus(1).toString()}학년"
+        holder.binding.textViewStudentNameExamStatus.text = studentInfoMap[dataSet[position].attenderId]?.account?.fullName.toString()
+        holder.binding.textViewSchoolNameExamStatus.text = studentInfoMap[dataSet[position].attenderId]?.schoolName.toString()
+        holder.binding.textViewGradeExamStatus.text = "${studentInfoMap[dataSet[position].attenderId]?.schoolYear?.plus(1).toString()}학년"
 
-        holder.binding.textViewStudentScoreExamStatus.text = "${dataSet[position].score ?: 0}점 / 100점"
         holder.binding.textViewStatusExamStatus.text =
             when(dataSet[position].progress){
                 ExamProgress.ABSENCE -> {
@@ -40,6 +39,7 @@ class ExamStatusAdapter(
                 }
                 ExamProgress.COMPLETE -> {
                     holder.binding.textViewStatusExamStatus.setTextColor(ContextCompat.getColor(context,R.color.material_700_green))
+                    holder.binding.textViewStudentScoreExamStatus.text = "${dataSet[position].score ?: 0}점 / 100점"
                     "응시 완료"
                 }
                 ExamProgress.ONGOING -> {

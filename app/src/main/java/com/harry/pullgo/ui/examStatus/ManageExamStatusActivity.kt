@@ -1,10 +1,12 @@
 package com.harry.pullgo.ui.examStatus
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.harry.pullgo.application.PullgoApplication
 import com.harry.pullgo.data.adapter.ExamStatusAdapter
 import com.harry.pullgo.data.models.AttenderState
@@ -19,12 +21,9 @@ import javax.inject.Inject
 class ManageExamStatusActivity : AppCompatActivity() {
     private val binding by lazy{ActivityManageExamStatusBinding.inflate(layoutInflater)}
 
-    @Inject
-    lateinit var app: PullgoApplication
-
     private val viewModel: ManageExamStatusViewModel by viewModels()
 
-    private val studentInfos = mutableListOf<Student>()
+    private val studentInfoMap = mutableMapOf<Long,Student>()
     private lateinit var states: List<AttenderState>
 
     lateinit var selectedExam: Exam
@@ -60,9 +59,9 @@ class ManageExamStatusActivity : AppCompatActivity() {
         viewModel.oneStudent.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
-                    studentInfos.add(it.data!!)
+                    studentInfoMap[it.data?.id!!] = it.data
 
-                    if(states.size == studentInfos.size){
+                    if(states.size == studentInfoMap.keys.size) {
                         displayExams()
                     }
                 }
@@ -78,22 +77,16 @@ class ManageExamStatusActivity : AppCompatActivity() {
         for(state in states){
             viewModel.getOneStudent(state.attenderId!!)
         }
-    }
-
-    private fun showNoResultText(isEmpty: Boolean){
-        if(isEmpty)
+        if(states.isEmpty()){
             binding.textViewManageExamStatusNoResult.visibility = View.VISIBLE
-        else
-            binding.textViewManageExamStatusNoResult.visibility = View.GONE
+        }
     }
 
     private fun displayExams(){
         val exams = viewModel.attenderStatesInExam.value?.data!!
 
-        val adapter = ExamStatusAdapter(exams,studentInfos,this)
+        val adapter = ExamStatusAdapter(exams,studentInfoMap,this)
 
         binding.recyclerViewManageExamStatus.adapter = adapter
-
-        showNoResultText(exams.isEmpty())
     }
 }

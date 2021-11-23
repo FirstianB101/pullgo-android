@@ -70,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:padding="8dp"
-                android:text="점수 / 만점"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold" />
