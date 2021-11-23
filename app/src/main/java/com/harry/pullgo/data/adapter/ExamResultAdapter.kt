@@ -11,7 +11,7 @@ import com.harry.pullgo.data.utils.ListCompareUtil
 import com.harry.pullgo.databinding.LayoutExamResultItemBinding
 
 class ExamResultAdapter(
-    private val attenderAnswers: List<AttenderAnswer>,
+    private val attenderAnswersMap: Map<Long,List<Int>>,
     private val questions: List<Question>
     ): RecyclerView.Adapter<ExamResultAdapter.ViewHolder>() {
 
@@ -26,7 +26,10 @@ class ExamResultAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.textViewExamResultQuestionNum.text = "${position+1}번."
 
-        val isCorrect = ListCompareUtil.isEqualList(attenderAnswers[position].answer,questions[position].answer!!)
+        val attenderAnswer = attenderAnswersMap[questions[position].id]
+
+        val isCorrect = if(attenderAnswer == null) false
+                        else ListCompareUtil.isEqualList(attenderAnswer,questions[position].answer!!)
 
         if(isCorrect)
             holder.binding.imageViewExamResultQuestionNum.setImageResource(R.drawable.ic_outline_circle_24)
@@ -34,5 +37,5 @@ class ExamResultAdapter(
             holder.binding.imageViewExamResultQuestionNum.setImageResource(R.drawable.wrong)
     }
 
-    override fun getItemCount() = attenderAnswers.size
+    override fun getItemCount() = questions.size
 }

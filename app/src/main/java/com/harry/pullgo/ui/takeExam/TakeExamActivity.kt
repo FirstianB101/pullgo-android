@@ -245,7 +245,7 @@ class TakeExamActivity : AppCompatActivity(){
     }
 
     private fun startCountDown(startTime: Long){
-        timer = object: CountDownTimer(startTime,1000){
+        timer = object: CountDownTimer(startTime - 1000,1000){
             override fun onTick(millis: Long) {
                 val hour = TimeUnit.MILLISECONDS.toHours(millis)
                 val minutes = (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)))

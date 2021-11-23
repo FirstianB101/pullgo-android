@@ -36,7 +36,7 @@ class ExamHistoryActivity : AppCompatActivity(){
 
     private lateinit var questions: List<Question>
     private lateinit var questionHistoryFragment: MutableList<FragmentQuestionExamHistory>
-    private lateinit var answers: List<AttenderAnswer>
+    private val answersMap = mutableMapOf<Long,List<Int>>()
 
     private var curPos = 0
 
@@ -116,7 +116,7 @@ class ExamHistoryActivity : AppCompatActivity(){
         viewModel.attenderAnswersRepository.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
-                    answers = it.data!!
+                    fillAttenderAnswersMap(it.data!!)
                     viewModel.getQuestionsSuchExam(selectedExam.id!!)
                 }
                 Status.LOADING -> {
@@ -142,15 +142,15 @@ class ExamHistoryActivity : AppCompatActivity(){
         }
     }
 
+    private fun fillAttenderAnswersMap(answers: List<AttenderAnswer>){
+        for(answer in answers){
+            answersMap[answer.questionId] = answer.answer
+        }
+    }
+
     private fun showMultipleChoiceFragment(){
         if(questions.isNotEmpty()) {
-            lateinit var studentAnswer: List<Int>
-            for(ans in answers){
-                if(questions[curPos].id == ans.questionId)
-                    studentAnswer = ans.answer
-            }
-
-            FragmentExamHistoryBottomSheet(questions[curPos],studentAnswer)
+            FragmentExamHistoryBottomSheet(questions[curPos],answersMap[questions[curPos].id])
                 .show(supportFragmentManager, "multiple_choice_answer")
         }
     }
@@ -158,7 +158,11 @@ class ExamHistoryActivity : AppCompatActivity(){
     private fun initQuestionFragmentsPager(size: Int){
         questionHistoryFragment = mutableListOf()
         for(i in 0 until size){
-            val isCorrect = ListCompareUtil.isEqualList(questions[i].answer!!,answers[i].answer)
+            val attenderAnswer = answersMap[questions[i].id]
+
+            val isCorrect = if(attenderAnswer == null) false
+                            else ListCompareUtil.isEqualList(questions[i].answer!!,attenderAnswer)
+
             questionHistoryFragment.add(FragmentQuestionExamHistory(questions[i],i+1,isCorrect))
         }
         binding.pagerTakeExam.adapter = ExamHistoryPagerAdapter(this, questionHistoryFragment)

@@ -1,14 +1,11 @@
 package com.harry.pullgo.ui.takenExamHistory
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.core.widget.CompoundButtonCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.R
 import com.harry.pullgo.data.models.Question
@@ -18,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FragmentExamHistoryBottomSheet(
     private val selectedQuestion: Question,
-    private val studentAnswers: List<Int>
+    private val studentAnswers: List<Int>?
     ): BottomSheetDialogFragment() {
     private val binding by lazy{FragmentMultipleChoiceBottomSheetBinding.inflate(layoutInflater)}
 
@@ -54,11 +51,11 @@ class FragmentExamHistoryBottomSheet(
         }
 
         binding.apply{
-            if(studentAnswers.contains(1)) checkboxMultipleChoice1.isChecked = true
-            if(studentAnswers.contains(2)) checkboxMultipleChoice2.isChecked = true
-            if(studentAnswers.contains(3)) checkboxMultipleChoice3.isChecked = true
-            if(studentAnswers.contains(4)) checkboxMultipleChoice4.isChecked = true
-            if(studentAnswers.contains(5)) checkboxMultipleChoice5.isChecked = true
+            if(studentAnswers?.contains(1) == true) checkboxMultipleChoice1.isChecked = true
+            if(studentAnswers?.contains(2) == true) checkboxMultipleChoice2.isChecked = true
+            if(studentAnswers?.contains(3) == true) checkboxMultipleChoice3.isChecked = true
+            if(studentAnswers?.contains(4) == true) checkboxMultipleChoice4.isChecked = true
+            if(studentAnswers?.contains(5) == true) checkboxMultipleChoice5.isChecked = true
         }
 
         binding.buttonMultipleChoiceDone.setOnClickListener {

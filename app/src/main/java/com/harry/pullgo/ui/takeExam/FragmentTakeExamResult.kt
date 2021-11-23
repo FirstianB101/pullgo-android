@@ -69,6 +69,11 @@ class FragmentTakeExamResult(
     }
 
     private fun displayResult(answers: List<AttenderAnswer>){
-        binding.recyclerViewExamResult.adapter = ExamResultAdapter(answers,questions)
+        val answerMap = mutableMapOf<Long,List<Int>>()
+        for(answer in answers){
+            answerMap[answer.questionId] = answer.answer
+        }
+
+        binding.recyclerViewExamResult.adapter = ExamResultAdapter(answerMap,questions)
     }
 }
