@@ -21,6 +21,9 @@ class ManageExamStatusViewModel @ViewModelInject constructor(
     private val _oneStudent = MutableLiveData<Resource<Student>>()
     val oneStudent: LiveData<Resource<Student>> = _oneStudent
 
+    private val _studentsInClassroom = MutableLiveData<Resource<List<Student>>>()
+    val studentsInClassroom: LiveData<Resource<List<Student>>> = _studentsInClassroom
+
     fun requestGetAttenderStatesInExam(examId: Long){
         _attenderStatesInExam.postValue(Resource.loading(null))
 
@@ -42,6 +45,18 @@ class ManageExamStatusViewModel @ViewModelInject constructor(
                     _oneStudent.postValue(Resource.success(response.body()))
                 }else{
                     _oneStudent.postValue(Resource.error(response.code().toString(),null))
+                }
+            }
+        }
+    }
+
+    fun getStudentsInClassroom(classroomId: Long){
+        viewModelScope.launch {
+            repository.getStudentsInClassroom(classroomId).let{ response ->
+                if(response.isSuccessful){
+                    _studentsInClassroom.postValue(Resource.success(response.body()))
+                }else{
+                    _studentsInClassroom.postValue(Resource.error(response.code().toString(),null))
                 }
             }
         }

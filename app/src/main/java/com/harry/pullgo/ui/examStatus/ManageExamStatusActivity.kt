@@ -25,8 +25,10 @@ class ManageExamStatusActivity : AppCompatActivity() {
 
     private val studentInfoMap = mutableMapOf<Long,Student>()
     private lateinit var states: List<AttenderState>
+    private lateinit var studentsInClassroom: List<Student>
 
-    lateinit var selectedExam: Exam
+    private lateinit var selectedExam: Exam
+    private var selectedClassroomId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +40,17 @@ class ManageExamStatusActivity : AppCompatActivity() {
 
     private fun initialize(){
         selectedExam = intent.getSerializableExtra("selectedExam") as Exam
+        selectedClassroomId = intent.getLongExtra("selectedClassroomId",0L)
 
         binding.toolbarExamStatus.title = selectedExam.name.toString()
     }
 
     private fun initViewModel(){
-        viewModel.attenderStatesInExam.observe(this){
+        viewModel.studentsInClassroom.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
-                    states = it.data!!
-                    fillAllAttendersInfo()
+                    studentsInClassroom = it.data!!
+                    viewModel.requestGetAttenderStatesInExam(selectedExam.id!!)
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {
@@ -56,36 +59,29 @@ class ManageExamStatusActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.oneStudent.observe(this){
+        viewModel.attenderStatesInExam.observe(this){
             when(it.status){
                 Status.SUCCESS -> {
-                    studentInfoMap[it.data?.id!!] = it.data
-
-                    if(states.size == studentInfoMap.keys.size) {
-                        displayExams()
-                    }
+                    states = it.data!!
+                    displayStatus()
                 }
                 Status.LOADING -> {}
                 Status.ERROR -> {}
             }
         }
 
-        viewModel.requestGetAttenderStatesInExam(selectedExam.id!!)
+
+        viewModel.getStudentsInClassroom(selectedClassroomId!!)
     }
 
-    private fun fillAllAttendersInfo(){
+    private fun displayStatus(){
+        val statesMap = mutableMapOf<Long,AttenderState>()
+
         for(state in states){
-            viewModel.getOneStudent(state.attenderId!!)
+            statesMap[state.attenderId!!] = state
         }
-        if(states.isEmpty()){
-            binding.textViewManageExamStatusNoResult.visibility = View.VISIBLE
-        }
-    }
 
-    private fun displayExams(){
-        val exams = viewModel.attenderStatesInExam.value?.data!!
-
-        val adapter = ExamStatusAdapter(exams,studentInfoMap,this)
+        val adapter = ExamStatusAdapter(studentsInClassroom,statesMap,this)
 
         binding.recyclerViewManageExamStatus.adapter = adapter
     }

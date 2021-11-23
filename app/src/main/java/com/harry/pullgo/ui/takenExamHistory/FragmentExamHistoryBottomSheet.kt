@@ -1,10 +1,14 @@
 package com.harry.pullgo.ui.takenExamHistory
 
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harry.pullgo.R
@@ -33,29 +37,41 @@ class FragmentExamHistoryBottomSheet(
         disableCheckboxes()
 
         val choices = selectedQuestion.choice!!
+        val answers = selectedQuestion.answer!!
+
         binding.apply {
             textViewMultipleChoice1.text = choices["1"]
             textViewMultipleChoice2.text = choices["2"]
             textViewMultipleChoice3.text = choices["3"]
             textViewMultipleChoice4.text = choices["4"]
             textViewMultipleChoice5.text = choices["5"]
-        }
 
-        val answers = selectedQuestion.answer!!
-        binding.apply {
-            checkImageMultipleChoice1.visibility = if(answers.contains(1)) View.VISIBLE else View.GONE
-            checkImageMultipleChoice2.visibility = if(answers.contains(2)) View.VISIBLE else View.GONE
-            checkImageMultipleChoice3.visibility = if(answers.contains(3)) View.VISIBLE else View.GONE
-            checkImageMultipleChoice4.visibility = if(answers.contains(4)) View.VISIBLE else View.GONE
-            checkImageMultipleChoice5.visibility = if(answers.contains(5)) View.VISIBLE else View.GONE
-        }
+            if(studentAnswers?.contains(1) == true) {
+                checkboxMultipleChoice1.isChecked = true
+                changeLayoutColorToOrange(circleMultipleChoice1,linearLayoutMultipleChoice1,checkboxMultipleChoice1)
+            }
+            if(studentAnswers?.contains(2) == true) {
+                checkboxMultipleChoice2.isChecked = true
+                changeLayoutColorToOrange(circleMultipleChoice2,linearLayoutMultipleChoice2,checkboxMultipleChoice2)
+            }
+            if(studentAnswers?.contains(3) == true) {
+                checkboxMultipleChoice3.isChecked = true
+                changeLayoutColorToOrange(circleMultipleChoice3,linearLayoutMultipleChoice3,checkboxMultipleChoice3)
+            }
+            if(studentAnswers?.contains(4) == true) {
+                checkboxMultipleChoice4.isChecked = true
+                changeLayoutColorToOrange(circleMultipleChoice4,linearLayoutMultipleChoice4,checkboxMultipleChoice4)
+            }
+            if(studentAnswers?.contains(5) == true) {
+                checkboxMultipleChoice5.isChecked = true
+                changeLayoutColorToOrange(circleMultipleChoice5,linearLayoutMultipleChoice5,checkboxMultipleChoice5)
+            }
 
-        binding.apply{
-            if(studentAnswers?.contains(1) == true) checkboxMultipleChoice1.isChecked = true
-            if(studentAnswers?.contains(2) == true) checkboxMultipleChoice2.isChecked = true
-            if(studentAnswers?.contains(3) == true) checkboxMultipleChoice3.isChecked = true
-            if(studentAnswers?.contains(4) == true) checkboxMultipleChoice4.isChecked = true
-            if(studentAnswers?.contains(5) == true) checkboxMultipleChoice5.isChecked = true
+            if(answers.contains(1)) changeLayoutColorToGreen(circleMultipleChoice1,linearLayoutMultipleChoice1,checkboxMultipleChoice1)
+            if(answers.contains(2)) changeLayoutColorToGreen(circleMultipleChoice2,linearLayoutMultipleChoice2,checkboxMultipleChoice2)
+            if(answers.contains(3)) changeLayoutColorToGreen(circleMultipleChoice3,linearLayoutMultipleChoice3,checkboxMultipleChoice3)
+            if(answers.contains(4)) changeLayoutColorToGreen(circleMultipleChoice4,linearLayoutMultipleChoice4,checkboxMultipleChoice4)
+            if(answers.contains(5)) changeLayoutColorToGreen(circleMultipleChoice5,linearLayoutMultipleChoice5,checkboxMultipleChoice5)
         }
 
         binding.buttonMultipleChoiceDone.setOnClickListener {
@@ -73,5 +89,17 @@ class FragmentExamHistoryBottomSheet(
             checkboxMultipleChoice4.isEnabled = false
             checkboxMultipleChoice5.isEnabled = false
         }
+    }
+
+    private fun changeLayoutColorToGreen(numberText: TextView, layout: LinearLayout, checkBox: CheckBox){
+        numberText.setBackgroundResource(R.drawable.circle_green)
+        layout.setBackgroundResource(R.drawable.rounded_correct)
+        checkBox.buttonTintList = ColorStateList.valueOf(resources.getColor(R.color.material_700_green))
+    }
+
+    private fun changeLayoutColorToOrange(numberText: TextView, layout: LinearLayout, checkBox: CheckBox){
+        numberText.setBackgroundResource(R.drawable.circle_orange)
+        layout.setBackgroundResource(R.drawable.rounded_wrong)
+        checkBox.buttonTintList = ColorStateList.valueOf(resources.getColor(android.R.color.holo_orange_dark))
     }
 }
