@@ -34,4 +34,12 @@
         <item name="buttonTint">@color/main_color</item>
     </style>
 
+    <style name="CheckboxGreen" parent="AppTheme">
+        <item name="colorAccent">@color/material_700_green</item>
+    </style>
+
+    <style name="CheckboxOrange" parent="AppTheme">
+        <item name="colorAccent">@android:color/holo_orange_dark</item>
+    </style>
+
 </resources>

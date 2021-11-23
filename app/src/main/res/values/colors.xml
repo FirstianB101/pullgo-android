@@ -15,4 +15,6 @@
     <color name="edit_text_background">#CCD3F8</color>
     <color name="info_text_color">#FB8C00</color>
     <color name="warning_color">#E53935</color>
+    <color name="correct_answer_background_color">#AED581</color>
+    <color name="wrong_answer_background_color">#FFCC80</color>
 </resources>
