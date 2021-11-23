@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/show_result_dialog"
+        android:icon="@drawable/result"
+        android:title="@string/exam_result"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/end_history"
+        android:icon="@drawable/baseline_check_white_18dp"
+        android:title="@string/end_exam"
+        app:showAsAction="always"/>
+</menu>

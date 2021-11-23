@@ -57,6 +57,10 @@ class ExamHistoryActivity : AppCompatActivity(){
         binding.buttonSaveAnswer.visibility = View.GONE
 
         binding.topAppBar.title = selectedExam.name
+        binding.topAppBar.isTitleCentered = false
+        binding.topAppBar.menu.clear()
+        binding.topAppBar.inflateMenu(R.menu.exam_history_app_bar)
+
         binding.buttonShowMultipleChoice.text = "보기 확인"
     }
 
@@ -75,8 +79,13 @@ class ExamHistoryActivity : AppCompatActivity(){
 
         binding.topAppBar.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.end_exam ->{
+                R.id.end_history -> {
                     showFinishHistoryDialog()
+                    true
+                }
+                R.id.show_result_dialog -> {
+                    FragmentExamHistoryResultDialog(attenderStateId!!,questions)
+                        .show(supportFragmentManager,"dialog_exam_result")
                     true
                 }
                 else -> false
