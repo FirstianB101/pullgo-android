@@ -19,9 +19,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutEditClassroomName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -55,9 +57,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutEditClassroomDate"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -91,9 +95,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutEditClassroomTeacherName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -112,42 +118,46 @@
             android:textColorHint="@color/light_gray" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonEditClassroomEdit"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/buttonLayoutEditClasroom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:text="@string/edit"
-        android:textColor="@color/main_color"
-        android:textSize="@dimen/success_button_text"
-        android:textStyle="bold"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/ic_edit"
-        app:iconSize="22dp"
-        app:layout_constraintVertical_bias="0.9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEditClassroomRemove"
-        app:layout_constraintTop_toBottomOf="@+id/layoutEditClassroomTeacherName" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonEditClassroomRemove"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:text="@string/delete"
-        android:textColor="@color/warning_color"
-        android:textSize="@dimen/success_button_text"
-        android:textStyle="bold"
-        app:backgroundTint="@color/white"
-        app:icon="@drawable/outline_delete_white_24dp"
-        app:iconSize="22dp"
-        app:iconTint="@color/warning_color"
+        android:orientation="horizontal"
+        android:gravity="right"
         app:layout_constraintVertical_bias="0.9"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutEditClassroomTeacherName" />
+        app:layout_constraintTop_toBottomOf="@+id/layoutEditClassroomTeacherName" >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonEditClassroomEdit"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/edit"
+            android:textColor="@color/main_color"
+            android:textSize="@dimen/success_button_text"
+            android:textStyle="bold"
+            app:backgroundTint="@color/white"
+            app:icon="@drawable/ic_edit"
+            app:iconSize="22dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonEditClassroomRemove"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:text="@string/delete"
+            android:textColor="@color/warning_color"
+            android:textSize="@dimen/success_button_text"
+            android:textStyle="bold"
+            app:backgroundTint="@color/white"
+            app:icon="@drawable/outline_delete_white_24dp"
+            app:iconSize="22dp"
+            app:iconTint="@color/warning_color"/>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

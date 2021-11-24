@@ -21,8 +21,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signUpIdLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:errorEnabled="true"
         app:helperTextEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,25 +44,29 @@
 
     <Button
         android:id="@+id/buttonSignUpIdOverlap"
-        android:layout_width="@dimen/success_button_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/check_overlap"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpIdLayout" />
 
     <Button
         android:id="@+id/buttonSignUpIdNext"
-        android:layout_width="@dimen/success_button_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/go_next"
         android:visibility="gone"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"
         app:layout_constraintEnd_toEndOf="parent"

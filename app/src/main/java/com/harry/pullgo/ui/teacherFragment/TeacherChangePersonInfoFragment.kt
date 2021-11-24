@@ -93,9 +93,9 @@ class TeacherChangePersonInfoFragment : Fragment() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            binding.changeTeacherPhoneLayout.error = null
+            binding.changeTeacherPhoneInputLayout.error = null
             if(!Pattern.matches(PHONE_TYPE_EXPRESSION,s.toString())){
-                binding.changeTeacherPhoneLayout.error = "숫자만 입력해 주세요"
+                binding.changeTeacherPhoneInputLayout.error = "숫자만 입력해 주세요"
             }
         }
 

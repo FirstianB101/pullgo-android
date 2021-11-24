@@ -21,8 +21,10 @@
 
     <Button
         android:id="@+id/buttonSignUpAsStudent"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/sign_up_student"
         android:textColor="@color/white"
@@ -33,9 +35,11 @@
 
     <Button
         android:id="@+id/buttonSignUpAsTeacher"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/sign_up_teacher"
         android:textColor="@color/white"

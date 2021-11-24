@@ -19,8 +19,10 @@
 
     <Button
         android:id="@+id/buttonStudentSignUpAcademy"
-        android:layout_width="@dimen/success_button_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:text="@string/apply"
         android:textColor="@color/white"
         android:textSize="@dimen/success_button_text"

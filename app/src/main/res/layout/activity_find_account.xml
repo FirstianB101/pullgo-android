@@ -40,14 +40,10 @@
     <FrameLayout
         android:id="@+id/frameLayoutFindAccount"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switchFindIdPassword">
@@ -56,6 +52,7 @@
             android:id="@+id/layoutFindAccountFindUsername"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="visible">
@@ -65,7 +62,8 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:hint="@string/comment_input_name">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -81,7 +79,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
                 android:hint="@string/comment_input_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -95,13 +95,15 @@
 
             <Button
                 android:id="@+id/buttonFindUsername"
-                android:layout_width="@dimen/success_button_width"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/rounded"
-                android:textSize="@dimen/success_button_text"
-                android:text="@string/find_username" />
+                android:text="@string/find_username"
+                android:textColor="@color/white"
+                android:textSize="@dimen/success_button_text" />
 
         </LinearLayout>
 
@@ -109,16 +111,18 @@
             android:id="@+id/layoutFindAccountFindPassword"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="gone">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutFindPasswordUserName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:hint="@string/comment_input_username">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -134,7 +138,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
                 android:hint="@string/comment_input_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -147,13 +153,15 @@
 
             <Button
                 android:id="@+id/buttonFindPassword"
-                android:layout_width="@dimen/success_button_width"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
                 android:background="@drawable/rounded"
-                android:textSize="@dimen/success_button_text"
-                android:text="@string/find_password" />
+                android:text="@string/find_password"
+                android:textColor="@color/white"
+                android:textSize="@dimen/success_button_text" />
 
         </LinearLayout>
 

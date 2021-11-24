@@ -33,8 +33,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/changeInfoCheckPwLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="340dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:errorEnabled="true"
         app:endIconMode="clear_text"
         app:layout_constraintVertical_bias="0.2"
@@ -55,9 +57,11 @@
 
     <Button
         android:id="@+id/buttonInfoCheckPw"
-        android:layout_width="@dimen/success_button_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/confirm"
         android:textColor="@color/white"

@@ -20,9 +20,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signUpPwLayout"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -43,9 +45,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/signUpPwCheckLayout"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

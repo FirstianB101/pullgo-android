@@ -21,9 +21,10 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginIdLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -42,9 +43,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/loginPwLayout"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,13 +67,15 @@
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_button_main_color"
         android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,9 +83,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="@dimen/login_editText_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         android:gravity="right"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"

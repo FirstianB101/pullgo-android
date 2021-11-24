@@ -40,7 +40,8 @@
 
         <com.chivorn.smartmaterialspinner.SmartMaterialSpinner
             android:id="@+id/spinnerApplyClassroomSelectAcademy"
-            android:layout_width="@dimen/date_pick_spinner_width"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             app:smsp_hint="@string/comment_select_academy"
@@ -63,7 +64,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_width="@dimen/find_academy_search_area"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/applyClassroomSearchText"
