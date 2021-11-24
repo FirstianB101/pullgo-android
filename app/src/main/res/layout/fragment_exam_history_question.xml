@@ -33,6 +33,7 @@
                     android:padding="10dp"
                     android:layout_marginLeft="3dp"
                     android:text="문제 "
+                    android:minLines="5"
                     android:textColor="@color/black"
                     android:textSize="19sp"
                     android:textStyle="bold" />
