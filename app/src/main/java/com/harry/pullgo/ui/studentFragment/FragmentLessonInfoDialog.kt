@@ -24,8 +24,8 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
         val builder = MaterialAlertDialogBuilder(requireActivity())
 
         setLessonInformation()
-        initViewModel()
         setListeners()
+        initViewModel()
 
         builder.setView(binding.root)
         val _dialog = builder.create()
@@ -60,7 +60,19 @@ class FragmentLessonInfoDialog(private val selectedLesson: Lesson) : DialogFragm
             }
         }
 
+        viewModel.classroomInfoRepository.observe(requireActivity()){
+            when(it.status){
+                Status.SUCCESS -> {
+                    val classroomName = it.data?.name?.split(';')
+                    binding.textViewLessonInfoClassroomName.text = classroomName?.get(0).toString()
+                }
+                Status.ERROR -> {
+                    binding.textViewLessonInfoAcademyName.text = "정보를 불러올 수 없습니다"
+                }
+            }
+        }
         viewModel.getAcademyInfoOfLesson(selectedLesson)
+        viewModel.getClassroomInfoOfLesson(selectedLesson)
     }
 
     private fun changeDateFormat(date: String): String{

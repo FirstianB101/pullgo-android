@@ -99,8 +99,6 @@ class LessonsViewModel @ViewModelInject constructor(
     }
 
     fun getAcademyInfoOfLesson(lesson: Lesson){
-        _academyInfoRepository.postValue(Resource.loading(null))
-
         viewModelScope.launch {
             lessonsRepository.getAcademySuchClassroom(lesson.academyId!!).let{ response ->
                 if(response.isSuccessful){
