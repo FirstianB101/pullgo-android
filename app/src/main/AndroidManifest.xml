@@ -8,57 +8,79 @@
     <application
         android:name=".application.PullgoApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_pullgo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_pullgo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
         <activity
             android:name=".ui.manageQuestion.AddQuestionActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.manageQuestion.ManageQuestionActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
-        <activity android:name=".ui.takeExam.TakeExamActivity" />
-        <activity android:name=".ui.takenExamHistory.ExamHistoryActivity"/>
-        <activity android:name=".ui.examStatus.ManageExamStatusActivity"/>
-        <activity android:name=".AddressActivity" />
+        <activity
+            android:name=".ui.takeExam.TakeExamActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.takenExamHistory.ExamHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.examStatus.ManageExamStatusActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AddressActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.findAcademy.CreateAcademyActivity"
             android:parentActivityName=".ui.findAcademy.FindAcademyActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.manageAcademy.ManageAcademyManagePeopleActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.manageClassroom.ManageClassroomActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.applyClassroom.ApplyClassroomActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.findAcademy.FindAcademyActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.main.StudentMainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.main.TeacherMainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.findAccount.FindAccountActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.signUp.StudentSignUpActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.signUp.TeacherSignUpActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.login.LoginActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.signUp.SignUpActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".ui.SplashActivity"
             android:exported="true">
