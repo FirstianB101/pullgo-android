@@ -27,7 +27,6 @@
         android:lineSpacingExtra="5dp"
         android:padding="5dp"
         android:text="OOO를 학원에서 제외하시겠습니까"
-        android:textStyle="bold"
         android:textColor="@color/main_color_dark"
         android:textSize="19sp" />
 

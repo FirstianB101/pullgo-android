@@ -25,6 +25,7 @@ import com.harry.pullgo.data.utils.Status
 import com.harry.pullgo.databinding.FragmentAcceptApplyAcademyBinding
 import com.harry.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.harry.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
+import com.harry.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -183,11 +184,23 @@ class TeacherAcceptApplyAcademyFragment: Fragment() {
                 }
 
                 override fun onApplyButtonClick(view: View, student: Student?) {
-                    viewModel.acceptStudentApplyAcademy(selectedAcademy?.id!!,student?.id!!)
+                    val dialog = TwoButtonDialog(requireContext())
+                    dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+                        override fun onLeftClicked() {
+                            viewModel.acceptStudentApplyAcademy(selectedAcademy?.id!!,student?.id!!)
+                        }
+                    }
+                    dialog.start("학원 가입 승인","${student?.account?.fullName} 학생을 학원에 등록하시겠습니까?","가입 승인","취소")
                 }
 
                 override fun onRemoveButtonClick(view: View, student: Student?) {
-                    viewModel.denyStudentApplyAcademy(selectedAcademy?.id!!,student?.id!!)
+                    val dialog = TwoButtonDialog(requireContext())
+                    dialog.leftClickListener = object: TwoButtonDialog.TwoButtonDialogLeftClickListener{
+                        override fun onLeftClicked() {
+                            viewModel.denyStudentApplyAcademy(selectedAcademy?.id!!,student?.id!!)
+                        }
+                    }
+                    dialog.start("학원 가입 거절","${student?.account?.fullName} 학생의 요청을 거절하시겠습니까?","가입 거절","취소")
                 }
             }
         }

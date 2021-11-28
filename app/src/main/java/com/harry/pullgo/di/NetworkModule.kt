@@ -18,7 +18,7 @@ import javax.inject.Singleton
 object NetworkModule {
     const val BASE_URL = "https://api.pullgo.kr/v1/"
     const val IMAGE_UPLOAD_URL = "https://api.imgbb.com"
-    const val IMAGE_UPLOAD_API_KEY = "0f390b97fdf589fbe52076e9bdb756a0"
+    const val IMAGE_UPLOAD_API_KEY = "b3b9649f31a163c6a3d65ecc7949ca6b"
 
     @Provides
     fun provideAuthInterceptor() = AuthenticationInterceptor()
