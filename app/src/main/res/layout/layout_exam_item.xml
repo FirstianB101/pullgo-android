@@ -6,7 +6,7 @@
 
         <variable
             name="exam"
-            type="com.harry.pullgo.data.models.Exam" />
+            type="com.ich.pullgo.data.models.Exam" />
 
         <variable
             name="examDate"
