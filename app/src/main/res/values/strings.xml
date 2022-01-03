@@ -2,7 +2,9 @@
     <string name="app_name">Pullgo</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
+    <string name="prompt_id">Id</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_password_check">Password Check</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
@@ -23,7 +25,7 @@
     <string name="login">로그인</string>
     <string name="auto_login">자동 로그인</string>
     <string name="underlined_logout"><u>로그아웃</u></string>
-    <string name="welcome_comment">풀고에 오신 것을 환영합니다!</string>
+    <string name="welcome_comment">풀고에 오신 것을 \n 환영합니다!</string>
 
     <string name="underlined_create_classroom"><u>반 생성</u></string>
     <string name="underlined_accept_apply_academy"><u>승인</u></string>
@@ -37,6 +39,7 @@
     <string name="underlined_kick_people"><u>제외하기</u></string>
     <string name="underlined_make_academy"><u>학원 생성</u></string>
 
+    <string name="comment_sign_up_success">회원가입에 성공하였습니다! \n가입하신 아이디로 로그인 해주세요</string>
     <string name="comment_find_id_success">입력하신 번호로 아이디가 전송되었습니다.</string>
     <string name="comment_find_pw_success">임시 비밀번호가 전송되었습니다\n로그인 후 비밀번호를 변경해 주세요</string>
     <string name="comment_no_people">소속된 인원이 없습니다</string>
@@ -85,6 +88,7 @@
     <string name="no_applied_academy">가입된 학원이 없습니다</string>
     <string name="no_search_classroom_result">검색된 반이 존재하지 않습니다!</string>
     <string name="remove_from_academy">학원에서 제외</string>
+    <string name="go_to_login">로그인 화면으로</string>
 
     <string name="classroom">반</string>
     <string name="selected_classroom">선택된 반</string>
@@ -187,4 +191,6 @@
     <string name="comment_cancel_exam_detail">선택한 시험을 취소합니다.</string>
     <string name="comment_no_students_took_exam">시험에 응시하는 학생이 존재하지 않습니다</string>
     <string name="comment_exam_result_check">자세한 결과는 오답노트에서 확인하실 수 있습니다</string>
+    <string name="title_activity_teacher_main">TeacherMainActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
 </resources>

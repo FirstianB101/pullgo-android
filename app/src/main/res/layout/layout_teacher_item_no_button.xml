@@ -5,7 +5,7 @@
     <data>
         <variable
             name="teacher"
-            type="com.harry.pullgo.data.models.Teacher" />
+            type="com.ich.pullgo.domain.model.Teacher" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
