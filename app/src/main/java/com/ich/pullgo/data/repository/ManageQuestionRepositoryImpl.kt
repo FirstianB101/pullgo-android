@@ -1,7 +1,7 @@
 package com.ich.pullgo.data.repository
 
 import com.ich.pullgo.common.Constants
-import com.ich.pullgo.data.remote.ImageUploadApi
+import com.ich.pullgo.data.api.ImageUploadApi
 import com.ich.pullgo.data.remote.PullgoApi
 import com.ich.pullgo.di.ImagebbRetrofitService
 import com.ich.pullgo.di.PullgoRetrofitService

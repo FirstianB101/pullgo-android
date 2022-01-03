@@ -5,17 +5,10 @@
     <data>
         <variable
             name="student"
-<<<<<<< HEAD
-            type="com.ich.pullgo.data.models.Student" />
-        <variable
-            name="teacher"
-            type="com.ich.pullgo.data.models.Teacher" />
-=======
             type="com.ich.pullgo.domain.model.Student" />
         <variable
             name="teacher"
             type="com.ich.pullgo.domain.model.Teacher" />
->>>>>>> ich
     </data>
 
     <com.google.android.material.card.MaterialCardView

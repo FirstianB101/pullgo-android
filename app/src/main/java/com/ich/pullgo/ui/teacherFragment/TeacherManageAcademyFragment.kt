@@ -13,15 +13,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.ich.pullgo.application.PullgoApplication
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/teacherFragment/TeacherManageAcademyFragment.kt
-import com.ich.pullgo.data.models.Academy
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentTeacherManageAcademyBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentTeacherManageAcademyBinding
 import com.ich.pullgo.domain.model.Academy
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/teacherFragment/TeacherManageAcademyFragment.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import com.ich.pullgo.ui.main.TeacherMainActivity
 import com.ich.pullgo.ui.manageAcademy.FragmentManageAcademyDelegateDialog

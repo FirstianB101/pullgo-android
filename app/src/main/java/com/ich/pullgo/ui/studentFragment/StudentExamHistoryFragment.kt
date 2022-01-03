@@ -14,17 +14,10 @@ import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.ExamAdapter
 import com.ich.pullgo.data.api.OnExamClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/studentFragment/StudentExamHistoryFragment.kt
-import com.ich.pullgo.data.models.Exam
-import com.ich.pullgo.data.utils.ExamProgress
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentStudentExamHistoryBinding
-=======
 import com.ich.pullgo.data.utils.ExamProgress
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentStudentExamHistoryBinding
 import com.ich.pullgo.domain.model.Exam
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/studentFragment/StudentExamHistoryFragment.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import com.ich.pullgo.ui.takenExamHistory.ExamHistoryActivity
 import dagger.hilt.android.AndroidEntryPoint

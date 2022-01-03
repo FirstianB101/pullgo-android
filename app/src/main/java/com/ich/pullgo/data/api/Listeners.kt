@@ -1,11 +1,7 @@
 package com.ich.pullgo.data.api
 
 import android.view.View
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/api/Listeners.kt
-import com.ich.pullgo.data.models.*
-=======
 import com.ich.pullgo.domain.model.*
->>>>>>> ich:app/src/main/java/com/harry/pullgo/data/api/Listeners.kt
 
 interface OnAcademyClickListener {
     fun onAcademyClick(view: View,academy: Academy?)

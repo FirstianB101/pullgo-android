@@ -1,14 +1,9 @@
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/api/PullgoService.kt
 package com.ich.pullgo.data.api
 
-import com.ich.pullgo.data.models.*
-=======
-package com.ich.pullgo.data.remote
 
 import com.ich.pullgo.data.remote.dto.CreateAttender
 import com.ich.pullgo.data.remote.dto.ExistDto
 import com.ich.pullgo.domain.model.*
->>>>>>> ich:app/src/main/java/com/ich/pullgo/data/remote/PullgoService.kt
 import retrofit2.Response
 import retrofit2.http.*
 

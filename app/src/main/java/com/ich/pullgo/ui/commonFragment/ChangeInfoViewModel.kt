@@ -4,21 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/commonFragment/ChangeInfoViewModel.kt
-import com.ich.pullgo.data.models.Account
-import com.ich.pullgo.data.models.Student
-import com.ich.pullgo.data.models.Teacher
-import com.ich.pullgo.data.models.User
-import com.ich.pullgo.data.repository.ChangeInfoRepository
-import com.ich.pullgo.data.utils.Resource
-=======
 import com.ich.pullgo.data.repository.ChangeInfoRepository
 import com.ich.pullgo.data.utils.Resource
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.domain.model.User
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/commonFragment/ChangeInfoViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

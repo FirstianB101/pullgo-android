@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/models/ImageUploadResponse.kt
-package com.ich.pullgo.data.models
-=======
 package com.ich.pullgo.data.remote.dto
->>>>>>> ich:app/src/main/java/com/ich/pullgo/data/remote/dto/ImageUploadResponseDto.kt
 
 data class ImageUploadResponseDto(
     var data: Data?,

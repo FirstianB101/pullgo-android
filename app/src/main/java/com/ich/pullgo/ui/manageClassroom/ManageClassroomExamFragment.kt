@@ -15,17 +15,10 @@ import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.ManageExamAdapter
 import com.ich.pullgo.data.api.OnExamClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/ManageClassroomExamFragment.kt
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.data.models.Exam
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentManageClassroomManageExamBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentManageClassroomManageExamBinding
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.model.Exam
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/ManageClassroomExamFragment.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import com.ich.pullgo.ui.examStatus.ManageExamStatusActivity
 import com.ich.pullgo.ui.manageQuestion.ManageQuestionActivity

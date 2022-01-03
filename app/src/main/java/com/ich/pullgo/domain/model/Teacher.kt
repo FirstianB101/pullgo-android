@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/models/Teacher.kt
-package com.ich.pullgo.data.models;
-=======
-package com.ich.pullgo.domain.model;
->>>>>>> ich:app/src/main/java/com/ich/pullgo/domain/model/Teacher.kt
+package com.ich.pullgo.domain.model
 
 import java.io.Serializable
 

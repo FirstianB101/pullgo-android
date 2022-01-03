@@ -1,21 +1,11 @@
 package com.ich.pullgo.data.repository
 
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/repository/ManageQuestionRepository.kt
-import com.ich.pullgo.data.api.ImageUploadService
 import com.ich.pullgo.data.api.PullgoService
-import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.di.ImagebbRetrofitService
-import com.ich.pullgo.di.NetworkModule
 import com.ich.pullgo.di.PullgoRetrofitService
-=======
 import com.ich.pullgo.common.Constants
-import com.ich.pullgo.data.remote.ImageUploadApi
-import com.ich.pullgo.data.remote.PullgoApi
-import com.ich.pullgo.data.remote.PullgoService
-import com.ich.pullgo.di.ImagebbRetrofitService
-import com.ich.pullgo.di.PullgoRetrofitService
+import com.ich.pullgo.data.api.ImageUploadApi
 import com.ich.pullgo.domain.model.Question
->>>>>>> ich:app/src/main/java/com/harry/pullgo/data/repository/ManageQuestionRepository.kt
 import okhttp3.RequestBody
 import javax.inject.Inject
 

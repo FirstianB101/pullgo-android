@@ -14,15 +14,9 @@ import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.LessonAdapter
 import com.ich.pullgo.data.api.OnCalendarResetListener
 import com.ich.pullgo.data.api.OnLessonClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/calendar/FragmentCalendarBottomSheet.kt
-import com.ich.pullgo.data.models.Lesson
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentCalendarBottomSheetBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentCalendarBottomSheetBinding
 import com.ich.pullgo.domain.model.Lesson
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/calendar/FragmentCalendarBottomSheet.kt
 import com.ich.pullgo.ui.studentFragment.FragmentLessonInfoDialog
 import com.ich.pullgo.ui.teacherFragment.FragmentLessonInfoManageDialog
 import dagger.hilt.android.AndroidEntryPoint

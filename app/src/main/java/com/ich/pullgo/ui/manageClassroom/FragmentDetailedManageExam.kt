@@ -7,15 +7,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/FragmentDetailedManageExam.kt
-import com.ich.pullgo.data.models.Exam
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentDetailedManageExamBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentDetailedManageExamBinding
 import com.ich.pullgo.domain.model.Exam
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/FragmentDetailedManageExam.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 

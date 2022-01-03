@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/models/Lesson.kt
-package com.ich.pullgo.data.models
-=======
 package com.ich.pullgo.domain.model
->>>>>>> ich:app/src/main/java/com/ich/pullgo/domain/model/Lesson.kt
 
 import com.ich.pullgo.data.remote.dto.Schedule
 import java.io.Serializable

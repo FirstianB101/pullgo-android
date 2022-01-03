@@ -8,11 +8,7 @@
             type="java.util.List&lt;String>" />
         <variable
             name="creator"
-<<<<<<< HEAD
-            type="com.ich.pullgo.data.models.Teacher" />
-=======
             type="com.ich.pullgo.domain.model.Teacher" />
->>>>>>> ich
     </data>
 
     <com.google.android.material.card.MaterialCardView

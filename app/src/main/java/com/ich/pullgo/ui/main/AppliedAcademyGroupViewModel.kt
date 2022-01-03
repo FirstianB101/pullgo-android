@@ -2,8 +2,8 @@ package com.ich.pullgo.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.data.repository.AppliedAcademyGroupRepository
+import com.ich.pullgo.domain.model.Academy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

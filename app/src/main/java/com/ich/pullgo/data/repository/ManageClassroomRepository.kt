@@ -1,17 +1,9 @@
 package com.ich.pullgo.data.repository
 
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/repository/ManageClassroomRepository.kt
 import com.ich.pullgo.data.api.PullgoService
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.data.models.Exam
-import com.ich.pullgo.di.PullgoRetrofitService
-=======
-import com.ich.pullgo.data.remote.PullgoApi
-import com.ich.pullgo.data.remote.PullgoService
 import com.ich.pullgo.di.PullgoRetrofitService
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.model.Exam
->>>>>>> ich:app/src/main/java/com/harry/pullgo/data/repository/ManageClassroomRepository.kt
 import javax.inject.Inject
 import javax.inject.Singleton
 

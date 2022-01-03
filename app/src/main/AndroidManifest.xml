@@ -15,74 +15,6 @@
         android:theme="@style/Theme.Pullgo">
         <activity
             android:name="com.ich.pullgo.ui.manageQuestion.AddQuestionActivity"
-<<<<<<< HEAD
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name="com.ich.pullgo.ui.manageQuestion.ManageQuestionActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name="com.ich.pullgo.ui.takeExam.TakeExamActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.ich.pullgo.ui.takenExamHistory.ExamHistoryActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.ich.pullgo.ui.examStatus.ManageExamStatusActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.ich.pullgo.AddressActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name="com.ich.pullgo.ui.findAcademy.CreateAcademyActivity"
-            android:parentActivityName="com.ich.pullgo.ui.findAcademy.FindAcademyActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.manageAcademy.ManageAcademyManagePeopleActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.manageClassroom.ManageClassroomActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name="com.ich.pullgo.ui.applyClassroom.ApplyClassroomActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.findAcademy.FindAcademyActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.main.StudentMainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.main.TeacherMainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.findAccount.FindAccountActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.signUp.StudentSignUpActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.signUp.TeacherSignUpActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.ich.pullgo.ui.signUp.SignUpActivity"
-            android:screenOrientation="portrait"
-=======
             android:exported="false" />
         <activity
             android:name="com.ich.pullgo.ui.manageQuestion.ManageQuestionActivity"
@@ -127,7 +59,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.ich.pullgo.ui.signUp.SignUpActivity"
->>>>>>> ich
             android:windowSoftInputMode="adjustPan" />
         <activity android:name="com.ich.pullgo.ui.SplashActivity"
             android:exported="true">

@@ -7,17 +7,10 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnExamClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/ExamAdapter.kt
-import com.ich.pullgo.data.models.Exam
-import com.ich.pullgo.data.utils.DurationUtil.Companion.translateISO8601Format
-import com.ich.pullgo.data.utils.DurationUtil.Companion.translateDurToMinute
-import com.ich.pullgo.databinding.LayoutExamItemBinding
-=======
 import com.ich.pullgo.data.utils.DurationUtil.Companion.translateDurToMinute
 import com.ich.pullgo.data.utils.DurationUtil.Companion.translateISO8601Format
 import com.ich.pullgo.databinding.LayoutExamItemBinding
 import com.ich.pullgo.domain.model.Exam
->>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/ExamAdapter.kt
 
 class ExamAdapter(private val dataSet: List<Exam>):
     RecyclerView.Adapter<ExamAdapter.ViewHolder>() {

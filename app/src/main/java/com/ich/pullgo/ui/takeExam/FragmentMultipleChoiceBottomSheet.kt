@@ -7,13 +7,8 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnChoiceListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takeExam/FragmentMultipleChoiceBottomSheet.kt
-import com.ich.pullgo.data.models.Question
-import com.ich.pullgo.databinding.FragmentMultipleChoiceBottomSheetBinding
-=======
 import com.ich.pullgo.databinding.FragmentMultipleChoiceBottomSheetBinding
 import com.ich.pullgo.domain.model.Question
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takeExam/FragmentMultipleChoiceBottomSheet.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

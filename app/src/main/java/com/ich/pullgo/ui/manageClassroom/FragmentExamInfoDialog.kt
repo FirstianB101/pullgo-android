@@ -8,13 +8,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.ich.pullgo.R
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/FragmentExamInfoDialog.kt
-import com.ich.pullgo.data.models.Exam
-import com.ich.pullgo.databinding.DialogExamInfoBinding
-=======
 import com.ich.pullgo.databinding.DialogExamInfoBinding
 import com.ich.pullgo.domain.model.Exam
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/FragmentExamInfoDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

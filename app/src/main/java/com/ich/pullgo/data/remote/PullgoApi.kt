@@ -3,7 +3,6 @@ package com.ich.pullgo.data.remote
 import com.ich.pullgo.data.remote.dto.UserDto
 import com.ich.pullgo.data.remote.dto.*
 import com.ich.pullgo.domain.model.*
-import retrofit2.Response
 import retrofit2.http.*
 
 interface PullgoApi {

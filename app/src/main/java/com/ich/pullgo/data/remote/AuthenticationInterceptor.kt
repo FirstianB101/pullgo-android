@@ -1,8 +1,4 @@
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/api/AuthenticationInterceptor.kt
-package com.ich.pullgo.data.api
-=======
 package com.ich.pullgo.data.remote
->>>>>>> ich:app/src/main/java/com/ich/pullgo/data/remote/AuthenticationInterceptor.kt
 
 import com.ich.pullgo.application.PullgoApplication
 import okhttp3.Interceptor

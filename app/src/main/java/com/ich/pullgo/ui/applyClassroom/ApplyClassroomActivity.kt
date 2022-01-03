@@ -13,24 +13,17 @@ import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.ClassroomAdapter
 import com.ich.pullgo.data.api.OnClassroomClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/applyClassroom/ApplyClassroomActivity.kt
-import com.ich.pullgo.data.models.Academy
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.ActivityRequestApplyClassroomBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityRequestApplyClassroomBinding
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Classroom
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/applyClassroom/ApplyClassroomActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ApplyClassroomActivity : AppCompatActivity() {
-    private val binding by lazy{ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
+    private val binding by lazy{ ActivityRequestApplyClassroomBinding.inflate(layoutInflater)}
 
     @Inject
     lateinit var app: PullgoApplication

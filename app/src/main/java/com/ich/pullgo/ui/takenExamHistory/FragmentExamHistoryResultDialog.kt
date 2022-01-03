@@ -9,17 +9,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ich.pullgo.data.adapter.ExamResultAdapter
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takenExamHistory/FragmentExamHistoryResultDialog.kt
-import com.ich.pullgo.data.models.AttenderAnswer
-import com.ich.pullgo.data.models.Question
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentExamResultBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentExamResultBinding
 import com.ich.pullgo.domain.model.AttenderAnswer
 import com.ich.pullgo.domain.model.Question
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takenExamHistory/FragmentExamHistoryResultDialog.kt
 import com.ich.pullgo.ui.takeExam.TakeExamViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

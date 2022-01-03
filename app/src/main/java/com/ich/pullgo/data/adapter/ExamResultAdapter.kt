@@ -4,15 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/ExamResultAdapter.kt
-import com.ich.pullgo.data.models.Question
-import com.ich.pullgo.data.utils.ListCompareUtil
-import com.ich.pullgo.databinding.LayoutExamResultItemBinding
-=======
 import com.ich.pullgo.data.utils.ListCompareUtil
 import com.ich.pullgo.databinding.LayoutExamResultItemBinding
 import com.ich.pullgo.domain.model.Question
->>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/ExamResultAdapter.kt
 
 class ExamResultAdapter(
     private val attenderAnswersMap: Map<Long,List<Int>>,

@@ -20,17 +20,10 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ich.pullgo.application.PullgoApplication
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/FragmentCreateClassroomDialog.kt
-import com.ich.pullgo.data.models.Academy
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.DialogCreateClassroomBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.DialogCreateClassroomBinding
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Classroom
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/FragmentCreateClassroomDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject

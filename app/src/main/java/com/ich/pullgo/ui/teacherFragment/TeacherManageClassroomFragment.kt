@@ -16,15 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.ManageClassroomAdapter
 import com.ich.pullgo.data.api.OnClassroomClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/teacherFragment/TeacherManageClassroomFragment.kt
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentManageClassroomBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentManageClassroomBinding
 import com.ich.pullgo.domain.model.Classroom
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/teacherFragment/TeacherManageClassroomFragment.kt
 import com.ich.pullgo.ui.manageClassroom.FragmentCreateClassroomDialog
 import com.ich.pullgo.ui.manageClassroom.ManageClassroomActivity
 import dagger.hilt.android.AndroidEntryPoint

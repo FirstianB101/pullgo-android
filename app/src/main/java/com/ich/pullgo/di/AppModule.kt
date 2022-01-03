@@ -1,54 +1,29 @@
 package com.ich.pullgo.di
 
-<<<<<<< HEAD
+
 import com.ich.pullgo.application.PullgoApplication
-=======
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/di/NetworkModule.kt
 import com.ich.pullgo.data.api.AuthenticationInterceptor
-import com.ich.pullgo.data.api.ImageUploadService
 import com.ich.pullgo.data.api.PullgoService
-=======
-import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.Constants
-import com.ich.pullgo.data.remote.AuthenticationInterceptor
-import com.ich.pullgo.data.remote.ImageUploadApi
+import com.ich.pullgo.data.api.ImageUploadApi
 import com.ich.pullgo.data.remote.PullgoApi
-import com.ich.pullgo.data.remote.PullgoService
->>>>>>> ich:app/src/main/java/com/ich/pullgo/di/AppModule.kt
->>>>>>> ich
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-<<<<<<< HEAD
-=======
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
->>>>>>> ich
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-<<<<<<< HEAD
 object AppModule {
-=======
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/di/NetworkModule.kt
-object NetworkModule {
-    const val BASE_URL = "https://api.pullgo.kr/v1/"
-    const val IMAGE_UPLOAD_URL = "https://api.imgbb.com"
-    const val IMAGE_UPLOAD_API_KEY = "b3b9649f31a163c6a3d65ecc7949ca6b"
-=======
-object AppModule {
->>>>>>> ich:app/src/main/java/com/ich/pullgo/di/AppModule.kt
->>>>>>> ich
 
     @Provides
     @Singleton
     fun provideApp() = PullgoApplication.instance!!
-<<<<<<< HEAD
-=======
 
     @Provides
     @Singleton
@@ -97,11 +72,12 @@ object AppModule {
     @Provides
     @Singleton
     @ImagebbRetrofitService
-    fun provideImagebbApi(@ImagebbRetrofit retrofit: Retrofit): ImageUploadApi = retrofit.create(ImageUploadApi::class.java)
+    fun provideImagebbApi(@ImagebbRetrofit retrofit: Retrofit): ImageUploadApi = retrofit.create(
+        ImageUploadApi::class.java)
 
     @Provides
     @Singleton
     @PullgoRetrofitService
-    fun providePullgoService(@PullgoRetrofit retrofit: Retrofit): PullgoService = retrofit.create(PullgoService::class.java)
->>>>>>> ich
+    fun providePullgoService(@PullgoRetrofit retrofit: Retrofit): PullgoService = retrofit.create(
+        PullgoService::class.java)
 }

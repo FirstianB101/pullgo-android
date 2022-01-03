@@ -11,7 +11,7 @@ class AcademyDto(
     var ownerId: Long?
 ) :Serializable
 
-fun AcademyDto.toAcademy(): Academy{
+fun AcademyDto.toAcademy(): Academy {
     val academy = Academy(name, phone, address, ownerId)
     academy.id = id
     return academy

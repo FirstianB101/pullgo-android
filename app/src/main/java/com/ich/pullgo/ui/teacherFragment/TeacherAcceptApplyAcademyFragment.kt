@@ -18,16 +18,6 @@ import com.ich.pullgo.data.adapter.StudentApplyAdapter
 import com.ich.pullgo.data.adapter.TeacherApplyAdapter
 import com.ich.pullgo.data.api.OnStudentClickListener
 import com.ich.pullgo.data.api.OnTeacherClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/teacherFragment/TeacherAcceptApplyAcademyFragment.kt
-import com.ich.pullgo.data.models.Academy
-import com.ich.pullgo.data.models.Student
-import com.ich.pullgo.data.models.Teacher
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentAcceptApplyAcademyBinding
-import com.ich.pullgo.ui.dialog.FragmentShowStudentInfoDialog
-import com.ich.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
-import com.ich.pullgo.ui.dialog.TwoButtonDialog
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentAcceptApplyAcademyBinding
 import com.ich.pullgo.domain.model.Academy
@@ -35,7 +25,7 @@ import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.ich.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/teacherFragment/TeacherAcceptApplyAcademyFragment.kt
+import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

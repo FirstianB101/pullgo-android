@@ -5,13 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnClassroomRequestListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/ClassroomRequestAdapter.kt
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.databinding.LayoutClassroomRequestItemBinding
-=======
 import com.ich.pullgo.databinding.LayoutClassroomRequestItemBinding
 import com.ich.pullgo.domain.model.Classroom
->>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/ClassroomRequestAdapter.kt
 
 class ClassroomRequestAdapter(private val dataSet: List<Classroom>)
     : RecyclerView.Adapter<ClassroomRequestAdapter.ViewHolder>(){

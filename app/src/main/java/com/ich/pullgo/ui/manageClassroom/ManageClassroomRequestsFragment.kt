@@ -13,19 +13,11 @@ import com.ich.pullgo.data.adapter.StudentApplyAdapter
 import com.ich.pullgo.data.adapter.TeacherApplyAdapter
 import com.ich.pullgo.data.api.OnStudentClickListener
 import com.ich.pullgo.data.api.OnTeacherClickListener
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/ManageClassroomRequestsFragment.kt
-import com.ich.pullgo.data.models.Classroom
-import com.ich.pullgo.data.models.Student
-import com.ich.pullgo.data.models.Teacher
-import com.ich.pullgo.data.utils.Status
-import com.ich.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
-=======
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentManageClassroomManageRequestsBinding
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/ManageClassroomRequestsFragment.kt
 import com.ich.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.ich.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 import com.ich.pullgo.ui.dialog.TwoButtonDialog

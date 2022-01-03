@@ -8,13 +8,8 @@ import android.view.View
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/dialog/FragmentShowStudentInfoDialog.kt
-import com.ich.pullgo.data.models.Student
-import com.ich.pullgo.databinding.DialogManageClassroomStudentInfoBinding
-=======
 import com.ich.pullgo.databinding.DialogManageClassroomStudentInfoBinding
 import com.ich.pullgo.domain.model.Student
->>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/dialog/FragmentShowStudentInfoDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
