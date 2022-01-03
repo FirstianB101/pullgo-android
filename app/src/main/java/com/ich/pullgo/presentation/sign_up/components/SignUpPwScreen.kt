@@ -60,7 +60,8 @@ fun SignUpPwScreen(
                     .padding(30.dp, 0.dp),
                 value = pwState.value,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),
@@ -106,7 +107,8 @@ fun SignUpPwScreen(
                     .padding(30.dp, 0.dp),
                 value = pwCheckState.value,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 visualTransformation = if(passwordCheckVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),

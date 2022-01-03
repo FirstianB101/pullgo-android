@@ -7,9 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.ich.pullgo.databinding.ActivityFindAccountBinding
+import com.ich.pullgo.presentation.login.LoginActivity
 import com.ich.pullgo.ui.dialog.OneButtonDialog
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
-import com.ich.pullgo.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import lib.kingja.switchbutton.SwitchMultiButton.OnSwitchListener
 import java.util.regex.Pattern

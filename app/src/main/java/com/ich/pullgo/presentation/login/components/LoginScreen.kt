@@ -32,8 +32,9 @@ import com.ich.pullgo.domain.model.User
 import com.ich.pullgo.presentation.login.LoginState
 import com.ich.pullgo.presentation.login.LoginViewModel
 import com.ich.pullgo.presentation.sign_up.SignUpActivity
-import com.ich.pullgo.presentation.student_main.StudentMainActivity
-import com.ich.pullgo.presentation.teacher_main.TeacherMainActivity
+import com.ich.pullgo.ui.findAccount.FindAccountActivity
+import com.ich.pullgo.ui.main.StudentMainActivity
+import com.ich.pullgo.ui.main.TeacherMainActivity
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,7 +75,8 @@ fun LoginScreen(
                     .padding(30.dp, 0.dp),
                 value = id,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 label = {Text(stringResource(R.string.prompt_id))},
                 onValueChange = {id = it}
@@ -88,7 +90,8 @@ fun LoginScreen(
                     .padding(30.dp, 0.dp),
                 value = password,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),
@@ -159,7 +162,9 @@ fun LoginScreen(
                     modifier = Modifier.padding(0.dp,0.dp,40.dp,0.dp),
                     content = { Text(text = stringResource(R.string.find_username_and_password), color = Color.Gray)},
                     contentPadding = PaddingValues(16.dp),
-                    onClick = {}
+                    onClick = {
+                        context.startActivity(Intent(context,FindAccountActivity::class.java))
+                    }
                 )
             }
         }

@@ -60,7 +60,8 @@ fun SignUpIdScreen(
                         .padding(30.dp, 30.dp, 30.dp, 0.dp),
                     value = idState.value,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(R.color.main_color)
+                        focusedBorderColor = colorResource(R.color.main_color),
+                        focusedLabelColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.prompt_id)) },
                     onValueChange = {

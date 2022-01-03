@@ -23,7 +23,7 @@
 
     <style name="Theme.Pullgo.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="textInputLayoutBasic" >
+    <style name="textInputLayoutBasic">
         <item name="boxStrokeColor">@color/main_color</item>
         <item name="errorTextColor">@color/material_700_red</item>
         <item name="hintAnimationEnabled">true</item>

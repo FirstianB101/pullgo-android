@@ -24,8 +24,8 @@ import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.components.OneButtonDialog
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.presentation.login.LoginActivity
 import com.ich.pullgo.presentation.sign_up.SignUpViewModel
-import com.ich.pullgo.ui.login.LoginActivity
 import kotlinx.coroutines.launch
 
 @Composable
@@ -66,7 +66,7 @@ fun StudentSignUpInfoScreen(
             )
             Text(
                 modifier = Modifier
-                    .padding(0.dp,0.dp,0.dp,60.dp),
+                    .padding(0.dp,0.dp,0.dp,40.dp),
                 text = stringResource(R.string.comment_input_person_info),
                 color = colorResource(android.R.color.holo_orange_dark),
                 fontWeight = FontWeight.Bold
@@ -78,7 +78,8 @@ fun StudentSignUpInfoScreen(
                     .padding(30.dp, 0.dp),
                 value = fullName,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.full_name)) },
                 onValueChange = {fullName = it}
@@ -95,7 +96,8 @@ fun StudentSignUpInfoScreen(
                         .weight(1f),
                     value = phone,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(R.color.main_color)
+                        focusedBorderColor = colorResource(R.color.main_color),
+                        focusedLabelColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.comment_input_phone)) },
                     onValueChange = {phone = it},
@@ -124,7 +126,8 @@ fun StudentSignUpInfoScreen(
                         .weight(1f),
                     value = verify,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = colorResource(R.color.main_color)
+                        focusedBorderColor = colorResource(R.color.main_color),
+                        focusedLabelColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.comment_input_verification_num)) },
                     onValueChange = {verify = it},
@@ -150,7 +153,8 @@ fun StudentSignUpInfoScreen(
                     .padding(30.dp, 0.dp),
                 value = parentPhone,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.parent_phone)) },
                 onValueChange = {parentPhone = it},
@@ -165,7 +169,8 @@ fun StudentSignUpInfoScreen(
                     .padding(30.dp, 0.dp),
                 value = school,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color),
+                    focusedLabelColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.school)) },
                 onValueChange = {school = it},
