@@ -1,8 +1,15 @@
 package com.ich.pullgo.data.repository
 
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/repository/LessonsRepository.kt
 import com.ich.pullgo.data.api.PullgoService
 import com.ich.pullgo.data.models.Lesson
 import com.ich.pullgo.di.PullgoRetrofitService
+=======
+import com.ich.pullgo.data.remote.PullgoApi
+import com.ich.pullgo.data.remote.PullgoService
+import com.ich.pullgo.di.PullgoRetrofitService
+import com.ich.pullgo.domain.model.Lesson
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/repository/LessonsRepository.kt
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*

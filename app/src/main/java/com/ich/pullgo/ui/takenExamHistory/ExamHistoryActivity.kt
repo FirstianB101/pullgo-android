@@ -12,12 +12,21 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takenExamHistory/ExamHistoryActivity.kt
 import com.ich.pullgo.data.models.AttenderAnswer
 import com.ich.pullgo.data.models.Exam
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.data.utils.ListCompareUtil
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityTakeExamBinding
+=======
+import com.ich.pullgo.data.utils.ListCompareUtil
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityTakeExamBinding
+import com.ich.pullgo.domain.model.AttenderAnswer
+import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takenExamHistory/ExamHistoryActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

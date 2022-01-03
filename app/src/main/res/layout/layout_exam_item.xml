@@ -6,8 +6,12 @@
 
         <variable
             name="exam"
+<<<<<<< HEAD
             type="com.ich.pullgo.data.models.Exam" />
 
+=======
+            type="com.ich.pullgo.domain.model.Exam" />
+>>>>>>> ich
         <variable
             name="examDate"
             type="String" />

@@ -2,7 +2,11 @@ package com.ich.pullgo.application
 
 import android.app.Application
 import androidx.fragment.app.FragmentManager
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/application/PullgoApplication.kt
 import com.ich.pullgo.data.models.User
+=======
+import com.ich.pullgo.domain.model.User
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/application/PullgoApplication.kt
 import com.ich.pullgo.ui.commonFragment.LoadingDialogFragment
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Singleton
@@ -10,8 +14,8 @@ import javax.inject.Singleton
 @Singleton
 @HiltAndroidApp
 class PullgoApplication: Application() {
-    var loginUser = User()
     private val loadingDialog by lazy { LoadingDialogFragment() }
+    var loginUser: User = User()
 
     init {
         instance = this
@@ -30,5 +34,14 @@ class PullgoApplication: Application() {
 
     companion object{
         var instance: PullgoApplication? = null
+    }
+
+
+    fun loginUser(user: User){
+        loginUser = user
+    }
+
+    fun logoutUser(){
+        loginUser = User()
     }
 }

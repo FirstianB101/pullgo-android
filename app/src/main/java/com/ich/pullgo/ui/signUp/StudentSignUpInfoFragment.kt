@@ -10,8 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.snackbar.Snackbar
 import com.ich.pullgo.databinding.FragmentSignupStudentInfoBinding
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/signUp/StudentSignUpInfoFragment.kt
 import com.ich.pullgo.data.models.Account
 import com.ich.pullgo.data.models.Student
+=======
+import com.ich.pullgo.domain.model.Account
+import com.ich.pullgo.domain.model.Student
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/signUp/StudentSignUpInfoFragment.kt
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 

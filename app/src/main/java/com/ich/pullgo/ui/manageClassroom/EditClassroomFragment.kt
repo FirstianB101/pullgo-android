@@ -12,9 +12,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/EditClassroomFragment.kt
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.FragmentManageClasssroomEditClassroomBinding
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/EditClassroomFragment.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 

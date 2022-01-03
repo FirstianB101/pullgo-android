@@ -8,9 +8,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/findAcademy/CreateAcademyActivity.kt
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityCreateAcademyBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityCreateAcademyBinding
+import com.ich.pullgo.domain.model.Academy
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/findAcademy/CreateAcademyActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.api.OnChoiceListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takeExam/TakeExamActivity.kt
 import com.ich.pullgo.data.models.Answer
 import com.ich.pullgo.data.models.AttenderState
 import com.ich.pullgo.data.models.Exam
@@ -21,6 +22,15 @@ import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.data.utils.DurationUtil
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityTakeExamBinding
+=======
+import com.ich.pullgo.data.utils.DurationUtil
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityTakeExamBinding
+import com.ich.pullgo.domain.model.Answer
+import com.ich.pullgo.domain.model.AttenderState
+import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takeExam/TakeExamActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit

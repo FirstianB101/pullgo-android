@@ -7,7 +7,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnClassroomClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/ManageClassroomAdapter.kt
 import com.ich.pullgo.data.models.Classroom
+=======
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/ManageClassroomAdapter.kt
 
 class ManageClassroomAdapter(private val dataSet: List<Classroom>)
     :RecyclerView.Adapter<ManageClassroomAdapter.ViewHolder>(){

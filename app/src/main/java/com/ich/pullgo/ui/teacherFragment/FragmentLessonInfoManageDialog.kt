@@ -17,10 +17,17 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnCalendarResetListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/teacherFragment/FragmentLessonInfoManageDialog.kt
 import com.ich.pullgo.data.models.Lesson
 import com.ich.pullgo.data.models.Schedule
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.DialogLessonInfoManageBinding
+=======
+import com.ich.pullgo.data.remote.dto.Schedule
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.DialogLessonInfoManageBinding
+import com.ich.pullgo.domain.model.Lesson
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/teacherFragment/FragmentLessonInfoManageDialog.kt
 import com.ich.pullgo.ui.calendar.LessonsViewModel
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint

@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnAcademyRequestListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/AcademyRequestAdapter.kt
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.databinding.LayoutAcademyRequestItemBinding
+=======
+import com.ich.pullgo.databinding.LayoutAcademyRequestItemBinding
+import com.ich.pullgo.domain.model.Academy
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/AcademyRequestAdapter.kt
 
 class AcademyRequestAdapter(private val dataSet: List<Academy>):
     RecyclerView.Adapter<AcademyRequestAdapter.ViewHolder>(){

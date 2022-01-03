@@ -16,11 +16,19 @@ import androidx.viewpager2.widget.ViewPager2
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.api.OnEditMultipleChoiceListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageQuestion/ManageQuestionActivity.kt
 import com.ich.pullgo.data.models.Exam
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.data.utils.ImageUtil
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityManageQuestionBinding
+=======
+import com.ich.pullgo.data.utils.ImageUtil
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityManageQuestionBinding
+import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageQuestion/ManageQuestionActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

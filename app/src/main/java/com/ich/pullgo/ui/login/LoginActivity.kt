@@ -7,9 +7,15 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/login/LoginActivity.kt
 import com.ich.pullgo.data.models.Account
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityLoginBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityLoginBinding
+import com.ich.pullgo.domain.model.Account
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/login/LoginActivity.kt
 import com.ich.pullgo.ui.findAccount.FindAccountActivity
 import com.ich.pullgo.ui.main.StudentMainActivity
 import com.ich.pullgo.ui.main.TeacherMainActivity

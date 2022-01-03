@@ -25,3 +25,7 @@ annotation class PullgoRetrofitService
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class ImagebbRetrofitService
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class PullgoRetrofitApi

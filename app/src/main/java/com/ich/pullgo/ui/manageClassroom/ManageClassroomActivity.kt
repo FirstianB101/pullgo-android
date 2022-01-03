@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.ich.pullgo.R
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/ManageClassroomActivity.kt
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.databinding.ActivityManageClassroomBinding
+=======
+import com.ich.pullgo.databinding.ActivityManageClassroomBinding
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/ManageClassroomActivity.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

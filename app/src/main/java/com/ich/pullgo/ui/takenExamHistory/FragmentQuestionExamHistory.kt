@@ -7,8 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.ich.pullgo.R
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takenExamHistory/FragmentQuestionExamHistory.kt
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.databinding.FragmentExamHistoryQuestionBinding
+=======
+import com.ich.pullgo.databinding.FragmentExamHistoryQuestionBinding
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takenExamHistory/FragmentQuestionExamHistory.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

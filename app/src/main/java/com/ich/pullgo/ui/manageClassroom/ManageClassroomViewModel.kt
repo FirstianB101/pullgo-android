@@ -1,15 +1,28 @@
 package com.ich.pullgo.ui.manageClassroom
 
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/ManageClassroomViewModel.kt
+=======
+
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/ManageClassroomViewModel.kt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/ManageClassroomViewModel.kt
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.data.models.Exam
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.data.models.Teacher
 import com.ich.pullgo.data.repository.ManageClassroomRepository
 import com.ich.pullgo.data.utils.Resource
+=======
+import com.ich.pullgo.data.repository.ManageClassroomRepository
+import com.ich.pullgo.data.utils.Resource
+import com.ich.pullgo.domain.model.Classroom
+import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.domain.model.Teacher
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/ManageClassroomViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

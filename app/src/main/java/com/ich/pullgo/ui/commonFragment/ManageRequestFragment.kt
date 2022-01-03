@@ -13,10 +13,17 @@ import com.ich.pullgo.data.adapter.AcademyRequestAdapter
 import com.ich.pullgo.data.adapter.ClassroomRequestAdapter
 import com.ich.pullgo.data.api.OnAcademyRequestListener
 import com.ich.pullgo.data.api.OnClassroomRequestListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/commonFragment/ManageRequestFragment.kt
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentManageRequestBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.FragmentManageRequestBinding
+import com.ich.pullgo.domain.model.Academy
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/commonFragment/ManageRequestFragment.kt
 import com.ich.pullgo.ui.dialog.FragmentShowAcademyInfoDialog
 import com.ich.pullgo.ui.dialog.FragmentShowClassroomInfoDialog
 import com.ich.pullgo.ui.dialog.TwoButtonDialog

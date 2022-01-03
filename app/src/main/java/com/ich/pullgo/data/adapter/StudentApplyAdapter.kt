@@ -6,8 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnStudentClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/StudentApplyAdapter.kt
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.databinding.LayoutApplyItemBinding
+=======
+import com.ich.pullgo.databinding.LayoutApplyItemBinding
+import com.ich.pullgo.domain.model.Student
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/StudentApplyAdapter.kt
 
 class StudentApplyAdapter  (private val dataSet: List<Student>, private val showRemoveButton: Boolean):
     RecyclerView.Adapter<StudentApplyAdapter.ViewHolder>(){

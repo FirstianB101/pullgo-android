@@ -17,9 +17,15 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageClassroom/FragmentCreateExamDialog.kt
 import com.ich.pullgo.data.models.Exam
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.DialogCreateExamBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.DialogCreateExamBinding
+import com.ich.pullgo.domain.model.Exam
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageClassroom/FragmentCreateExamDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 import java.sql.Timestamp
 import java.text.SimpleDateFormat

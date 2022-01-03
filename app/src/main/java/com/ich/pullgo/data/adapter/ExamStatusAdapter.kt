@@ -6,14 +6,21 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/ExamStatusAdapter.kt
 import com.ich.pullgo.data.models.AttenderState
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.data.utils.ExamProgress
 import com.ich.pullgo.databinding.LayoutExamStatusItemBinding
+=======
+import com.ich.pullgo.data.utils.ExamProgress
+import com.ich.pullgo.databinding.LayoutExamStatusItemBinding
+import com.ich.pullgo.domain.model.AttenderState
+import com.ich.pullgo.domain.model.Student
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/ExamStatusAdapter.kt
 
 class ExamStatusAdapter(
     private val students: List<Student>,
-    private val statesMap: Map<Long,AttenderState>,
+    private val statesMap: Map<Long, AttenderState>,
     private val context: Context
     ):
     RecyclerView.Adapter<ExamStatusAdapter.ViewHolder>() {

@@ -13,10 +13,17 @@ import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.ClassroomAdapter
 import com.ich.pullgo.data.api.OnClassroomClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/applyClassroom/ApplyClassroomActivity.kt
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityRequestApplyClassroomBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityRequestApplyClassroomBinding
+import com.ich.pullgo.domain.model.Academy
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/applyClassroom/ApplyClassroomActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -88,10 +95,10 @@ class ApplyClassroomActivity : AppCompatActivity() {
             }
         }
 
-        if(app.loginUser.teacher != null) {
-            viewModel.requestTeacherAppliedAcademies(app.loginUser.teacher?.id!!)
-        }else if(app.loginUser.student != null){
-            viewModel.requestStudentAppliedAcademies(app.loginUser.student?.id!!)
+        if(app.loginUser?.teacher != null) {
+            viewModel.requestTeacherAppliedAcademies(app.loginUser?.teacher?.id!!)
+        }else if(app.loginUser?.student != null){
+            viewModel.requestStudentAppliedAcademies(app.loginUser?.student?.id!!)
         }
     }
 
@@ -188,10 +195,10 @@ class ApplyClassroomActivity : AppCompatActivity() {
     }
 
     fun requestClassroomApply(){
-        if(app.loginUser.student != null) {
-            viewModel.requestStudentApplyClassroom(app.loginUser.student?.id!!, selectedClassroom)
-        }else if(app.loginUser.teacher != null){
-            viewModel.requestTeacherApplyClassroom(app.loginUser.teacher?.id!!, selectedClassroom)
+        if(app.loginUser?.student != null) {
+            viewModel.requestStudentApplyClassroom(app.loginUser?.student?.id!!, selectedClassroom)
+        }else if(app.loginUser?.teacher != null){
+            viewModel.requestTeacherApplyClassroom(app.loginUser?.teacher?.id!!, selectedClassroom)
         }
     }
 }

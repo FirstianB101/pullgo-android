@@ -12,9 +12,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.adapter.AcademyAdapter
 import com.ich.pullgo.data.api.OnAcademyClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/findAcademy/FindAcademyActivity.kt
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityFindAcademyBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityFindAcademyBinding
+import com.ich.pullgo.domain.model.Academy
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/findAcademy/FindAcademyActivity.kt
 import com.ich.pullgo.ui.dialog.TwoButtonDialog
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

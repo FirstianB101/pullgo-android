@@ -5,11 +5,19 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.ich.pullgo.data.adapter.ExamStatusAdapter
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/examStatus/ManageExamStatusActivity.kt
 import com.ich.pullgo.data.models.AttenderState
 import com.ich.pullgo.data.models.Exam
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityManageExamStatusBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityManageExamStatusBinding
+import com.ich.pullgo.domain.model.AttenderState
+import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.domain.model.Student
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/examStatus/ManageExamStatusActivity.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,7 +26,7 @@ class ManageExamStatusActivity : AppCompatActivity() {
 
     private val viewModel: ManageExamStatusViewModel by viewModels()
 
-    private val studentInfoMap = mutableMapOf<Long,Student>()
+    private val studentInfoMap = mutableMapOf<Long, Student>()
     private lateinit var states: List<AttenderState>
     private lateinit var studentsInClassroom: List<Student>
 

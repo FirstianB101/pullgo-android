@@ -17,7 +17,11 @@ import com.google.android.material.navigation.NavigationView
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.api.OnCheckPwListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/main/TeacherMainActivity.kt
 import com.ich.pullgo.data.api.PullgoService
+=======
+import com.ich.pullgo.data.remote.PullgoService
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/main/TeacherMainActivity.kt
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityTeacherMainBinding
 import com.ich.pullgo.di.PullgoRetrofitService

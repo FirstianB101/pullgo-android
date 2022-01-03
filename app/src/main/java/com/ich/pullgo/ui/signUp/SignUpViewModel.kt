@@ -4,11 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/signUp/SignUpViewModel.kt
 import com.ich.pullgo.data.models.Exist
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.data.models.Teacher
 import com.ich.pullgo.data.repository.SignUpRepository
 import com.ich.pullgo.data.utils.Resource
+=======
+import com.ich.pullgo.data.remote.dto.toExist
+import com.ich.pullgo.data.repository.SignUpRepository
+import com.ich.pullgo.data.utils.Resource
+import com.ich.pullgo.domain.model.Exist
+import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.domain.model.Teacher
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/signUp/SignUpViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -69,7 +78,7 @@ class SignUpViewModel @Inject constructor(
         viewModelScope.launch {
             signUpRepository.studentUsernameExists(username).let { response ->
                 if(response.isSuccessful){
-                    _usernameExist.postValue(Resource.success(response.body()))
+                    _usernameExist.postValue(Resource.success(response.body()?.toExist()))
                 }else{
                     _usernameExist.postValue(Resource.error(response.code().toString(),null))
                 }
@@ -84,7 +93,7 @@ class SignUpViewModel @Inject constructor(
             signUpRepository.teacherUsernameExists(username).let { response ->
                 if(response.isSuccessful){
                     if(response.isSuccessful){
-                        _usernameExist.postValue(Resource.success(response.body()))
+                        _usernameExist.postValue(Resource.success(response.body()?.toExist()))
                     }else{
                         _usernameExist.postValue(Resource.error(response.code().toString(),null))
                     }

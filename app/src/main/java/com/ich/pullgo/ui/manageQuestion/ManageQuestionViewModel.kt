@@ -4,10 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageQuestion/ManageQuestionViewModel.kt
 import com.ich.pullgo.data.models.ImageUploadResponse
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.data.repository.ManageQuestionRepository
 import com.ich.pullgo.data.utils.Resource
+=======
+import com.ich.pullgo.data.repository.ManageQuestionRepository
+import com.ich.pullgo.data.utils.Resource
+import com.ich.pullgo.domain.model.ImageUploadResponse
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageQuestion/ManageQuestionViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.RequestBody

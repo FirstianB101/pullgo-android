@@ -20,11 +20,19 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/lesson/FragmentCreateNewLessonDialog.kt
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.data.models.Lesson
 import com.ich.pullgo.data.models.Schedule
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.DialogCreateNewLessonBinding
+=======
+import com.ich.pullgo.data.remote.dto.Schedule
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.DialogCreateNewLessonBinding
+import com.ich.pullgo.domain.model.Classroom
+import com.ich.pullgo.domain.model.Lesson
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/lesson/FragmentCreateNewLessonDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 import java.sql.Timestamp
 import java.text.SimpleDateFormat

@@ -13,9 +13,15 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageAcademy/FragmentManageAcademyDelegateDialog.kt
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.data.models.Teacher
 import com.ich.pullgo.databinding.DialogManageAcademyDelegateBinding
+=======
+import com.ich.pullgo.databinding.DialogManageAcademyDelegateBinding
+import com.ich.pullgo.domain.model.Academy
+import com.ich.pullgo.domain.model.Teacher
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageAcademy/FragmentManageAcademyDelegateDialog.kt
 import com.ich.pullgo.ui.teacherFragment.TeacherManageAcademyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -8,9 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.data.api.OnCheckPwListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/commonFragment/ChangeInfoCheckPwFragment.kt
 import com.ich.pullgo.data.models.Account
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentChangeInfoCheckPwBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.FragmentChangeInfoCheckPwBinding
+import com.ich.pullgo.domain.model.Account
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/commonFragment/ChangeInfoCheckPwFragment.kt
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

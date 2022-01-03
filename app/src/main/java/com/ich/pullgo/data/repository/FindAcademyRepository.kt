@@ -1,8 +1,15 @@
 package com.ich.pullgo.data.repository
 
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/repository/FindAcademyRepository.kt
 import com.ich.pullgo.data.api.PullgoService
 import com.ich.pullgo.data.models.Academy
 import com.ich.pullgo.di.PullgoRetrofitService
+=======
+import com.ich.pullgo.data.remote.PullgoApi
+import com.ich.pullgo.data.remote.PullgoService
+import com.ich.pullgo.di.PullgoRetrofitService
+import com.ich.pullgo.domain.model.Academy
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/repository/FindAcademyRepository.kt
 import javax.inject.Inject
 import javax.inject.Singleton
 

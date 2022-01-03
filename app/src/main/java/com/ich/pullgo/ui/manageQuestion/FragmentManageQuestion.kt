@@ -13,8 +13,13 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageQuestion/FragmentManageQuestion.kt
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.databinding.FragmentManageQuestionBinding
+=======
+import com.ich.pullgo.databinding.FragmentManageQuestionBinding
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageQuestion/FragmentManageQuestion.kt
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -11,10 +11,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ich.pullgo.data.api.OnDataChangedListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageAcademy/FragmentKickPersonDialog.kt
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.data.models.Teacher
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.DialogKickPersonBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.DialogKickPersonBinding
+import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.domain.model.Teacher
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageAcademy/FragmentKickPersonDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

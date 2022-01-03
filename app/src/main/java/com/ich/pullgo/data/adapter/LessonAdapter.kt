@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnLessonClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/LessonAdapter.kt
 import com.ich.pullgo.data.models.Lesson
 import com.ich.pullgo.databinding.LayoutBottomSheetItemBinding
+=======
+import com.ich.pullgo.databinding.LayoutBottomSheetItemBinding
+import com.ich.pullgo.domain.model.Lesson
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/LessonAdapter.kt
 
 class LessonAdapter(private val dataSet: List<Lesson>):
     RecyclerView.Adapter<LessonAdapter.ViewHolder>() {

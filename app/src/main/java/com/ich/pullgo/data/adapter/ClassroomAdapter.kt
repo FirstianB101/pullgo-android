@@ -5,8 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ich.pullgo.R
 import com.ich.pullgo.data.api.OnClassroomClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/data/adapter/ClassroomAdapter.kt
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.databinding.LayoutClassroomItemBinding
+=======
+import com.ich.pullgo.databinding.LayoutClassroomItemBinding
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/data/adapter/ClassroomAdapter.kt
 
 class ClassroomAdapter(private val dataSet: List<Classroom>)
     : RecyclerView.Adapter<ClassroomAdapter.ViewHolder>(){

@@ -8,10 +8,17 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ich.pullgo.data.adapter.ExamResultAdapter
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takeExam/FragmentTakeExamResult.kt
 import com.ich.pullgo.data.models.AttenderAnswer
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.FragmentExamResultBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.FragmentExamResultBinding
+import com.ich.pullgo.domain.model.AttenderAnswer
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takeExam/FragmentTakeExamResult.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

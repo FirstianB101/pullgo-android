@@ -10,9 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.snackbar.Snackbar
 import com.ich.pullgo.application.PullgoApplication
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/teacherFragment/TeacherChangePersonInfoFragment.kt
 import com.ich.pullgo.data.models.Account
 import com.ich.pullgo.data.models.Teacher
 import com.ich.pullgo.databinding.FragmentTeacherChangeInfoBinding
+=======
+import com.ich.pullgo.databinding.FragmentTeacherChangeInfoBinding
+import com.ich.pullgo.domain.model.Account
+import com.ich.pullgo.domain.model.Teacher
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/teacherFragment/TeacherChangePersonInfoFragment.kt
 import com.ich.pullgo.ui.commonFragment.ChangeInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern

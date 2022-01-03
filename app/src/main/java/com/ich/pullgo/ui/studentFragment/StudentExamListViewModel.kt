@@ -4,11 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/studentFragment/StudentExamListViewModel.kt
 import com.ich.pullgo.data.models.AttenderState
 import com.ich.pullgo.data.models.CreateAttender
 import com.ich.pullgo.data.models.Exam
 import com.ich.pullgo.data.repository.ExamsRepository
 import com.ich.pullgo.data.utils.Resource
+=======
+import com.ich.pullgo.data.remote.dto.CreateAttender
+import com.ich.pullgo.data.repository.ExamsRepository
+import com.ich.pullgo.data.utils.Resource
+import com.ich.pullgo.domain.model.AttenderState
+import com.ich.pullgo.domain.model.Exam
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/studentFragment/StudentExamListViewModel.kt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -12,8 +12,13 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ich.pullgo.R
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/takenExamHistory/FragmentExamHistoryBottomSheet.kt
 import com.ich.pullgo.data.models.Question
 import com.ich.pullgo.databinding.FragmentMultipleChoiceBottomSheetBinding
+=======
+import com.ich.pullgo.databinding.FragmentMultipleChoiceBottomSheetBinding
+import com.ich.pullgo.domain.model.Question
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/takenExamHistory/FragmentExamHistoryBottomSheet.kt
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

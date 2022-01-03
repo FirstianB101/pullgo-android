@@ -7,10 +7,17 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/dialog/FragmentShowClassroomInfoDialog.kt
 import com.ich.pullgo.data.api.PullgoService
 import com.ich.pullgo.data.models.Classroom
 import com.ich.pullgo.databinding.DialogClassroomInfoBinding
 import com.ich.pullgo.di.PullgoRetrofitService
+=======
+import com.ich.pullgo.data.remote.PullgoService
+import com.ich.pullgo.databinding.DialogClassroomInfoBinding
+import com.ich.pullgo.di.PullgoRetrofitService
+import com.ich.pullgo.domain.model.Classroom
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/dialog/FragmentShowClassroomInfoDialog.kt
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

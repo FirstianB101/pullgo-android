@@ -13,10 +13,17 @@ import com.ich.pullgo.data.adapter.TeacherManageAdapter
 import com.ich.pullgo.data.api.OnDataChangedListener
 import com.ich.pullgo.data.api.OnStudentClickListener
 import com.ich.pullgo.data.api.OnTeacherClickListener
+<<<<<<< HEAD:app/src/main/java/com/ich/pullgo/ui/manageAcademy/ManageAcademyManagePeopleActivity.kt
 import com.ich.pullgo.data.models.Student
 import com.ich.pullgo.data.models.Teacher
 import com.ich.pullgo.data.utils.Status
 import com.ich.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
+=======
+import com.ich.pullgo.data.utils.Status
+import com.ich.pullgo.databinding.ActivityManageAcademyManagePeopleBinding
+import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.domain.model.Teacher
+>>>>>>> ich:app/src/main/java/com/harry/pullgo/ui/manageAcademy/ManageAcademyManagePeopleActivity.kt
 import com.ich.pullgo.ui.dialog.FragmentShowStudentInfoDialog
 import com.ich.pullgo.ui.dialog.FragmentShowTeacherInfoDialog
 import dagger.hilt.android.AndroidEntryPoint
