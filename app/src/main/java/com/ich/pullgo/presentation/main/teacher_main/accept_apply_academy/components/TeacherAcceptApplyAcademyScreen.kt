@@ -81,12 +81,14 @@ fun TeacherAcceptApplyAcademyScreen(
             Spacer(modifier = Modifier.width(20.dp))
 
             ExposedDropdownMenuBox(
+                modifier = Modifier.fillMaxWidth(),
                 expanded = spinnerState,
                 onExpandedChange = {
                     spinnerState = !spinnerState
                 }
             ) {
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
                     value = selectedAcademy?.name ?: "",
                     onValueChange = { },

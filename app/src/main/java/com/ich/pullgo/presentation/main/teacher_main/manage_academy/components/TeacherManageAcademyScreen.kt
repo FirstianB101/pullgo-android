@@ -114,12 +114,14 @@ fun TeacherManageAcademyScreen(
             Spacer(modifier = Modifier.width(20.dp))
 
             ExposedDropdownMenuBox(
+                modifier = Modifier.fillMaxWidth(),
                 expanded = spinnerState,
                 onExpandedChange = {
                     spinnerState = !spinnerState
                 }
             ) {
                 OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
                     value = selectedAcademy?.name ?: "",
                     onValueChange = { },
@@ -175,7 +177,9 @@ fun TeacherManageAcademyScreen(
                     Spacer(modifier = Modifier.width(20.dp))
 
                     OutlinedTextField(
-                        modifier = Modifier.focusRequester(focusRequester),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester),
                         readOnly = editState,
                         value = academyAddress,
                         onValueChange = {academyAddress = it},
@@ -200,6 +204,7 @@ fun TeacherManageAcademyScreen(
                     Spacer(modifier = Modifier.width(20.dp))
 
                     OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
                         readOnly = editState,
                         value = academyPhone,
                         onValueChange = { academyPhone = it},

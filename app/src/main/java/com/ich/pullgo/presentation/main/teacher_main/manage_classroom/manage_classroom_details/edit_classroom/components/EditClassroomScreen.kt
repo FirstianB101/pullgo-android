@@ -87,7 +87,7 @@ fun EditClassroomScreen(
 
             OutlinedTextField(
                 readOnly = true,
-                modifier = Modifier.width(260.dp),
+                modifier = Modifier.fillMaxWidth(),
                 value = infos?.get(0) ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
@@ -115,7 +115,7 @@ fun EditClassroomScreen(
 
             OutlinedTextField(
                 readOnly = true,
-                modifier = Modifier.width(260.dp),
+                modifier = Modifier.fillMaxWidth(),
                 value = infos?.get(1) ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
@@ -143,7 +143,7 @@ fun EditClassroomScreen(
 
             OutlinedTextField(
                 readOnly = true,
-                modifier = Modifier.width(260.dp),
+                modifier = Modifier.fillMaxWidth(),
                 value = selectedClassroom.creator?.account?.fullName ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
