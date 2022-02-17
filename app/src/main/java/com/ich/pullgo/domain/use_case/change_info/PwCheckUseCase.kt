@@ -1,6 +1,6 @@
 package com.ich.pullgo.domain.use_case.change_info
 
-import com.ich.pullgo.PullgoApplication
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Account

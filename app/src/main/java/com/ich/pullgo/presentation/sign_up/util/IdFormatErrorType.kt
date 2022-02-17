@@ -1,8 +1,8 @@
 package com.ich.pullgo.presentation.sign_up.util
 
-import com.ich.pullgo.common.Constants
+import com.ich.pullgo.common.util.Constants
 
-sealed class IdFormatErrorType(val msg: String){
+sealed class IdFormatErrorType(val message: String){
     object NoError: IdFormatErrorType(Constants.ID_FORMAT_GOOD)
     object BlankError: IdFormatErrorType("")
     object FirstWordError: IdFormatErrorType(Constants.FIRST_WORD_FORMAT_ERROR)

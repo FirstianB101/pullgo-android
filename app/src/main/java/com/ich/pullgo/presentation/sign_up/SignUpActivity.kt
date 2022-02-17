@@ -11,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ich.pullgo.presentation.sign_up.components.*
 import com.ich.pullgo.presentation.sign_up.components.StudentSignUpPwScreen
+import com.ich.pullgo.presentation.sign_up.util.SignUpScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.navigation.NavController
-import com.ich.pullgo.presentation.sign_up.SignUpScreen
+import com.ich.pullgo.presentation.sign_up.util.SignUpScreen
 
 @Composable
 fun TeacherSignUpPwScreen(

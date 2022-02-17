@@ -1,6 +1,6 @@
 package com.ich.pullgo.data.remote
 
-import com.ich.pullgo.PullgoApplication
+import com.ich.pullgo.application.PullgoApplication
 import okhttp3.Interceptor
 import okhttp3.Response
 

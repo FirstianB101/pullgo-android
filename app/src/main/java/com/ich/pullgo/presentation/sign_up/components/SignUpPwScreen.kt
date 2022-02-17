@@ -10,6 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,9 +20,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ich.pullgo.R
-import com.ich.pullgo.common.Constants
+import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.common.components.MainThemeRoundButton
-import com.ich.pullgo.presentation.sign_up.SignUpScreen
+import com.ich.pullgo.common.util.TestTags
 import com.ich.pullgo.presentation.sign_up.util.PwFormatErrorType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -57,11 +58,11 @@ fun SignUpPwScreen(
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 0.dp),
+                    .padding(30.dp, 0.dp)
+                    .testTag(TestTags.SIGNUP_PW_TEXT_FIELD),
                 value = pwState.value,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color),
-                    focusedLabelColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),
@@ -78,37 +79,26 @@ fun SignUpPwScreen(
                 },
                 onValueChange = {pwState.value = it}
             )
-            when(checkResult){
-                is PwFormatErrorType.NoError -> {
-                    Text(
-                        modifier = Modifier
-                            .padding(30.dp, 0.dp, 0.dp, 0.dp)
-                            .align(Alignment.Start),
-                        text = checkResult.msg,
-                        color = Color.Green
-                    )
-                }
-                else -> {
-                    Text(
-                        modifier = Modifier
-                            .padding(30.dp, 0.dp, 0.dp, 0.dp)
-                            .align(Alignment.Start),
-                        text = checkResult.msg,
-                        color = Color.Red
-                    )
-                }
-            }
+
+            Text(
+                modifier = Modifier
+                    .padding(30.dp, 0.dp, 0.dp, 0.dp)
+                    .align(Alignment.Start),
+                text = checkResult.message,
+                color = if (checkResult is PwFormatErrorType.NoError) Color.Green
+                        else Color.Red
+            )
 
             Spacer(modifier = Modifier.height(5.dp))
 
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 0.dp),
+                    .padding(30.dp, 0.dp)
+                    .testTag(TestTags.SIGNUP_PW_CHECK_TEXT_FIELD),
                 value = pwCheckState.value,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color),
-                    focusedLabelColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 visualTransformation = if(passwordCheckVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),
@@ -131,7 +121,7 @@ fun SignUpPwScreen(
                         modifier = Modifier
                             .padding(30.dp, 0.dp, 0.dp, 0.dp)
                             .align(Alignment.Start),
-                        text = checkResult.msg,
+                        text = checkResult.message,
                         color = Color.Red
                     )
                 }
@@ -140,7 +130,7 @@ fun SignUpPwScreen(
                         modifier = Modifier
                             .padding(30.dp, 0.dp, 0.dp, 0.dp)
                             .align(Alignment.Start),
-                        text = checkResult.msg,
+                        text = checkResult.message,
                         color = Color.Green
                     )
                 }
@@ -153,7 +143,8 @@ fun SignUpPwScreen(
             MainThemeRoundButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(30.dp, 0.dp),
+                    .padding(30.dp, 0.dp)
+                    .testTag(TestTags.SIGNUP_PW_NEXT_BUTTON),
                 text = stringResource(R.string.go_next)
             ) {
                 when(checkResult){
@@ -162,7 +153,7 @@ fun SignUpPwScreen(
                     }
                     else -> {
                         scope.launch {
-                            scaffoldState.snackbarHostState.showSnackbar(checkResult.msg)
+                            scaffoldState.snackbarHostState.showSnackbar(checkResult.message)
                         }
                     }
                 }

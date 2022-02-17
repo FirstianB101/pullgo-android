@@ -5,6 +5,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -13,7 +14,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ich.pullgo.R
 import com.ich.pullgo.common.components.MainThemeRoundButton
-import com.ich.pullgo.presentation.sign_up.SignUpScreen
+import com.ich.pullgo.common.util.TestTags
+import com.ich.pullgo.presentation.sign_up.util.SignUpScreen
 
 @Composable
 fun SignUpMainScreen(
@@ -36,8 +38,9 @@ fun SignUpMainScreen(
         MainThemeRoundButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(30.dp, 0.dp),
-            text = stringResource(R.string.sign_up_student)
+                .padding(30.dp, 0.dp)
+                .testTag(TestTags.STUDENT_SIGNUP),
+            text = stringResource(R.string.sign_up_student),
         ) {
             navController.navigate(SignUpScreen.StudentIdScreen.route)
         }
@@ -46,8 +49,9 @@ fun SignUpMainScreen(
         
         MainThemeRoundButton(
             modifier = Modifier
-            .fillMaxWidth()
-            .padding(30.dp, 0.dp),
+                .fillMaxWidth()
+                .padding(30.dp, 0.dp)
+                .testTag(TestTags.TEACHER_SIGNUP),
             text =stringResource(R.string.sign_up_teacher)
         ) {
             navController.navigate(SignUpScreen.TeacherIdScreen.route)

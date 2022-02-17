@@ -1,8 +1,8 @@
 package com.ich.pullgo.presentation.sign_up.util
 
-import com.ich.pullgo.common.Constants
+import com.ich.pullgo.common.util.Constants
 
-sealed class PwFormatErrorType(val msg: String){
+sealed class PwFormatErrorType(val message: String){
     object NoError: PwFormatErrorType(Constants.PW_FORMAT_GOOD)
     object BlankError: PwFormatErrorType("")
     object PwWrongCharError: PwFormatErrorType(Constants.PW_WRONG_CHAR_ERROR)

@@ -7,9 +7,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ich.pullgo.domain.model.Academy
-import com.ich.pullgo.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
 
 @Composable
 fun AcademyItem(

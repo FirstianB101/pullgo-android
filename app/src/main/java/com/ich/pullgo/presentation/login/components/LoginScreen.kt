@@ -3,6 +3,7 @@ package com.ich.pullgo.presentation.login.components
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -25,34 +26,29 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.common.Constants
+import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
+import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.User
 import com.ich.pullgo.presentation.login.LoginState
 import com.ich.pullgo.presentation.login.LoginViewModel
 import com.ich.pullgo.presentation.sign_up.SignUpActivity
-import com.ich.pullgo.ui.findAccount.FindAccountActivity
-import com.ich.pullgo.ui.main.StudentMainActivity
-import com.ich.pullgo.ui.main.TeacherMainActivity
-import kotlinx.coroutines.launch
+import com.ich.pullgo.presentation.student_main.StudentMainActivity
+import com.ich.pullgo.presentation.teacher_main.TeacherMainActivity
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ){
-    val state = viewModel.state.value
+    val state = viewModel.state.collectAsState()
     val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
 
     var id by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var passwordVisibility by rememberSaveable { mutableStateOf(false) }
 
-    var autoLoginCheck by rememberSaveable { mutableStateOf(false) }
-
     val context = LocalContext.current
-
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(modifier = Modifier
@@ -75,8 +71,7 @@ fun LoginScreen(
                     .padding(30.dp, 0.dp),
                 value = id,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color),
-                    focusedLabelColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 label = {Text(stringResource(R.string.prompt_id))},
                 onValueChange = {id = it}
@@ -90,8 +85,7 @@ fun LoginScreen(
                     .padding(30.dp, 0.dp),
                 value = password,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = colorResource(R.color.main_color),
-                    focusedLabelColor = colorResource(R.color.main_color)
+                    focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 visualTransformation = if(passwordVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),
@@ -113,19 +107,12 @@ fun LoginScreen(
 
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(0.dp, 0.dp, 30.dp, 0.dp),
-                horizontalArrangement = Arrangement.End
+                .padding(end = 30.dp)
             ) {
-                Checkbox(
-                checked = autoLoginCheck,
-                onCheckedChange = {autoLoginCheck = it},
-                )
-                Spacer(modifier = Modifier.width(5.dp))
-                Text(text = stringResource(R.string.auto_login))
+
             }
 
             Spacer(modifier = Modifier.height(20.dp))
-
 
             MainThemeRoundButton(
                 modifier = Modifier
@@ -162,38 +149,26 @@ fun LoginScreen(
                     modifier = Modifier.padding(0.dp,0.dp,40.dp,0.dp),
                     content = { Text(text = stringResource(R.string.find_username_and_password), color = Color.Gray)},
                     contentPadding = PaddingValues(16.dp),
-                    onClick = {
-                        context.startActivity(Intent(context,FindAccountActivity::class.java))
-                    }
+                    onClick = {}
                 )
             }
         }
 
-        when(state){
+        when(state.value){
             is LoginState.SignIn -> {
-                val user = state.userWithAcademyExist?.user!!
-                val academyExist = state.userWithAcademyExist.academyExist
+                val user = (state.value as LoginState.SignIn).userWithAcademyExist?.user
+                val academyExist = (state.value as LoginState.SignIn).userWithAcademyExist?.academyExist
 
                 PullgoApplication.instance?.loginUser(user)
-                viewModel.resetState()
+                viewModel.onResultConsumed()
                 startMainActivity(context, user, academyExist)
             }
             is LoginState.Loading -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    CircularProgressIndicator(modifier = Modifier)
-                }
+                LoadingScreen()
             }
             is LoginState.Error -> {
-                scope.launch {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = state.message.toString()
-                    )
-                }
-                viewModel.resetState()
+                Toast.makeText(context, (state.value as LoginState.Error).message,Toast.LENGTH_SHORT).show()
+                viewModel.onResultConsumed()
             }
             is LoginState.Normal -> {
                 Log.d("LoginActivity","Normal")

@@ -1,16 +1,17 @@
 package com.ich.pullgo.presentation.sign_up
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ich.pullgo.common.Resource
+import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.domain.use_case.sign_up.SignUpUseCases
+import com.ich.pullgo.presentation.sign_up.util.SignUpState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,58 +19,58 @@ class SignUpViewModel @Inject constructor(
     private val signUpUseCases: SignUpUseCases
 ): ViewModel() {
 
-    private val _signUpState = mutableStateOf(SignUpState())
-    val signUpState: State<SignUpState> = _signUpState
+    private val _signUpState = MutableStateFlow<SignUpState>(SignUpState.Normal)
+    val signUpState: StateFlow<SignUpState> = _signUpState
 
-    fun createStudent(student: Student){
-        signUpUseCases.createStudent(student).onEach { result ->
+    fun createStudent(student: Student) = viewModelScope.launch{
+        signUpUseCases.createStudent(student).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _signUpState.value = SignUpState(newStudent = result.data)
+                    _signUpState.value = SignUpState.CreateStudent(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _signUpState.value = SignUpState(isLoading = true)
+                    _signUpState.value = SignUpState.Loading
                 }
                 is Resource.Error -> {
-                    _signUpState.value = SignUpState(error = result.message ?: "Unexpected Error Occured")
+                    _signUpState.value = SignUpState.Error(result.message.toString())
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun createTeacher(teacher: Teacher){
-        signUpUseCases.createTeacher(teacher).onEach { result ->
+    fun createTeacher(teacher: Teacher) = viewModelScope.launch{
+        signUpUseCases.createTeacher(teacher).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _signUpState.value = SignUpState(newTeacher = result.data)
+                    _signUpState.value = SignUpState.CreateTeacher(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _signUpState.value = SignUpState(isLoading = true)
+                    _signUpState.value = SignUpState.Loading
                 }
                 is Resource.Error -> {
-                    _signUpState.value = SignUpState(error = result.message ?: "Unexpected Error Occured")
+                    _signUpState.value = SignUpState.Error(result.message.toString())
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun checkIdExist(username: String){
-        signUpUseCases.checkIdExist(username).onEach { result ->
+    fun checkIdExist(username: String) = viewModelScope.launch{
+        signUpUseCases.checkIdExist(username).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _signUpState.value = SignUpState(exist = result.data)
+                    _signUpState.value = SignUpState.CheckExist(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _signUpState.value = SignUpState(isLoading = true)
+                    _signUpState.value = SignUpState.Loading
                 }
                 is Resource.Error -> {
-                    _signUpState.value = SignUpState(error = result.message ?: "Unexpected Error Occured")
+                    _signUpState.value = SignUpState.Error(result.message.toString())
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun resetState(){
-        _signUpState.value = SignUpState()
+    fun onResultConsume(){
+        _signUpState.tryEmit(SignUpState.Normal)
     }
 }

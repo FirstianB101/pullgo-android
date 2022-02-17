@@ -1,26 +1,25 @@
 package com.ich.pullgo.presentation.login
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ich.pullgo.common.Resource
+import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.use_case.login.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUserCase: LoginUseCase
+    private val loginUseCase: LoginUseCase
 ): ViewModel() {
-    private val _state = mutableStateOf<LoginState>(LoginState.Normal)
-    val state: State<LoginState> = _state
 
-    fun requestLogin(account: Account){
-        loginUserCase(account).onEach { result ->
+    private val _state = MutableStateFlow<LoginState>(LoginState.Normal)
+    val state: StateFlow<LoginState> = _state
+
+    fun requestLogin(account: Account) = viewModelScope.launch {
+        loginUseCase(account).collect { result ->
             when(result){
                 is Resource.Success -> {
                     _state.value = LoginState.SignIn(result.data)
@@ -32,10 +31,10 @@ class LoginViewModel @Inject constructor(
                     _state.value = LoginState.Loading
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
-    fun resetState(){
-        _state.value = LoginState.Normal
+    fun onResultConsumed(){
+        _state.tryEmit(LoginState.Normal)
     }
 }
