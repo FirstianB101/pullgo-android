@@ -25,6 +25,7 @@ import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.AcademyItem
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.doJob
+import com.ich.pullgo.presentation.login.components.startMainActivity
 import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyState
 import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyViewModel
 
@@ -46,6 +47,7 @@ fun ApplyAcademyScreen(
     var createAcademyDialogState by remember { mutableStateOf(false) }
 
     val user = PullgoApplication.instance?.getLoginUser()
+    val app = PullgoApplication.instance!!
 
     when(state.value){
         is ApplyAcademyState.GetSearchedAcademies -> {
@@ -65,6 +67,10 @@ fun ApplyAcademyScreen(
         }
         is ApplyAcademyState.CreateAcademy -> {
             Toast.makeText(context,"학원을 생성하였습니다",Toast.LENGTH_SHORT).show()
+            if(!app.academyExist) {
+                app.academyExist = true
+                startMainActivity(context, user, true)
+            }
             viewModel.onResultConsume()
         }
     }

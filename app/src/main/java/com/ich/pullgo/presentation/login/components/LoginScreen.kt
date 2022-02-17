@@ -180,22 +180,28 @@ fun LoginScreen(
 fun startMainActivity(context: Context, user: User?, academyExist: Boolean?){
     lateinit var intent: Intent
 
+    val app = PullgoApplication.instance!!
     when{
         user?.teacher != null && academyExist == true -> {
             intent = Intent(context, TeacherMainActivity::class.java)
             intent.putExtra("appliedAcademyExist",true)
+            app.academyExist = true
         }
         user?.teacher != null && academyExist == false -> {
             intent = Intent(context, TeacherMainActivity::class.java)
+            app.academyExist = false
         }
         user?.student != null && academyExist == true -> {
             intent = Intent(context, StudentMainActivity::class.java)
             intent.putExtra("appliedAcademyExist",true)
+            app.academyExist = true
         }
         user?.student != null && academyExist == false -> {
             intent = Intent(context, StudentMainActivity::class.java)
+            app.academyExist = false
         }
     }
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
     context.startActivity(intent)
 }

@@ -29,6 +29,7 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.domain.model.Academy
+import com.ich.pullgo.presentation.login.components.startMainActivity
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyState
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyViewModel
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleActivity
@@ -60,6 +61,7 @@ fun TeacherManageAcademyScreen(
         animationSpec = tween(durationMillis = 1500)
     )
 
+    val user = PullgoApplication.instance?.getLoginUser()
     val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
 
     LaunchedEffect(Unit) {
@@ -79,6 +81,9 @@ fun TeacherManageAcademyScreen(
         }
         is ManageAcademyState.GetAcademies -> {
             ownedAcademies = (state.value as ManageAcademyState.GetAcademies).academies
+            if(ownedAcademies.isEmpty()){
+                startMainActivity(context,user,false)
+            }
             viewModel.onResultConsume()
         }
         is ManageAcademyState.Loading -> {
