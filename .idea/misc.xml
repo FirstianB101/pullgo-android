@@ -9,6 +9,7 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/circle_green.xml" value="0.28671875" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/circle_orange.xml" value="0.28671875" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/ic_baseline_check.xml" value="0.20234375" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/outline_request_page_24.xml" value="0.1835" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/rounded.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/rounded_green.xml" value="0.28671875" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/drawable/rounded_main.xml" value="0.28671875" />
@@ -41,12 +42,13 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_create_new_lesson.xml" value="0.1" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_exam_info.xml" value="0.2" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_kick_person.xml" value="0.12335359675785208" />
-        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_lesson_info.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_lesson_info.xml" value="0.2" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_manage_academy_delegate.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_manage_classroom_student_info.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/dialog_manage_classroom_teacher_info.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_accept_apply_academy.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_calendar.xml" value="0.12335359675785208" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_calendar_bottom_sheet.xml" value="0.2" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_change_info_check_pw.xml" value="0.22" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_detailed_manage_exam.xml" value="0.2" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/fragment_edit_exam_info.xml" value="0.16734972677595628" />
@@ -83,6 +85,7 @@
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/framgnet_manage_question_bottom_sheet.xml" value="0.23324275362318841" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_academy_request_item.xml" value="0.1" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_apply_item.xml" value="0.1" />
+        <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_bottom_sheet_item.xml" value="0.1" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_classroom_item.xml" value="0.12335359675785208" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_classroom_request_item.xml" value="0.264" />
         <entry key="..\:/Users/smart/Desktop/project/pullgo-android/app/src/main/res/layout/layout_exam_item.xml" value="0.12335359675785208" />

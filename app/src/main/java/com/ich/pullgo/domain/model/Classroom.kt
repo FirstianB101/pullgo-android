@@ -6,7 +6,7 @@ class Classroom(
     var academyId: Long?,
     var name: String?,
     var creatorId: Long?
-) : Serializable {
+):Serializable {
     var id: Long? = null
     var creator: Teacher? = null
     override fun toString(): String {

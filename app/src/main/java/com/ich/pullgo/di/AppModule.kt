@@ -1,11 +1,9 @@
 package com.ich.pullgo.di
 
-
 import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.data.api.AuthenticationInterceptor
-import com.ich.pullgo.data.api.PullgoService
-import com.ich.pullgo.common.Constants
-import com.ich.pullgo.data.api.ImageUploadApi
+import com.ich.pullgo.common.util.Constants
+import com.ich.pullgo.data.remote.AuthenticationInterceptor
+import com.ich.pullgo.data.remote.ImageUploadApi
 import com.ich.pullgo.data.remote.PullgoApi
 import dagger.Module
 import dagger.Provides
@@ -66,18 +64,12 @@ object AppModule {
 
     @Provides
     @Singleton
-    @PullgoRetrofitApi
-    fun providePullgoApi(@PullgoRetrofit retrofit: Retrofit): PullgoApi = retrofit.create(PullgoApi::class.java)
+    @PullgoRetrofitService
+    fun providePullgoService(@PullgoRetrofit retrofit: Retrofit): PullgoApi = retrofit.create(PullgoApi::class.java)
 
     @Provides
     @Singleton
     @ImagebbRetrofitService
-    fun provideImagebbApi(@ImagebbRetrofit retrofit: Retrofit): ImageUploadApi = retrofit.create(
-        ImageUploadApi::class.java)
+    fun provideImagebbService(@ImagebbRetrofit retrofit: Retrofit): ImageUploadApi = retrofit.create(ImageUploadApi::class.java)
 
-    @Provides
-    @Singleton
-    @PullgoRetrofitService
-    fun providePullgoService(@PullgoRetrofit retrofit: Retrofit): PullgoService = retrofit.create(
-        PullgoService::class.java)
 }

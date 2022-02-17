@@ -7,6 +7,6 @@ class AttenderState(
     var examId: Long?,
     var progress: String?,
     var score: Int?
-) : Serializable {
+):Serializable{
     var id: Long? = null
 }

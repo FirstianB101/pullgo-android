@@ -1,9 +1,8 @@
 package com.ich.pullgo.domain.use_case.sign_up
 
-import com.ich.pullgo.common.Constants
-import com.ich.pullgo.common.Resource
+import com.ich.pullgo.common.util.Constants
+import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Student
-import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.domain.repository.SignUpRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -12,8 +12,8 @@ import javax.inject.Inject
 class AcceptApplyAcademyRepositoryImpl @Inject constructor(
     @PullgoRetrofitService private val api: PullgoApi
 ): AcceptApplyAcademyRepository {
-    override suspend fun getStudentsAppliedAcademy(id: Long) = api.getStudentsRequestApplyAcademy(id,"schoolYear").map{ it.toStudent() }
-    override suspend fun getTeachersAppliedAcademy(id: Long): List<Teacher> = api.getTeachersRequestApplyAcademy(id).map { it.toTeacher() }
+    override suspend fun getStudentsApplyingAcademy(id: Long) = api.getStudentsRequestApplyAcademy(id,"schoolYear").map{ it.toStudent() }
+    override suspend fun getTeachersApplyingAcademy(id: Long): List<Teacher> = api.getTeachersRequestApplyAcademy(id).map { it.toTeacher() }
     override suspend fun getAcademiesOfTeacher(id: Long) = api.getAcademiesTeacherApplied(id).map{ it.toAcademy() }
 
     override suspend fun acceptStudentApply(academyId: Long, studentId: Long) = api.acceptStudentApplyAcademy(academyId, studentId)

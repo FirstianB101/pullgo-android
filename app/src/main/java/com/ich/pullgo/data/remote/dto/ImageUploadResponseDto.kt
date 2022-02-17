@@ -1,10 +1,16 @@
 package com.ich.pullgo.data.remote.dto
 
+import com.ich.pullgo.domain.model.ImageUploadResponse
+
 data class ImageUploadResponseDto(
     var data: Data?,
     var success: Boolean?,
     var status: Int?
 )
+
+fun ImageUploadResponseDto.toImageUploadResponse(): ImageUploadResponse {
+    return ImageUploadResponse(data, success, status)
+}
 
 data class Data(
     var id: String?,

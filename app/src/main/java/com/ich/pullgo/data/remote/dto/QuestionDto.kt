@@ -6,7 +6,7 @@ import java.io.Serializable
 class QuestionDto(
     var id: Long? = null,
     var answer: List<Int>?,
-    var choice: Map<String,String>?,
+    var choice: MutableMap<String,String>?,
     var pictureUrl: String?,
     var content: String?,
     var examId: Long?

@@ -1,7 +1,7 @@
 package com.ich.pullgo.domain.use_case.login
 
-import com.ich.pullgo.common.Constants
-import com.ich.pullgo.common.Resource
+import com.ich.pullgo.common.util.Constants
+import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.User

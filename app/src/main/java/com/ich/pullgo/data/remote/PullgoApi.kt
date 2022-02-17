@@ -3,6 +3,7 @@ package com.ich.pullgo.data.remote
 import com.ich.pullgo.data.remote.dto.UserDto
 import com.ich.pullgo.data.remote.dto.*
 import com.ich.pullgo.domain.model.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface PullgoApi {
@@ -18,19 +19,19 @@ interface PullgoApi {
     suspend fun createTeacher(@Body teacher: Teacher): TeacherDto
 
     @POST("teachers/{id}/apply-classroom/")
-    suspend fun sendTeacherApplyClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long)
+    suspend fun sendTeacherApplyClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Response<Unit>
 
     @POST("teachers/{id}/apply-academy/")
-    suspend fun sendTeacherApplyAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long)
+    suspend fun sendTeacherApplyAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Response<Unit>
 
     @PATCH("teachers/{id}/")
     suspend fun changeTeacherInfo(@Path("id")teacherId:Long, @Body teacher: Teacher): TeacherDto
 
     @POST("teachers/{id}/remove-applied-academy/")
-    suspend fun removeTeacherAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long)
+    suspend fun removeTeacherAcademyRequest(@Path("id")teacherId: Long, @Body academyId: Long): Response<Unit>
 
     @POST("teachers/{id}/remove-applied-classroom/")
-    suspend fun removeTeacherClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long)
+    suspend fun removeTeacherClassroomRequest(@Path("id")teacherId: Long, @Body classroomId: Long): Response<Unit>
 
     @GET("teachers/{id}")
     suspend fun getOneTeacher(@Path("id")teacherId: Long): TeacherDto
@@ -82,10 +83,10 @@ interface PullgoApi {
     suspend fun getClassroomsTeacherApplying(@Query("applyingTeacherId")teacherId: Long): List<ClassroomDto>
 
     @POST("teachers/{id}/remove-applied-academy/")
-    suspend fun removeTeacherAppliedAcademy(@Path("id")teacherId: Long, @Body academyId: Long)
+    suspend fun removeTeacherAppliedAcademy(@Path("id")teacherId: Long, @Body academyId: Long): Response<Unit>
 
     @POST("teachers/{id}/remove-applied-classroom/")
-    suspend fun removeTeacherAppliedClassroom(@Path("id")teacherId: Long, @Body classroomId: Long)
+    suspend fun removeTeacherAppliedClassroom(@Path("id")teacherId: Long, @Body classroomId: Long): Response<Unit>
 
 
     @GET("academies/")
@@ -95,10 +96,10 @@ interface PullgoApi {
     suspend fun getAcademiesTeacherApplied(@Query("teacherId")teacherId: Long): List<AcademyDto>
 
     @POST("academies/{id}/kick-student/")
-    suspend fun kickStudent(@Path("id")academyId: Long, @Body studentId: Long)
+    suspend fun kickStudent(@Path("id")academyId: Long, @Body studentId: Long): Response<Unit>
 
     @POST("academies/{id}/kick-teacher/")
-    suspend fun kickTeacher(@Path("id")academyId: Long, @Body teacherId: Long)
+    suspend fun kickTeacher(@Path("id")academyId: Long, @Body teacherId: Long): Response<Unit>
 
     @POST("academies/")
     suspend fun createAcademy(@Body academy: Academy): AcademyDto
@@ -107,17 +108,17 @@ interface PullgoApi {
     suspend fun editAcademy(@Path("id")academyId: Long, @Body academy: Academy): AcademyDto
 
     @DELETE("academies/{id}/")
-    suspend fun deleteAcademy(@Path("id")academyId: Long)
+    suspend fun deleteAcademy(@Path("id")academyId: Long): Response<Unit>
 
 
     @POST("students/")
     suspend fun createStudent(@Body student: Student): StudentDto
 
     @POST("students/{id}/apply-academy/")
-    suspend fun sendStudentApplyAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long)
+    suspend fun sendStudentApplyAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Response<Unit>
 
     @POST("students/{id}/apply-classroom/")
-    suspend fun sendStudentApplyClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long)
+    suspend fun sendStudentApplyClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Response<Unit>
 
     @POST("academy/classroom/lessons/")
     suspend fun createLesson(@Body lesson: Lesson): LessonDto
@@ -126,10 +127,10 @@ interface PullgoApi {
     suspend fun changeStudentInfo(@Path("id")studentId: Long, @Body student: Student): StudentDto
 
     @POST("students/{id}/remove-applied-academy/")
-    suspend fun removeStudentAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long)
+    suspend fun removeStudentAcademyRequest(@Path("id")studentId: Long, @Body academyId: Long): Response<Unit>
 
     @POST("students/{id}/remove-applied-classroom/")
-    suspend fun removeStudentClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long)
+    suspend fun removeStudentClassroomRequest(@Path("id")studentId: Long, @Body classroomId: Long): Response<Unit>
 
 
     @GET("students/{id}")
@@ -164,7 +165,7 @@ interface PullgoApi {
                                         @Query("untilDate")untilDate:String, @Query("size")size: Int): List<LessonDto>
 
     @DELETE("academy/classrooms/{id}/")
-    suspend fun deleteClassroom(@Path("id")classroomId: Long)
+    suspend fun deleteClassroom(@Path("id")classroomId: Long): Response<Unit>
 
     @PATCH("academy/classrooms/{id}/")
     suspend fun editClassroom(@Path("id")classroomId: Long, @Body classroom: Classroom): ClassroomDto
@@ -176,29 +177,29 @@ interface PullgoApi {
     suspend fun getClassroomsStudentApplying(@Query("applyingStudentId")studentId: Long): List<ClassroomDto>
 
     @POST("students/{id}/remove-applied-academy/")
-    suspend fun removeStudentAppliedAcademy(@Path("id")studentId: Long, @Body academyId: Long)
+    suspend fun removeStudentAppliedAcademy(@Path("id")studentId: Long, @Body academyId: Long): Response<Unit>
 
     @POST("students/{id}/remove-applied-classroom/")
-    suspend fun removeStudentAppliedClassroom(@Path("id")studentId: Long, @Body classroomId: Long)
+    suspend fun removeStudentAppliedClassroom(@Path("id")studentId: Long, @Body classroomId: Long): Response<Unit>
 
 
     @POST("academies/{id}/accept-student/")
-    suspend fun acceptStudentApplyAcademy(@Path("id")academyId: Long,@Body studentId: Long)
+    suspend fun acceptStudentApplyAcademy(@Path("id")academyId: Long,@Body studentId: Long): Response<Unit>
 
     @POST("academies/{id}/accept-teacher/")
-    suspend fun acceptTeacherApplyAcademy(@Path("id")academyId: Long, @Body teacherId: Long)
+    suspend fun acceptTeacherApplyAcademy(@Path("id")academyId: Long, @Body teacherId: Long): Response<Unit>
 
     @POST("academy/classrooms/{id}/accept-student/")
-    suspend fun acceptStudentApplyClassroom(@Path("id")classroomId: Long, @Body studentId: Long)
+    suspend fun acceptStudentApplyClassroom(@Path("id")classroomId: Long, @Body studentId: Long): Response<Unit>
 
     @POST("academy/classrooms/{id}/accept-teacher/")
-    suspend fun acceptTeacherApplyClassroom(@Path("id")classroomId: Long, @Body teacherId: Long)
+    suspend fun acceptTeacherApplyClassroom(@Path("id")classroomId: Long, @Body teacherId: Long): Response<Unit>
 
     @POST("academy/classrooms/{id}/kick-student/")
-    suspend fun kickStudentFromClassroom(@Path("id")classroomId: Long, @Body studentId: Long)
+    suspend fun kickStudentFromClassroom(@Path("id")classroomId: Long, @Body studentId: Long): Response<Unit>
 
     @POST("academy/classrooms/{id}/kick-teacher/")
-    suspend fun kickTeacherFromClassroom(@Path("id")classroomId: Long, @Body teacherId: Long)
+    suspend fun kickTeacherFromClassroom(@Path("id")classroomId: Long, @Body teacherId: Long): Response<Unit>
 
 
     @GET("academy/classrooms/{id}/")
@@ -215,7 +216,7 @@ interface PullgoApi {
     suspend fun patchLessonInfo(@Path("id")lessonId: Long, @Body lesson: Lesson): LessonDto
 
     @DELETE("academy/classroom/lessons/{id}/")
-    suspend fun deleteLesson(@Path("id")lessonId: Long)
+    suspend fun deleteLesson(@Path("id")lessonId: Long): Response<Unit>
 
 
     @GET("exams/{id}")
@@ -240,19 +241,19 @@ interface PullgoApi {
 
 
     @POST("exams/")
-    suspend fun createExam(@Body exam: Exam)
+    suspend fun createExam(@Body exam: Exam): ExamDto
 
     @DELETE("exams/{id}")
-    suspend fun removeExam(@Path("id")examId: Long)
+    suspend fun deleteExam(@Path("id")examId: Long): Response<Unit>
 
     @PATCH("exams/{id}")
     suspend fun editExam(@Path("id")examId: Long, @Body exam: Exam): ExamDto
 
     @POST("exams/{id}/cancel")
-    suspend fun cancelExam(@Path("id")examId: Long)
+    suspend fun cancelExam(@Path("id")examId: Long): Response<Unit>
 
     @POST("exams/{id}/finish")
-    suspend fun finishExam(@Path("id")examId: Long)
+    suspend fun finishExam(@Path("id")examId: Long): Response<Unit>
 
 
     @GET("exam/questions/{id}")
@@ -268,7 +269,7 @@ interface PullgoApi {
     suspend fun editQuestion(@Path("id")questionId: Long, @Body question: Question): QuestionDto
 
     @DELETE("exam/questions/{id}")
-    suspend fun deleteQuestion(@Path("id")questionId: Long)
+    suspend fun deleteQuestion(@Path("id")questionId: Long): Response<Unit>
 
 
     @GET("exam/attender-states/{id}")
@@ -284,7 +285,7 @@ interface PullgoApi {
     suspend fun createAttenderState(@Body state: CreateAttender): AttenderStateDto
 
     @POST("exam/attender-states/{id}/submit")
-    suspend fun submitAttenderState(@Path("id")stateId: Long)
+    suspend fun submitAttenderState(@Path("id")stateId: Long): Response<Unit>
 
 
     @PUT("exam/attender-state/{attenderStateId}/answers/{questionId}")
