@@ -33,9 +33,9 @@ import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.User
 import com.ich.pullgo.presentation.login.LoginState
 import com.ich.pullgo.presentation.login.LoginViewModel
+import com.ich.pullgo.presentation.main.student_main.StudentMainActivity
+import com.ich.pullgo.presentation.main.teacher_main.TeacherMainActivity
 import com.ich.pullgo.presentation.sign_up.SignUpActivity
-import com.ich.pullgo.presentation.student_main.StudentMainActivity
-import com.ich.pullgo.presentation.teacher_main.TeacherMainActivity
 
 @Composable
 fun LoginScreen(
