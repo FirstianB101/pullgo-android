@@ -44,7 +44,7 @@
     <string name="comment_find_pw_success">임시 비밀번호가 전송되었습니다\n로그인 후 비밀번호를 변경해 주세요</string>
     <string name="comment_no_people">소속된 인원이 없습니다</string>
     <string name="comment_select_date">날짜를 선택하세요</string>
-    <string name="comment_select_start_date">시작 날짜를 선택하세요</string>
+    <string name="comment_select_begin_date">시작 날짜를 선택하세요</string>
     <string name="comment_select_end_date">종료 날짜를 선택하세요</string>
     <string name="comment_input_password_for_edit_person_info">정보 수정을 위해 비밀번호를 입력해 주세요</string>
     <string name="comment_input_password">비밀번호를 입력해주세요</string>
@@ -69,9 +69,12 @@
     <string name="comment_input_classroom_name">반 이름을 입력하세요</string>
     <string name="comment_input_exam_name">시험 이름을 입력하세요</string>
     <string name="comment_input_exam_time_limit">제한 시간을 입력하세요(분)</string>
-    <string name="comment_input_exam_standard_score">기준 점수를 입력하세요 (0~100)</string>
+    <string name="comment_input_exam_pass_score">기준 점수를 입력하세요</string>
     <string name="comment_no_exam">시험이 존재하지 않습니다</string>
     <string name="comment_no_exam_history">응시 완료한 시험이 없습니다</string>
+    <string name="comment_no_applied_academy">가입된 학원이 없습니다</string>
+    <string name="comment_no_question">등록된 문제가 없습니다</string>
+    <string name="comment_please_add_question">+ 버튼을 클릭해 문제를 등록해 주세요</string>
 
     <string name="create_academy">학원 개설</string>
     <string name="academy_name">학원 이름</string>
@@ -89,6 +92,7 @@
     <string name="no_search_classroom_result">검색된 반이 존재하지 않습니다!</string>
     <string name="remove_from_academy">학원에서 제외</string>
     <string name="go_to_login">로그인 화면으로</string>
+    <string name="lesson_info">수업 정보</string>
 
     <string name="classroom">반</string>
     <string name="selected_classroom">선택된 반</string>
@@ -103,11 +107,19 @@
     <string name="end_time">종료 시간</string>
     <string name="edit">수정하기</string>
     <string name="delete">삭제하기</string>
+    <string name="manage_lesson">수업 관리</string>
+    <string name="student_request">학생 요청</string>
+    <string name="teacher_request">선생님 요청</string>
 
     <string name="exam_name">시험 이름</string>
     <string name="exam_time_limit">제한 시간</string>
-    <string name="exam_standard_score">기준 점수</string>
+    <string name="exam_pass_score">기준 점수</string>
     <string name="create_exam">시험 생성</string>
+    <string name="modify">수정하기</string>
+    <string name="modify_complete">수정완료</string>
+    <string name="exam_begin_date">시작 날짜</string>
+    <string name="exam_end_date">종료 날짜</string>
+    <string name="create_question">문제 생성</string>
 
     <string name="full_name">이름</string>
     <string name="user_name">아이디</string>
@@ -167,9 +179,16 @@
     <string name="finish_exam">시험 종료</string>
     <string name="cancel_exam">시험 취소</string>
     <string name="manage_question">문제 관리</string>
-    <string name="exam_begin_time">시작 날짜</string>
-    <string name="exam_end_time">종료 날짜</string>
+    <string name="exam_begin_time">시작 시간</string>
+    <string name="exam_end_time">종료 시간</string>
     <string name="exam_result">시험 결과</string>
+    <string name="take_exam">시험 응시</string>
+    <string name="do_take_exam">응시하기</string>
+    <string name="taken_exam">응시한 시험</string>
+    <string name="show_history">확인하기</string>
+    <string name="sort_exam_by_name">이름 순</string>
+    <string name="sort_exam_by_begin_date">시작날짜 순</string>
+    <string name="sort_exam_by_end_date">종료날짜 순</string>
 
     <string name="classroomTeacherNameFormat" formatted="false">%s 선생님</string>
     <string name="examPassScoreFormat" formatted="false">기준: %d점</string>
@@ -186,11 +205,16 @@
     <string name="comment_click_under_image_for_register">아래 이미지를 클릭하여 등록 / 수정할 수 있습니다</string>
 
     <string name="comment_finish_exam">시험을 종료합니다</string>
-    <string name="comment_finish_exam_detail">선택한 시험을 종료합니다. \n이때까지 응시한 학생 정보가 저장되며 \n응시하지 않은 학생은 미응시로 처리됩니다.</string>
+    <string name="comment_finish_exam_detail">선택한 시험을 종료하며 응시정보가 저장됩니다.</string>
     <string name="comment_cancel_exam">시험을 취소합니다</string>
     <string name="comment_cancel_exam_detail">선택한 시험을 취소합니다.</string>
     <string name="comment_no_students_took_exam">시험에 응시하는 학생이 존재하지 않습니다</string>
     <string name="comment_exam_result_check">자세한 결과는 오답노트에서 확인하실 수 있습니다</string>
     <string name="title_activity_teacher_main">TeacherMainActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_manage_people">ManagePeopleActivity</string>
+    <string name="title_activity_manage_classroom_details">ManageClassroomDetailsActivity</string>
+    <string name="title_activity_manage_question">ManageQuestionActivity</string>
+    <string name="title_activity_take_exam">TakeExamActivity</string>
+    <string name="title_activity_exam_history">ExamHistoryActivity</string>
 </resources>

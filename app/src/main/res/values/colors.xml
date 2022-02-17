@@ -17,4 +17,8 @@
     <color name="warning_color">#E53935</color>
     <color name="correct_answer_background_color">#AED581</color>
     <color name="wrong_answer_background_color">#FFCC80</color>
+    <color name="main_color_light">#d5dbff</color>
+    <color name="success_green">#b2ff59</color>
+    <color name="ongoing_orange">#ffe082</color>
+    <color name="material_green">#4caf50</color>
 </resources>
