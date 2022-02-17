@@ -5,8 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -25,7 +23,7 @@ import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_cla
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_request.components.ManageRequestScreen
 import dagger.hilt.android.AndroidEntryPoint
 import com.ich.pullgo.R
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 
 @AndroidEntryPoint
 class ManageClassroomDetailsActivity : ComponentActivity() {

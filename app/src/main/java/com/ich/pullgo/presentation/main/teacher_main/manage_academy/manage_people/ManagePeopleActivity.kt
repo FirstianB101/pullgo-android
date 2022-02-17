@@ -8,7 +8,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import com.ich.pullgo.R
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.components.ManagePeopleScreen
 import dagger.hilt.android.AndroidEntryPoint
 

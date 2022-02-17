@@ -7,7 +7,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.ExperimentalComposeUiApi
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 import com.ich.pullgo.presentation.main.teacher_main.components.TeacherMainScreen
 import dagger.hilt.android.AndroidEntryPoint
 

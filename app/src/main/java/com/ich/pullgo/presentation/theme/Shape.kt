@@ -1,4 +1,4 @@
-package com.ich.pullgo.presentation.login.ui.theme
+package com.ich.pullgo.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

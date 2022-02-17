@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ich.pullgo.domain.model.Academy
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 
 @Composable
 fun AcademyItem(

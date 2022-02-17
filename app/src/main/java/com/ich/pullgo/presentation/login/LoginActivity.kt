@@ -5,11 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.ich.pullgo.presentation.login.components.LoginScreen
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

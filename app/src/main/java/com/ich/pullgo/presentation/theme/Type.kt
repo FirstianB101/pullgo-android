@@ -1,4 +1,4 @@
-package com.ich.pullgo.presentation.login.ui.theme
+package com.ich.pullgo.presentation.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.ich.pullgo.domain.model.AttenderState
 import com.ich.pullgo.domain.model.Exam
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.components.ExamHistoryMainScreen
 import dagger.hilt.android.AndroidEntryPoint
 

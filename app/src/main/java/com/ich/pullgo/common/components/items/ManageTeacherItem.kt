@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.ich.pullgo.R
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Teacher
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 
 @Composable
 fun ManageTeacherItem(

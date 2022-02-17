@@ -20,7 +20,7 @@ import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.AttenderState
 import com.ich.pullgo.domain.model.Student
-import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
+import com.ich.pullgo.presentation.theme.PullgoTheme
 
 @Composable
 fun ExamStatusItem(
