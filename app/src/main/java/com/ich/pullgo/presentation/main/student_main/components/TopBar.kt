@@ -8,6 +8,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +17,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun TopBar(title: String, scope: CoroutineScope, scaffoldState: ScaffoldState) {
     TopAppBar(
-        title = { Text(text = title, fontSize = 18.sp) },
+        title = { Text(
+            text = title, 
+            fontSize = 19.sp,
+            fontWeight = FontWeight.Bold
+        ) },
         navigationIcon = {
             IconButton(onClick = {
                 scope.launch {

@@ -70,7 +70,8 @@ fun TeacherMainDrawer(
             Column (modifier = Modifier.padding(10.dp,0.dp)){
                 Text(
                     text = user.teacher?.account?.fullName.toString(),
-                    style = MaterialTheme.typography.h6
+                    style = MaterialTheme.typography.h6,
+                    color = Color.Black
                 )
                 Text(
                     text = user.teacher?.account?.username.toString(),

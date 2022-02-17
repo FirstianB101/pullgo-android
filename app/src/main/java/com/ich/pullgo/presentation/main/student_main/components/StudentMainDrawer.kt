@@ -69,7 +69,8 @@ fun StudentMainDrawer(
             Column (modifier = Modifier.padding(10.dp,0.dp)){
                 Text(
                     text = user.student?.account?.fullName.toString(),
-                    style = MaterialTheme.typography.h6
+                    style = MaterialTheme.typography.h6,
+                    color = Color.Black
                 )
                 Text(
                     text = user.student?.account?.username.toString(),
