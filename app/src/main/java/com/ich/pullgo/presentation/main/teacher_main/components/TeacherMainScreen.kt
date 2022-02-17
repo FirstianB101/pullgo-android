@@ -9,8 +9,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.presentation.main.student_main.components.TopBar
 import com.ich.pullgo.presentation.main.teacher_main.OwnerCheckViewModel
 

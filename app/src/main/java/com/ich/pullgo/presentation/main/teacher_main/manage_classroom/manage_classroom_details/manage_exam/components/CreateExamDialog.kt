@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.Exam
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker

@@ -13,46 +13,46 @@ package="com.ich.pullgo">
         android:roundIcon="@mipmap/ic_pullgo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
-<!--        <activity-->
-<!--            android:name=".presentation.main.student_main.exam_history_screen.exam_history.ExamHistoryActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_exam_history"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
-<!--        <activity-->
-<!--            android:name=".presentation.main.student_main.exam_list_screen.take_exam.TakeExamActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_take_exam"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
-<!--        <activity-->
-<!--            android:name=".presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_manage_question"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
-<!--        <activity-->
-<!--            android:name=".presentation.main.teacher_main.manage_classroom.manage_classroom_details.ManageClassroomDetailsActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_manage_classroom_details"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
-<!--        <activity-->
-<!--            android:name=".presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_manage_people"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
+        <activity
+            android:name=".presentation.main.student_main.exam_history_screen.exam_history.ExamHistoryActivity"
+            android:exported="false"
+            android:label="@string/title_activity_exam_history"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
+        <activity
+            android:name=".presentation.main.student_main.exam_list_screen.take_exam.TakeExamActivity"
+            android:exported="false"
+            android:label="@string/title_activity_take_exam"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
+        <activity
+            android:name=".presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionActivity"
+            android:exported="false"
+            android:label="@string/title_activity_manage_question"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
+        <activity
+            android:name=".presentation.main.teacher_main.manage_classroom.manage_classroom_details.ManageClassroomDetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_manage_classroom_details"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
+        <activity
+            android:name=".presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleActivity"
+            android:exported="false"
+            android:label="@string/title_activity_manage_people"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
         <activity
             android:name=".presentation.sign_up.SignUpActivity"
             android:exported="false"
             android:label="@string/title_activity_sign_up"
             android:theme="@style/Theme.Pullgo.NoActionBar" />
-<!--        <activity-->
-<!--            android:name=".presentation.main.teacher_main.TeacherMainActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_teacher_main"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
-<!--        <activity-->
-<!--            android:name=".presentation.main.student_main.StudentMainActivity"-->
-<!--            android:exported="false"-->
-<!--            android:label="@string/title_activity_student_main"-->
-<!--            android:theme="@style/Theme.Pullgo.NoActionBar" />-->
+        <activity
+            android:name=".presentation.main.teacher_main.TeacherMainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_teacher_main"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
+        <activity
+            android:name=".presentation.main.student_main.StudentMainActivity"
+            android:exported="false"
+            android:label="@string/title_activity_student_main"
+            android:theme="@style/Theme.Pullgo.NoActionBar" />
         <activity
             android:name=".presentation.login.LoginActivity"
             android:exported="true"

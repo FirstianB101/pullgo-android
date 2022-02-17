@@ -6,7 +6,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -15,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.PullgoApplication
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.Lesson
 import com.ich.pullgo.domain.model.doJob
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarLessonState

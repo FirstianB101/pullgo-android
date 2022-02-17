@@ -19,13 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Student
-import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import com.ich.pullgo.presentation.sign_up.components.MultiToggleButton
 import com.ich.pullgo.presentation.sign_up.components.isAllStudentInfoFilled

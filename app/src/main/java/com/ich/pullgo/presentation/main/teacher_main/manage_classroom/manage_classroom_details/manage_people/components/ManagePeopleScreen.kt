@@ -12,11 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
 import com.ich.pullgo.domain.model.Classroom
-import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_people.ManageClassroomManagePeopleViewModel
 
 @ExperimentalComposeUiApi
 @Composable

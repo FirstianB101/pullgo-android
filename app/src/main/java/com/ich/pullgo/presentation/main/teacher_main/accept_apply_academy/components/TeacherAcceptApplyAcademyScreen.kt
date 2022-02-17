@@ -3,10 +3,7 @@ package com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.compo
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.AcceptApplyAcademyState

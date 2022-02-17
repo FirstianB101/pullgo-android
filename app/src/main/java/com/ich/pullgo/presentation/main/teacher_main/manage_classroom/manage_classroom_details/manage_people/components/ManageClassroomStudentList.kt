@@ -17,14 +17,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.StudentInfoDialog
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.StudentItem
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.model.Student
-import com.ich.pullgo.presentation.main.common.components.manage_request_screen.ManageRequestState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_people.ManageClassroomManagePeopleState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_people.ManageClassroomManagePeopleViewModel
 

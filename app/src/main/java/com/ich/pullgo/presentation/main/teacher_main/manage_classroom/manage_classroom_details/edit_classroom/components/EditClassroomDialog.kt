@@ -4,7 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -19,16 +21,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
 import ca.antonious.materialdaypicker.MaterialDayPicker
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.LoadingScreen
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.MainThemeRoundButton
-import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Classroom
-import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomState
-import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomViewModel
 import java.util.*
 
 @ExperimentalComposeUiApi

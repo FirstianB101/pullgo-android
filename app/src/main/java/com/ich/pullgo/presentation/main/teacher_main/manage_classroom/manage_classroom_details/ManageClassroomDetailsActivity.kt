@@ -23,9 +23,9 @@ import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_cla
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.components.ManageExamScreen
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_people.components.ManagePeopleScreen
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_request.components.ManageRequestScreen
-import com.ich.pullgo.ui.theme.PullgoTheme
 import dagger.hilt.android.AndroidEntryPoint
 import com.ich.pullgo.R
+import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
 
 @AndroidEntryPoint
 class ManageClassroomDetailsActivity : ComponentActivity() {

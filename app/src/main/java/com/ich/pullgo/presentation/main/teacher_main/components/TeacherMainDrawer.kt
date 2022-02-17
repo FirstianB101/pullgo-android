@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.presentation.main.common.util.TeacherMainScreens
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

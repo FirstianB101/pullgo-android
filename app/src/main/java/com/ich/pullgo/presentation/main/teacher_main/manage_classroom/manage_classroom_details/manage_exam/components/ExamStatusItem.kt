@@ -15,14 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ich.pullgo.domain.model.AttenderState
-import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.items.ClassroomItem
 import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.domain.model.Account
-import com.ich.pullgo.domain.model.Classroom
-import com.ich.pullgo.ui.theme.PullgoTheme
+import com.ich.pullgo.domain.model.AttenderState
+import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.presentation.login.ui.theme.PullgoTheme
 
 @Composable
 fun ExamStatusItem(

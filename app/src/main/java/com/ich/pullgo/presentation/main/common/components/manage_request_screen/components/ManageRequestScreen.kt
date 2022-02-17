@@ -13,10 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.PullgoApplication
+import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.doJob
 import com.ich.pullgo.presentation.main.common.components.manage_request_screen.ManageRequestViewModel
-import com.ich.pullgo.R
 
 @ExperimentalComposeUiApi
 @Composable

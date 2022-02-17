@@ -21,8 +21,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.PullgoApplication
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.Exam
 import com.ich.pullgo.domain.model.copy
 import com.ich.pullgo.domain.use_case.manage_classroom.manage_exam.util.DurationUtil
