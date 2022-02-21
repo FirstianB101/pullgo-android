@@ -197,7 +197,7 @@ fun StudentSignUpInfoScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            com.ich.pullgo.common.components.MultiToggleButton(
+            MultiToggleButton(
                 modifier = Modifier.padding(30.dp, 0.dp),
                 currentSelection = schoolYear,
                 toggleStates = listOf("1학년", "2학년", "3학년"),
@@ -232,7 +232,6 @@ fun StudentSignUpInfoScreen(
                 }else{
                     scope.launch {
                         scaffoldState.snackbarHostState.showSnackbar("정보를 모두 입력해 주세요")
-                        Log.d("StudentSignUp","ID: $username \nPW: $password \nfullName: $fullName \nphone: $phone \nschool: $school \ngrade: $schoolYear")
                     }
                 }
             }
