@@ -18,10 +18,20 @@ class PwCheckUseCase @Inject constructor(
         try{
             emit(Resource.Loading<User>())
 
-            val account: Account = if(curUser.student != null)
-                Account(curUser.student?.account?.username!!, null,null, password)
+            val account = if(curUser.student != null)
+                Account(
+                    curUser.student?.account?.username,
+                    curUser.student?.account?.fullName,
+                    curUser.student?.account?.phone,
+                    password
+                )
             else
-                Account(curUser.teacher?.account?.username!!, null, null, password)
+                Account(
+                    curUser.teacher?.account?.username,
+                    curUser.teacher?.account?.fullName,
+                    curUser.teacher?.account?.phone,
+                    password
+                )
 
             val user = repository.authUser(account)
 

@@ -11,8 +11,22 @@ class FakeChangeInfoRepository: ChangeInfoRepository {
 
     val users = mutableListOf<User>()
 
-    init {
+    val STUDENT_USER_ID = 1L
+    val TEACHER_USER_ID = 2L
 
+    init {
+        val user1 = User().also { user ->
+            user.student = Student(Account("student","student","","1234"),"","",null)
+                .also { it.id = STUDENT_USER_ID }
+        }
+
+        val user2 = User().also { user ->
+            user.teacher = Teacher(Account("teacher","teacher","","1234"))
+                .also { it.id = TEACHER_USER_ID }
+        }
+
+        users.add(user1)
+        users.add(user2)
     }
 
     override suspend fun changeStudentInfo(studentId: Long, student: Student): Student {
