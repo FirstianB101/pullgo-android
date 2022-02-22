@@ -14,3 +14,11 @@ class Student(
         return "${account?.fullName} (${account?.username})"
     }
 }
+
+fun Student.copy(source: Student){
+    id = source.id
+    account = source.account
+    parentPhone = source.parentPhone
+    schoolName = source.schoolName
+    schoolYear = source.schoolYear
+}

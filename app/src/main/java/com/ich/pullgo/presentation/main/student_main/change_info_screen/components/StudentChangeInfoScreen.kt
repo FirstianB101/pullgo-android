@@ -25,6 +25,7 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import com.ich.pullgo.presentation.sign_up.components.MultiToggleButton
 import com.ich.pullgo.presentation.sign_up.components.isAllStudentInfoFilled
@@ -49,6 +50,23 @@ fun StudentChangeInfoScreen(
     var parentPhone by remember { mutableStateOf(student?.parentPhone.toString()) }
     var school by remember { mutableStateOf(student?.schoolName.toString()) }
     var schoolYear by remember { mutableStateOf("${student?.schoolYear}학년") }
+
+    when(state.value){
+        is ChangeInfoState.PatchStudent -> {
+            PullgoApplication.instance?.getLoginUser()?.student = (state.value as ChangeInfoState.PatchStudent).student
+            Toast.makeText(context,"정보가 수정되었습니다", Toast.LENGTH_SHORT).show()
+
+            navController.navigateUp()
+            viewModel.onResultConsumed()
+        }
+        is ChangeInfoState.Loading -> {
+            LoadingScreen()
+        }
+        is ChangeInfoState.Error -> {
+            Toast.makeText(context, (state.value as ChangeInfoState.Error).message,Toast.LENGTH_SHORT).show()
+            viewModel.onResultConsumed()
+        }
+    }
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(
@@ -213,24 +231,6 @@ fun StudentChangeInfoScreen(
                         scaffoldState.snackbarHostState.showSnackbar("정보를 모두 입력해 주세요")
                     }
                 }
-            }
-        }
-
-        when{
-            state.value.editedStudent != null -> {
-                val editedStudent = state.value.editedStudent
-                PullgoApplication.instance?.getLoginUser()?.student = editedStudent
-
-                Toast.makeText(context,"정보가 수정되었습니다", Toast.LENGTH_SHORT).show()
-
-                navController.navigateUp()
-                viewModel.onResultConsumed()
-            }
-            state.value.isLoading -> {
-                LoadingScreen()
-            }
-            state.value.error.isNotBlank() -> {
-                Toast.makeText(context,state.value.error,Toast.LENGTH_SHORT).show()
             }
         }
     }

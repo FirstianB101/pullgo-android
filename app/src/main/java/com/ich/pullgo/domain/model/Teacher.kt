@@ -9,3 +9,8 @@ class Teacher(var account: Account?) : Serializable{
         return "${account?.fullName} (${account?.username})"
     }
 }
+
+fun Teacher.copy(source: Teacher){
+    id = source.id
+    account = source.account
+}

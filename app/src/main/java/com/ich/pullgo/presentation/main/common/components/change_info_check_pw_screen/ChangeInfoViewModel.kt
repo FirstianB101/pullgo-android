@@ -2,9 +2,11 @@ package com.ich.pullgo.presentation.main.common.components.change_info_check_pw_
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
+import com.ich.pullgo.domain.model.User
 import com.ich.pullgo.domain.use_case.change_info.ChangeInfoUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,20 +20,20 @@ class ChangeInfoViewModel @Inject constructor(
     private val changeInfoUseCases: ChangeInfoUseCases
 ): ViewModel(){
 
-    private val _state = MutableStateFlow(ChangeInfoState())
+    private val _state = MutableStateFlow<ChangeInfoState>(ChangeInfoState.Normal)
     val state: StateFlow<ChangeInfoState> = _state
 
-    fun checkPassword(password: String) = viewModelScope.launch {
-        changeInfoUseCases.checkUserPassword(password).collect { result ->
+    fun checkPassword(user: User, password: String) = viewModelScope.launch {
+        changeInfoUseCases.checkUserPassword(user,password).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _state.value = ChangeInfoState(isCorrectPw = result.data!!)
+                    _state.value = ChangeInfoState.AuthUser(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _state.value = ChangeInfoState(isLoading = true)
+                    _state.value = ChangeInfoState.Loading
                 }
                 is Resource.Error -> {
-                    _state.value = ChangeInfoState(error = result.message.toString())
+                    _state.value = ChangeInfoState.Error(result.message.toString())
                 }
             }
         }
@@ -41,13 +43,13 @@ class ChangeInfoViewModel @Inject constructor(
         changeInfoUseCases.changeStudentInfo(student).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _state.value = ChangeInfoState(editedStudent = result.data)
+                    _state.value = ChangeInfoState.PatchStudent(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _state.value = ChangeInfoState(isLoading = true)
+                    _state.value = ChangeInfoState.Loading
                 }
                 is Resource.Error -> {
-                    _state.value = ChangeInfoState(error = result.message.toString())
+                    _state.value = ChangeInfoState.Error(result.message.toString())
                 }
             }
         }
@@ -57,19 +59,19 @@ class ChangeInfoViewModel @Inject constructor(
         changeInfoUseCases.changeTeacherInfo(teacher).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _state.value = ChangeInfoState(editedTeacher = result.data)
+                    _state.value = ChangeInfoState.PatchTeacher(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _state.value = ChangeInfoState(isLoading = true)
+                    _state.value = ChangeInfoState.Loading
                 }
                 is Resource.Error -> {
-                    _state.value = ChangeInfoState(error = result.message.toString())
+                    _state.value = ChangeInfoState.Error(result.message.toString())
                 }
             }
         }
     }
 
     fun onResultConsumed() {
-        _state.value = ChangeInfoState()
+        _state.tryEmit(ChangeInfoState.Normal)
     }
 }

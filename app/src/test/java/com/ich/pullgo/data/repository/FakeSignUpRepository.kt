@@ -13,8 +13,8 @@ import retrofit2.Response
 
 class FakeSignUpRepository: SignUpRepository {
 
-    val students = mutableListOf(Student(Account("exist_student","","",""),"","",1))
-    val teachers = mutableListOf(Teacher(Account("exist_teacher","","","")))
+    val students = mutableListOf<Student>()
+    val teachers = mutableListOf<Teacher>()
 
     override suspend fun createStudent(student: Student): Student {
         if(student.account?.fullName.isNullOrBlank() || student.account?.username.isNullOrBlank() ||

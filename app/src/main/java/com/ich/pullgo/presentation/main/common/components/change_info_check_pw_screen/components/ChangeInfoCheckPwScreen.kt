@@ -1,5 +1,6 @@
 package com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,11 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.ich.pullgo.R
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoScreen
+import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import kotlinx.coroutines.launch
 
@@ -33,13 +36,35 @@ fun ChangeInfoCheckPwScreen(
     isTeacher: Boolean,
     viewModel: ChangeInfoViewModel = hiltViewModel()
 ) {
-    val scope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     val state = viewModel.state.collectAsState()
 
     var pwCheck by rememberSaveable { mutableStateOf("") }
-    var pwVisiblility by rememberSaveable{ mutableStateOf(false) }
+    var pwVisibility by rememberSaveable{ mutableStateOf(false) }
+
+    val user = PullgoApplication.instance?.getLoginUser()!!
+
+    when(state.value){
+        is ChangeInfoState.AuthUser -> {
+            if (isTeacher)
+                navController.navigate(ChangeInfoScreen.TeacherChangeInfoScreen.route)
+            else
+                navController.navigate(ChangeInfoScreen.StudentChangeInfoScreen.route)
+
+            pwCheck = ""
+            user.token = (state.value as ChangeInfoState.AuthUser).user.token
+            viewModel.onResultConsumed()
+        }
+        is ChangeInfoState.Loading -> {
+            LoadingScreen()
+        }
+        is ChangeInfoState.Error -> {
+            Toast.makeText(context, (state.value as ChangeInfoState.Error).message,Toast.LENGTH_SHORT).show()
+            viewModel.onResultConsumed()
+        }
+    }
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(
@@ -73,15 +98,15 @@ fun ChangeInfoCheckPwScreen(
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
-                visualTransformation = if(pwVisiblility) VisualTransformation.None else
+                visualTransformation = if(pwVisibility) VisualTransformation.None else
                     PasswordVisualTransformation(),
                 label = { Text(stringResource(R.string.prompt_password)) },
                 trailingIcon = {
                     IconButton(onClick = {
-                        pwVisiblility = !pwVisiblility
+                        pwVisibility = !pwVisibility
                     }) {
                         Icon(
-                            imageVector = if (pwVisiblility) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            imageVector = if (pwVisibility) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = null
                         )
                     }
@@ -97,28 +122,7 @@ fun ChangeInfoCheckPwScreen(
                     .padding(30.dp),
                 text = stringResource(R.string.confirm)
             ) {
-                viewModel.checkPassword(pwCheck)
-            }
-
-            when {
-                state.value.isCorrectPw -> {
-                    if (isTeacher)
-                        navController.navigate(ChangeInfoScreen.TeacherChangeInfoScreen.route)
-                    else
-                        navController.navigate(ChangeInfoScreen.StudentChangeInfoScreen.route)
-
-                    pwCheck = ""
-                    viewModel.onResultConsumed()
-                }
-                state.value.error.isNotBlank() -> {
-                    scope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(state.value.error)
-                    }
-                    viewModel.onResultConsumed()
-                }
-                state.value.isLoading -> {
-                    LoadingScreen()
-                }
+                viewModel.checkPassword(user,pwCheck)
             }
         }
     }

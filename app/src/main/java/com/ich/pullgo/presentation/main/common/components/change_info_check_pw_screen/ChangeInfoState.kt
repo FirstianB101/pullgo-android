@@ -2,11 +2,13 @@ package com.ich.pullgo.presentation.main.common.components.change_info_check_pw_
 
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
+import com.ich.pullgo.domain.model.User
 
-data class ChangeInfoState(
-    val isLoading: Boolean = false,
-    val isCorrectPw: Boolean = false,
-    val editedTeacher: Teacher? = null,
-    val editedStudent: Student? = null,
-    val error: String = ""
-)
+sealed class ChangeInfoState {
+    object Loading: ChangeInfoState()
+    object Normal: ChangeInfoState()
+    data class PatchStudent(val student: Student): ChangeInfoState()
+    data class PatchTeacher(val teacher: Teacher): ChangeInfoState()
+    data class Error(val message: String): ChangeInfoState()
+    data class AuthUser(val user: User): ChangeInfoState()
+}

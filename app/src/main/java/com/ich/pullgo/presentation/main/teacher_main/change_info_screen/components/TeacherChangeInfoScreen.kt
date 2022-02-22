@@ -23,6 +23,7 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Teacher
+import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import com.ich.pullgo.presentation.sign_up.components.isAllTeacherInfoFilled
 import kotlinx.coroutines.launch
@@ -43,6 +44,23 @@ fun TeacherChangeInfoScreen(
     var fullName by remember { mutableStateOf(teacher?.account?.fullName.toString()) }
     var phone by remember { mutableStateOf(teacher?.account?.phone.toString()) }
     var verify by remember { mutableStateOf("") }
+
+    when(state.value){
+        is ChangeInfoState.PatchTeacher -> {
+            PullgoApplication.instance?.getLoginUser()?.teacher = (state.value as ChangeInfoState.PatchTeacher).teacher
+            Toast.makeText(context,"정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
+
+            navController.navigateUp()
+            viewModel.onResultConsumed()
+        }
+        is ChangeInfoState.Loading -> {
+            LoadingScreen()
+        }
+        is ChangeInfoState.Error -> {
+            Toast.makeText(context, (state.value as ChangeInfoState.Error).message,Toast.LENGTH_SHORT).show()
+            viewModel.onResultConsumed()
+        }
+    }
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(
@@ -164,22 +182,6 @@ fun TeacherChangeInfoScreen(
                 }
             }
         }
-        when{
-            state.value.editedTeacher != null -> {
-                val editedTeacher = state.value.editedTeacher
-                PullgoApplication.instance?.getLoginUser()?.teacher = editedTeacher
 
-                Toast.makeText(context,"정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
-
-                navController.navigateUp()
-                viewModel.onResultConsumed()
-            }
-            state.value.isLoading -> {
-                LoadingScreen()
-            }
-            state.value.error.isNotBlank() -> {
-                Toast.makeText(context,state.value.error,Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

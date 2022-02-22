@@ -79,7 +79,7 @@ class LoginUseCaseTest {
     }
 
     @Test
-    fun tryLoginWithTeacherWithAppliedAcademy_returnFalse() = runBlockingTest {
+    fun tryLoginWithTeacherWithAppliedAcademy_returnTrue() = runBlockingTest {
         val account = Account("teacherAcademy","teacherAcademy","010","1234")
         val result = useCase(account).toList()
 

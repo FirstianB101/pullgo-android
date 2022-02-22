@@ -1,9 +1,9 @@
 package com.ich.pullgo.domain.use_case.change_info
 
-import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Account
+import com.ich.pullgo.domain.model.User
 import com.ich.pullgo.domain.repository.ChangeInfoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,12 +14,9 @@ import javax.inject.Inject
 class PwCheckUseCase @Inject constructor(
     private val repository: ChangeInfoRepository
 ) {
-    operator fun invoke(password: String): Flow<Resource<Boolean>> = flow{
-
+    operator fun invoke(curUser: User, password: String): Flow<Resource<User>> = flow{
         try{
-            emit(Resource.Loading<Boolean>())
-
-            val curUser = PullgoApplication.instance!!.getLoginUser()!!
+            emit(Resource.Loading<User>())
 
             val account: Account = if(curUser.student != null)
                 Account(curUser.student?.account?.username!!, null,null, password)
@@ -27,13 +24,12 @@ class PwCheckUseCase @Inject constructor(
                 Account(curUser.teacher?.account?.username!!, null, null, password)
 
             val user = repository.authUser(account)
-            curUser.token = user.token
 
-            emit(Resource.Success<Boolean>(true))
+            emit(Resource.Success<User>(user))
         }catch (e: HttpException){
-            emit(Resource.Error(e.localizedMessage ?: Constants.HTTP_EXCEPTION_COMMENT, false))
+            emit(Resource.Error<User>(e.localizedMessage ?: Constants.HTTP_EXCEPTION_COMMENT, null))
         }catch (e: IOException){
-            emit(Resource.Error(Constants.CANNOT_CONNECT_SERVER_COMMENT, false))
+            emit(Resource.Error<User>(Constants.CANNOT_CONNECT_SERVER_COMMENT, null))
         }
     }
 }
