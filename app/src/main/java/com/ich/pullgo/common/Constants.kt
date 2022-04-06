@@ -1,7 +1,7 @@
 package com.ich.pullgo.common
 
 object Constants {
-    const val BASE_URL = "https://api.pullgo.kr/v1/"
+    const val BASE_URL = "https://pullgo.firstian.kr/api/v1/"
     const val IMAGE_UPLOAD_URL = "https://api.imgbb.com"
     const val IMAGE_UPLOAD_API_KEY = "b3b9649f31a163c6a3d65ecc7949ca6b"
 

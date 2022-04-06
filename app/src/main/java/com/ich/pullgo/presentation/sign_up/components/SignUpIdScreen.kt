@@ -28,6 +28,7 @@ import com.ich.pullgo.presentation.sign_up.SignUpViewModel
 import com.ich.pullgo.presentation.sign_up.util.IdFormatErrorType
 import com.ich.pullgo.presentation.sign_up.util.SignUpState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 
@@ -49,16 +50,17 @@ fun SignUpIdScreen(
         animationSpec = tween(durationMillis = 1500)
     )
 
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            if(event is SignUpViewModel.UiEvent.ShowToast){
+                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     when(state.value){
         is SignUpState.CheckExist -> {
             nextButtonVisible = !(state.value as SignUpState.CheckExist).exist
-            if(!nextButtonVisible)
-                Toast.makeText(context,"중복된 아이디입니다",Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is SignUpState.Error -> {
-            Toast.makeText(context, (state.value as SignUpState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
         }
         is SignUpState.Loading -> {
             LoadingScreen()
@@ -94,9 +96,6 @@ fun SignUpIdScreen(
                     label = { Text(stringResource(R.string.prompt_id)) },
                     onValueChange = {
                         idState.value = it
-                        if(state.value !is SignUpState.CheckExist){
-                            viewModel.onResultConsume()
-                        }
                     }
                 )
 

@@ -28,6 +28,7 @@ import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.presentation.login.LoginActivity
 import com.ich.pullgo.presentation.sign_up.SignUpViewModel
 import com.ich.pullgo.presentation.sign_up.util.SignUpState
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -47,17 +48,20 @@ fun TeacherSignUpInfoScreen(
 
     val dialogState = remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            if(event is SignUpViewModel.UiEvent.ShowToast){
+                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     when(state.value){
         is SignUpState.CreateTeacher -> {
             dialogState.value = true
-            viewModel.onResultConsume()
         }
         is SignUpState.Loading -> {
             LoadingScreen()
-        }
-        is SignUpState.Error -> {
-            Toast.makeText(context, (state.value as SignUpState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
         }
     }
 
