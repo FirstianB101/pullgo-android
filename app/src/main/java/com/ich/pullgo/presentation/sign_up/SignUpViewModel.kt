@@ -52,8 +52,8 @@ class SignUpViewModel @Inject constructor(
                     _signUpState.value = SignUpState.Loading
                 }
                 is Resource.Error -> {
-                    _signUpState.value = SignUpState.Error(result.message.toString())
-                    _eventFlow.emit(UiEvent.ShowToast("선생님 회원가입에 실패했습니다 (${result.message})."))
+                    _signUpState.value = SignUpState.Error(result.data.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("선생님 회원가입에 실패했습니다 (${result.data})."))
                 }
             }
         }
@@ -73,7 +73,7 @@ class SignUpViewModel @Inject constructor(
                 }
                 is Resource.Error -> {
                     _signUpState.value = SignUpState.Error(result.message.toString())
-                    _eventFlow.emit(UiEvent.ShowToast("서버와 연결할 수 없습니다(${result.message})."))
+                    _eventFlow.emit(UiEvent.ShowToast("${result.message}"))
                 }
             }
         }
