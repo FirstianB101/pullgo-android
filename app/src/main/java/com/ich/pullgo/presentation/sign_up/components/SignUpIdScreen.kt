@@ -1,5 +1,6 @@
 package com.ich.pullgo.presentation.sign_up.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -24,6 +25,7 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.util.TestTags
+import com.ich.pullgo.presentation.sign_up.SignUpScreenEvent
 import com.ich.pullgo.presentation.sign_up.SignUpViewModel
 import com.ich.pullgo.presentation.sign_up.util.IdFormatErrorType
 import com.ich.pullgo.presentation.sign_up.util.SignUpState
@@ -36,11 +38,10 @@ import java.util.regex.Pattern
 fun SignUpIdScreen(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
-    idState: MutableState<String>,
-    viewModel: SignUpViewModel = hiltViewModel(),
+    viewModel: SignUpViewModel,
     onNextButtonClick: () -> Unit
 ){
-    val state = viewModel.signUpState.collectAsState()
+    val state = viewModel.state.collectAsState()
     val context = LocalContext.current
 
     val targetState = remember{ mutableStateOf(0f) }
@@ -52,18 +53,14 @@ fun SignUpIdScreen(
 
     LaunchedEffect(Unit){
         viewModel.eventFlow.collectLatest { event ->
-            if(event is SignUpViewModel.UiEvent.ShowToast){
-                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            when(event){
+                is SignUpViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is SignUpViewModel.UiEvent.ShowNextButton -> {
+                    nextButtonVisible = true
+                }
             }
-        }
-    }
-
-    when(state.value){
-        is SignUpState.CheckExist -> {
-            nextButtonVisible = !(state.value as SignUpState.CheckExist).exist
-        }
-        is SignUpState.Loading -> {
-            LoadingScreen()
         }
     }
 
@@ -82,20 +79,20 @@ fun SignUpIdScreen(
                 textAlign = TextAlign.Center
             )
 
-            val checkResult = checkId(idState.value)
+            val checkResult = checkId(state.value.username)
             Column {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(30.dp, 30.dp, 30.dp, 0.dp)
                         .testTag(TestTags.SIGNUP_ID_TEXT_FIELD),
-                    value = idState.value,
+                    value = state.value.username,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.prompt_id)) },
                     onValueChange = {
-                        idState.value = it
+                        viewModel.onEvent(SignUpScreenEvent.UsernameInputChanged(it))
                     }
                 )
 
@@ -128,7 +125,7 @@ fun SignUpIdScreen(
             ) {
                 when(checkResult){
                     is IdFormatErrorType.NoError -> {
-                        viewModel.checkIdExist(idState.value)
+                        viewModel.onEvent(SignUpScreenEvent.CheckIdExist)
                     }
                     else -> {
                         scope.launch {
@@ -149,9 +146,21 @@ fun SignUpIdScreen(
                         .alpha(animatedFloatState.value)
                         .testTag(TestTags.SIGNUP_ID_NEXT_BUTTON),
                     text = stringResource(R.string.go_next),
-                    onClick = onNextButtonClick
+                    onClick = {
+                        nextButtonVisible = false
+                        onNextButtonClick()
+                    }
                 )
             }
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
         }
     }
 }

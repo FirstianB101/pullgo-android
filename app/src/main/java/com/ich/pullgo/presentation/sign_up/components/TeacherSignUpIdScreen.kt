@@ -14,20 +14,17 @@ import com.ich.pullgo.presentation.sign_up.util.SignUpScreen
 @Composable
 fun TeacherSignUpIdScreen(
     navController: NavController,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel
 ){
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-    val idState = rememberSaveable { mutableStateOf("") }
-
     SignUpIdScreen(
         scaffoldState = scaffoldState,
         scope = scope,
-        idState = idState,
         viewModel = viewModel,
         onNextButtonClick = {
-            navController.navigate(SignUpScreen.TeacherPwScreen.route + "/${idState.value}")
+            navController.navigate(SignUpScreen.TeacherPwScreen.route)
         }
     )
 }

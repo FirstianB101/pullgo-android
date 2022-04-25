@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +23,8 @@ class SignUpActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
+            val viewModel: SignUpViewModel = hiltViewModel()
+
             PullgoTheme {
                 NavHost(
                     navController = navController,
@@ -31,52 +34,34 @@ class SignUpActivity : ComponentActivity() {
                         SignUpMainScreen(navController = navController)
                     }
                     composable(route = SignUpScreen.StudentIdScreen.route){
-                        StudentSignUpIdScreen(navController = navController)
+                        StudentSignUpIdScreen(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
                     }
-                    composable(
-                        route = SignUpScreen.StudentPwScreen.route + "/{username}",
-                        arguments = listOf(navArgument("username"){ type = NavType.StringType })
-                    ){
+                    composable(route = SignUpScreen.StudentPwScreen.route){
                         StudentSignUpPwScreen(
                             navController = navController,
-                            username = it.arguments?.getString("username")!!
+                            viewModel = viewModel
                         )
                     }
-                    composable(
-                        route = SignUpScreen.StudentInfoScreen.route + "?username={username}&password={password}",
-                        arguments = listOf(
-                            navArgument("username"){ type = NavType.StringType },
-                            navArgument("password"){ type = NavType.StringType }
-                        )
-                    ){
-                        StudentSignUpInfoScreen(
-                            username = it.arguments?.getString("username")!!,
-                            password = it.arguments?.getString("password")!!
-                        )
+                    composable(route = SignUpScreen.StudentInfoScreen.route){
+                        StudentSignUpInfoScreen(viewModel = viewModel)
                     }
                     composable(route = SignUpScreen.TeacherIdScreen.route){
-                        TeacherSignUpIdScreen(navController = navController)
+                        TeacherSignUpIdScreen(
+                            navController = navController,
+                            viewModel = viewModel
+                        )
                     }
-                    composable(
-                        route = SignUpScreen.TeacherPwScreen.route + "/{username}",
-                        arguments = listOf(navArgument("username"){ type = NavType.StringType })
-                    ){
+                    composable(route = SignUpScreen.TeacherPwScreen.route){
                         TeacherSignUpPwScreen(
                             navController = navController,
-                            username = it.arguments?.getString("username")!!
+                            viewModel = viewModel
                         )
                     }
-                    composable(
-                        route = SignUpScreen.TeacherInfoScreen.route + "?username={username}&password={password}",
-                        arguments = listOf(
-                            navArgument("username"){ type = NavType.StringType },
-                            navArgument("password"){ type = NavType.StringType }
-                        )
-                    ){
-                        TeacherSignUpInfoScreen(
-                            username = it.arguments?.getString("username")!!,
-                            password = it.arguments?.getString("password")!!
-                        )
+                    composable(route = SignUpScreen.TeacherInfoScreen.route){
+                        TeacherSignUpInfoScreen(viewModel = viewModel)
                     }
                 }
             }

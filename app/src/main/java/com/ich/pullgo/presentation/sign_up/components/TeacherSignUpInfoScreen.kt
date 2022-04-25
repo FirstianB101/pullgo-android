@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,49 +20,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.components.OneButtonDialog
 import com.ich.pullgo.common.util.TestTags
-import com.ich.pullgo.domain.model.Account
-import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.presentation.login.LoginActivity
+import com.ich.pullgo.presentation.sign_up.SignUpScreenEvent
 import com.ich.pullgo.presentation.sign_up.SignUpViewModel
-import com.ich.pullgo.presentation.sign_up.util.SignUpState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
 fun TeacherSignUpInfoScreen(
-    username: String,
-    password: String,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel
 ){
-    val state = viewModel.signUpState.collectAsState()
+    val state = viewModel.state.collectAsState()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var fullName by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-    var verify by remember { mutableStateOf("") }
-
     val dialogState = remember { mutableStateOf(false) }
+    var verify by rememberSaveable{ mutableStateOf("") }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(scaffoldState) {
         viewModel.eventFlow.collectLatest { event ->
-            if(event is SignUpViewModel.UiEvent.ShowToast){
-                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            when (event) {
+                is SignUpViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is SignUpViewModel.UiEvent.SignUpSuccess -> {
+                    dialogState.value = true
+                }
             }
-        }
-    }
-
-    when(state.value){
-        is SignUpState.CreateTeacher -> {
-            dialogState.value = true
-        }
-        is SignUpState.Loading -> {
-            LoadingScreen()
         }
     }
 
@@ -93,12 +82,12 @@ fun TeacherSignUpInfoScreen(
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp)
                     .testTag(TestTags.SIGNUP_TEACHER_NAME),
-                value = fullName,
+                value = state.value.fullName,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.full_name)) },
-                onValueChange = {fullName = it}
+                onValueChange = {viewModel.onEvent(SignUpScreenEvent.FullNameInputChanged(it))}
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -111,12 +100,12 @@ fun TeacherSignUpInfoScreen(
                     modifier = Modifier
                         .weight(1f)
                         .testTag(TestTags.SIGNUP_TEACHER_PHONE),
-                    value = phone,
+                    value = state.value.phone,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.comment_input_phone)) },
-                    onValueChange = {phone = it},
+                    onValueChange = {viewModel.onEvent(SignUpScreenEvent.PhoneInputChanged(it))},
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
@@ -170,16 +159,12 @@ fun TeacherSignUpInfoScreen(
                     .testTag(TestTags.SIGNUP_TEACHER_SUCCESS_BUTTON),
                 text = stringResource(R.string.sign_up_success)
             ) {
-                if(isAllTeacherInfoFilled(fullName, phone, verify)) {
-                    val newTeacher = Teacher(
-                        Account(
-                            username = username,
-                            fullName = fullName,
-                            phone = phone,
-                            password = password
-                        )
-                    )
-                    viewModel.createTeacher(newTeacher)
+                if(isAllTeacherInfoFilled(
+                        fullName = state.value.fullName,
+                        phone = state.value.phone,
+                        verify = verify)
+                ) {
+                    viewModel.onEvent(SignUpScreenEvent.CreateTeacher)
                 }else{
                     scope.launch {
                         scaffoldState.snackbarHostState.showSnackbar("정보를 모두 입력해 주세요")
@@ -200,6 +185,14 @@ fun TeacherSignUpInfoScreen(
                     context.startActivity(intent)
                 }
             )
+        }
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
         }
     }
 }

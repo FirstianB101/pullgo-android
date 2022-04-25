@@ -1,5 +1,6 @@
 package com.ich.pullgo.presentation.sign_up.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,10 +20,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.util.TestTags
+import com.ich.pullgo.presentation.sign_up.SignUpScreenEvent
+import com.ich.pullgo.presentation.sign_up.SignUpViewModel
 import com.ich.pullgo.presentation.sign_up.util.PwFormatErrorType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,19 +36,22 @@ import java.util.regex.Pattern
 fun SignUpPwScreen(
     scaffoldState: ScaffoldState,
     scope: CoroutineScope,
-    pwState: MutableState<String>,
-    pwCheckState: MutableState<String>,
+    viewModel: SignUpViewModel,
     onNextButtonClick: () -> Unit
 ){
+    val state = viewModel.state.collectAsState()
+
     var passwordVisibility by rememberSaveable { mutableStateOf(false) }
     var passwordCheckVisibility by rememberSaveable { mutableStateOf(false) }
+
+    var passwordCheck by rememberSaveable{ mutableStateOf("") }
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(modifier = Modifier
             .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val checkResult = checkPw(pwState.value,pwCheckState.value)
+            val checkResult = checkPw(state.value.password, passwordCheck)
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -60,7 +67,7 @@ fun SignUpPwScreen(
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp)
                     .testTag(TestTags.SIGNUP_PW_TEXT_FIELD),
-                value = pwState.value,
+                value = state.value.password,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
@@ -77,7 +84,7 @@ fun SignUpPwScreen(
                         )
                     }
                 },
-                onValueChange = {pwState.value = it}
+                onValueChange = {viewModel.onEvent(SignUpScreenEvent.PasswordInputChanged(it))}
             )
 
             Text(
@@ -96,7 +103,7 @@ fun SignUpPwScreen(
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp)
                     .testTag(TestTags.SIGNUP_PW_CHECK_TEXT_FIELD),
-                value = pwCheckState.value,
+                value = passwordCheck,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
@@ -113,7 +120,7 @@ fun SignUpPwScreen(
                         )
                     }
                 },
-                onValueChange = {pwCheckState.value = it}
+                onValueChange = {passwordCheck = it}
             )
             when(checkResult){
                 is PwFormatErrorType.PwCheckDifferentError -> {
@@ -134,8 +141,7 @@ fun SignUpPwScreen(
                         color = Color.Green
                     )
                 }
-                else -> {
-                }
+                else -> {}
             }
 
             Spacer(modifier = Modifier.height(30.dp))
