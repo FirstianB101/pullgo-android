@@ -28,14 +28,14 @@ class SignUpViewModel @Inject constructor(
             when(result){
                 is Resource.Success -> {
                     _signUpState.value = SignUpState.CreateStudent(result.data!!)
-                    _eventFlow.emit(UiEvent.ShowToast("학생 회원가입에 성공했습니다."))
+                    _eventFlow.emit(UiEvent.ShowToast("회원가입에 성공했습니다."))
                 }
                 is Resource.Loading -> {
                     _signUpState.value = SignUpState.Loading
                 }
                 is Resource.Error -> {
                     _signUpState.value = SignUpState.Error(result.message.toString())
-                    _eventFlow.emit(UiEvent.ShowToast("학생 회원가입에 실패했습니다 (${result.message})."))
+                    _eventFlow.emit(UiEvent.ShowToast("회원가입에 실패했습니다 (${result.message})."))
                 }
             }
         }
@@ -46,14 +46,14 @@ class SignUpViewModel @Inject constructor(
             when(result){
                 is Resource.Success -> {
                     _signUpState.value = SignUpState.CreateTeacher(result.data!!)
-                    _eventFlow.emit(UiEvent.ShowToast("선생님 회원가입에 성공했습니다."))
+                    _eventFlow.emit(UiEvent.ShowToast("회원가입에 성공했습니다."))
                 }
                 is Resource.Loading -> {
                     _signUpState.value = SignUpState.Loading
                 }
                 is Resource.Error -> {
-                    _signUpState.value = SignUpState.Error(result.data.toString())
-                    _eventFlow.emit(UiEvent.ShowToast("선생님 회원가입에 실패했습니다 (${result.data})."))
+                    _signUpState.value = SignUpState.Error(result.message.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("회원가입에 실패했습니다 (${result.message})."))
                 }
             }
         }

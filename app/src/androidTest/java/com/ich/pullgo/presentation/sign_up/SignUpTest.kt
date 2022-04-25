@@ -30,7 +30,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class SignUpTest {
+class  SignUpTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)

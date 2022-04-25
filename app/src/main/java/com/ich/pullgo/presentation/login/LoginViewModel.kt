@@ -15,26 +15,65 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ): ViewModel() {
 
-    private val _state = MutableStateFlow<LoginState>(LoginState.Normal)
+    private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state
 
-    fun requestLogin(account: Account) = viewModelScope.launch {
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    fun onEvent(event: LoginScreenEvent){
+        when(event){
+            is LoginScreenEvent.UsernameInputChange -> {
+                _state.value = _state.value.copy(
+                    username = event.username
+                )
+            }
+            is LoginScreenEvent.PasswordInputChange -> {
+                _state.value = _state.value.copy(
+                    password = event.password
+                )
+            }
+            is LoginScreenEvent.RequestLogin -> {
+                requestLogin(
+                    Account(
+                        username = _state.value.username,
+                        password = _state.value.password,
+                        fullName = null,
+                        phone = null
+                    )
+                )
+            }
+        }
+    }
+
+
+    private fun requestLogin(account: Account) = viewModelScope.launch {
         loginUseCase(account).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _state.value = LoginState.SignIn(result.data)
+                    _state.value = _state.value.copy(
+                        userWithAcademyExist = result.data,
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.LoginSuccess)
                 }
                 is Resource.Error -> {
-                    _state.value = LoginState.Error(result.message)
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("로그인에 실패했습니다 (${result.message})"))
                 }
                 is Resource.Loading -> {
-                    _state.value = LoginState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
             }
         }
     }
 
-    fun onResultConsumed(){
-        _state.tryEmit(LoginState.Normal)
+    sealed class UiEvent{
+        data class ShowToast(val message: String): UiEvent()
+        object LoginSuccess: UiEvent()
     }
 }

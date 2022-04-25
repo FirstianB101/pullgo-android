@@ -31,11 +31,13 @@ import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.User
+import com.ich.pullgo.presentation.login.LoginScreenEvent
 import com.ich.pullgo.presentation.login.LoginState
 import com.ich.pullgo.presentation.login.LoginViewModel
 import com.ich.pullgo.presentation.main.student_main.StudentMainActivity
 import com.ich.pullgo.presentation.main.teacher_main.TeacherMainActivity
 import com.ich.pullgo.presentation.sign_up.SignUpActivity
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun LoginScreen(
@@ -44,11 +46,24 @@ fun LoginScreen(
     val state = viewModel.state.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
-    var id by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
     var passwordVisibility by rememberSaveable { mutableStateOf(false) }
 
     val context = LocalContext.current
+
+    LaunchedEffect(scaffoldState){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is LoginViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is LoginViewModel.UiEvent.LoginSuccess -> {
+                    val info = state.value.userWithAcademyExist!!
+                    PullgoApplication.instance?.loginUser(info.user)
+                    startMainActivity(context, info.user, info.academyExist)
+                }
+            }
+        }
+    }
 
     Scaffold(scaffoldState = scaffoldState) {
         Column(modifier = Modifier
@@ -69,12 +84,12 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp),
-                value = id,
+                value = state.value.username,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
-                label = {Text(stringResource(R.string.prompt_id))},
-                onValueChange = {id = it}
+                label = { Text(stringResource(R.string.prompt_id)) },
+                onValueChange = { viewModel.onEvent(LoginScreenEvent.UsernameInputChange(it)) }
             )
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -83,7 +98,7 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp),
-                value = password,
+                value = state.value.password,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
@@ -100,7 +115,7 @@ fun LoginScreen(
                         )
                     }
                 },
-                onValueChange = {password = it}
+                onValueChange = { viewModel.onEvent(LoginScreenEvent.PasswordInputChange(it)) }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -120,13 +135,7 @@ fun LoginScreen(
                     .padding(30.dp, 0.dp),
                 text = stringResource(R.string.login)
             ) {
-                val account = Account(
-                    username = id,
-                    password = password,
-                    fullName = null,
-                    phone = null
-                )
-                viewModel.requestLogin(account)
+                viewModel.onEvent(LoginScreenEvent.RequestLogin)
             }
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -153,26 +162,14 @@ fun LoginScreen(
                 )
             }
         }
+    }
 
-        when(state.value){
-            is LoginState.SignIn -> {
-                val user = (state.value as LoginState.SignIn).userWithAcademyExist?.user
-                val academyExist = (state.value as LoginState.SignIn).userWithAcademyExist?.academyExist
-
-                PullgoApplication.instance?.loginUser(user)
-                viewModel.onResultConsumed()
-                startMainActivity(context, user, academyExist)
-            }
-            is LoginState.Loading -> {
-                LoadingScreen()
-            }
-            is LoginState.Error -> {
-                Toast.makeText(context, (state.value as LoginState.Error).message,Toast.LENGTH_SHORT).show()
-                viewModel.onResultConsumed()
-            }
-            is LoginState.Normal -> {
-                Log.d("LoginActivity","Normal")
-            }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
         }
     }
 }
