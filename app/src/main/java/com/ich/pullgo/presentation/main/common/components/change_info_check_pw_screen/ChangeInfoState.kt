@@ -4,11 +4,8 @@ import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
 import com.ich.pullgo.domain.model.User
 
-sealed class ChangeInfoState {
-    object Loading: ChangeInfoState()
-    object Normal: ChangeInfoState()
-    data class PatchStudent(val student: Student): ChangeInfoState()
-    data class PatchTeacher(val teacher: Teacher): ChangeInfoState()
-    data class Error(val message: String): ChangeInfoState()
-    data class AuthUser(val user: User): ChangeInfoState()
-}
+data class ChangeInfoState(
+    val isLoading: Boolean = false,
+    val patchedStudent: Student? = null,
+    val patchedTeacher: Teacher? = null
+)

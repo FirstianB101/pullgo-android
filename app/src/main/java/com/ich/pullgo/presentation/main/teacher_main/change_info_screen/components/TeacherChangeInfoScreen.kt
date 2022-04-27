@@ -23,9 +23,11 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Teacher
+import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoEvent
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import com.ich.pullgo.presentation.sign_up.components.isAllTeacherInfoFilled
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,26 +41,23 @@ fun TeacherChangeInfoScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
+    var teacher = PullgoApplication.instance?.getLoginUser()?.teacher
 
     var fullName by remember { mutableStateOf(teacher?.account?.fullName.toString()) }
     var phone by remember { mutableStateOf(teacher?.account?.phone.toString()) }
     var verify by remember { mutableStateOf("") }
 
-    when(state.value){
-        is ChangeInfoState.PatchTeacher -> {
-            PullgoApplication.instance?.getLoginUser()?.teacher = (state.value as ChangeInfoState.PatchTeacher).teacher
-            Toast.makeText(context,"정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
-
-            navController.navigateUp()
-            viewModel.onResultConsumed()
-        }
-        is ChangeInfoState.Loading -> {
-            LoadingScreen()
-        }
-        is ChangeInfoState.Error -> {
-            Toast.makeText(context, (state.value as ChangeInfoState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsumed()
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ChangeInfoViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ChangeInfoViewModel.UiEvent.SuccessChangingInfo -> {
+                    PullgoApplication.instance?.getLoginUser()?.teacher = state.value.patchedTeacher
+                    navController.navigateUp()
+                }
+            }
         }
     }
 
@@ -174,7 +173,7 @@ fun TeacherChangeInfoScreen(
                     )
                     editedTeacher.id = teacher?.id
 
-                    viewModel.changeTeacherInfo(editedTeacher)
+                    viewModel.onEvent(ChangeInfoEvent.ChangeTeacherInfo(editedTeacher))
                 } else {
                     scope.launch {
                         scaffoldState.snackbarHostState.showSnackbar("정보를 모두 입력해 주세요")
@@ -182,6 +181,13 @@ fun TeacherChangeInfoScreen(
                 }
             }
         }
-
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
     }
 }

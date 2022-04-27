@@ -25,10 +25,12 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.domain.model.Account
 import com.ich.pullgo.domain.model.Student
+import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoEvent
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import com.ich.pullgo.presentation.sign_up.components.MultiToggleButton
 import com.ich.pullgo.presentation.sign_up.components.isAllStudentInfoFilled
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,20 +53,17 @@ fun StudentChangeInfoScreen(
     var school by remember { mutableStateOf(student?.schoolName.toString()) }
     var schoolYear by remember { mutableStateOf("${student?.schoolYear}학년") }
 
-    when(state.value){
-        is ChangeInfoState.PatchStudent -> {
-            PullgoApplication.instance?.getLoginUser()?.student = (state.value as ChangeInfoState.PatchStudent).student
-            Toast.makeText(context,"정보가 수정되었습니다", Toast.LENGTH_SHORT).show()
-
-            navController.navigateUp()
-            viewModel.onResultConsumed()
-        }
-        is ChangeInfoState.Loading -> {
-            LoadingScreen()
-        }
-        is ChangeInfoState.Error -> {
-            Toast.makeText(context, (state.value as ChangeInfoState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsumed()
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ChangeInfoViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ChangeInfoViewModel.UiEvent.SuccessChangingInfo -> {
+                    PullgoApplication.instance?.getLoginUser()?.student = state.value.patchedStudent
+                    navController.navigateUp()
+                }
+            }
         }
     }
 
@@ -225,13 +224,21 @@ fun StudentChangeInfoScreen(
                     )
                     editedStudent.id = student?.id
 
-                    viewModel.changeStudentInfo(editedStudent)
+                    viewModel.onEvent(ChangeInfoEvent.ChangeStudentInfo(editedStudent))
                 }else{
                     scope.launch {
                         scaffoldState.snackbarHostState.showSnackbar("정보를 모두 입력해 주세요")
                     }
                 }
             }
+        }
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
         }
     }
 }

@@ -25,9 +25,11 @@ import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
+import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoEvent
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoScreen
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Composable
@@ -44,25 +46,20 @@ fun ChangeInfoCheckPwScreen(
     var pwCheck by rememberSaveable { mutableStateOf("") }
     var pwVisibility by rememberSaveable{ mutableStateOf(false) }
 
-    val user = PullgoApplication.instance?.getLoginUser()!!
-
-    when(state.value){
-        is ChangeInfoState.AuthUser -> {
-            if (isTeacher)
-                navController.navigate(ChangeInfoScreen.TeacherChangeInfoScreen.route)
-            else
-                navController.navigate(ChangeInfoScreen.StudentChangeInfoScreen.route)
-
-            pwCheck = ""
-            user.token = (state.value as ChangeInfoState.AuthUser).user.token
-            viewModel.onResultConsumed()
-        }
-        is ChangeInfoState.Loading -> {
-            LoadingScreen()
-        }
-        is ChangeInfoState.Error -> {
-            Toast.makeText(context, (state.value as ChangeInfoState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsumed()
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ChangeInfoViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ChangeInfoViewModel.UiEvent.GoToChangeInfoScreen -> {
+                    if(isTeacher)
+                        navController.navigate(ChangeInfoScreen.TeacherChangeInfoScreen.route)
+                    else
+                        navController.navigate(ChangeInfoScreen.StudentChangeInfoScreen.route)
+                    pwCheck = ""
+                }
+            }
         }
     }
 
@@ -122,8 +119,17 @@ fun ChangeInfoCheckPwScreen(
                     .padding(30.dp),
                 text = stringResource(R.string.confirm)
             ) {
-                viewModel.checkPassword(user,pwCheck)
+                viewModel.onEvent(ChangeInfoEvent.CheckPassword(pwCheck))
             }
+        }
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
         }
     }
 }

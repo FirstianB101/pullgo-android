@@ -108,6 +108,9 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
                 is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
                     _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
@@ -129,6 +132,9 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
                 is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
                     _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
@@ -150,6 +156,9 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
                 is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
                     _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
@@ -171,6 +180,9 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
                 is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
                     _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
@@ -192,6 +204,9 @@ class CalendarViewModel @Inject constructor(
                     )
                 }
                 is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
                     _eventFlow.emit(UiEvent.ShowToast("학원 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
@@ -212,7 +227,11 @@ class CalendarViewModel @Inject constructor(
                         isLoading = true
                     )
                 }
-                is Resource.Error -> {}
+                is Resource.Error -> {
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                }
             }
         }
     }
