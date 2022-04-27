@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -28,8 +29,10 @@ import com.ich.pullgo.R
 import com.ich.pullgo.data.remote.dto.Schedule
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.model.Lesson
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarEvent
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarLessonState
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarViewModel
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.oneColonFormatToTwoColon
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
@@ -45,32 +48,21 @@ fun CreateLessonDialog(
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val state = viewModel.dialogState.collectAsState()
+    val state = viewModel.state.collectAsState()
 
     var spinnerState by remember { mutableStateOf(false) }
-    var appliedClassrooms: List<Classroom> by remember { mutableStateOf(emptyList()) }
     var selectedClassroom: Classroom? by remember { mutableStateOf(null) }
 
-    var lessonDate by remember { mutableStateOf("") }
-    var lessonBeginTime by remember { mutableStateOf("") }
-    var lessonEndTime by remember { mutableStateOf("") }
-    var lessonName by remember { mutableStateOf("") }
+    var lessonDate by rememberSaveable { mutableStateOf("") }
+    var lessonBeginTime by rememberSaveable { mutableStateOf("") }
+    var lessonEndTime by rememberSaveable { mutableStateOf("") }
+    var lessonName by rememberSaveable { mutableStateOf("") }
 
     var selectClassroomState by remember { mutableStateOf(false) }
 
     val dateDialogState = rememberMaterialDialogState()
     val beginTimeDialogState = rememberMaterialDialogState()
     val endTimeDialogState = rememberMaterialDialogState()
-
-    when (state.value) {
-        is CalendarLessonState.AppliedClassrooms -> {
-            appliedClassrooms = (state.value as CalendarLessonState.AppliedClassrooms).classrooms
-        }
-        is CalendarLessonState.CreateLesson -> {
-            Toast.makeText(context, "수업이 생성되었습니다", Toast.LENGTH_SHORT).show()
-            showDialog.value = false
-        }
-    }
 
     if (showDialog.value) {
         Dialog(
@@ -133,7 +125,7 @@ fun CreateLessonDialog(
                                     spinnerState = false
                                 }
                             ) {
-                                appliedClassrooms.forEach { classroom ->
+                                state.value.appliedClassrooms.forEach { classroom ->
                                     DropdownMenuItem(
                                         onClick = {
                                             selectedClassroom = classroom
@@ -309,13 +301,9 @@ fun CreateLessonDialog(
                                             lessonName
                                         )
                                     ) {
-                                        viewModel.createLesson(newLesson)
+                                        viewModel.onEvent(CalendarEvent.CreateLesson(newLesson))
                                     } else {
-                                        Toast.makeText(
-                                            context,
-                                            "입력되지 않은 정보가 있습니다",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        Toast.makeText(context, "입력되지 않은 정보가 있습니다", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                             ) {

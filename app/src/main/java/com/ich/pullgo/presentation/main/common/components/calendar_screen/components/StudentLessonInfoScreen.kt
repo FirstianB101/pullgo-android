@@ -1,6 +1,5 @@
 package com.ich.pullgo.presentation.main.common.components.calendar_screen.components
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +12,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,9 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.domain.model.Lesson
-import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarLessonState
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarEvent
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarViewModel
 
 private val titles = listOf(
@@ -50,31 +47,19 @@ fun StudentLessonInfoScreen(
     viewModel: CalendarViewModel = hiltViewModel(),
     onButtonClick: () -> Unit
 ) {
-    val state = viewModel.dialogState.collectAsState()
-    val context = LocalContext.current
+    val state = viewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getAcademySuchLesson(lesson.academyId!!)
+        viewModel.onEvent(
+            CalendarEvent.GetLessonAcademyClassroomInfo(
+                state.value.selectedLesson?.academyId!!,
+                state.value.selectedLesson?.classroomId!!
+            )
+        )
     }
 
-    when (state.value) {
-        is CalendarLessonState.GetAcademy -> {
-            infos[0] = (state.value as CalendarLessonState.GetAcademy).academy.name.toString()
-            viewModel.getClassroomSuchLesson(lesson.classroomId!!)
-        }
-        is CalendarLessonState.GetClassroom -> {
-            infos[1] =
-                (state.value as CalendarLessonState.GetClassroom).classroom.name?.split(';')?.get(0)
-                    .toString()
-        }
-        is CalendarLessonState.Loading -> {
-            LoadingScreen()
-        }
-        is CalendarLessonState.Error -> {
-            Toast.makeText(context, (state.value as CalendarLessonState.Error).message,Toast.LENGTH_SHORT).show()
-        }
-    }
-
+    infos[0] = state.value.academyInfo?.name ?: ""
+    infos[1] = state.value.classroomInfo?.name?.split(';')?.get(0) ?: ""
     infos[2] = lesson.name.toString()
     infos[3] = lesson.schedule?.date.toString()
     infos[4] = "${changeDateFormat(lesson.schedule?.beginTime!!)} ~ ${changeDateFormat(lesson.schedule?.endTime!!)}"

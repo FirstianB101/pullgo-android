@@ -26,8 +26,8 @@ import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.Exam
 import com.ich.pullgo.domain.model.copy
 import com.ich.pullgo.domain.use_case.manage_classroom.manage_exam.util.DurationUtil
-import com.ich.pullgo.presentation.main.common.components.calendar_screen.components.oneColonFormatToTwoColon
-import com.ich.pullgo.presentation.main.common.components.calendar_screen.components.twoColonFormatToOneColon
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.oneColonFormatToTwoColon
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.twoColonFormatToOneColon
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamViewModel
 import com.vanpra.composematerialdialogs.MaterialDialog

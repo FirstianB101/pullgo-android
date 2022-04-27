@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.ich.pullgo.domain.model.Lesson
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalComposeUiApi
@@ -24,6 +25,7 @@ import com.ich.pullgo.domain.model.Lesson
 fun TeacherLessonInfoDialog(
     showDialog: Boolean,
     lesson: Lesson,
+    viewModel: CalendarViewModel,
     onClose: () -> Unit
 ){
     if(showDialog){
@@ -45,6 +47,7 @@ fun TeacherLessonInfoDialog(
                 ) {
                     TeacherLessonInfoScreen(
                         lesson = lesson,
+                        viewModel = viewModel,
                         onClose = onClose
                     )
                 }

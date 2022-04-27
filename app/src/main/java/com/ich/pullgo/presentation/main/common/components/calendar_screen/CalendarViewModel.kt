@@ -2,199 +2,324 @@ package com.ich.pullgo.presentation.main.common.components.calendar_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Lesson
+import com.ich.pullgo.domain.model.doJob
 import com.ich.pullgo.domain.use_case.calendar.CalendarWithLessonUseCases
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.toDayString
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val calendarUseCase: CalendarWithLessonUseCases
+    private val calendarUseCase: CalendarWithLessonUseCases,
+    private val app: PullgoApplication
 ):ViewModel() {
-    private val _calendarState = MutableStateFlow<CalendarLessonState>(CalendarLessonState.Normal)
-    val calendarState: StateFlow<CalendarLessonState> = _calendarState
 
-    private val _bottomState = MutableStateFlow<CalendarLessonState>(CalendarLessonState.Normal)
-    val bottomState: StateFlow<CalendarLessonState> = _bottomState
+    private val _state = MutableStateFlow(CalendarLessonState())
+    val state = _state.asStateFlow()
 
-    private val _dialogState = MutableStateFlow<CalendarLessonState>(CalendarLessonState.Normal)
-    val dialogState: StateFlow<CalendarLessonState> = _dialogState
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
-    fun getStudentLessonsOnDate(studentId: Long, date: String) = viewModelScope.launch {
+    private val currentUser by lazy {app.getLoginUser()}
+
+    init {
+        currentUser?.doJob(
+            ifStudent = {getStudentLessonsOnMonth(currentUser?.student?.id!!)},
+            ifTeacher = {getTeacherLessonsOnMonth(currentUser?.teacher?.id!!)}
+        )
+    }
+
+    fun onEvent(event: CalendarEvent){
+        when(event){
+            is CalendarEvent.OnCalendarDaySelected -> {
+                _state.value = _state.value.copy(
+                    selectedDate = event.day
+                )
+
+                state.value.selectedDate?.toDayString()?.let { date ->
+                    currentUser?.doJob(
+                        ifStudent = { getStudentLessonsOnDate(currentUser?.student?.id!!, date) },
+                        ifTeacher = { getTeacherLessonsOnDate(currentUser?.teacher?.id!!, date) }
+                    )
+                }
+            }
+            is CalendarEvent.OnLessonSelected -> {
+                _state.value = _state.value.copy(
+                    selectedLesson = event.lesson
+                )
+            }
+            is CalendarEvent.GetLessonsOnMonth -> {
+                currentUser?.doJob(
+                    ifStudent = {getStudentLessonsOnMonth(currentUser?.student?.id!!)},
+                    ifTeacher = {getTeacherLessonsOnMonth(currentUser?.teacher?.id!!)}
+                )
+            }
+            is CalendarEvent.GetLessonAcademyClassroomInfo -> {
+                getAcademySuchLesson(event.academyId)
+                getClassroomSuchLesson(event.classroomId)
+            }
+            is CalendarEvent.CreateLesson -> {
+                state.value.selectedDate?.toDayString()?.let { date ->
+                    createLesson(event.lesson).invokeOnCompletion {
+                        getTeacherLessonsOnMonth(currentUser?.teacher?.id!!)
+                        getTeacherLessonsOnDate(currentUser?.teacher?.id!!, date)
+                    }
+                }
+            }
+            is CalendarEvent.DeleteLesson -> {
+                state.value.selectedDate?.toDayString()?.let { date ->
+                    deleteLesson(event.lessonId).invokeOnCompletion {
+                        getTeacherLessonsOnMonth(currentUser?.teacher?.id!!)
+                        getTeacherLessonsOnDate(currentUser?.teacher?.id!!, date)
+                    }
+                }
+            }
+            is CalendarEvent.PatchLesson -> {
+                state.value.selectedDate?.toDayString()?.let { date ->
+                    patchLesson(event.lessonId, event.lesson).invokeOnCompletion {
+                        getTeacherLessonsOnMonth(currentUser?.teacher?.id!!)
+                        getTeacherLessonsOnDate(currentUser?.teacher?.id!!,date)
+                    }
+                }
+            }
+            is CalendarEvent.GetClassroomsTeacherApplied -> {
+                getClassroomsTeacherApplied(currentUser?.teacher?.id!!)
+            }
+        }
+    }
+
+    private fun getStudentLessonsOnDate(studentId: Long, date: String) = viewModelScope.launch {
         calendarUseCase.getStudentLessonsOnDate(studentId, date).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _bottomState.value = CalendarLessonState.LessonsOnDate(result.data!!)
+                    _state.value = _state.value.copy(
+                        lessonsOnDate = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _bottomState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _bottomState.value = CalendarLessonState.Error(result.message.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
         }
     }
 
-    fun getStudentLessonsOnMonth(studentId: Long) = viewModelScope.launch {
+    private fun getStudentLessonsOnMonth(studentId: Long) = viewModelScope.launch {
         calendarUseCase.getStudentLessonsOnMonth(studentId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _calendarState.value = CalendarLessonState.LessonsOnMonth(result.data!!)
+                    _state.value = _state.value.copy(
+                        lessonsOnMonth = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _calendarState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _calendarState.value = CalendarLessonState.Error(result.message.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
         }
     }
 
-    fun getTeacherLessonsOnDate(teacherId: Long, date: String) = viewModelScope.launch {
+    private fun getTeacherLessonsOnDate(teacherId: Long, date: String) = viewModelScope.launch {
         calendarUseCase.getTeacherLessonsOnDate(teacherId, date).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _bottomState.value = CalendarLessonState.LessonsOnDate(result.data!!)
+                    _state.value = _state.value.copy(
+                        lessonsOnDate = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _bottomState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _bottomState.value = CalendarLessonState.Error(result.message.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
         }
     }
 
-    fun getTeacherLessonsOnMonth(teacherId: Long) = viewModelScope.launch {
+    private fun getTeacherLessonsOnMonth(teacherId: Long) = viewModelScope.launch {
         calendarUseCase.getTeacherLessonsOnMonth(teacherId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _calendarState.value = CalendarLessonState.LessonsOnMonth(result.data!!)
+                    _state.value = _state.value.copy(
+                        lessonsOnMonth = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _calendarState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _calendarState.value = CalendarLessonState.Error(result.message.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("수업 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
         }
     }
 
-    fun getAcademySuchLesson(academyId: Long) = viewModelScope.launch {
+    private fun getAcademySuchLesson(academyId: Long) = viewModelScope.launch {
         calendarUseCase.getAcademySuchLesson(academyId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _dialogState.value = CalendarLessonState.GetAcademy(result.data!!)
+                    _state.value = _state.value.copy(
+                        academyInfo = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _dialogState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _dialogState.value = CalendarLessonState.Error(result.message.toString())
+                    _eventFlow.emit(UiEvent.ShowToast("학원 정보를 받아오지 못했습니다 (${result.message})"))
                 }
             }
-
         }
     }
 
-    fun getClassroomSuchLesson(classroomId: Long) = viewModelScope.launch {
+    private fun getClassroomSuchLesson(classroomId: Long) = viewModelScope.launch {
         calendarUseCase.getClassroomSuchLesson(classroomId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _dialogState.value = CalendarLessonState.GetClassroom(result.data!!)
+                    _state.value = _state.value.copy(
+                        classroomInfo = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _dialogState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
-                is Resource.Error -> {
-                    _dialogState.value = CalendarLessonState.Error(result.message.toString())
-                }
+                is Resource.Error -> {}
             }
         }
     }
 
-    fun patchLesson(lessonId: Long, lesson: Lesson) = viewModelScope.launch {
+    private fun patchLesson(lessonId: Long, lesson: Lesson) = viewModelScope.launch {
         calendarUseCase.patchLessonInfo(lessonId, lesson).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _dialogState.value = CalendarLessonState.PatchLesson(result.data!!)
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("수업 정보가 변경되었습니다."))
+                    _eventFlow.emit(UiEvent.CopyLesson(result.data!!))
                 }
                 is Resource.Loading -> {
-                    _dialogState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _dialogState.value = CalendarLessonState.Error(result.message.toString())
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("수업 정보를 변경하지 못했습니다. (${result.message})"))
                 }
             }
         }
     }
 
-    fun deleteLesson(lessonId: Long) = viewModelScope.launch {
+    private fun deleteLesson(lessonId: Long) = viewModelScope.launch {
         calendarUseCase.deleteLesson(lessonId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _dialogState.value = CalendarLessonState.DeleteLesson
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("수업이 삭제되었습니다."))
+                    _eventFlow.emit(UiEvent.CloseLessonDialog)
                 }
                 is Resource.Loading -> {
-                    _dialogState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _dialogState.value = CalendarLessonState.Error(result.message.toString())
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("수업을 삭제하지 못했습니다. (${result.message})"))
                 }
             }
         }
     }
 
-    fun createLesson(lesson: Lesson) = viewModelScope.launch {
+    private fun createLesson(lesson: Lesson) = viewModelScope.launch {
         calendarUseCase.createLesson(lesson).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _dialogState.value = CalendarLessonState.CreateLesson(result.data!!)
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("수업을 생성했습니다."))
+                    _eventFlow.emit(UiEvent.CloseCreateLessonDialog)
                 }
                 is Resource.Loading -> {
-                    _dialogState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _dialogState.value = CalendarLessonState.Error(result.message.toString())
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("수업을 생성하지 못했습니다. (${result.message})"))
                 }
             }
         }
     }
 
-    fun getClassroomsTeacherApplied(teacherId: Long) = viewModelScope.launch {
+    private fun getClassroomsTeacherApplied(teacherId: Long) = viewModelScope.launch {
         calendarUseCase.getClassroomsTeacherApplied(teacherId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _dialogState.value = CalendarLessonState.AppliedClassrooms(result.data!!)
+                    _state.value = _state.value.copy(
+                        appliedClassrooms = result.data!!,
+                        isLoading = false
+                    )
                 }
                 is Resource.Loading -> {
-                    _dialogState.value = CalendarLessonState.Loading
+                    _state.value = _state.value.copy(
+                        isLoading = true
+                    )
                 }
                 is Resource.Error -> {
-                    _dialogState.value = CalendarLessonState.Error(result.message.toString())
+                    _state.value = _state.value.copy(
+                        isLoading = false
+                    )
+                    _eventFlow.emit(UiEvent.ShowToast("반 정보를 불러오지 못했습니다. (${result.message})"))
                 }
             }
         }
     }
 
-    fun onCalendarResultConsume(){
-        _calendarState.tryEmit(CalendarLessonState.Normal)
-    }
-
-    fun onBottomResultConsume(){
-        _bottomState.tryEmit(CalendarLessonState.Normal)
-    }
-
-    fun onDialogResultConsume(){
-        _dialogState.tryEmit(CalendarLessonState.Normal)
+    sealed class UiEvent{
+        data class ShowToast(val message: String): UiEvent()
+        data class CopyLesson(val lesson: Lesson): UiEvent()
+        object CloseLessonDialog: UiEvent()
+        object CloseCreateLessonDialog: UiEvent()
     }
 }

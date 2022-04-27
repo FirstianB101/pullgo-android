@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,16 +22,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.data.remote.dto.Schedule
 import com.ich.pullgo.domain.model.Lesson
-import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarLessonState
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarEvent
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.CalendarViewModel
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.applyPatchedLesson
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.oneColonFormatToTwoColon
+import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.twoColonFormatToOneColon
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -42,13 +46,12 @@ fun TeacherLessonInfoScreen(
 ) {
     val context = LocalContext.current
 
-    val state = viewModel.dialogState.collectAsState()
+    val state = viewModel.state.collectAsState()
 
-    var lessonName by remember { mutableStateOf(lesson.name.toString()) }
-    var lessonClass by remember { mutableStateOf("") }
-    var lessonDate by remember { mutableStateOf(lesson.schedule?.date.toString()) }
-    var lessonBeginTime by remember { mutableStateOf(twoColonFormatToOneColon(lesson.schedule?.beginTime.toString())) }
-    var lessonEndTime by remember { mutableStateOf(twoColonFormatToOneColon(lesson.schedule?.endTime.toString())) }
+    var lessonName by rememberSaveable { mutableStateOf(lesson.name.toString()) }
+    var lessonDate by rememberSaveable { mutableStateOf(lesson.schedule?.date.toString()) }
+    var lessonBeginTime by rememberSaveable { mutableStateOf(twoColonFormatToOneColon(lesson.schedule?.beginTime.toString())) }
+    var lessonEndTime by rememberSaveable { mutableStateOf(twoColonFormatToOneColon(lesson.schedule?.endTime.toString())) }
 
     var isEditMode by remember{ mutableStateOf(false) }
 
@@ -57,29 +60,19 @@ fun TeacherLessonInfoScreen(
     val endTimeDialogState = rememberMaterialDialogState()
     var deleteDialogState = remember{ mutableStateOf(false)}
 
-    LaunchedEffect(Unit) {
-        viewModel.getClassroomSuchLesson(lesson.classroomId!!)
-    }
+    LaunchedEffect(Unit){
+        viewModel.onEvent(
+            CalendarEvent.GetLessonAcademyClassroomInfo(
+                state.value.selectedLesson?.academyId!!,
+                state.value.selectedLesson?.classroomId!!
+            )
+        )
 
-    when (state.value) {
-        is CalendarLessonState.GetClassroom -> {
-            lessonClass = (state.value as CalendarLessonState.GetClassroom).classroom.name?.split(';')?.get(0).toString()
-        }
-        is CalendarLessonState.PatchLesson -> {
-            applyPatchedLesson(lesson, (state.value as CalendarLessonState.PatchLesson).lesson)
-            Toast.makeText(context, "정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
-            viewModel.onDialogResultConsume()
-        }
-        is CalendarLessonState.DeleteLesson -> {
-            Toast.makeText(context, "수업이 삭제되었습니다",Toast.LENGTH_SHORT).show()
-            viewModel.onDialogResultConsume()
-            onClose()
-        }
-        is CalendarLessonState.Loading -> {
-            LoadingScreen()
-        }
-        is CalendarLessonState.Error -> {
-            Toast.makeText(context, (state.value as CalendarLessonState.Error).message,Toast.LENGTH_SHORT).show()
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is CalendarViewModel.UiEvent.CloseLessonDialog -> onClose()
+                is CalendarViewModel.UiEvent.CopyLesson -> applyPatchedLesson(lesson, event.lesson)
+            }
         }
     }
 
@@ -124,7 +117,7 @@ fun TeacherLessonInfoScreen(
 
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = lessonClass,
+            value = state.value.classroomInfo?.name?.split(';')?.get(0) ?: "",
             onValueChange = {},
             enabled = false,
             label = { Text(text = stringResource(R.string.selected_classroom)) }
@@ -213,7 +206,7 @@ fun TeacherLessonInfoScreen(
                             schedule = Schedule(lessonDate, oneColonFormatToTwoColon(lessonBeginTime), oneColonFormatToTwoColon(lessonEndTime)),
                             academyId = lesson.academyId
                         )
-                        viewModel.patchLesson(lesson.id!!, newLesson)
+                        viewModel.onEvent(CalendarEvent.PatchLesson(lesson.id!!,newLesson))
                     }
                     isEditMode = !isEditMode
                 }
@@ -264,7 +257,7 @@ fun TeacherLessonInfoScreen(
         cancelText = "취소",
         confirmText = "삭제",
         onCancel = { deleteDialogState.value = false },
-        onConfirm = { viewModel.deleteLesson(lesson.id!!) }
+        onConfirm = { viewModel.onEvent(CalendarEvent.DeleteLesson(lesson.id!!)) }
     )
 
     MaterialDialog(
@@ -310,18 +303,4 @@ fun TeacherLessonInfoScreen(
             lessonEndTime = time.toString()
         }
     }
-}
-
-fun applyPatchedLesson(lesson: Lesson, patchedLesson: Lesson){
-    lesson.name = patchedLesson.name
-    lesson.schedule = patchedLesson.schedule
-}
-
-fun twoColonFormatToOneColon(time: String): String{
-    val arr = time.split(':')
-    return "${arr[0]}:${arr[1]}"
-}
-
-fun oneColonFormatToTwoColon(time: String): String{
-    return "${time}:00"
 }
