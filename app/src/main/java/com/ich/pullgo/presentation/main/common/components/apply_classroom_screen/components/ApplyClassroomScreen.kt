@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -20,15 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.ClassroomItem
-import com.ich.pullgo.domain.model.Academy
-import com.ich.pullgo.domain.model.Classroom
-import com.ich.pullgo.domain.model.doJob
-import com.ich.pullgo.presentation.main.common.components.apply_classroom_screen.ApplyClassroomState
+import com.ich.pullgo.presentation.main.common.components.apply_classroom_screen.ApplyClassroomEvent
 import com.ich.pullgo.presentation.main.common.components.apply_classroom_screen.ApplyClassroomViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalMaterialApi
 @Composable
@@ -38,47 +35,27 @@ fun ApplyClassroomScreen(
     val state = viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    var spinnerState by remember { mutableStateOf(false) }
-    var appliedAcademies: List<Academy> by remember { mutableStateOf(emptyList()) }
-    var selectedAcademy: Academy? by remember { mutableStateOf(null) }
-    var searchedClassrooms: List<Classroom?> by remember { mutableStateOf(listOf(null))}
-    var selectedClassroom: Classroom? by remember{ mutableStateOf(null) }
+    var spinnerState by rememberSaveable { mutableStateOf(false) }
 
-    var selectAcademyState by remember{ mutableStateOf(false) }
-    var requestDialogState = remember{ mutableStateOf(false) }
-    var searchText by remember{ mutableStateOf("") }
+    var selectAcademyState by remember { mutableStateOf(false) }
+    var requestDialogState = remember { mutableStateOf(false) }
 
-    val targetState = remember{ mutableStateOf(0f) }
+    val targetState = rememberSaveable { mutableStateOf(0f) }
     val animatedFloatState = animateFloatAsState(
         targetValue = targetState.value,
         animationSpec = tween(durationMillis = 1500)
     )
 
-    val user = PullgoApplication.instance?.getLoginUser()
-
     LaunchedEffect(Unit){
-        user?.doJob(
-            ifStudent = { viewModel.getStudentAppliedAcademies(user.student?.id!!) },
-            ifTeacher = { viewModel.getTeacherAppliedAcademies(user.teacher?.id!!) }
-        )
-    }
-
-    when(state.value){
-        is ApplyClassroomState.AppliedAcademies -> {
-            appliedAcademies = (state.value as ApplyClassroomState.AppliedAcademies).academies
-        }
-        is ApplyClassroomState.SearchedClassrooms -> {
-            searchedClassrooms = (state.value as ApplyClassroomState.SearchedClassrooms).classrooms
-        }
-        is ApplyClassroomState.SendApplyClassroomRequest -> {
-            Toast.makeText(context,"가입 요청을 보냈습니다",Toast.LENGTH_SHORT).show()
-            requestDialogState.value = false
-        }
-        is ApplyClassroomState.Loading -> {
-            LoadingScreen()
-        }
-        is ApplyClassroomState.Error -> {
-            Toast.makeText(context, (state.value as ApplyClassroomState.Error).message,Toast.LENGTH_SHORT).show()
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ApplyClassroomViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ApplyClassroomViewModel.UiEvent.CloseRequestDialog -> {
+                    requestDialogState.value = false
+                }
+            }
         }
     }
 
@@ -110,7 +87,7 @@ fun ApplyClassroomScreen(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
-                    value = selectedAcademy?.name ?: "",
+                    value = state.value.selectedAcademy?.name ?: "",
                     onValueChange = { },
                     label = { Text(stringResource(R.string.select_academy)) },
                     trailingIcon = {
@@ -125,10 +102,10 @@ fun ApplyClassroomScreen(
                         spinnerState = false
                     }
                 ) {
-                    appliedAcademies.forEach { academy ->
+                    state.value.appliedAcademies.forEach { academy ->
                         DropdownMenuItem(
                             onClick = {
-                                selectedAcademy = academy
+                                viewModel.onEvent(ApplyClassroomEvent.SelectAcademy(academy))
                                 selectAcademyState = true
                                 spinnerState = false
                             }
@@ -155,13 +132,13 @@ fun ApplyClassroomScreen(
                 ){
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = searchText,
-                        onValueChange = { searchText = it },
+                        value = state.value.searchQuery,
+                        onValueChange = { viewModel.onEvent(ApplyClassroomEvent.SearchQueryChanged(it)) },
                         label = { Text(stringResource(R.string.search_by_teacher_or_classroom_name)) },
                         trailingIcon = {
                             IconButton(
                                 onClick = {
-                                    viewModel.getSearchedClassrooms(selectedAcademy?.id!!,searchText)
+                                    viewModel.onEvent(ApplyClassroomEvent.SearchClassrooms)
                                 }
                             ) {
                                 Icon(
@@ -174,24 +151,24 @@ fun ApplyClassroomScreen(
                 }
 
                 LazyColumn{
-                    items(searchedClassrooms.size){ idx ->
-                        searchedClassrooms[idx]?.let {
-                            ClassroomItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(8.dp)
-                                    .clickable {
-                                        selectedClassroom = searchedClassrooms[idx]
-                                        requestDialogState.value = true
-                                    },
-                                classroom = searchedClassrooms[idx]!!,
-                                showDeleteButton = false,
-                                onDeleteButtonClicked = {}
-                            )
-                        }
+                    items(state.value.searchedClassrooms.size){ idx ->
+                        ClassroomItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clickable {
+                                    viewModel.onEvent(
+                                        ApplyClassroomEvent.SelectClassroom(state.value.searchedClassrooms[idx])
+                                    )
+                                    requestDialogState.value = true
+                                },
+                            classroom = state.value.searchedClassrooms[idx],
+                            showDeleteButton = false,
+                            onDeleteButtonClicked = {}
+                        )
                     }
                 }
-                if(searchedClassrooms.isEmpty()){
+                if(state.value.searchedClassrooms.isEmpty()){
                     Box(modifier = Modifier.fillMaxSize()){
                         Text(
                             modifier = Modifier.align(Alignment.Center),
@@ -207,16 +184,22 @@ fun ApplyClassroomScreen(
 
     TwoButtonDialog(
         title = "반 가입 요청",
-        content = "${selectedClassroom?.name?.split(';')?.get(0)} 반에 가입을 신청하시겠습니까?",
+        content = "${state.value.selectedClassroom?.name?.split(';')?.get(0)} 반에 가입을 신청하시겠습니까?",
         dialogState = requestDialogState,
         cancelText = "취소",
         confirmText = "신청",
         onCancel = { requestDialogState.value = false },
         onConfirm = {
-            user?.doJob(
-                ifStudent = { viewModel.sendStudentApplyClassroomRequest(user.student?.id!!,selectedClassroom?.id!!) },
-                ifTeacher = { viewModel.sendTeacherApplyClassroomRequest(user.teacher?.id!!,selectedClassroom?.id!!) }
-            )
+            viewModel.onEvent(ApplyClassroomEvent.RequestApplyingClassroom)
         }
     )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }
