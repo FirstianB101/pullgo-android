@@ -4,14 +4,12 @@ import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.model.Teacher
 
-sealed class ManageRequestState {
-    object Loading : ManageRequestState()
-    object Normal : ManageRequestState()
-    data class Error(val message: String) : ManageRequestState()
-    data class AcademyRequests(val requests: List<Academy>): ManageRequestState()
-    data class ClassroomRequests(val requests: List<Classroom>): ManageRequestState()
-    data class GetAcademyOwner(val owner: Teacher): ManageRequestState()
-    data class GetAcademyOfClassroom(val academy: Academy): ManageRequestState()
-    object RemoveAcademyRequest: ManageRequestState()
-    object RemoveClassroomRequest: ManageRequestState()
-}
+data class ManageRequestState(
+    val isLoading: Boolean = false,
+    val academyRequests: List<Academy> = emptyList(),
+    val classroomRequests: List<Classroom> = emptyList(),
+    val academyOwner: Teacher? = null,
+    val academyInfo: Academy? = null,
+    val selectedAcademy: Academy? = null,
+    val selectedClassroom: Classroom? = null
+)

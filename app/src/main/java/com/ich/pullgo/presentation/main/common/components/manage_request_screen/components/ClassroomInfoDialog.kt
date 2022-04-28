@@ -41,19 +41,7 @@ fun ClassroomInfoDialog(
 ){
     if(showDialog.value){
         val state = viewModel.state.collectAsState()
-        var academyOfClassroom: Academy? by rememberSaveable{ mutableStateOf(null) }
-
         val classroomInfos = classroom?.name?.split(';')!!
-
-        LaunchedEffect(Unit){
-            viewModel.getAcademyOfClassroom(classroom.academyId!!)
-        }
-
-        when(state.value){
-            is ManageRequestState.GetAcademyOfClassroom -> {
-                academyOfClassroom = (state.value as ManageRequestState.GetAcademyOfClassroom).academy
-            }
-        }
 
         Dialog(
             onDismissRequest = {showDialog.value = false},
@@ -160,7 +148,7 @@ fun ClassroomInfoDialog(
 
                         Text(
                             modifier = Modifier.width(170.dp),
-                            text = academyOfClassroom?.name ?: "",
+                            text = state.value.academyInfo?.name ?: "",
                             color = Color.Gray,
                             fontSize = 17.sp,
                             textAlign = TextAlign.Center

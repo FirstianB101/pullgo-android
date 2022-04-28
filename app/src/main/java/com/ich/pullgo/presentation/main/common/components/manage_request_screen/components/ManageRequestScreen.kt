@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.doJob
+import com.ich.pullgo.presentation.main.common.components.manage_request_screen.ManageRequestEvent
 import com.ich.pullgo.presentation.main.common.components.manage_request_screen.ManageRequestViewModel
 
 @ExperimentalComposeUiApi
@@ -23,8 +24,6 @@ import com.ich.pullgo.presentation.main.common.components.manage_request_screen.
 fun ManageRequestScreen(
     viewModel: ManageRequestViewModel = hiltViewModel()
 ){
-    val user = PullgoApplication.instance!!.getLoginUser()
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -44,18 +43,12 @@ fun ManageRequestScreen(
             }
             when (tabIndex) {
                 0 -> {
-                    user?.doJob(
-                        ifStudent = { viewModel.getAcademiesStudentApplying(user.student!!.id!!) },
-                        ifTeacher = { viewModel.getAcademiesTeacherApplying(user.teacher!!.id!!) }
-                    )
-                    AcademyRequestListScreen()
+                    viewModel.onEvent(ManageRequestEvent.GetAcademyRequests)
+                    AcademyRequestListScreen(viewModel = viewModel)
                 }
                 1 -> {
-                    user?.doJob(
-                        ifStudent = { viewModel.getClassroomsStudentApplying(user.student!!.id!!) },
-                        ifTeacher = { viewModel.getClassroomsTeacherApplying(user.teacher!!.id!!) }
-                    )
-                    ClassroomRequestListScreen()
+                    viewModel.onEvent(ManageRequestEvent.GetClassroomRequests)
+                    ClassroomRequestListScreen(viewModel = viewModel)
                 }
             }
         }

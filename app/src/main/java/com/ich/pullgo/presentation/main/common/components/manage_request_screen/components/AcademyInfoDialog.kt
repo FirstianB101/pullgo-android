@@ -42,20 +42,9 @@ fun AcademyInfoDialog(
 ){
     if(showDialog.value){
         val state = viewModel.state.collectAsState()
-        var ownerOfAcademy: Teacher? by rememberSaveable{ mutableStateOf(null) }
-
-        LaunchedEffect(Unit){
-            viewModel.getOwnerOfAcademy(academy?.ownerId!!)
-        }
-
-        when(state.value){
-            is ManageRequestState.GetAcademyOwner -> {
-                ownerOfAcademy = (state.value as ManageRequestState.GetAcademyOwner).owner
-            }
-        }
 
         Dialog(
-            onDismissRequest = {showDialog.value = false},
+            onDismissRequest = { showDialog.value = false },
             properties = DialogProperties(
                 usePlatformDefaultWidth = false,
                 dismissOnBackPress = true
@@ -87,7 +76,7 @@ fun AcademyInfoDialog(
                             tint = Color.DarkGray
                         )
                         Text(
-                            text = stringResource(R.string.classroom_info),
+                            text = stringResource(R.string.academy_info),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.DarkGray
@@ -183,7 +172,7 @@ fun AcademyInfoDialog(
 
                         Text(
                             modifier = Modifier.width(170.dp),
-                            text = ownerOfAcademy?.account?.fullName ?: "",
+                            text = state.value.academyOwner?.account?.fullName ?: "",
                             color = Color.Gray,
                             fontSize = 17.sp,
                             textAlign = TextAlign.Center

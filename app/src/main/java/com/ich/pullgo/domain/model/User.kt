@@ -1,6 +1,5 @@
 package com.ich.pullgo.domain.model
 
-import kotlinx.coroutines.Job
 import java.io.Serializable
 
 class User : Serializable{
@@ -10,8 +9,8 @@ class User : Serializable{
 }
 
 fun User.doJob(
-    ifStudent: () -> Job,
-    ifTeacher: () -> Job
+    ifStudent: () -> Unit,
+    ifTeacher: () -> Unit
 ){
     when{
         student != null -> ifStudent()
