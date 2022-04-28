@@ -30,9 +30,11 @@ import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.presentation.login.components.startMainActivity
+import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyState
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyViewModel
 import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleActivity
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalMaterialApi
 @Composable
@@ -44,12 +46,7 @@ fun TeacherManageAcademyScreen(
     val context = LocalContext.current
 
     var spinnerState by remember { mutableStateOf(false) }
-    var ownedAcademies: List<Academy> by remember { mutableStateOf(emptyList()) }
-    var selectedAcademy: Academy? by remember { mutableStateOf(null) }
     var selectAcademyState by remember { mutableStateOf(false) }
-
-    var academyAddress by remember { mutableStateOf("") }
-    var academyPhone by remember { mutableStateOf("") }
 
     var editState by remember{ mutableStateOf(true) }
     val deleteAcademyDialogState = remember { mutableStateOf(false) }
@@ -62,36 +59,20 @@ fun TeacherManageAcademyScreen(
     )
 
     val user = PullgoApplication.instance?.getLoginUser()
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
 
-    LaunchedEffect(Unit) {
-        viewModel.getAcademiesTeacherOwned(teacher?.id!!)
-    }
-
-    when (state.value) {
-        is ManageAcademyState.EditAcademy -> {
-            Toast.makeText(context,"학원 정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
-            viewModel.getAcademiesTeacherOwned(teacher?.id!!)
-        }
-        is ManageAcademyState.DeleteAcademy -> {
-            Toast.makeText(context,"학원이 삭제되었습니다",Toast.LENGTH_SHORT).show()
-            selectAcademyState = false
-            selectedAcademy = null
-            viewModel.getAcademiesTeacherOwned(teacher?.id!!)
-        }
-        is ManageAcademyState.GetAcademies -> {
-            ownedAcademies = (state.value as ManageAcademyState.GetAcademies).academies
-            if(ownedAcademies.isEmpty()){
-                startMainActivity(context,user,false)
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ManageAcademyViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ManageAcademyViewModel.UiEvent.DeleteAcademySuccess -> {
+                    selectAcademyState = false
+                }
+                is ManageAcademyViewModel.UiEvent.TransferMainActivityIfAppliedAcademyCnt1To0 -> {
+                    startMainActivity(context,user,false)
+                }
             }
-            viewModel.onResultConsume()
-        }
-        is ManageAcademyState.Loading -> {
-            LoadingScreen()
-        }
-        is ManageAcademyState.Error -> {
-            Toast.makeText(context, (state.value as ManageAcademyState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
         }
     }
 
@@ -123,7 +104,7 @@ fun TeacherManageAcademyScreen(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
-                    value = selectedAcademy?.name ?: "",
+                    value = state.value.selectedAcademy?.name ?: "",
                     onValueChange = { },
                     label = { Text(stringResource(R.string.select_academy)) },
                     trailingIcon = {
@@ -138,12 +119,10 @@ fun TeacherManageAcademyScreen(
                         spinnerState = false
                     }
                 ) {
-                    ownedAcademies.forEach { academy ->
+                    state.value.ownedAcademies.forEach { academy ->
                         DropdownMenuItem(
                             onClick = {
-                                selectedAcademy = academy
-                                academyAddress = selectedAcademy?.address.toString()
-                                academyPhone = selectedAcademy?.phone.toString()
+                                viewModel.onEvent(ManageAcademyEvent.SelectAcademy(academy))
                                 selectAcademyState = true
                                 spinnerState = false
                             }
@@ -181,8 +160,8 @@ fun TeacherManageAcademyScreen(
                             .fillMaxWidth()
                             .focusRequester(focusRequester),
                         readOnly = editState,
-                        value = academyAddress,
-                        onValueChange = {academyAddress = it},
+                        value = state.value.academyAddress,
+                        onValueChange = { viewModel.onEvent(ManageAcademyEvent.AcademyAddressChanged(it)) },
                         label = { Text(stringResource(R.string.academy_address)) },
                     )
                 }
@@ -206,8 +185,8 @@ fun TeacherManageAcademyScreen(
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         readOnly = editState,
-                        value = academyPhone,
-                        onValueChange = { academyPhone = it},
+                        value = state.value.academyPhone,
+                        onValueChange = { viewModel.onEvent(ManageAcademyEvent.AcademyPhoneChanged(it)) },
                         label = { Text(stringResource(R.string.phone)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
@@ -224,13 +203,7 @@ fun TeacherManageAcademyScreen(
                     if(!editState) {
                         focusRequester.requestFocus()
                     }else{
-                        val edited = Academy(
-                            selectedAcademy?.name,
-                            academyPhone,
-                            academyAddress,
-                            selectedAcademy?.ownerId
-                        )
-                        viewModel.editAcademy(selectedAcademy?.id!!,edited)
+                        viewModel.onEvent(ManageAcademyEvent.EditAcademy)
                     }
                 }
 
@@ -241,7 +214,7 @@ fun TeacherManageAcademyScreen(
                         .fillMaxWidth(),
                     text = stringResource(R.string.manage_people)
                 ) {
-                    startManagePeopleActivity(context, selectedAcademy?.id!!)
+                    startManagePeopleActivity(context, state.value.selectedAcademy?.id!!)
                 }
                 
                 Spacer(modifier = Modifier.weight(1f))
@@ -287,16 +260,25 @@ fun TeacherManageAcademyScreen(
     }
     TwoButtonDialog(
         title = stringResource(R.string.underlined_delete_academy),
-        content = "${selectedAcademy?.name} 학원을 삭제하시겠습니까?",
+        content = "${state.value.selectedAcademy?.name} 학원을 삭제하시겠습니까?",
         dialogState = deleteAcademyDialogState,
         cancelText = stringResource(R.string.cancel),
         confirmText = stringResource(R.string.delete),
         onCancel = { deleteAcademyDialogState.value = false },
         onConfirm = {
-            viewModel.deleteAcademy(selectedAcademy?.id!!)
+            viewModel.onEvent(ManageAcademyEvent.DeleteAcademy)
             deleteAcademyDialogState.value = false
         }
     )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }
 
 fun startManagePeopleActivity(context: Context, selectedAcademyId: Long){

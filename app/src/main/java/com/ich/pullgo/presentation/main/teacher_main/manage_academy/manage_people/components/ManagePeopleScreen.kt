@@ -12,16 +12,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.domain.model.doJob
-import com.ich.pullgo.presentation.main.common.components.manage_request_screen.components.AcademyRequestListScreen
-import com.ich.pullgo.presentation.main.common.components.manage_request_screen.components.ClassroomRequestListScreen
+import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleEvent
+import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleViewModel
 
 @ExperimentalComposeUiApi
 @Composable
 fun ManagePeopleScreen(
-    selectedAcademyId: Long
+    selectedAcademyId: Long,
+    viewModel: ManagePeopleViewModel = hiltViewModel()
 ){
+
+    LaunchedEffect(Unit){
+        viewModel.onEvent(ManagePeopleEvent.GetStudentsInAcademy(selectedAcademyId))
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -34,17 +40,28 @@ fun ManagePeopleScreen(
                 backgroundColor = Color.White) {
                 tabTitles.forEachIndexed { index, title ->
                     Tab(selected = tabIndex == index,
-                        onClick = { tabIndex = index },
+                        onClick = {
+                            tabIndex = index
+
+                            if(tabIndex == 0)viewModel.onEvent(ManagePeopleEvent.GetStudentsInAcademy(selectedAcademyId))
+                            else viewModel.onEvent(ManagePeopleEvent.GetTeachersInAcademy(selectedAcademyId))
+                        },
                         text = { Text(text = title, maxLines = 1, softWrap = false, color = Color.Black) }
                     )
                 }
             }
             when (tabIndex) {
                 0 -> {
-                    ManageStudentListScreen(selectedAcademyId)
+                    ManageStudentListScreen(
+                        selectedAcademyId = selectedAcademyId,
+                        viewModel = viewModel
+                    )
                 }
                 1 -> {
-                    ManageTeacherListScreen(selectedAcademyId)
+                    ManageTeacherListScreen(
+                        selectedAcademyId = selectedAcademyId,
+                        viewModel = viewModel
+                    )
                 }
             }
         }

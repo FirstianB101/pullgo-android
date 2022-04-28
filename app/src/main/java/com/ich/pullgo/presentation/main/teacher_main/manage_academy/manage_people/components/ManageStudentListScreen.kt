@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,67 +17,54 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.StudentInfoDialog
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.ManageStudentItem
-import com.ich.pullgo.domain.model.Student
-import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyState
-import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyViewModel
+import com.ich.pullgo.presentation.main.teacher_main.manage_academy.ManageAcademyEvent
+import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleEvent
+import com.ich.pullgo.presentation.main.teacher_main.manage_academy.manage_people.ManagePeopleViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @Composable
 fun ManageStudentListScreen(
     selectedAcademyId: Long,
-    viewModel: ManageAcademyViewModel = hiltViewModel()
+    viewModel: ManagePeopleViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
     val state = viewModel.state.collectAsState()
-
-    val students: MutableState<List<Student?>> = remember { mutableStateOf(listOf(null)) }
-    var selectedStudent: Student? by remember{ mutableStateOf(null) }
 
     val kickDialogState = remember{ mutableStateOf(false) }
     val studentInfoDialogState = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit){
-        viewModel.getStudentsInAcademy(selectedAcademyId)
-    }
-
-    when(state.value){
-        is ManageAcademyState.Loading -> {
-            LoadingScreen()
-        }
-        is ManageAcademyState.GetStudents -> {
-            students.value = (state.value as ManageAcademyState.GetStudents).students
-            viewModel.onResultConsume()
-        }
-        is ManageAcademyState.KickUser -> {
-            Toast.makeText(context,"학생을 제외했습니다",Toast.LENGTH_SHORT).show()
-            viewModel.getStudentsInAcademy(selectedAcademyId)
-        }
-    }
-
-    LazyColumn{
-        items(students.value.size){ idx ->
-            students.value[idx]?.let {
-                ManageStudentItem(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .clickable {
-                            selectedStudent = it
-                            studentInfoDialogState.value = true
-                        },
-                    student = it,
-                    showKickButton = true
-                ) {
-                    selectedStudent = it
-                    kickDialogState.value = true
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ManagePeopleViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
-    if(students.value.isEmpty()){
+
+    LazyColumn{
+        items(state.value.studentsInAcademy.size){ idx ->
+            ManageStudentItem(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable {
+                        viewModel.onEvent(ManagePeopleEvent.SelectStudent(state.value.studentsInAcademy[idx]))
+                        studentInfoDialogState.value = true
+                    },
+                student = state.value.studentsInAcademy[idx],
+                showKickButton = true
+            ) {
+                viewModel.onEvent(ManagePeopleEvent.SelectStudent(state.value.studentsInAcademy[idx]))
+                kickDialogState.value = true
+            }
+        }
+    }
+    if(state.value.studentsInAcademy.isEmpty()){
         Box(modifier = Modifier.fillMaxSize()){
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -86,36 +74,35 @@ fun ManageStudentListScreen(
             )
         }
     }
-    if(state.value is ManageAcademyState.Error){
-        Box(modifier = Modifier.fillMaxSize()){
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = "정보를 불러올 수 없습니다",
-                color = Color.Black,
-                fontSize = 20.sp
-            )
-        }
-    }
 
     TwoButtonDialog(
         title = "학원에서 제외",
-        content = "${selectedStudent?.account?.fullName} 학생을 학원에서 제외하시겠습니까?",
+        content = "${state.value.selectedStudent?.account?.fullName} 학생을 학원에서 제외하시겠습니까?",
         dialogState = kickDialogState,
         cancelText = "취소",
         confirmText = "제외",
         onCancel = { kickDialogState.value = false },
         onConfirm = {
-            viewModel.kickStudent(selectedAcademyId,selectedStudent?.id!!)
+            viewModel.onEvent(ManagePeopleEvent.KickStudent(selectedAcademyId))
             kickDialogState.value = false
         }
     )
 
-    if(selectedStudent != null) {
+    if(state.value.selectedStudent != null) {
         StudentInfoDialog(
             showDialog = studentInfoDialogState,
-            student = selectedStudent!!,
+            student = state.value.selectedStudent!!,
             showRemoveIcon = false,
             onRemoveClicked = {}
         )
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
     }
 }
