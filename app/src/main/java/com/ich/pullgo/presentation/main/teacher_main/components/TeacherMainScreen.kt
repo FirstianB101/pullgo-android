@@ -1,11 +1,13 @@
 package com.ich.pullgo.presentation.main.teacher_main.components
 
+import android.widget.Toast
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
@@ -13,6 +15,7 @@ import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.presentation.main.student_main.components.TopBar
 import com.ich.pullgo.presentation.main.teacher_main.OwnerCheckViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -22,11 +25,15 @@ fun TeacherMainScreen(
     viewModel: OwnerCheckViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
-    val ownerState = viewModel.state.collectAsState()
+    val state = viewModel.state.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit){
-        viewModel.isOwner(teacher?.id!!)
+        viewModel.eventFlow.collectLatest { event ->
+            if(event is OwnerCheckViewModel.UiEvent.ShowToast){
+                Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     Surface(color = MaterialTheme.colors.background) {
@@ -40,7 +47,7 @@ fun TeacherMainScreen(
             drawerContent = {
                 TeacherMainDrawer(
                     scope = scope,
-                    isOwner = ownerState.value,
+                    isOwner = state.value,
                     scaffoldState = scaffoldState,
                     navController = navController,
                     academyExist = academyExist
