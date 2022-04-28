@@ -4,13 +4,12 @@ import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
 
-sealed class AcceptApplyAcademyState{
-    object Normal: AcceptApplyAcademyState()
-    object Loading: AcceptApplyAcademyState()
-    data class Error(val message: String): AcceptApplyAcademyState()
-    data class GetAcademies(val academies: List<Academy>): AcceptApplyAcademyState()
-    data class GetStudentRequests(val students: List<Student>): AcceptApplyAcademyState()
-    data class GetTeacherRequests(val teachers: List<Teacher>): AcceptApplyAcademyState()
-    object AcceptRequest: AcceptApplyAcademyState()
-    object DenyRequest: AcceptApplyAcademyState()
-}
+data class AcceptApplyAcademyState(
+    val isLoading: Boolean = false,
+    val appliedAcademies: List<Academy> = emptyList(),
+    val selectedAcademy: Academy? = null,
+    val studentRequests: List<Student> = emptyList(),
+    val selectedStudent: Student? = null,
+    val teacherRequests: List<Teacher> = emptyList(),
+    val selectedTeacher: Teacher? = null
+)

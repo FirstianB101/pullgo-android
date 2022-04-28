@@ -13,11 +13,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.domain.model.Academy
+import com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.AcceptApplyAcademyEvent
 import com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.AcceptApplyAcademyViewModel
 
 @Composable
 fun AcceptApplyAcademyTab(
-    selectedAcademy: Academy
+    viewModel: AcceptApplyAcademyViewModel
 ) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabTitles = listOf(stringResource(R.string.student), stringResource(R.string.teacher))
@@ -32,7 +33,12 @@ fun AcceptApplyAcademyTab(
         ) {
             tabTitles.forEachIndexed { index, title ->
                 Tab(selected = tabIndex == index,
-                    onClick = { tabIndex = index },
+                    onClick = {
+                        tabIndex = index
+
+                        if(tabIndex == 0) viewModel.onEvent(AcceptApplyAcademyEvent.GetStudentRequests)
+                        else viewModel.onEvent(AcceptApplyAcademyEvent.GetTeacherRequests)
+                    },
                     text = {
                         Text(
                             text = title,
@@ -46,10 +52,14 @@ fun AcceptApplyAcademyTab(
         }
         when (tabIndex) {
             0 -> {
-                AcceptApplyStudentScreen(selectedAcademy)
+                AcceptApplyStudentScreen(
+                    viewModel = viewModel
+                )
             }
             1 -> {
-                AcceptApplyTeacherScreen(selectedAcademy)
+                AcceptApplyTeacherScreen(
+                    viewModel = viewModel
+                )
             }
         }
     }

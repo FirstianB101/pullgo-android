@@ -16,11 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.common.components.LoadingScreen
-import com.ich.pullgo.domain.model.Academy
-import com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.AcceptApplyAcademyState
+import com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.AcceptApplyAcademyEvent
 import com.ich.pullgo.presentation.main.teacher_main.accept_apply_academy.AcceptApplyAcademyViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalMaterialApi
 @Composable
@@ -32,8 +30,6 @@ fun TeacherAcceptApplyAcademyScreen(
     val context = LocalContext.current
 
     var spinnerState by remember { mutableStateOf(false) }
-    var appliedAcademies: List<Academy> by remember { mutableStateOf(emptyList()) }
-    var selectedAcademy: Academy? by remember { mutableStateOf(null) }
     var selectAcademyState by remember{ mutableStateOf(false) }
 
     val targetState = remember{ mutableStateOf(0f) }
@@ -42,24 +38,19 @@ fun TeacherAcceptApplyAcademyScreen(
         animationSpec = tween(durationMillis = 1500)
     )
 
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
-
     LaunchedEffect(Unit){
-        viewModel.getAppliedAcademies(teacher?.id!!)
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is AcceptApplyAcademyViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
-    when(state.value){
-        is AcceptApplyAcademyState.GetAcademies -> {
-            appliedAcademies = (state.value as AcceptApplyAcademyState.GetAcademies).academies
-            viewModel.onResultConsume()
-        }
-        is AcceptApplyAcademyState.Loading -> {
-            LoadingScreen()
-        }
-        is AcceptApplyAcademyState.Error -> {
-            Toast.makeText(context, "학원 목록을 불러올 수 없습니다",Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
+    LaunchedEffect(selectAcademyState){
+        if(selectAcademyState)
+            viewModel.onEvent(AcceptApplyAcademyEvent.GetStudentRequests)
     }
 
     Column(
@@ -90,7 +81,7 @@ fun TeacherAcceptApplyAcademyScreen(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     readOnly = true,
-                    value = selectedAcademy?.name ?: "",
+                    value = state.value.selectedAcademy?.name ?: "",
                     onValueChange = { },
                     label = { Text(stringResource(R.string.select_academy)) },
                     trailingIcon = {
@@ -105,10 +96,10 @@ fun TeacherAcceptApplyAcademyScreen(
                         spinnerState = false
                     }
                 ) {
-                    appliedAcademies.forEach { academy ->
+                    state.value.appliedAcademies.forEach { academy ->
                         DropdownMenuItem(
                             onClick = {
-                                selectedAcademy = academy
+                                viewModel.onEvent(AcceptApplyAcademyEvent.SelectAcademy(academy))
                                 selectAcademyState = true
                                 spinnerState = false
                             }
@@ -123,8 +114,18 @@ fun TeacherAcceptApplyAcademyScreen(
         if(selectAcademyState){
             targetState.value = 1f
             Box(modifier = Modifier.alpha(animatedFloatState.value)){
-                AcceptApplyAcademyTab(selectedAcademy!!)
+                AcceptApplyAcademyTab(
+                    viewModel = viewModel
+                )
             }
+        }
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
         }
     }
 }
