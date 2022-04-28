@@ -20,14 +20,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.AcademyItem
-import com.ich.pullgo.domain.model.Academy
-import com.ich.pullgo.domain.model.doJob
 import com.ich.pullgo.presentation.login.components.startMainActivity
-import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyState
+import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyEvent
 import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @Composable
@@ -38,40 +36,24 @@ fun ApplyAcademyScreen(
     val state = viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    var searchText by remember{ mutableStateOf("") }
-
-    var searchedAcademies: List<Academy?> by remember { mutableStateOf(listOf(null)) }
-    var selectedAcademy: Academy? by remember { mutableStateOf(null) }
-
     val requestDialogState = remember { mutableStateOf(false) }
     var createAcademyDialogState by remember { mutableStateOf(false) }
 
-    val user = PullgoApplication.instance?.getLoginUser()
     val app = PullgoApplication.instance!!
 
-    when(state.value){
-        is ApplyAcademyState.GetSearchedAcademies -> {
-            searchedAcademies = (state.value as ApplyAcademyState.GetSearchedAcademies).academies
-            viewModel.onResultConsume()
-        }
-        is ApplyAcademyState.Loading -> {
-            LoadingScreen()
-        }
-        is ApplyAcademyState.RequestApplyAcademy -> {
-            Toast.makeText(context,"가입 신청에 성공하였습니다",Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is ApplyAcademyState.Error -> {
-            Toast.makeText(context, (state.value as ApplyAcademyState.Error).message, Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is ApplyAcademyState.CreateAcademy -> {
-            Toast.makeText(context,"학원을 생성하였습니다",Toast.LENGTH_SHORT).show()
-            if(!app.academyExist) {
-                app.academyExist = true
-                startMainActivity(context, user, true)
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ApplyAcademyViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ApplyAcademyViewModel.UiEvent.TransferMainActivityIfAppliedAcademyCnt0To1 -> {
+                    if(!app.academyExist) {
+                        app.academyExist = true
+                        startMainActivity(context, app.getLoginUser(), true)
+                    }
+                }
             }
-            viewModel.onResultConsume()
         }
     }
 
@@ -87,13 +69,13 @@ fun ApplyAcademyScreen(
         ){
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = searchText,
-                onValueChange = { searchText = it },
+                value = state.value.searchQuery,
+                onValueChange = { viewModel.onEvent(ApplyAcademyEvent.SearchQueryChanged(it)) },
                 label = { Text(stringResource(R.string.academy_name)) },
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            viewModel.searchAcademy(searchText)
+                            viewModel.onEvent(ApplyAcademyEvent.SearchAcademies)
                         }
                     ) {
                         Icon(
@@ -106,24 +88,22 @@ fun ApplyAcademyScreen(
         }
 
         LazyColumn{
-            items(searchedAcademies.size){ idx ->
-                searchedAcademies[idx]?.let {
-                    AcademyItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                selectedAcademy = searchedAcademies[idx]
-                                requestDialogState.value = true
-                            },
-                        academy = searchedAcademies[idx]!!,
-                        showDeleteButton = false,
-                        onDeleteButtonClicked = {}
-                    )
-                }
+            items(state.value.searchedAcademies.size){ idx ->
+                AcademyItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.onEvent(ApplyAcademyEvent.SelectAcademy(state.value.searchedAcademies[idx]))
+                            requestDialogState.value = true
+                        },
+                    academy = state.value.searchedAcademies[idx],
+                    showDeleteButton = false,
+                    onDeleteButtonClicked = {}
+                )
             }
         }
-        if(searchedAcademies.isEmpty()){
+        if(state.value.searchedAcademies.isEmpty()){
             Box(modifier = Modifier.fillMaxSize()){
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -154,26 +134,33 @@ fun ApplyAcademyScreen(
 
     TwoButtonDialog(
         title = "학원 가입 요청",
-        content = "${selectedAcademy?.name} (학원)에 가입을 신청하시겠습니까?",
+        content = "${state.value.selectedAcademy?.name} (학원)에 가입을 신청하시겠습니까?",
         dialogState = requestDialogState,
         cancelText = "취소",
         confirmText = "신청",
         onCancel = { requestDialogState.value = false },
         onConfirm = {
-            user?.doJob(
-                ifStudent = { viewModel.requestStudentApplyAcademy(user.student!!.id!!,selectedAcademy?.id!!) },
-                ifTeacher = { viewModel.requestTeacherApplyAcademy(user.teacher!!.id!!,selectedAcademy?.id!!) }
-            )
+            viewModel.onEvent(ApplyAcademyEvent.RequestApplyingAcademy)
             requestDialogState.value = false
         }
     )
 
     CreateAcademyDialog(
         showDialog = createAcademyDialogState,
-        onCreateClicked = { newAcademy ->
-            viewModel.createAcademy(newAcademy)
+        viewModel = viewModel,
+        onCreateClicked = {
+            viewModel.onEvent(ApplyAcademyEvent.CreateAcademy)
             createAcademyDialogState = false
         },
         onCancelClicked = { createAcademyDialogState = false }
     )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }

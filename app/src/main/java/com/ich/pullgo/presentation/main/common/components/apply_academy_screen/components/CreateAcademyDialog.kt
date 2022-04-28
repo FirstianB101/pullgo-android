@@ -9,6 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -22,24 +23,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.domain.model.Academy
+import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyEvent
+import com.ich.pullgo.presentation.main.common.components.apply_academy_screen.ApplyAcademyViewModel
 
 @ExperimentalComposeUiApi
 @Composable
 fun CreateAcademyDialog(
     showDialog: Boolean,
-    onCreateClicked: (Academy) -> Unit,
+    viewModel: ApplyAcademyViewModel = hiltViewModel(),
+    onCreateClicked: () -> Unit,
     onCancelClicked: () -> Unit,
 ){
+    val state = viewModel.state.collectAsState()
     val context = LocalContext.current
-
-    var academyName by remember { mutableStateOf("") }
-    var academyAddress by remember { mutableStateOf("") }
-    var phone by remember { mutableStateOf("") }
-
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
 
     if(showDialog){
         Dialog(
@@ -71,8 +71,8 @@ fun CreateAcademyDialog(
 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = academyName,
-                        onValueChange = {academyName = it},
+                        value = state.value.newAcademyName,
+                        onValueChange = { viewModel.onEvent(ApplyAcademyEvent.NewAcademyNameChanged(it)) },
                         label = { Text(text = stringResource(R.string.academy_name)) }
                     )
 
@@ -80,8 +80,8 @@ fun CreateAcademyDialog(
 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = academyAddress,
-                        onValueChange = {academyAddress = it},
+                        value = state.value.newAcademyAddress,
+                        onValueChange = { viewModel.onEvent(ApplyAcademyEvent.NewAcademyAddressChanged(it)) },
                         label = { Text(text = stringResource(R.string.academy_address)) }
                     )
 
@@ -89,8 +89,8 @@ fun CreateAcademyDialog(
 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = phone,
-                        onValueChange = {phone = it},
+                        value = state.value.newAcademyPhone,
+                        onValueChange = { viewModel.onEvent(ApplyAcademyEvent.NewAcademyPhoneChanged(it)) },
                         label = { Text(text = stringResource(R.string.phone)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
@@ -102,15 +102,12 @@ fun CreateAcademyDialog(
                     ) {
                         TextButton(
                             onClick = {
-                                if(academyName.isNotBlank() && academyAddress.isNotBlank() && phone.isNotBlank()){
-                                    onCreateClicked(
-                                        Academy(
-                                            name = academyName,
-                                            address = academyAddress,
-                                            phone = phone,
-                                            ownerId = teacher?.id!!
-                                        )
-                                    )
+                                if(
+                                    state.value.newAcademyName.isNotBlank() &&
+                                    state.value.newAcademyAddress.isNotBlank() &&
+                                    state.value.newAcademyPhone.isNotBlank()
+                                ){
+                                    onCreateClicked()
                                 }
                                 else Toast.makeText(context,"정보를 모두 입력해주세요",Toast.LENGTH_SHORT).show()
                             }
