@@ -8,10 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
@@ -27,9 +24,11 @@ import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.items.ClassroomItem
 import com.ich.pullgo.domain.model.Classroom
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomViewModel
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.ManageClassroomDetailsActivity
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -40,41 +39,27 @@ fun TeacherManageClassroomScreen(
     val state = viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    var appliedClassrooms: List<Classroom?> by remember { mutableStateOf(listOf(null)) }
-    var selectedClassroom: Classroom? by remember { mutableStateOf(null) }
-
     val createDialogState = remember{ mutableStateOf(false)}
-
-    val user = PullgoApplication.instance?.getLoginUser()
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = { result ->
             if(result.resultCode == RESULT_OK){
-                viewModel.getClassroomsTeacherApplied(user?.teacher?.id!!)
+                viewModel.onEvent(ManageClassroomEvent.ResetClassroomList)
             }
         }
     )
 
     LaunchedEffect(Unit){
-        viewModel.getClassroomsTeacherApplied(user?.teacher?.id!!)
-    }
-
-    when (state.value) {
-        is ManageClassroomState.Loading -> {
-            LoadingScreen()
-        }
-        is ManageClassroomState.CreateClassroom -> {
-            Toast.makeText(context,"반을 생성하였습니다",Toast.LENGTH_SHORT).show()
-            viewModel.getClassroomsTeacherApplied(user?.teacher?.id!!)
-        }
-        is ManageClassroomState.GetClassrooms -> {
-            appliedClassrooms = (state.value as ManageClassroomState.GetClassrooms).classrooms
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomState.Error -> {
-            Toast.makeText(context, (state.value as ManageClassroomState.Error).message, Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ManageClassroomViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ManageClassroomViewModel.UiEvent.CloseCreateDialog -> {
+                    createDialogState.value = false
+                }
+            }
         }
     }
 
@@ -83,28 +68,27 @@ fun TeacherManageClassroomScreen(
             .fillMaxWidth()
     ) {
         LazyColumn {
-            items(appliedClassrooms.size) { idx ->
-                appliedClassrooms[idx]?.let {
-                    ClassroomItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                selectedClassroom = it
+            items(state.value.appliedClassrooms.size) { idx ->
+                ClassroomItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            val selectedClassroom = state.value.appliedClassrooms[idx]
+                            viewModel.onEvent(ManageClassroomEvent.SelectClassroom(selectedClassroom))
 
-                                val intent = Intent(context,ManageClassroomDetailsActivity::class.java)
-                                intent.putExtra("selectedClassroom",selectedClassroom)
+                            val intent = Intent(context,ManageClassroomDetailsActivity::class.java)
+                            intent.putExtra("selectedClassroom",selectedClassroom)
 
-                                launcher.launch(intent)
-                            },
-                        classroom = it,
-                        showDeleteButton = false,
-                        onDeleteButtonClicked = {}
-                    )
-                }
+                            launcher.launch(intent)
+                        },
+                    classroom = state.value.appliedClassrooms[idx],
+                    showDeleteButton = false,
+                    onDeleteButtonClicked = {}
+                )
             }
         }
-        if (appliedClassrooms.isEmpty()) {
+        if (state.value.appliedClassrooms.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -125,12 +109,24 @@ fun TeacherManageClassroomScreen(
         FloatingActionButton(
             onClick = {
                 createDialogState.value = true
-                viewModel.getAppliedAcademies(user?.teacher?.id!!)
+                viewModel.onEvent(ManageClassroomEvent.GetAppliedAcademies)
             },
         ) {
             Icon(Icons.Filled.Add, "")
         }
     }
 
-    CreateClassroomDialog(showDialog = createDialogState)
+    CreateClassroomDialog(
+        showDialog = createDialogState,
+        viewModel = viewModel
+    )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }

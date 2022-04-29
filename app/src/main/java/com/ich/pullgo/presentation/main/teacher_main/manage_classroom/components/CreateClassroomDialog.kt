@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -27,6 +28,7 @@ import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
 import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.Classroom
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.ManageClassroomViewModel
 import java.util.*
@@ -41,35 +43,13 @@ fun CreateClassroomDialog(
     val context = LocalContext.current
     val state = viewModel.state.collectAsState()
 
-    var spinnerState by remember { mutableStateOf(false) }
-    var appliedAcademies: List<Academy> by remember { mutableStateOf(emptyList()) }
-    var selectedAcademy: Academy? by remember { mutableStateOf(null) }
-    var selectAcademyState by remember { mutableStateOf(false) }
-
-    var classroomName by remember { mutableStateOf("") }
-    var selectedDays: List<MaterialDayPicker.Weekday> by remember { mutableStateOf(emptyList())}
-
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
-
-    when (state.value) {
-        is ManageClassroomState.Loading -> {
-            LoadingScreen()
-        }
-        is ManageClassroomState.GetAcademies -> {
-            appliedAcademies = (state.value as ManageClassroomState.GetAcademies).academies
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomState.CreateClassroom -> {
-            showDialog.value = false
-        }
-    }
+    var spinnerState by rememberSaveable { mutableStateOf(false) }
+    var selectAcademyState by rememberSaveable { mutableStateOf(false) }
 
     if (showDialog.value) {
         Dialog(
             onDismissRequest = {
                 showDialog.value = false
-                classroomName = ""
-                selectedAcademy = null
                 selectAcademyState = false
             },
             properties = DialogProperties(
@@ -115,7 +95,7 @@ fun CreateClassroomDialog(
                         ) {
                             OutlinedTextField(
                                 readOnly = true,
-                                value = selectedAcademy?.name ?: "",
+                                value = state.value.selectedAcademy?.name ?: "",
                                 onValueChange = { },
                                 label = { Text(stringResource(R.string.select_academy)) },
                                 trailingIcon = {
@@ -130,10 +110,10 @@ fun CreateClassroomDialog(
                                     spinnerState = false
                                 }
                             ) {
-                                appliedAcademies.forEach { academy ->
+                                state.value.appliedAcademies.forEach { academy ->
                                     DropdownMenuItem(
                                         onClick = {
-                                            selectedAcademy = academy
+                                            viewModel.onEvent(ManageClassroomEvent.SelectAcademy(academy))
                                             selectAcademyState = true
                                             spinnerState = false
                                         }
@@ -164,8 +144,8 @@ fun CreateClassroomDialog(
 
                             OutlinedTextField(
                                 modifier = Modifier.width(260.dp),
-                                value = classroomName,
-                                onValueChange = {classroomName = it},
+                                value = state.value.newClassroomName,
+                                onValueChange = { viewModel.onEvent(ManageClassroomEvent.NewClassroomNameChanged(it)) },
                                 label = { Text(text = stringResource(R.string.comment_input_classroom_name)) }
                             )
                         }
@@ -188,7 +168,7 @@ fun CreateClassroomDialog(
                                 MaterialDayPicker(context).apply {
                                     locale = Locale.KOREAN
                                     setDaySelectionChangedListener { days ->
-                                        selectedDays = days
+                                        viewModel.onEvent(ManageClassroomEvent.NewClassroomWeekdayChanged(days))
                                     }
                                 }
                             }
@@ -200,23 +180,11 @@ fun CreateClassroomDialog(
                             modifier = Modifier.fillMaxWidth(),
                             text = stringResource(R.string.create_classroom)
                         ) {
-                            if(classroomName.isNotBlank() && selectedDays.isNotEmpty()) {
-                                val days = StringBuilder()
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.MONDAY)) days.append("월")
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.TUESDAY)) days.append("화")
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.WEDNESDAY)) days.append("수")
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.THURSDAY)) days.append("목")
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.FRIDAY)) days.append("금")
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.SATURDAY)) days.append("토")
-                                if (selectedDays.contains(MaterialDayPicker.Weekday.SUNDAY)) days.append("일")
-
-                                viewModel.createClassroom(
-                                    Classroom(
-                                        academyId = selectedAcademy?.id!!,
-                                        name = "$classroomName;$days",
-                                        creatorId = teacher?.id!!
-                                    )
-                                )
+                            if(
+                                state.value.newClassroomName.isNotBlank() &&
+                                state.value.newClassroomDays.isNotEmpty()
+                            ) {
+                                viewModel.onEvent(ManageClassroomEvent.CreateClassroom)
                             }else{
                                 Toast.makeText(context,"입력되지 않은 항목이 존재합니다",Toast.LENGTH_SHORT).show()
                             }
