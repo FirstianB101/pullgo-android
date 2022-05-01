@@ -230,7 +230,7 @@ fun EditClassroomScreen(
         confirmText = "삭제",
         onCancel = { deleteDialogState.value = false },
         onConfirm = {
-            viewModel.deleteClassroom(selectedClassroom.id!!)
+            viewModel.onEvent(ManageClassroomEditClassroomEvent.DeleteClassroom(selectedClassroom.id!!))
             deleteDialogState.value = false
         }
     )

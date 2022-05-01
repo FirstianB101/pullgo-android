@@ -47,7 +47,7 @@ class ManageClassroomEditClassroomViewModel @Inject constructor(
         }
     }
 
-    fun editClassroom(classroomId: Long, classroom: Classroom) = viewModelScope.launch {
+    private fun editClassroom(classroomId: Long, classroom: Classroom) = viewModelScope.launch {
         editClassroomUseCases.editClassroom(classroomId, classroom).collect { result ->
             when(result){
                 is Resource.Success -> {
@@ -72,7 +72,7 @@ class ManageClassroomEditClassroomViewModel @Inject constructor(
         }
     }
 
-    fun deleteClassroom(classroomId: Long) = viewModelScope.launch {
+    private fun deleteClassroom(classroomId: Long) = viewModelScope.launch {
         editClassroomUseCases.deleteClassroom(classroomId).collect { result ->
             when(result){
                 is Resource.Success -> {

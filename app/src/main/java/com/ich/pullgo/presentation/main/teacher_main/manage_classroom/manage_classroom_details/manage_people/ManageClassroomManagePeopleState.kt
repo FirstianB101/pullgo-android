@@ -3,11 +3,10 @@ package com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_cl
 import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.domain.model.Teacher
 
-sealed class ManageClassroomManagePeopleState {
-    object Loading: ManageClassroomManagePeopleState()
-    object Normal: ManageClassroomManagePeopleState()
-    data class Error(val message: String): ManageClassroomManagePeopleState()
-    data class GetStudents(val students: List<Student>): ManageClassroomManagePeopleState()
-    data class GetTeachers(val teachers: List<Teacher>): ManageClassroomManagePeopleState()
-    object KickPeople: ManageClassroomManagePeopleState()
-}
+data class ManageClassroomManagePeopleState(
+    val isLoading: Boolean = false,
+    val studentsInClassroom: List<Student> = emptyList(),
+    val selectedStudent: Student? = null,
+    val teachersInClassroom: List<Teacher> = emptyList(),
+    val selectedTeacher: Teacher? = null
+)
