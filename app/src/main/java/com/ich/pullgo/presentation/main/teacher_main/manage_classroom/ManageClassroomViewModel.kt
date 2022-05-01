@@ -7,6 +7,7 @@ import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.util.Resource
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.domain.use_case.manage_classroom.ManageClassroomUseCases
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.utils.WeekdayUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -146,14 +147,7 @@ class ManageClassroomViewModel @Inject constructor(
 
     private fun getNewClassroom(): Classroom {
         val selectedDays = state.value.newClassroomDays
-        val days = StringBuilder()
-        if (selectedDays.contains(MaterialDayPicker.Weekday.MONDAY)) days.append("월")
-        if (selectedDays.contains(MaterialDayPicker.Weekday.TUESDAY)) days.append("화")
-        if (selectedDays.contains(MaterialDayPicker.Weekday.WEDNESDAY)) days.append("수")
-        if (selectedDays.contains(MaterialDayPicker.Weekday.THURSDAY)) days.append("목")
-        if (selectedDays.contains(MaterialDayPicker.Weekday.FRIDAY)) days.append("금")
-        if (selectedDays.contains(MaterialDayPicker.Weekday.SATURDAY)) days.append("토")
-        if (selectedDays.contains(MaterialDayPicker.Weekday.SUNDAY)) days.append("일")
+        val days = WeekdayUtil.weekdaysToString(selectedDays)
 
         return Classroom(
             academyId = state.value.selectedAcademy?.id!!,

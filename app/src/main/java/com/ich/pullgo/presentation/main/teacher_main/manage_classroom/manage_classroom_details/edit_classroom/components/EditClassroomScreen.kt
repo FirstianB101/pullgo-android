@@ -8,10 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -24,12 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import ca.antonious.materialdaypicker.MaterialDayPicker
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.domain.model.Classroom
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.edit_classroom.ManageClassroomEditClassroomEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.edit_classroom.ManageClassroomEditClassroomState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.edit_classroom.ManageClassroomEditClassroomViewModel
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.utils.WeekdayUtil
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @Composable
@@ -40,28 +40,36 @@ fun EditClassroomScreen(
     val state = viewModel.state.collectAsState()
     val context = LocalContext.current
 
-    val infos = selectedClassroom.name?.split(';')
-
     val editDialogState = remember { mutableStateOf(false) }
     val deleteDialogState = remember { mutableStateOf(false) }
 
-    when(state.value){
-        is ManageClassroomEditClassroomState.Loading -> {
-            LoadingScreen()
-        }
-        is ManageClassroomEditClassroomState.Error -> {
-            Toast.makeText(context,"정보를 불러올 수 없습니다(${(state.value as ManageClassroomEditClassroomState.Error).message})",Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomEditClassroomState.EditClassroom -> {
-            Toast.makeText(context,"반 정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
-            selectedClassroom.name = (state.value as ManageClassroomEditClassroomState.EditClassroom).classroom.name
-            (context as Activity).setResult(RESULT_OK)
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomEditClassroomState.DeleteClassroom -> {
-            (context as Activity).setResult(RESULT_OK)
-            context.finish()
+    var classroomInfo = selectedClassroom.name?.split(';')
+
+    LaunchedEffect(Unit){
+        val infos = selectedClassroom.name?.split(';')
+        viewModel.onEvent(ManageClassroomEditClassroomEvent.ClassroomNameChanged(infos?.get(0) ?: ""))
+
+        val dayList = WeekdayUtil.stringToWeekdays(infos?.get(1)!!)
+        viewModel.onEvent(ManageClassroomEditClassroomEvent.ClassroomDaysChanged(dayList))
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is ManageClassroomEditClassroomViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ManageClassroomEditClassroomViewModel.UiEvent.EditClassroom -> {
+                    selectedClassroom.name = event.editedClassroom.name
+                    classroomInfo = selectedClassroom.name?.split(';')
+                    editDialogState.value = false
+                    (context as Activity).setResult(RESULT_OK)
+                }
+                is ManageClassroomEditClassroomViewModel.UiEvent.DeleteClassroom -> {
+                    (context as Activity).setResult(RESULT_OK)
+                    context.finish()
+                }
+            }
         }
     }
 
@@ -88,7 +96,7 @@ fun EditClassroomScreen(
             OutlinedTextField(
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
-                value = infos?.get(0) ?: "",
+                value = classroomInfo?.get(0) ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
@@ -116,7 +124,7 @@ fun EditClassroomScreen(
             OutlinedTextField(
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
-                value = infos?.get(1) ?: "",
+                value = classroomInfo?.get(1) ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
@@ -208,15 +216,15 @@ fun EditClassroomScreen(
     EditClassroomDialog(
         showDialog = editDialogState,
         selectedClassroom = selectedClassroom,
-        onEditClicked = { editedClassroom ->
-            viewModel.editClassroom(selectedClassroom.id!!,editedClassroom)
-            editDialogState.value = false
+        viewModel = viewModel,
+        onEditClicked = {
+            viewModel.onEvent(ManageClassroomEditClassroomEvent.EditClassroom(selectedClassroom.id!!))
         }
     )
 
     TwoButtonDialog(
         title = stringResource(R.string.delete),
-        content = "${infos?.get(0)} 반을 삭제하시겠습니까?",
+        content = "${state.value.classroomName} 반을 삭제하시겠습니까?",
         dialogState = deleteDialogState,
         cancelText = "취소",
         confirmText = "삭제",
@@ -226,4 +234,13 @@ fun EditClassroomScreen(
             deleteDialogState.value = false
         }
     )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }
