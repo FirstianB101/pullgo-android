@@ -16,14 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ich.pullgo.R
 import com.ich.pullgo.domain.model.Classroom
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.edit_classroom.components.EditClassroomScreen
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.components.ManageExamScreen
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_people.components.ManagePeopleScreen
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_request.components.ManageRequestScreen
-import dagger.hilt.android.AndroidEntryPoint
-import com.ich.pullgo.R
 import com.ich.pullgo.presentation.theme.PullgoTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ManageClassroomDetailsActivity : ComponentActivity() {
@@ -32,7 +32,8 @@ class ManageClassroomDetailsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val selectedClassroom: Classroom = intent.getSerializableExtra("selectedClassroom") as Classroom
+        val selectedClassroom: Classroom =
+            intent.getSerializableExtra("selectedClassroom") as Classroom
         setContent {
             PullgoTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -56,10 +57,10 @@ class ManageClassroomDetailsActivity : ComponentActivity() {
                             )
                         },
                         bottomBar = {
-                            BottomNavigation (
+                            BottomNavigation(
                                 backgroundColor = colorResource(R.color.main_color),
                                 contentColor = Color.White
-                            ){
+                            ) {
                                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                                 val currentDestination = navBackStackEntry?.destination
                                 items.forEach { screen ->
@@ -82,11 +83,23 @@ class ManageClassroomDetailsActivity : ComponentActivity() {
                             }
                         }
                     ) { innerPadding ->
-                        NavHost(navController, startDestination = ManageClassroomDetailsScreen.EditClassroom.route, Modifier.padding(innerPadding)) {
-                            composable(ManageClassroomDetailsScreen.EditClassroom.route) { EditClassroomScreen(selectedClassroom) }
-                            composable(ManageClassroomDetailsScreen.ManagePeople.route) { ManagePeopleScreen(selectedClassroom) }
-                            composable(ManageClassroomDetailsScreen.ManageRequest.route) { ManageRequestScreen(selectedClassroom) }
-                            composable(ManageClassroomDetailsScreen.ManageExam.route) { ManageExamScreen(selectedClassroom) }
+                        NavHost(
+                            navController,
+                            startDestination = ManageClassroomDetailsScreen.EditClassroom.route,
+                            Modifier.padding(innerPadding)
+                        ) {
+                            composable(ManageClassroomDetailsScreen.EditClassroom.route) {
+                                EditClassroomScreen(selectedClassroom)
+                            }
+                            composable(ManageClassroomDetailsScreen.ManagePeople.route) {
+                                ManagePeopleScreen(selectedClassroom)
+                            }
+                            composable(ManageClassroomDetailsScreen.ManageRequest.route) {
+                                ManageRequestScreen(selectedClassroom)
+                            }
+                            composable(ManageClassroomDetailsScreen.ManageExam.route) {
+                                ManageExamScreen(selectedClassroom)
+                            }
                         }
                     }
                 }

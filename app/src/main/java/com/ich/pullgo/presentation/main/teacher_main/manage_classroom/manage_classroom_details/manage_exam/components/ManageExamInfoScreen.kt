@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,12 +29,14 @@ import com.ich.pullgo.domain.model.copy
 import com.ich.pullgo.domain.use_case.manage_classroom.manage_exam.util.DurationUtil
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.oneColonFormatToTwoColon
 import com.ich.pullgo.presentation.main.common.components.calendar_screen.util.CalendarUtils.twoColonFormatToOneColon
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamViewModel
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import kotlinx.coroutines.flow.collectLatest
 import java.time.Duration
 
 @Composable
@@ -42,18 +45,17 @@ fun ManageExamInfoScreen(
     viewModel: ManageClassroomManageExamViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val state = viewModel.state.collectAsState()
 
-    val beginDateTime = remember { selectedExam.beginDateTime?.split('T') }
-    val endDateTime = remember { selectedExam.endDateTime?.split('T') }
+    val beginDateTime = rememberSaveable { selectedExam.beginDateTime!!.split('T') }
+    val endDateTime = rememberSaveable { selectedExam.endDateTime!!.split('T') }
 
-    var examName by remember { mutableStateOf(selectedExam.name) }
-    var beginDate by remember { mutableStateOf(beginDateTime?.get(0)) }
-    var beginTime by remember { mutableStateOf(twoColonFormatToOneColon(beginDateTime?.get(1)!!)) }
-    var endDate by remember { mutableStateOf(endDateTime?.get(0)) }
-    var endTime by remember { mutableStateOf(twoColonFormatToOneColon(endDateTime?.get(1)!!)) }
-    var timeLimit by remember { mutableStateOf(DurationUtil.translateDurToMinute(selectedExam.timeLimit!!)) }
-    var passScore by remember { mutableStateOf(selectedExam.passScore.toString()) }
+    var examName by rememberSaveable { mutableStateOf(selectedExam.name) }
+    var beginDate by rememberSaveable { mutableStateOf(beginDateTime[0]) }
+    var beginTime by rememberSaveable { mutableStateOf(twoColonFormatToOneColon(beginDateTime[1])) }
+    var endDate by rememberSaveable { mutableStateOf(endDateTime[0]) }
+    var endTime by rememberSaveable { mutableStateOf(twoColonFormatToOneColon(endDateTime[1])) }
+    var timeLimit by rememberSaveable { mutableStateOf(DurationUtil.translateDurToMinute(selectedExam.timeLimit!!)) }
+    var passScore by rememberSaveable { mutableStateOf(selectedExam.passScore.toString()) }
 
     val beginDateDialogState = rememberMaterialDialogState()
     val beginTimeDialogState = rememberMaterialDialogState()
@@ -62,13 +64,13 @@ fun ManageExamInfoScreen(
 
     var editModeOn by remember{ mutableStateOf(false) }
 
-    val teacher = PullgoApplication.instance?.getLoginUser()?.teacher
-
-    when(state.value){
-        is ManageClassroomManageExamState.EditExam -> {
-            Toast.makeText(context,"시험 정보가 수정되었습니다",Toast.LENGTH_SHORT).show()
-            selectedExam.copy((state.value as ManageClassroomManageExamState.EditExam).exam)
-            viewModel.onResultConsume()
+    LaunchedEffect(Unit){
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ManageClassroomManageExamViewModel.UiEvent.EditExam -> {
+                    selectedExam.copy(event.editedExam)
+                }
+            }
         }
     }
 
@@ -227,7 +229,7 @@ fun ManageExamInfoScreen(
                                 passScore = passScore.toInt(),
                                 creatorId = null, classroomId = null, cancelled = false, finished = false
                             )
-                            viewModel.editExam(selectedExam.id!!,edited)
+                            viewModel.onEvent(ManageClassroomManageExamEvent.EditExam(selectedExam.id!!,edited))
                         } else {
                             Toast.makeText(context, "정보를 모두 입력해주세요", Toast.LENGTH_SHORT).show()
                         }

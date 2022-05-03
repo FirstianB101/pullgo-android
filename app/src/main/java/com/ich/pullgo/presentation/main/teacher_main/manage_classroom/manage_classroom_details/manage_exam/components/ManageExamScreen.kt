@@ -16,13 +16,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.ExamItem
 import com.ich.pullgo.domain.model.Classroom
-import com.ich.pullgo.domain.model.Exam
-import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamState
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
@@ -34,8 +33,6 @@ fun ManageExamScreen(
     val context = LocalContext.current
 
     val state = viewModel.state.collectAsState()
-    val exams: MutableState<List<Exam?>> = remember { mutableStateOf(listOf(null)) }
-    var selectedExam: Exam? by remember{ mutableStateOf(null) }
 
     val createExamDialogState = remember { mutableStateOf(false) }
     val manageExamDialogState = remember { mutableStateOf(false) }
@@ -46,38 +43,17 @@ fun ManageExamScreen(
     val options = listOf("모든 시험","종료된 시험","취소된 시험")
 
     LaunchedEffect(Unit){
-        viewModel.getExamsInClassroom(selectedClassroom.id!!)
-    }
-
-    fun refreshExamList(){
-        sortOption = "모든 시험"
-        viewModel.getExamsInClassroom(selectedClassroom.id!!)
-    }
-
-    when(state.value){
-        is ManageClassroomManageExamState.GetExams -> {
-            exams.value = (state.value as ManageClassroomManageExamState.GetExams).exams
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomManageExamState.CreateExam -> {
-            Toast.makeText(context,"시험이 생성되었습니다",Toast.LENGTH_SHORT).show()
-            refreshExamList()
-        }
-        is ManageClassroomManageExamState.DeleteExam -> {
-            Toast.makeText(context,"시험이 삭제되었습니다",Toast.LENGTH_SHORT).show()
-            refreshExamList()
-        }
-        is ManageClassroomManageExamState.EditExam,
-        is ManageClassroomManageExamState.CancelExam,
-        is ManageClassroomManageExamState.FinishExam -> {
-            refreshExamList()
-        }
-        is ManageClassroomManageExamState.Error -> {
-            Toast.makeText(context,(state.value as ManageClassroomManageExamState.Error).message,Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomManageExamState.Loading -> {
-            LoadingScreen()
+        viewModel.setClassroomId(selectedClassroom.id!!)
+        viewModel.onEvent(ManageClassroomManageExamEvent.GetAllExams)
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is ManageClassroomManageExamViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ManageClassroomManageExamViewModel.UiEvent.RefreshOption -> {
+                    sortOption = "모든 시험"
+                }
+            }
         }
     }
 
@@ -117,9 +93,9 @@ fun ManageExamScreen(
                             spinnerExpanded = false
 
                             when(option){
-                                "모든 시험" -> viewModel.getExamsInClassroom(selectedClassroom.id!!)
-                                "종료된 시험" -> viewModel.getFinishedExams(selectedClassroom.id!!)
-                                "취소된 시험" -> viewModel.getCancelledExams(selectedClassroom.id!!)
+                                "모든 시험" -> viewModel.onEvent(ManageClassroomManageExamEvent.GetAllExams)
+                                "종료된 시험" -> viewModel.onEvent(ManageClassroomManageExamEvent.GetFinishedExams)
+                                "취소된 시험" -> viewModel.onEvent(ManageClassroomManageExamEvent.GetCancelledExams)
                             }
                         }
                     ) {
@@ -133,40 +109,28 @@ fun ManageExamScreen(
         }
 
         LazyColumn{
-            items(exams.value.size){ idx ->
-                exams.value[idx]?.let {
-                    ExamItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                selectedExam = it
-                                manageExamDialogState.value = true
-                            },
-                        exam = it,
-                        showDeleteButton = true
-                    ) {
-                        selectedExam = it
-                        deleteExamDialogState.value = true
-                    }
+            items(state.value.exams.size){ idx ->
+                ExamItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.onEvent(ManageClassroomManageExamEvent.SelectExam(state.value.exams[idx]))
+                            manageExamDialogState.value = true
+                        },
+                    exam = state.value.exams[idx],
+                    showDeleteButton = true
+                ) {
+                    viewModel.onEvent(ManageClassroomManageExamEvent.SelectExam(state.value.exams[idx]))
+                    deleteExamDialogState.value = true
                 }
             }
         }
-        if(exams.value.isEmpty()){
+        if(state.value.exams.isEmpty()){
             Box(modifier = Modifier.fillMaxSize()){
                 Text(
                     modifier = Modifier.align(Alignment.Center),
                     text = "시험이 없습니다",
-                    color = Color.Black,
-                    fontSize = 20.sp
-                )
-            }
-        }
-        if(state.value is ManageClassroomManageExamState.Error){
-            Box(modifier = Modifier.fillMaxSize()){
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "정보를 불러올 수 없습니다",
                     color = Color.Black,
                     fontSize = 20.sp
                 )
@@ -191,13 +155,13 @@ fun ManageExamScreen(
 
     TwoButtonDialog(
         title = "시험 삭제",
-        content = "${selectedExam?.name} 시험을 삭제하시겠습니까?",
+        content = "${state.value.selectedExam?.name} 시험을 삭제하시겠습니까?",
         dialogState = deleteExamDialogState,
         cancelText = "취소",
         confirmText = "삭제",
         onCancel = { deleteExamDialogState.value = false },
         onConfirm = {
-            viewModel.deleteExam(selectedExam?.id!!)
+            viewModel.onEvent(ManageClassroomManageExamEvent.DeleteExam)
             deleteExamDialogState.value = false
         }
     )
@@ -206,14 +170,24 @@ fun ManageExamScreen(
         selectedClassroomId = selectedClassroom.id!!,
         showDialog = createExamDialogState
     ){
-        viewModel.createExam(it)
+        viewModel.onEvent(ManageClassroomManageExamEvent.CreateExam(it))
         createExamDialogState.value = false
     }
 
-    if(selectedExam != null) {
+    if(state.value.selectedExam != null) {
         ManageExamDialog(
-            selectedExam = selectedExam!!,
+            selectedExam = state.value.selectedExam!!,
+            viewModel = viewModel,
             showDialog = manageExamDialogState
         )
+    }
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
     }
 }

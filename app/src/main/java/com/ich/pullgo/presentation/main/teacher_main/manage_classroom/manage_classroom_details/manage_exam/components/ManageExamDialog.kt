@@ -1,6 +1,8 @@
 package com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
@@ -14,13 +16,16 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamViewModel
 
 @ExperimentalComposeUiApi
 @Composable
 fun ManageExamDialog(
     selectedExam: Exam,
+    viewModel: ManageClassroomManageExamViewModel = hiltViewModel(),
     showDialog: MutableState<Boolean>,
 ) {
     if (showDialog.value) {
@@ -64,13 +69,13 @@ fun ManageExamDialog(
                     }
                     when (tabIndex) {
                         0 -> {
-                            ManageExamInfoScreen(selectedExam)
+                            ManageExamInfoScreen(selectedExam, viewModel)
                         }
                         1 -> {
-                            ManageExamStatusScreen(selectedExam)
+                            ManageExamStatusScreen(selectedExam, viewModel)
                         }
                         2 -> {
-                            ManageExamAndQuestionScreen(selectedExam)
+                            ManageExamAndQuestionScreen(selectedExam, viewModel)
                         }
                     }
                 }

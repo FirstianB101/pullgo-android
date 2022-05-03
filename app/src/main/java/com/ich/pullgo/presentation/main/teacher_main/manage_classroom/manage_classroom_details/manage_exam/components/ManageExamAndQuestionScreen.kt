@@ -8,10 +8,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,31 +22,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamState
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.ManageClassroomManageExamViewModel
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionActivity
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ManageExamAndQuestionScreen(
     selectedExam: Exam,
     viewModel: ManageClassroomManageExamViewModel = hiltViewModel()
 ){
-    val state = viewModel.state.collectAsState()
     val context = LocalContext.current
 
     val finishDialogState = remember { mutableStateOf(false) }
     val cancelDialogState = remember { mutableStateOf(false) }
-
-    when(state.value){
-        is ManageClassroomManageExamState.FinishExam -> {
-            Toast.makeText(context,"해당 시험을 종료했습니다",Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is ManageClassroomManageExamState.CancelExam -> {
-            Toast.makeText(context,"해당 시험을 취소했습니다",Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -205,7 +192,7 @@ fun ManageExamAndQuestionScreen(
         confirmText = "시험 취소",
         onCancel = { cancelDialogState.value = false },
         onConfirm = {
-            viewModel.cancelExam(selectedExam.id!!)
+            viewModel.onEvent(ManageClassroomManageExamEvent.CancelExam)
             cancelDialogState.value = false
         }
     )
@@ -218,7 +205,7 @@ fun ManageExamAndQuestionScreen(
         confirmText = "시험 종료",
         onCancel = { finishDialogState.value = false },
         onConfirm = {
-            viewModel.finishExam(selectedExam.id!!)
+            viewModel.onEvent(ManageClassroomManageExamEvent.FinishExam)
             finishDialogState.value = false
         }
     )

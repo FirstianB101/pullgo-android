@@ -44,7 +44,7 @@ fun ExamStatusItem(
                     .weight(1f)
             ) {
                 Text(
-                    text = "${student?.account?.fullName} 학생",
+                    text = "${student?.account?.fullName}",
                     fontSize = 17.sp,
                     color = Color.Black,
                     fontWeight = FontWeight.Bold

@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -41,13 +42,13 @@ fun CreateExamDialog(
 ){
     val context = LocalContext.current
 
-    var examName by remember { mutableStateOf("") }
-    var beginDate by remember { mutableStateOf("") }
-    var beginTime by remember { mutableStateOf("") }
-    var endDate by remember { mutableStateOf("") }
-    var endTime by remember { mutableStateOf("") }
-    var timeLimit by remember { mutableStateOf("") }
-    var passScore by remember { mutableStateOf("") }
+    var examName by rememberSaveable { mutableStateOf("") }
+    var beginDate by rememberSaveable { mutableStateOf("") }
+    var beginTime by rememberSaveable { mutableStateOf("") }
+    var endDate by rememberSaveable { mutableStateOf("") }
+    var endTime by rememberSaveable { mutableStateOf("") }
+    var timeLimit by rememberSaveable { mutableStateOf("") }
+    var passScore by rememberSaveable { mutableStateOf("") }
 
     val beginDateDialogState = rememberMaterialDialogState()
     val beginTimeDialogState = rememberMaterialDialogState()
@@ -320,8 +321,10 @@ fun CreateExamDialog(
                     ) {
                         TextButton(
                             onClick = {
-                                if(examName.isNotBlank() && beginDate.isNotBlank() && beginTime.isNotBlank() && endDate.isNotBlank() && endTime.isNotBlank()
-                                    && passScore.isNotBlank() && timeLimit.isNotBlank()){
+                                if(examName.isNotBlank() && beginDate.isNotBlank() && beginTime.isNotBlank() &&
+                                    endDate.isNotBlank() && endTime.isNotBlank() &&
+                                    passScore.isNotBlank() && timeLimit.isNotBlank()
+                                ){
                                     val newExam = Exam(
                                         classroomId = selectedClassroomId,
                                         creatorId = teacher?.id!!,

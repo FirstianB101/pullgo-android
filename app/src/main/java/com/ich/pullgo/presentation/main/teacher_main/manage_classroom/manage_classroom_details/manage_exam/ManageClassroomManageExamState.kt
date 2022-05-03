@@ -1,21 +1,18 @@
 package com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam
 
+import com.ich.pullgo.domain.model.Academy
 import com.ich.pullgo.domain.model.AttenderState
 import com.ich.pullgo.domain.model.Exam
 import com.ich.pullgo.domain.model.Student
 
-sealed class ManageClassroomManageExamState {
-    object Loading: ManageClassroomManageExamState()
-    object Normal: ManageClassroomManageExamState()
-    data class Error(val message: String): ManageClassroomManageExamState()
-    data class GetExams(val exams: List<Exam>): ManageClassroomManageExamState()
-    data class CreateExam(val exam: Exam): ManageClassroomManageExamState()
-    data class EditExam(val exam: Exam): ManageClassroomManageExamState()
-    data class GetOneStudent(val student: Student): ManageClassroomManageExamState()
-    data class GetOneExam(val exam: Exam): ManageClassroomManageExamState()
-    data class GetAttenderStates(val attenderStates: List<AttenderState>): ManageClassroomManageExamState()
-    data class GetStudentsInClassroom(val students: List<Student>): ManageClassroomManageExamState()
-    object DeleteExam: ManageClassroomManageExamState()
-    object FinishExam: ManageClassroomManageExamState()
-    object CancelExam: ManageClassroomManageExamState()
-}
+data class ManageClassroomManageExamState(
+    val isLoading: Boolean = false,
+    val exams: List<Exam> = emptyList(),
+    val selectedExam: Exam? = null,
+    val attenderStates: List<AttenderState> = emptyList(),
+    val studentsInClassroom: List<Student> = emptyList(),
+    val studentStateMap: Map<Long,AttenderState> = mapOf(),
+    val academyInfo: Academy? = null,
+    val examInfo: Exam? = null,
+    val studentInfo: Student? = null,
+)
