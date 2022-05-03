@@ -1,6 +1,7 @@
 package com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.components
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -26,26 +27,20 @@ import coil.compose.rememberImagePainter
 import coil.size.OriginalSize
 import com.ich.pullgo.R
 import com.ich.pullgo.domain.model.Question
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionState
 
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun EditableQuestionScreen(
     modifier: Modifier = Modifier,
-    question: Question
+    state: ManageQuestionState,
+    onImageSelected: (Uri?) -> Unit,
+    contentChanged: (String) -> Unit
 ) {
-    var content by remember{ mutableStateOf(question.content ?: "")}
-    var pictureUrl by remember { mutableStateOf(question.pictureUrl) }
-
-    LaunchedEffect(question){
-        content = question.content!!
-        pictureUrl = question.pictureUrl
-    }
-
     val launcher = rememberLauncherForActivityResult(contract =
     ActivityResultContracts.GetContent()) { uri: Uri? ->
         if(uri != null) {
-            question.pictureUrl = uri.toString()
-            pictureUrl = uri.toString()
+            onImageSelected(uri)
         }
     }
 
@@ -58,16 +53,15 @@ fun EditableQuestionScreen(
             modifier = Modifier
                 .height(120.dp)
                 .padding(8.dp),
-            value = content,
+            value = state.content,
             onValueChange = {
-                content = it
-                question.content = it
+                contentChanged(it)
             },
             textStyle = TextStyle(fontSize = 20.sp),
             maxLines = 5,
             decorationBox = { innerTextField ->
                 Row{
-                    if (question.content.isNullOrBlank()) {
+                    if (state.content.isBlank()) {
                         Text(
                             text = "문제 입력",
                             fontSize = 20.sp,
@@ -86,7 +80,7 @@ fun EditableQuestionScreen(
         )
 
         val painter = rememberImagePainter(
-            data = pictureUrl,
+            data = state.pictureUrl,
             builder = {size(OriginalSize)}
         )
 
@@ -96,7 +90,8 @@ fun EditableQuestionScreen(
                 .clickable {
                     launcher.launch("image/*")
                 },
-            painter = if(question.pictureUrl.isNullOrBlank()) painterResource(R.drawable.add_picture) else painter,
+            painter = if(state.pictureUrl.isNullOrBlank())
+                painterResource(R.drawable.add_picture) else painter,
             contentDescription = "null",
             contentScale = ContentScale.FillWidth
         )

@@ -1,7 +1,5 @@
 package com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.components
 
-import android.net.Uri
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -19,25 +17,23 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.ich.pullgo.R
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
-import com.ich.pullgo.common.util.ImageUtil
 import com.ich.pullgo.domain.model.Exam
-import com.ich.pullgo.domain.model.Question
-import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionState
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionEvent
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.ManageQuestionViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun ManageQuestionScreen(
     selectedExam: Exam,
+    navController: NavController,
     viewModel: ManageQuestionViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState()
@@ -45,48 +41,28 @@ fun ManageQuestionScreen(
     val scope = rememberCoroutineScope()
     val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
 
-    val questions: MutableState<List<Question?>> = remember { mutableStateOf(emptyList()) }
-
     val scaffoldState = rememberScaffoldState()
     val pagerState = rememberPagerState()
     val deleteDialogState = remember { mutableStateOf(false) }
-    val addQuestionDialogState = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        viewModel.getQuestionsInExam(selectedExam.id!!)
+        viewModel.setExamId(selectedExam.id!!)
+        viewModel.onEvent(ManageQuestionEvent.GetQuestionsInExam)
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is ManageQuestionViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
-    when (state.value) {
-        is ManageQuestionState.GetQuestions -> {
-            questions.value = (state.value as ManageQuestionState.GetQuestions).questions
-            viewModel.onResultConsume()
-        }
-        is ManageQuestionState.DeleteQuestion -> {
-            Toast.makeText(context, "문제가 삭제되었습니다", Toast.LENGTH_SHORT).show()
-            viewModel.getQuestionsInExam(selectedExam.id!!)
-        }
-        is ManageQuestionState.EditQuestion -> {
-            Toast.makeText(context, "문제가 수정되었습니다", Toast.LENGTH_SHORT).show()
-            viewModel.getQuestionsInExam(selectedExam.id!!)
-        }
-        is ManageQuestionState.CreateQuestion -> {
-            Toast.makeText(context, "문제가 생성되었습니다", Toast.LENGTH_SHORT).show()
-            viewModel.getQuestionsInExam(selectedExam.id!!)
-        }
-        is ManageQuestionState.UploadImage -> {
-            questions.value[pagerState.currentPage]?.pictureUrl =
-                (state.value as ManageQuestionState.UploadImage).response.data?.url
-            viewModel.editQuestion(
-                questions.value[pagerState.currentPage]?.id!!,
-                questions.value[pagerState.currentPage]!!
-            )
-        }
-        is ManageQuestionState.Loading -> {
-            LoadingScreen()
-        }
-        is ManageQuestionState.Error -> {
-            Toast.makeText(context, (state.value as ManageQuestionState.Error).message, Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
+    LaunchedEffect(state.value.questions, pagerState.currentPage) {
+        if (state.value.questions.isNotEmpty()) {
+            if (state.value.questions.size <= pagerState.currentPage)
+                pagerState.scrollToPage(state.value.questions.size - 1)
+
+            viewModel.onEvent(ManageQuestionEvent.SelectQuestion(state.value.questions[pagerState.currentPage]))
         }
     }
 
@@ -96,14 +72,14 @@ fun ManageQuestionScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (questions.value.isEmpty()) stringResource(R.string.manage_question)
+                        text = if (state.value.questions.isEmpty()) stringResource(R.string.manage_question)
                         else "문제 ${pagerState.currentPage + 1}"
                     )
                 },
                 actions = {
                     IconButton(
                         onClick = {
-                            if (questions.value.isNotEmpty())
+                            if (state.value.questions.isNotEmpty())
                                 deleteDialogState.value = true
                         }
                     ) {
@@ -119,7 +95,7 @@ fun ManageQuestionScreen(
 
                     IconButton(
                         onClick = {
-                            addQuestionDialogState.value = true
+                            navController.navigate(ManageQuestionScreens.CreateQuestion.route)
                         }
                     ) {
                         Icon(
@@ -136,31 +112,33 @@ fun ManageQuestionScreen(
             )
         },
         content = {
-            if(questions.value.isEmpty()){
+            if (state.value.questions.isEmpty()) {
                 HorizontalPager(
                     modifier = Modifier.fillMaxSize(),
                     count = 1
                 ) {
                     NoQuestionScreen()
                 }
-            }else{
+            } else {
                 ModalBottomSheetLayout(
                     sheetState = modalBottomSheetState,
                     sheetContent = {
-                        if (questions.value.isNotEmpty()) {
-                            EditableMultipleChoiceBottomSheet(
-                                choice = questions.value[pagerState.currentPage]?.choice,
-                                answer = questions.value[pagerState.currentPage]?.answer!!,
-                                onChoiceChanged = { num, choice ->
-                                    questions.value[pagerState.currentPage]?.choice?.set(num, choice)
-                                },
-                                onAnswerChanged = { checks ->
-                                    val answers = mutableListOf<Int>()
-                                    for (i in checks.indices)
-                                        if (checks[i]) answers.add(i + 1)
-                                    questions.value[pagerState.currentPage]?.answer = answers
-                                }
-                            )
+                        Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
+                            if (state.value.questions.isNotEmpty()) {
+                                EditableMultipleChoiceBottomSheet(
+                                    choice = state.value.choice,
+                                    answer = state.value.answer,
+                                    onChoiceChanged = { num, choice ->
+                                        viewModel.onEvent(ManageQuestionEvent.ChoiceChanged(num, choice))
+                                    },
+                                    onAnswerChanged = { checks ->
+                                        val answers = mutableListOf<Int>()
+                                        for (i in checks.indices)
+                                            if (checks[i]) answers.add(i + 1)
+                                        viewModel.onEvent(ManageQuestionEvent.AnswerChanged(answers))
+                                    }
+                                )
+                            }
                         }
                     }
                 ) {
@@ -168,13 +146,19 @@ fun ManageQuestionScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 65.dp),
-                        count = questions.value.size,
+                        count = state.value.questions.size,
                         state = pagerState
                     ) { page ->
-                        if (questions.value.isNotEmpty()) {
+                        if (state.value.questions.isNotEmpty()) {
                             EditableQuestionScreen(
                                 modifier = Modifier.fillMaxSize(),
-                                question = questions.value[page]!!,
+                                onImageSelected = {
+                                    viewModel.onEvent(ManageQuestionEvent.SetPictureUrl(it.toString()))
+                                },
+                                contentChanged = {
+                                    viewModel.onEvent(ManageQuestionEvent.ContentChanged(it))
+                                },
+                                state = state.value
                             )
                         }
                     }
@@ -230,7 +214,7 @@ fun ManageQuestionScreen(
 
                 IconButton(
                     onClick = {
-                        if (pagerState.currentPage < questions.value.size - 1) {
+                        if (pagerState.currentPage < state.value.questions.size - 1) {
                             scope.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
                             }
@@ -252,26 +236,8 @@ fun ManageQuestionScreen(
             FloatingActionButton(
                 shape = CircleShape,
                 onClick = {
-                    if (questions.value.isNotEmpty()) {
-                        if (questions.value[pagerState.currentPage]?.pictureUrl == null ||
-                            questions.value[pagerState.currentPage]?.pictureUrl?.startsWith("http") == true
-                        ) {
-                            viewModel.editQuestion(
-                                questionId = questions.value[pagerState.currentPage]?.id!!,
-                                question = questions.value[pagerState.currentPage]!!
-                            )
-                        } else {
-                            val bitmap = MediaStore.Images.Media.getBitmap(
-                                context.contentResolver,
-                                Uri.parse(questions.value[pagerState.currentPage]?.pictureUrl)
-                            )
-                            val requestBody = ImageUtil.BitmapToString(bitmap)
-                                ?.let { RequestBody.create("text/plain".toMediaTypeOrNull(), it) }
-
-                            if (requestBody != null) {
-                                viewModel.uploadImage(requestBody)
-                            }
-                        }
+                    if (state.value.questions.isNotEmpty()) {
+                        viewModel.onEvent(ManageQuestionEvent.EditQuestion)
                     }
                 },
                 contentColor = Color.White,
@@ -291,16 +257,17 @@ fun ManageQuestionScreen(
         confirmText = "삭제",
         onCancel = { deleteDialogState.value = false },
         onConfirm = {
-            viewModel.deleteQuestion(questions.value[pagerState.currentPage]?.id!!)
+            viewModel.onEvent(ManageQuestionEvent.DeleteQuestion)
             deleteDialogState.value = false
         }
     )
 
-    AddQuestionDialog(
-        showDialog = addQuestionDialogState,
-        selectedExam = selectedExam,
-    ) { newQuestion ->
-        viewModel.createQuestion(newQuestion)
-        addQuestionDialogState.value = false
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        if (state.value.isLoading) {
+            CircularProgressIndicator()
+        }
     }
 }

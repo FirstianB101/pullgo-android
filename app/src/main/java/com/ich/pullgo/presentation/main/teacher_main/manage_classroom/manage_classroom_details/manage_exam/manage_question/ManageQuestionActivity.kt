@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.ich.pullgo.domain.model.Exam
+import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.components.ManageQuestionNavigation
 import com.ich.pullgo.presentation.theme.PullgoTheme
 import com.ich.pullgo.presentation.main.teacher_main.manage_classroom.manage_classroom_details.manage_exam.manage_question.components.ManageQuestionScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,7 +25,7 @@ class ManageQuestionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ManageQuestionScreen(selectedExam)
+                    ManageQuestionNavigation(selectedExam)
                 }
             }
         }

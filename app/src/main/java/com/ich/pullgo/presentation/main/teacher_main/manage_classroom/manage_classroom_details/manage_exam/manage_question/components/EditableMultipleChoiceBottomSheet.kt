@@ -107,9 +107,7 @@ fun EditableMultipleChoiceBottomSheet(
                     checked = checkboxStates[i].value,
                     onCheckedChange = {
                         checkboxStates[i].value = it
-                        if(checkboxStates[i].value){
-                            onAnswerChanged(checkboxStates.map{v->v.value})
-                        }
+                        onAnswerChanged(checkboxStates.map{v->v.value})
                     },
                     colors = CheckboxDefaults.colors(
                         checkedColor = colorResource(R.color.main_color),

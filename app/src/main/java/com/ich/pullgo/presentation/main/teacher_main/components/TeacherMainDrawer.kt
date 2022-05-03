@@ -56,7 +56,7 @@ fun TeacherMainDrawer(
     val activity = LocalContext.current as Activity
 
     Column(modifier = Modifier.background(Color.White)) {
-        val user = PullgoApplication.instance?.getLoginUser()!!
+        val user = PullgoApplication.instance?.getLoginUser()
 
         Row (Modifier.padding(start = 18.dp, top = 36.dp, end = 18.dp)){
             Image(
@@ -69,12 +69,12 @@ fun TeacherMainDrawer(
             )
             Column (modifier = Modifier.padding(10.dp,0.dp)){
                 Text(
-                    text = user.teacher?.account?.fullName.toString(),
+                    text = user?.teacher?.account?.fullName.toString(),
                     style = MaterialTheme.typography.h6,
                     color = Color.Black
                 )
                 Text(
-                    text = user.teacher?.account?.username.toString(),
+                    text = user?.teacher?.account?.username.toString(),
                     style = MaterialTheme.typography.subtitle1,
                     color = Color.Gray
                 )
