@@ -28,7 +28,7 @@ import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.CenterTopAppBar
 import com.ich.pullgo.domain.model.*
 import com.ich.pullgo.domain.use_case.manage_classroom.manage_exam.util.DurationUtil
-import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.components.UnEditableQuestionScreen
+import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.components.UnEditableQuestionScreen
 import com.ich.pullgo.presentation.main.student_main.exam_list_screen.take_exam.TakeExamState
 import com.ich.pullgo.presentation.main.student_main.exam_list_screen.take_exam.TakeExamViewModel
 import kotlinx.coroutines.launch

@@ -16,29 +16,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.ExamItem
-import com.ich.pullgo.data.remote.dto.CreateAttender
-import com.ich.pullgo.domain.model.AttenderState
-import com.ich.pullgo.domain.model.Exam
-import com.ich.pullgo.presentation.main.student_main.exam_list_screen.StudentExamListState
+import com.ich.pullgo.presentation.main.student_main.exam_list_screen.StudentExamListEvent
 import com.ich.pullgo.presentation.main.student_main.exam_list_screen.StudentExamListViewModel
 import com.ich.pullgo.presentation.main.student_main.exam_list_screen.take_exam.TakeExamActivity
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StudentExamListScreen(
-    viewModel: StudentExamListViewModel = hiltViewModel()
+    listViewModel: StudentExamListViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
 
-    val state = viewModel.state.collectAsState()
-    val exams: MutableState<List<Exam>> = remember { mutableStateOf(emptyList()) }
-    val attenderStates: MutableState<List<AttenderState>> = remember { mutableStateOf(emptyList()) }
-    val filteredExams: MutableState<List<Exam?>> = remember { mutableStateOf(listOf(null))}
-    var selectedExam: Exam? by remember{ mutableStateOf(null) }
+    val state = listViewModel.state.collectAsState()
 
     var spinnerExpanded by remember { mutableStateOf(false) }
     var sortOption by remember { mutableStateOf("이름 순") }
@@ -50,51 +42,21 @@ fun StudentExamListScreen(
 
     val takeDialogState = remember { mutableStateOf(false) }
 
-    val student = PullgoApplication.instance?.getLoginUser()?.student
-
     LaunchedEffect(Unit){
-        viewModel.getExamsByName(student?.id!!)
-    }
-
-    fun filterTakenExam(){
-        val exceptTaken = mutableListOf<Exam>()
-        val checkMap = mutableMapOf<Long,Boolean>()
-
-        for(take in attenderStates.value)
-            checkMap[take.examId!!] = true
-
-        for(exam in exams.value){
-            if(exam.finished || exam.cancelled || checkMap[exam.id!!] == true) continue
-
-            exceptTaken.add(exam)
-        }
-        filteredExams.value = exceptTaken
-    }
-
-    when(state.value){
-        is StudentExamListState.GetExams -> {
-            exams.value = (state.value as StudentExamListState.GetExams).exams
-            viewModel.getStatesByStudentId(student?.id!!)
-        }
-        is StudentExamListState.GetStates -> {
-            attenderStates.value = (state.value as StudentExamListState.GetStates).states
-            filterTakenExam()
-            viewModel.onResultConsume()
-        }
-        is StudentExamListState.StartExam -> {
-            val intent = Intent(context, TakeExamActivity::class.java)
-            intent.putExtra("selectedExam",selectedExam)
-            intent.putExtra("selectedState", (state.value as StudentExamListState.StartExam).state)
-            context.startActivity(intent)
-            sortOption = "이름 순"
-            viewModel.getExamsByName(student?.id!!)
-        }
-        is StudentExamListState.Error -> {
-            Toast.makeText(context,(state.value as StudentExamListState.Error).message, Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is StudentExamListState.Loading -> {
-            LoadingScreen()
+        listViewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is StudentExamListViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is StudentExamListViewModel.UiEvent.StartTakingExam -> {
+                    val intent = Intent(context, TakeExamActivity::class.java).apply {
+                        putExtra("selectedExam",state.value.selectedExam)
+                        putExtra("selectedState",state.value.examState)
+                    }
+                    context.startActivity(intent)
+                    sortOption = "이름 순"
+                }
+            }
         }
     }
 
@@ -134,9 +96,9 @@ fun StudentExamListScreen(
                             spinnerExpanded = false
 
                             when(option){
-                                "이름 순" -> viewModel.getExamsByName(student?.id!!)
-                                "시작날짜 순" -> viewModel.getExamsByBeginDate(student?.id!!)
-                                "종료날짜 순" -> viewModel.getExamsByEndDateDesc(student?.id!!)
+                                "이름 순" -> listViewModel.onEvent(StudentExamListEvent.GetExamsByName)
+                                "시작날짜 순" -> listViewModel.onEvent(StudentExamListEvent.GetExamsByBeginDate)
+                                "종료날짜 순" -> listViewModel.onEvent(StudentExamListEvent.GetExamsByEndDate)
                             }
                         }
                     ) {
@@ -150,24 +112,22 @@ fun StudentExamListScreen(
         }
 
         LazyColumn{
-            items(filteredExams.value.size){ idx ->
-                filteredExams.value[idx]?.let {
-                    ExamItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                selectedExam = it
-                                takeDialogState.value = true
-                            },
-                        exam = it,
-                        showDeleteButton = false,
-                        onDeleteButtonClicked = {}
-                    )
-                }
+            items(state.value.filteredExams.size){ idx ->
+                ExamItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            listViewModel.onEvent(StudentExamListEvent.SelectExam(state.value.filteredExams[idx]))
+                            takeDialogState.value = true
+                        },
+                    exam = state.value.filteredExams[idx],
+                    showDeleteButton = false,
+                    onDeleteButtonClicked = {}
+                )
             }
         }
-        if(filteredExams.value.isEmpty()){
+        if(state.value.filteredExams.isEmpty()){
             Box(modifier = Modifier.fillMaxSize()){
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -177,28 +137,27 @@ fun StudentExamListScreen(
                 )
             }
         }
-        if(state.value is StudentExamListState.Error){
-            Box(modifier = Modifier.fillMaxSize()){
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "정보를 불러올 수 없습니다",
-                    color = Color.Black,
-                    fontSize = 20.sp
-                )
-            }
-        }
     }
 
     TwoButtonDialog(
         title = stringResource(R.string.take_exam),
-        content = "${selectedExam?.name} 시험을 응시하시겠습니까?",
+        content = "${state.value.selectedExam?.name} 시험을 응시하시겠습니까?",
         dialogState = takeDialogState,
         cancelText = stringResource(R.string.cancel),
         confirmText = stringResource(R.string.do_take_exam),
         onCancel = { takeDialogState.value = false },
         onConfirm = {
-            viewModel.startTakingExam(CreateAttender(student?.id!!,selectedExam?.id!!))
+            listViewModel.onEvent(StudentExamListEvent.StartTakingExam)
             takeDialogState.value = false
         }
     )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }

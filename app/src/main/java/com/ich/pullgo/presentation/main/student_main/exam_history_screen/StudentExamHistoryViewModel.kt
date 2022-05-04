@@ -1,10 +1,10 @@
-package com.ich.pullgo.presentation.main.student_main.exam_list_screen
+package com.ich.pullgo.presentation.main.student_main.exam_history_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ich.pullgo.application.PullgoApplication
+import com.ich.pullgo.common.util.Constants
 import com.ich.pullgo.common.util.Resource
-import com.ich.pullgo.data.remote.dto.CreateAttender
 import com.ich.pullgo.domain.model.AttenderState
 import com.ich.pullgo.domain.model.Exam
 import com.ich.pullgo.domain.use_case.exam_list.StudentExamListUseCases
@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class StudentExamListViewModel @Inject constructor(
+class StudentExamHistoryViewModel @Inject constructor(
     private val studentExamListUseCases: StudentExamListUseCases,
     private val app: PullgoApplication
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(StudentExamListState())
+    private val _state = MutableStateFlow(StudentExamHistoryState())
     val state = _state.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
@@ -28,51 +28,55 @@ class StudentExamListViewModel @Inject constructor(
     private val student by lazy { app.getLoginUser()?.student }
 
     init {
-        onEvent(StudentExamListEvent.GetExamsByName)
+        onEvent(StudentExamHistoryEvent.GetExamsByName)
     }
 
-    fun onEvent(event: StudentExamListEvent){
+    fun onEvent(event: StudentExamHistoryEvent){
         when(event){
-            is StudentExamListEvent.SelectExam -> {
+            is StudentExamHistoryEvent.SelectExam -> {
                 _state.value = _state.value.copy(
                     selectedExam = event.exam
                 )
             }
-            is StudentExamListEvent.GetExamsByName -> {
+            is StudentExamHistoryEvent.GetExamsByName -> {
                 getExamsByName(student?.id!!)
                     .invokeOnCompletion { getStatesByStudentId(student?.id!!)
                         .invokeOnCompletion {
                             _state.value = _state.value.copy(
-                                filteredExams = getFilteredExam()
+                                takenExams = getTakenExams()
                             )
                         }
                     }
             }
-            is StudentExamListEvent.GetExamsByBeginDate -> {
+            is StudentExamHistoryEvent.GetExamsByBeginDate -> {
                 getExamsByBeginDate(student?.id!!)
                     .invokeOnCompletion { getStatesByStudentId(student?.id!!)
                         .invokeOnCompletion {
                             _state.value = _state.value.copy(
-                                filteredExams = getFilteredExam()
+                                takenExams = getTakenExams()
                             )
                         }
                     }
             }
-            is StudentExamListEvent.GetExamsByEndDate -> {
+            is StudentExamHistoryEvent.GetExamsByEndDate -> {
                 getExamsByEndDateDesc(student?.id!!)
                     .invokeOnCompletion { getStatesByStudentId(student?.id!!)
                         .invokeOnCompletion {
                             _state.value = _state.value.copy(
-                                filteredExams = getFilteredExam()
+                                takenExams = getTakenExams()
                             )
                         }
                     }
             }
-            is StudentExamListEvent.StartTakingExam -> {
-                startTakingExam(CreateAttender(
-                    attenderId = student?.id!!,
-                    examId = _state.value.selectedExam?.id!!
-                )).invokeOnCompletion { onEvent(StudentExamListEvent.GetExamsByName) }
+            is StudentExamHistoryEvent.StartReviewing -> {
+                for(attenderState in _state.value.attenderStates){
+                    if(_state.value.selectedExam?.id == attenderState.examId){
+                        viewModelScope.launch {
+                            _eventFlow.emit(UiEvent.StartReviewing(attenderState))
+                        }
+                        break
+                    }
+                }
             }
         }
     }
@@ -173,48 +177,26 @@ class StudentExamListViewModel @Inject constructor(
         }
     }
 
-    private fun startTakingExam(attender: CreateAttender) = viewModelScope.launch {
-        studentExamListUseCases.startTakingExam(attender).collect { result ->
-            when(result){
-                is Resource.Success -> {
-                    _state.value = _state.value.copy(
-                        examState = result.data!!,
-                        isLoading = false
-                    )
-                    _eventFlow.emit(UiEvent.StartTakingExam(result.data))
-                }
-                is Resource.Loading -> {
-                    _state.value = _state.value.copy(
-                        isLoading = true
-                    )
-                }
-                is Resource.Error -> {
-                    _state.value = _state.value.copy(
-                        isLoading = false
-                    )
-                    _eventFlow.emit(UiEvent.ShowToast("응시를 시작하지 못했습니다 (${result.message})"))
-                }
-            }
-        }
-    }
-
-    private fun getFilteredExam(): List<Exam> {
-        val exceptTaken = mutableListOf<Exam>()
+    private fun getTakenExams(): List<Exam>{
+        val taken = mutableListOf<Exam>()
         val checkMap = mutableMapOf<Long,Boolean>()
 
-        for(take in _state.value.attenderStates)
-            checkMap[take.examId!!] = true
+        for(take in _state.value.attenderStates) {
+            if(take.progress == Constants.ATTENDER_PROGRESS_COMPLETE) {
+                checkMap[take.examId!!] = true
+            }
+        }
 
         for(exam in _state.value.allExams){
-            if(exam.finished || exam.cancelled || checkMap[exam.id!!] == true) continue
-
-            exceptTaken.add(exam)
+            if(checkMap[exam.id!!] == true) {
+                taken.add(exam)
+            }
         }
-        return exceptTaken
+        return taken
     }
 
     sealed class UiEvent{
         data class ShowToast(val message: String): UiEvent()
-        data class StartTakingExam(val attenderState: AttenderState): UiEvent()
+        data class StartReviewing(val attenderState: AttenderState): UiEvent()
     }
 }

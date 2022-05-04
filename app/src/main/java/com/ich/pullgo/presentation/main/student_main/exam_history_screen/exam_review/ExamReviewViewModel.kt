@@ -1,4 +1,4 @@
-package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history
+package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,24 +12,24 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ExamHistoryViewModel @Inject constructor(
+class ExamReviewViewModel @Inject constructor(
     private val examHistoryUseCases: ExamHistoryUseCases
 ): ViewModel() {
 
-    private val _state = MutableStateFlow<ExamHistoryState>(ExamHistoryState.Normal)
-    val state: StateFlow<ExamHistoryState> = _state
+    private val _state = MutableStateFlow<ExamReviewState>(ExamReviewState.Normal)
+    val state: StateFlow<ExamReviewState> = _state
 
     fun getQuestionsInExam(examId: Long) = viewModelScope.launch {
         examHistoryUseCases.getQuestions(examId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _state.value = ExamHistoryState.GetQuestions(result.data!!)
+                    _state.value = ExamReviewState.GetQuestions(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _state.value = ExamHistoryState.Loading
+                    _state.value = ExamReviewState.Loading
                 }
                 is Resource.Error -> {
-                    _state.value = ExamHistoryState.Error(result.message.toString())
+                    _state.value = ExamReviewState.Error(result.message.toString())
                 }
             }
         }
@@ -39,19 +39,19 @@ class ExamHistoryViewModel @Inject constructor(
         examHistoryUseCases.getAttenderAnswers(attenderStateId).collect { result ->
             when(result){
                 is Resource.Success -> {
-                    _state.value = ExamHistoryState.GetAttenderAnswers(result.data!!)
+                    _state.value = ExamReviewState.GetAttenderAnswers(result.data!!)
                 }
                 is Resource.Loading -> {
-                    _state.value = ExamHistoryState.Loading
+                    _state.value = ExamReviewState.Loading
                 }
                 is Resource.Error -> {
-                    _state.value = ExamHistoryState.Error(result.message.toString())
+                    _state.value = ExamReviewState.Error(result.message.toString())
                 }
             }
         }
     }
 
     fun onResultConsume(){
-        _state.tryEmit(ExamHistoryState.Normal)
+        _state.tryEmit(ExamReviewState.Normal)
     }
 }

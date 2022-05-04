@@ -14,7 +14,7 @@ package="com.ich.pullgo">
         android:supportsRtl="true"
         android:theme="@style/Theme.Pullgo">
         <activity
-            android:name=".presentation.main.student_main.exam_history_screen.exam_history.ExamHistoryActivity"
+            android:name=".presentation.main.student_main.exam_history_screen.exam_review.ExamReviewActivity"
             android:exported="false"
             android:label="@string/title_activity_exam_history"
             android:theme="@style/Theme.Pullgo.NoActionBar" />

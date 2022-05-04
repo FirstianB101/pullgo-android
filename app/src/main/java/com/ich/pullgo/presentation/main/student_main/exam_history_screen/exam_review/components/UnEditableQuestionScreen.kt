@@ -1,4 +1,4 @@
-package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.components
+package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*

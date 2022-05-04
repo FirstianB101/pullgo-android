@@ -1,10 +1,9 @@
-package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.components
+package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

@@ -16,29 +16,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ich.pullgo.R
-import com.ich.pullgo.application.PullgoApplication
 import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.TwoButtonDialog
 import com.ich.pullgo.common.components.items.ExamItem
-import com.ich.pullgo.common.util.Constants
-import com.ich.pullgo.domain.model.AttenderState
-import com.ich.pullgo.domain.model.Exam
-import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.ExamHistoryActivity
+import com.ich.pullgo.presentation.main.student_main.exam_history_screen.StudentExamHistoryEvent
+import com.ich.pullgo.presentation.main.student_main.exam_history_screen.StudentExamHistoryViewModel
+import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.ExamReviewActivity
 import com.ich.pullgo.presentation.main.student_main.exam_list_screen.StudentExamListState
-import com.ich.pullgo.presentation.main.student_main.exam_list_screen.StudentExamListViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun StudentExamHistoryScreen(
-    viewModel: StudentExamListViewModel = hiltViewModel()
+    viewModel: StudentExamHistoryViewModel = hiltViewModel()
 ){
     val context = LocalContext.current
-
     val state = viewModel.state.collectAsState()
-    val exams: MutableState<List<Exam>> = remember { mutableStateOf(emptyList()) }
-    val attenderStates: MutableState<List<AttenderState>> = remember { mutableStateOf(emptyList()) }
-    val takenExams: MutableState<List<Exam?>> = remember { mutableStateOf(listOf(null)) }
-    var selectedExam: Exam? by remember{ mutableStateOf(null) }
 
     var spinnerExpanded by remember { mutableStateOf(false) }
     var sortOption by remember { mutableStateOf("이름 순") }
@@ -50,46 +43,20 @@ fun StudentExamHistoryScreen(
 
     val showDialogState = remember { mutableStateOf(false) }
 
-    val student = PullgoApplication.instance?.getLoginUser()?.student
-
     LaunchedEffect(Unit){
-        viewModel.getExamsByName(student?.id!!)
-    }
-
-    fun gatherTakenExam(){
-        val taken = mutableListOf<Exam>()
-        val checkMap = mutableMapOf<Long,Boolean>()
-
-        for(take in attenderStates.value) {
-            if(take.progress == Constants.ATTENDER_PROGRESS_COMPLETE) {
-                checkMap[take.examId!!] = true
+        viewModel.eventFlow.collectLatest { event ->
+            when(event){
+                is StudentExamHistoryViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is StudentExamHistoryViewModel.UiEvent.StartReviewing -> {
+                    val intent = Intent(context, ExamReviewActivity::class.java).apply {
+                        putExtra("selectedExam",state.value.selectedExam)
+                        putExtra("attenderState",event.attenderState)
+                    }
+                    context.startActivity(intent)
+                }
             }
-        }
-
-        for(exam in exams.value){
-            if(checkMap[exam.id!!] == true) {
-                taken.add(exam)
-            }
-        }
-        takenExams.value = taken
-    }
-
-    when(state.value){
-        is StudentExamListState.GetExams -> {
-            exams.value = (state.value as StudentExamListState.GetExams).exams
-            viewModel.getStatesByStudentId(student?.id!!)
-        }
-        is StudentExamListState.GetStates -> {
-            attenderStates.value = (state.value as StudentExamListState.GetStates).states
-            gatherTakenExam()
-            viewModel.onResultConsume()
-        }
-        is StudentExamListState.Error -> {
-            Toast.makeText(context,(state.value as StudentExamListState.Error).message, Toast.LENGTH_SHORT).show()
-            viewModel.onResultConsume()
-        }
-        is StudentExamListState.Loading -> {
-            LoadingScreen()
         }
     }
 
@@ -129,9 +96,9 @@ fun StudentExamHistoryScreen(
                             spinnerExpanded = false
 
                             when(option){
-                                "이름 순" -> viewModel.getExamsByName(student?.id!!)
-                                "시작날짜 순" -> viewModel.getExamsByBeginDate(student?.id!!)
-                                "종료날짜 순" -> viewModel.getExamsByEndDateDesc(student?.id!!)
+                                "이름 순" -> viewModel.onEvent(StudentExamHistoryEvent.GetExamsByName)
+                                "시작날짜 순" -> viewModel.onEvent(StudentExamHistoryEvent.GetExamsByBeginDate)
+                                "종료날짜 순" -> viewModel.onEvent(StudentExamHistoryEvent.GetExamsByEndDate)
                             }
                         }
                     ) {
@@ -145,24 +112,22 @@ fun StudentExamHistoryScreen(
         }
 
         LazyColumn{
-            items(takenExams.value.size){ idx ->
-                takenExams.value[idx]?.let {
-                    ExamItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                selectedExam = it
-                                showDialogState.value = true
-                            },
-                        exam = it,
-                        showDeleteButton = false,
-                        onDeleteButtonClicked = {}
-                    )
-                }
+            items(state.value.takenExams.size){ idx ->
+                ExamItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable {
+                            viewModel.onEvent(StudentExamHistoryEvent.SelectExam(state.value.takenExams[idx]))
+                            showDialogState.value = true
+                        },
+                    exam = state.value.takenExams[idx],
+                    showDeleteButton = false,
+                    onDeleteButtonClicked = {}
+                )
             }
         }
-        if(takenExams.value.isEmpty()){
+        if(state.value.takenExams.isEmpty()){
             Box(modifier = Modifier.fillMaxSize()){
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -172,36 +137,27 @@ fun StudentExamHistoryScreen(
                 )
             }
         }
-        if(state.value is StudentExamListState.Error){
-            Box(modifier = Modifier.fillMaxSize()){
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = "정보를 불러올 수 없습니다",
-                    color = Color.Black,
-                    fontSize = 20.sp
-                )
-            }
-        }
     }
 
     TwoButtonDialog(
         title = stringResource(R.string.taken_exam),
-        content = "${selectedExam?.name} 시험을 확인하시겠습니까?",
+        content = "${state.value.selectedExam?.name} 시험을 확인하시겠습니까?",
         dialogState = showDialogState,
         cancelText = stringResource(R.string.cancel),
         confirmText = stringResource(R.string.show_history),
         onCancel = { showDialogState.value = false },
         onConfirm = {
-            for(attenderState in attenderStates.value){
-                if(selectedExam?.id == attenderState.examId){
-                    val intent = Intent(context, ExamHistoryActivity::class.java)
-                    intent.putExtra("selectedExam",selectedExam)
-                    intent.putExtra("attenderState",attenderState)
-                    context.startActivity(intent)
-                    break
-                }
-            }
+            viewModel.onEvent(StudentExamHistoryEvent.StartReviewing)
             showDialogState.value = false
         }
     )
+
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ){
+        if(state.value.isLoading){
+            CircularProgressIndicator()
+        }
+    }
 }

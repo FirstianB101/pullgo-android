@@ -1,4 +1,4 @@
-package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.components
+package com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.components
 
 import android.app.Activity
 import android.widget.Toast
@@ -25,8 +25,8 @@ import com.ich.pullgo.domain.model.AttenderAnswer
 import com.ich.pullgo.domain.model.AttenderState
 import com.ich.pullgo.domain.model.Exam
 import com.ich.pullgo.domain.model.Question
-import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.ExamHistoryState
-import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_history.ExamHistoryViewModel
+import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.ExamReviewState
+import com.ich.pullgo.presentation.main.student_main.exam_history_screen.exam_review.ExamReviewViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class, com.google.accompanist.pager.ExperimentalPagerApi::class)
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 fun ExamHistoryMainScreen(
     selectedExam: Exam,
     attenderState: AttenderState,
-    viewModel: ExamHistoryViewModel = hiltViewModel()
+    viewModel: ExamReviewViewModel = hiltViewModel()
 ){
     val state = viewModel.state.collectAsState()
 
@@ -55,21 +55,21 @@ fun ExamHistoryMainScreen(
     }
 
     when(state.value){
-        is ExamHistoryState.GetAttenderAnswers -> {
-            (state.value as ExamHistoryState.GetAttenderAnswers).answers.forEach { attenderAnswer ->
+        is ExamReviewState.GetAttenderAnswers -> {
+            (state.value as ExamReviewState.GetAttenderAnswers).answers.forEach { attenderAnswer ->
                 attenderAnswersMap[attenderAnswer.questionId] = attenderAnswer
             }
             viewModel.getQuestionsInExam(selectedExam.id!!)
         }
-        is ExamHistoryState.GetQuestions -> {
-            questions.value = (state.value as ExamHistoryState.GetQuestions).questions
+        is ExamReviewState.GetQuestions -> {
+            questions.value = (state.value as ExamReviewState.GetQuestions).questions
             viewModel.onResultConsume()
         }
-        is ExamHistoryState.Loading -> {
+        is ExamReviewState.Loading -> {
             LoadingScreen()
         }
-        is ExamHistoryState.Error -> {
-            Toast.makeText(context, (state.value as ExamHistoryState.Error).message,Toast.LENGTH_SHORT).show()
+        is ExamReviewState.Error -> {
+            Toast.makeText(context, (state.value as ExamReviewState.Error).message,Toast.LENGTH_SHORT).show()
             viewModel.onResultConsume()
         }
     }
