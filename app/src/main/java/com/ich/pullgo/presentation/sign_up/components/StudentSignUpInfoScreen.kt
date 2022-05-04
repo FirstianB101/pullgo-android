@@ -29,6 +29,7 @@ import com.ich.pullgo.common.util.TestTags
 import com.ich.pullgo.presentation.login.LoginActivity
 import com.ich.pullgo.presentation.sign_up.SignUpScreenEvent
 import com.ich.pullgo.presentation.sign_up.SignUpViewModel
+import com.ich.pullgo.presentation.sign_up.util.SignUpUtils.isAllStudentInfoFilled
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -241,14 +242,4 @@ fun StudentSignUpInfoScreen(
             CircularProgressIndicator()
         }
     }
-}
-
-fun isAllStudentInfoFilled(
-    fullName: String,
-    phone: String,
-    verify: String,
-    parentPhone: String,
-    schoolName: String
-): Boolean {
-    return fullName.isNotBlank() && phone.isNotBlank() && verify.isNotBlank() && parentPhone.isNotBlank() && schoolName.isNotBlank()
 }

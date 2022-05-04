@@ -26,6 +26,7 @@ import com.ich.pullgo.common.util.TestTags
 import com.ich.pullgo.presentation.login.LoginActivity
 import com.ich.pullgo.presentation.sign_up.SignUpScreenEvent
 import com.ich.pullgo.presentation.sign_up.SignUpViewModel
+import com.ich.pullgo.presentation.sign_up.util.SignUpUtils.isAllTeacherInfoFilled
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -195,8 +196,4 @@ fun TeacherSignUpInfoScreen(
             CircularProgressIndicator()
         }
     }
-}
-
-fun isAllTeacherInfoFilled(fullName: String, phone: String, verify: String): Boolean{
-    return fullName.isNotBlank() && phone.isNotBlank() && verify.isNotBlank()
 }

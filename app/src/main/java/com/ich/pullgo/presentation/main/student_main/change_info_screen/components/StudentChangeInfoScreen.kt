@@ -6,7 +6,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -21,15 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ich.pullgo.R
 import com.ich.pullgo.application.PullgoApplication
-import com.ich.pullgo.common.components.LoadingScreen
 import com.ich.pullgo.common.components.MainThemeRoundButton
-import com.ich.pullgo.domain.model.Account
-import com.ich.pullgo.domain.model.Student
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoEvent
-import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoState
 import com.ich.pullgo.presentation.main.common.components.change_info_check_pw_screen.ChangeInfoViewModel
 import com.ich.pullgo.presentation.sign_up.components.MultiToggleButton
-import com.ich.pullgo.presentation.sign_up.components.isAllStudentInfoFilled
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -44,20 +42,16 @@ fun StudentChangeInfoScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var student = PullgoApplication.instance?.getLoginUser()?.student
-
-    var fullName by remember { mutableStateOf(student?.account?.fullName.toString()) }
-    var phone by remember { mutableStateOf(student?.account?.phone.toString()) }
-    var verify by remember { mutableStateOf("") }
-    var parentPhone by remember { mutableStateOf(student?.parentPhone.toString()) }
-    var school by remember { mutableStateOf(student?.schoolName.toString()) }
-    var schoolYear by remember { mutableStateOf("${student?.schoolYear}학년") }
-
     LaunchedEffect(Unit){
         viewModel.eventFlow.collectLatest { event ->
             when(event){
                 is ChangeInfoViewModel.UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is ChangeInfoViewModel.UiEvent.ShowSnackbar -> {
+                    scope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(event.message)
+                    }
                 }
                 is ChangeInfoViewModel.UiEvent.SuccessChangingInfo -> {
                     PullgoApplication.instance?.getLoginUser()?.student = state.value.patchedStudent
@@ -95,12 +89,12 @@ fun StudentChangeInfoScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp),
-                value = fullName,
+                value = state.value.fullName,
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.full_name)) },
-                onValueChange = {fullName = it}
+                onValueChange = { viewModel.onEvent(ChangeInfoEvent.FullNameChanged(it)) }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -112,12 +106,12 @@ fun StudentChangeInfoScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .weight(1f),
-                    value = phone,
+                    value = state.value.phone,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.comment_input_phone)) },
-                    onValueChange = {phone = it},
+                    onValueChange = { viewModel.onEvent(ChangeInfoEvent.PhoneChanged(it)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
@@ -141,12 +135,12 @@ fun StudentChangeInfoScreen(
                 OutlinedTextField(
                     modifier = Modifier
                         .weight(1f),
-                    value = verify,
+                    value = state.value.verify,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = colorResource(R.color.main_color)
                     ),
                     label = { Text(stringResource(R.string.comment_input_verification_num)) },
-                    onValueChange = {verify = it},
+                    onValueChange = { viewModel.onEvent(ChangeInfoEvent.VerifyChanged(it)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
 
@@ -167,12 +161,12 @@ fun StudentChangeInfoScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp),
-                value = parentPhone,
+                value = state.value.parentPhone ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.parent_phone)) },
-                onValueChange = {parentPhone = it},
+                onValueChange = { viewModel.onEvent(ChangeInfoEvent.ParentPhoneChanged(it)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
@@ -182,21 +176,21 @@ fun StudentChangeInfoScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(30.dp, 0.dp),
-                value = school,
+                value = state.value.school ?: "",
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     focusedBorderColor = colorResource(R.color.main_color)
                 ),
                 label = { Text(stringResource(R.string.school)) },
-                onValueChange = {school = it},
+                onValueChange = { viewModel.onEvent(ChangeInfoEvent.SchoolNameChanged(it)) },
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             MultiToggleButton(
                 modifier = Modifier.padding(30.dp, 0.dp),
-                currentSelection = schoolYear,
+                currentSelection = state.value.schoolYear ?: "",
                 toggleStates = listOf("1학년","2학년","3학년"),
-                onToggleChange = {schoolYear = it}
+                onToggleChange = { viewModel.onEvent(ChangeInfoEvent.SchoolYearChanged(it)) }
             )
 
             MainThemeRoundButton(
@@ -205,31 +199,7 @@ fun StudentChangeInfoScreen(
                     .padding(30.dp),
                 text = stringResource(R.string.change_info)
             ) {
-                if(isAllStudentInfoFilled(fullName, phone, verify, parentPhone, school)) {
-                    val editedStudent = Student(
-                        Account(
-                            username = student?.account?.username,
-                            fullName = fullName,
-                            phone = phone,
-                            password = student?.account?.password
-                        ),
-                        parentPhone = parentPhone,
-                        schoolName = school,
-                        schoolYear = when(schoolYear){
-                            "1학년" -> 1
-                            "2학년" -> 2
-                            "3학년" -> 3
-                            else -> 0
-                        }
-                    )
-                    editedStudent.id = student?.id
-
-                    viewModel.onEvent(ChangeInfoEvent.ChangeStudentInfo(editedStudent))
-                }else{
-                    scope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar("정보를 모두 입력해 주세요")
-                    }
-                }
+                viewModel.onEvent(ChangeInfoEvent.ChangeStudentInfo)
             }
         }
     }
